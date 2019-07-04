@@ -1,0 +1,38 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.balance-label {
+  margin-top: 100rpx;
+  text-align: center;
+  color: #A1A0A5;
+}
+
+.balance-money {
+  margin-top: 50rpx;
+  color: #656571;
+  text-align: center;
+  font-size: 64px;
+}
+
+.balance-withdrawal {
+  margin-top: 100px;
+  background-color: #F14E4F;
+  width: 500rpx;
+  text-align: center;
+  font-size: 30rpx;
+  color:white;
+  line-height: 100rpx;
+  height: 100rpx;
+  border-radius: 20rpx;
+}
+
+.balance-view {
+  width: 100%;
+  margin-right: 100rpx;
+  text-align: right;
+  font-size: 12px;
+}

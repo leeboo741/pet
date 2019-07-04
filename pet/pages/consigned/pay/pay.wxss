@@ -1,0 +1,189 @@
+
+page {
+  background-color: #F0F0F0;
+}
+
+.sendTip {
+  display:flex;
+  margin-top: 20px;
+}
+
+.receiveTip {
+  margin-top: 20px;
+}
+
+.sendInfo {
+  margin-top: 50rpx;
+  padding-bottom: 60rpx;
+}
+
+.sendUserInfo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.sendInfo label {
+  height: 25px;
+  font-size: 16px;
+  font-family: sans-serif;
+}
+
+.sendInfo icon {
+  margin-left: 20rpx;
+  color: red;
+  font-size: 18px;
+  font-weight: bold;
+  transform: rotate(90deg);
+}
+
+.sendUserName{
+  width: 300rpx;
+  margin-right: 80rpx;
+  float: left;
+}
+
+.receiveTip {
+  display:flex;
+  margin-top: 20px;
+}
+
+.receiveInfo {
+  margin-top: 50rpx;
+}
+
+.receiveUserInfo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.receiveInfo label {
+  height: 25px;
+  font-size: 16px;
+  font-family: sans-serif;
+}
+
+.receiveInfo icon {
+  margin-left: 20rpx;
+  color: red;
+  font-size: 18px;
+  transform: rotate(90deg);
+}
+
+.receiveUserName{
+  width: 300rpx;
+  margin-right: 80rpx;
+  float: left;
+}
+
+.input-under{
+  float: left;
+  width: 300rpx;
+}
+
+.normal {
+  font-size: 16px;
+  font-family: sans-serif;
+}
+
+.agreement {
+  margin-top:30px;
+  padding-top: 20rpx;
+  padding-bottom: 50rpx;
+  margin-bottom: 10px;
+}
+
+.agreeAgreement label {
+  margin-left: 20rpx;
+  font-size: 16px;
+  font-weight: bold;
+  font-family: sans-serif;
+}
+
+.agreementContent {
+  display: flex;
+  flex-wrap: wrap;
+  font-size: 14px;
+  font-family: sans-serif;
+}
+
+.agreementContent label {
+  color: gray;
+  width: 100%;
+  margin: 10px 0px 0px 60rpx;
+}
+
+.clause {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 30rpx 0rpx 30rpx;
+  font-family: sans-serif;
+}
+
+.equity {
+  color: gray;
+  width: 100%;
+  font-size: 10px;
+}
+
+.clause icon {
+  font-size: 18px;
+}
+
+
+.subscribe {
+	left: 0;
+	position: fixed;
+  height: 130rpx;
+	bottom: 0;
+	width: 100%;
+	z-index: 100;
+  background-color: #ffffff;
+  display:flex; justify-content:center;align-items:center;
+  box-shadow: 0px -2px 5px 2px #F4F4F4;
+}
+
+
+.tel {
+  font-size: 18px;
+  color:red;
+  margin-right: 5rpx;
+  transform: rotate(5deg);
+}
+
+.customerService {
+  float: left;
+  border-right: solid #D4D4D4 5rpx;
+  font-family: sans-serif;
+  border-right-width: 1px;
+  height: 120rpx;
+  width: 150rpx;
+  display:flex; justify-content:center;align-items:center;
+}
+
+
+.money {
+  float: left;
+  width: 450rpx;
+  font-family: sans-serif;
+  font-size: 18px;
+  color:#7F7F7F;
+  display:flex; 
+  /*justify-content:center; */
+  padding-left: 10px;
+  align-items:center;
+  letter-spacing:1px;
+}
+
+.button-confirm{
+  font-size: 20px;
+  width: 220rpx;
+  height: 100rpx;
+  margin: 10rpx 10rpx;
+}
+
+.button-red {
+  background-color: #C93927;
+  color: white;
+}

@@ -1,0 +1,64 @@
+/* pages/register/register.wxss */
+.button-confirm{
+  font-size: 30rpx;
+  margin: 20rpx 30rpx;
+}
+
+.verification-code-area{
+  margin: 20rpx 30rpx;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.verification-code-input{
+  margin: 0rpx;
+  width: 55%;
+}
+.button-verification-code{
+  width: 28%;
+  font-size: 24rpx;
+  height: 100%;
+}
+.privace-area{
+  /* 水平居中 */
+  justify-content: center; 
+  /* 垂直居中 */
+  align-items: center;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  margin-top: 20rpx;
+  margin-bottom: 30rpx;
+}
+.check-box{
+  height: 40rpx;
+  width: 40rpx;
+  margin-right: 20rpx;
+}
+.privace-text{
+  font-size: 26rpx;
+  text-decoration: underline;
+  color: rgb(100, 149, 237);
+}
+.login-area{
+  justify-content: flex-end;
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  margin-right: 30rpx;
+}
+.login-area-title{
+  font-size: 24rpx;
+  color: black;
+}
+.login-area-value{
+  font-size: 26rpx;
+  color: rgb(100, 149, 237);
+}
+.popview-content-content-privace-box{
+  margin: 20rpx;
+}
+.popview-content-content-privace{
+  color: gray;
+  font-size: 30rpx;
+}

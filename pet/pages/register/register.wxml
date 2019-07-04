@@ -1,0 +1,33 @@
+<!--pages/register/register.wxml-->
+<view class='page-box' style='background:rgb(240,240,240);'>
+  <!-- 手机号输入 -->
+  <input class='input-normal' type='number' placeholder="请输入您要绑定的手机号码" placeholder-class="input-normal-placeholder" bindinput='phoneNumberInput'>
+  </input>
+  <!-- 注册按钮 -->
+  <button class='button-confirm button-blue' bindtap='registerAccount'>绑定手机</button>
+  <!-- 隐私政策 -->
+  <view class="privace-area">
+    <image class='check-box' wx:if="{{!checkAttention}}" src='../../resource/unchecked.png' bindtap='checkedAttention'></image>
+    <image class='check-box' wx:else src='../../resource/checked.png' bindtap='checkedAttention'></image>
+    <view class='privace-text' bindtap='showPrivaceViewAction'>我已经仔细阅读宠物之家隐私政策！</view>
+  </view>
+</view>
+
+<!-- 弹窗 -->
+<view class='popview' hidden='{{!showPrivace}}'>
+  <!-- 弹窗蒙层 -->
+  <view class='popview-mask' bindtap='showPrivaceViewAction'></view>
+  <!-- 弹窗内容 -->
+  <view class='popview-content'>
+    <view class='popview-content-title'>宠物之家隐私政策</view>
+    <scroll-view class='popview-content-content' scroll-y>
+      <view class='popview-content-content-privace-box'>
+        <text class='popview-content-content-privace' space='nbsp'>aaaa
+        </text>
+      </view>
+    </scroll-view>
+    <view class='popview-content-button-box'>
+      <button class='popview-content-button button-blue' bindtap='showPrivaceViewAction'>确定</button>
+    </view>
+  </view>
+</view>

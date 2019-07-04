@@ -1,0 +1,31 @@
+<view class='container'>
+  <view class='block-fillet'>
+      <input class='input-under' placeholder='请输入单据的后4位'></input>
+  </view>
+  <!-- 单据信息 -->
+  <view class='block-fillet bill-info-box'>
+      <view class='bill-info-icon'><icon class='iconfont iconfeiji1'></icon></view>
+      <view class='bill-info-billNo'>123213213</view>
+      <view class='bill-info-time'>2019-05-05</view>
+      <view class='block-fillet bill-info-split-line'></view>
+    <view class='block-fillet bill-info-content'>
+      <view class='bill-info-way'>
+        <view class='bill-info-way-date'>2019-06-01</view>
+        <view class='bill-info-way-start'>南昌</view>
+        <view class='bill-info-way-split'>-</view>
+        <view class='bill-info-way-end'>北京</view>
+      </view>
+      <view class='bill-info-pet'>
+        <view class='bill-info-pet-type'>哈士奇</view>
+        <view class='bill-info-pet-info'>小母狗</view>
+        <view class='bill-info-pet-mode'>空运单非</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 按钮区域 -->
+  <view class='bill-operate-box'>
+    <view class='bill-operate-button' bindtap='tapSimilarStore' data-tapindex="{{billAllIndex}}">上传</view>
+    <view class='bill-operate-button-complain' bindtap='tapComplainAction' data-tapindex="{{billAllIndex}}">投诉</view>
+  </view>
+</view>

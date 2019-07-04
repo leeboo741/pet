@@ -1,0 +1,8 @@
+<view>
+  <view><label style='font-size:16px;margin-left:60rpx;'>充值金额</label></view>
+  <view class='rechage'>
+    <view class='icon-under'><icon class='iconfont iconrenminbi'></icon></view>
+    <input class='input-under'></input>
+  </view>
+  <view class='pay'><label>充值</label></view>
+</view>

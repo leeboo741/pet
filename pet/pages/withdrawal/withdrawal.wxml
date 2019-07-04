@@ -1,0 +1,5 @@
+<view class='container'>
+  <view class='balance-label'>系统余额(元)</view>
+  <view class='balance-money'>1000</view>
+  <view class='balance-withdrawal'>提现</view>
+</view>

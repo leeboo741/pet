@@ -1,0 +1,76 @@
+.success {  
+  margin-top: 40px;
+  background: -webkit-linear-gradient(#F06348, #E73C34); /* Safari 5.1 - 6.0 */
+  background: -o-linear-gradient(#F06348, #E73C34); /* Opera 11.1 - 12.0 */
+  background: -moz-linear-gradient(#F06348, #E73C34); /* Firefox 3.6 - 15 */
+  background: linear-gradient(#F06348, #E73C34); /* 标准的语法 */
+  height: 220px;
+  width: 600rpx;
+  border-radius:20px 20px 0px 0px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.wallet {
+  width: 600rpx;
+  margin-top: 40rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.wallet-label {
+  width: 50%;
+  font-size: 12px;
+  font-family: sans-serif;
+  text-align: left;
+}
+
+.wallet-money {
+  width: 150rpx;
+  font-size: 12px;
+  font-family: sans-serif;
+  text-align: right;
+}
+
+.wallet-recharge {
+  width: 150rpx;
+  font-size: 12px;
+  color: #94B3E1;
+  font-family: sans-serif;
+  text-align: center;
+}
+
+.success icon{
+  font-size: 40px;
+  color: white;
+}
+
+.history {
+  margin-top: 40rpx;
+}
+
+.success label{
+  margin-top: 20rpx;
+  color: white;
+}
+
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.btn {
+  width: 300rpx;
+  height: 80rpx;
+  text-align: center;
+  line-height: 80rpx;
+  font-size: 32rpx;
+  border: solid #C8C8C8 1px;
+  border-radius: 40rpx;
+}

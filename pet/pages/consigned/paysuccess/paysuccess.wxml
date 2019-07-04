@@ -1,0 +1,14 @@
+<view class='container'>
+  <view class='success'>
+    <view><icon class='iconfont iconright'></icon></view>
+    <view><label>成功支付 10000元</label></view>
+  </view>
+  <view class='wallet'>
+    <view class='wallet-label'><label>我的钱包</label></view>
+    <view class='wallet-money'><label>1000元</label></view>
+    <view class='wallet-recharge'><label>前往充值</label></view>
+  </view>
+  <view class="history">
+    <view class="btn">查看订单详情</view>
+  </view>
+</view>

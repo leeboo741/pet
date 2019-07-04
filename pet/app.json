@@ -1,0 +1,27 @@
+{
+  "pages": [
+    "pages/guide/guide",
+    "pages/consigned/base/base",
+    "pages/consigned/city/city",
+    "pages/consigned/pay/pay",
+    "pages/consigned/paySuccess/paySuccess",
+    "pages/consigned/outHarbour/outHarbour",
+    "pages/me/me",
+    "pages/setting/setting",
+    "pages/home/home",
+    "pages/recharge/recharge",
+    "pages/withdrawal/withdrawal"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "宠物托运",
+    "navigationBarTextStyle": "black"
+  },
+  "permission": {
+    "scope.userLocation": {
+      "desc": "你的位置信息将用于提供周边商家服务"
+    }
+  },
+  "sitemapLocation": "sitemap.json"
+}

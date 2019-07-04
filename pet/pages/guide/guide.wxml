@@ -1,0 +1,21 @@
+<!--pages/guide/guide.wxml-->
+<view class="container" style='background:white'>
+  <view class="userinfo">
+    <view class='userinfo-avatar'>
+      <open-data type="userAvatarUrl"></open-data>
+    </view>
+    <open-data type="userNickName" class="userinfo-nickname"></open-data>
+  </view>
+  <!-- 需要使用 button 来授权登录 -->
+  <button
+    wx:if="{{canIUse}}"
+    open-type="getUserInfo"
+    bindgetuserinfo="bindGetUserInfo"
+  >
+    授权登录
+  </button>
+  <view wx:else>请升级微信版本</view>
+  <view class="usermotto">
+    <text class="user-motto">{{motto}}</text>
+  </view>
+</view>

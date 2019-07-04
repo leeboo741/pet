@@ -1,0 +1,46 @@
+.rechage {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.rechage icon {
+  font-size: 40px;
+  height: 60px;
+  color:black;
+  font-weight: bold;
+  position: absolute;  
+  line-height: 80px;
+  left:60rpx;  
+  z-index: 2;  
+  text-align: center;  
+}
+
+.input-under {
+  width: 550rpx;
+  height:80px;
+  line-height: 80px;
+  font-weight: bold;
+  font-size: 40px;
+}
+
+.icon-under {
+  font-size: 18px;
+  height: 80px;
+  width: 100rpx;
+  font-family: "Microsoft YaHei";
+  background: white;
+  border-bottom:1px ridge #C7C7C7;
+}
+
+.pay {
+  margin-top: 40px;
+  color: white;
+  border-radius: 5px;
+  height: 40px;
+  margin-left: 75rpx;
+  width: 600rpx;
+  text-align: center;
+  line-height: 40px;
+  background-color: #57BF6A;
+}

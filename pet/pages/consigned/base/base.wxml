@@ -1,0 +1,83 @@
+<!-- Banner -->
+<view class="swiper">
+  <swiper class='index-banner' circular="{{true}}" indicator-dots="{{true}}" autoplay="{{true}}" interval="5000" duration="300" vertical="{{false}}" indicator-active-color="rgba(122,122,122,1)" indicator-color="rgba(0, 0, 0, .3)">
+      <!-- Banner Item -->
+      <swiper-item wx:for="{{indexData.bannerData}}" wx:for-item="bannerItem" wx:key="{{bannerItem.bannerID}}" wx:for-index="bannerIndex" item-id="{{bannerIndex}}">
+        <image class='index-banner-item' data-index="{{bannerIndex}}" data-bannerurl="{{bannerItem.imgPath}}" bindtap='tapBannerAction' src='{{bannerItem.imgPath}}'></image>
+      </swiper-item>
+    </swiper>
+</view>
+<!-- 托运信息 -->
+<view style='container'>
+  <view class='block-fillet' style='padding-top:10px'>
+      <!-- 始发城市 目的城市 -->
+      <view class='start-end'>
+        <input name='beginCity' class='input-under start' value='{{startCity}}' placeholder="始发城市" bindtap='bindBeginCityView' placeholder-class="input-under-placeholder" bindinput='phoneNumberInput' placeholder-class='input-normal-placeholder'></input>
+        <view class='circular-feiji'><icon class="iconfont iconfeiji1 feiji"></icon></view>
+        <input name='endCity' class='input-under end input-right' value='{{endCity}}' bindtap='bindEndCityView'  placeholder="目的城市" placeholder-class="input-under-placeholder" bindinput='phoneNumberInput'  placeholder-class='input-normal-placeholder input-right'></input>
+      </view>
+      <!-- 日期 数量 -->
+      <view class='go-date'>
+        <picker mode="date" value="{{date}}" start="{{startDate}}" end="{{endDate}}" bindchange="bindTimeChange">
+          <view class="input-under goDate">{{date}} {{week}}</view>
+        </picker>
+        <input name='petNum' class='input-under input-right petNum' value='{{petCount==0?null:petCount}}' placeholder='数量' placeholder-class='input-normal-placeholder input-right'></input>
+        <icon class="iconfont iconmore"></icon>
+      </view>
+      <!-- 类型 品种 重量 -->
+      <view class='pet-weight'>
+        <input name='petType' class='input-under petType' placeholder="宠物类型" placeholder-class='input-normal-placeholder' ></input>
+        <icon class="iconfont iconTypemore"></icon>
+        <input name='petName' class='input-under petName' placeholder="宠物品种" placeholder-class='input-normal-placeholder' ></input>
+        <input name='petKg' type='digit' class='input-under petKg input-right' placeholder-class='input-normal-placeholder' value='{{petWeight}}'></input>
+        <input class='input-under kg' value='kg' disabled='{{true}}'></input>
+      </view>
+      <view class='shippModel'>
+        <label class='tip'>运输方式</label>
+        <view class='shippModel-item-area'>
+          <view class='shippModel-item' wx:for="{{transportTypes}}" wx:for-item="transportItem" wx:for-index="transportIndex" wx:key="{{transportItem.transportId}}" bindtap='tapTransportTypeAction' data-index="{{transportIndex}}">
+            <icon class='iconfont icongouhao gou {{selectedTransportObj.transportId==transportItem.transportId?"choose":""}}'></icon>
+            <label class='shippModel-item-title {{selectedTransportObj.transportId==transportItem.transportId?"choose":""}}'>{{transportItem.transportName}}</label>
+          </view>
+          <view class='labDescription'>(注：{{selectedTransportObj.transportDescription}})</view>
+        </view>
+      </view>
+  </view>
+</view>
+<!-- 增值服务 -->
+<view class="added">
+  <view class='block-fillet' style='padding-top:10px'>
+      <label class='addServerTip'>
+         增值服务
+      </label>
+      <view class='addedServer'>
+        <view wx:for="{{valueAddedServices}}" wx:for-item="valueAddedServicesItem" wx:for-index="valueAddedServicesIndex" wx:key="{{valueAddedServicesItem.valueAddedServicesId}}" bindtap='tapValueAddedServicesAction' data-index="{{valueAddedServicesIndex}}">
+          <icon class="iconfont icongouhao gou {{valueAddedServicesItem.selected?'choose':''}}"></icon>
+          <label class="server {{valueAddedServicesItem.selected?'choose':''}}">{{valueAddedServicesItem.valueAddedServicesName}}</label>
+          <label class="{{valueAddedServicesItem.selected?'choose':''}}" style='font-size:28rpx' hidden='{{valueAddedServicesItem.valueAddedServicesRate==0}}'>(费率{{valueAddedServicesItem.valueAddedServicesRate}}%)</label>
+        </view>
+      </view>
+  </view>
+</view>
+<view style="padding-bottom: 130rpx"></view>
+<!-- 底部 -->
+<view class='subscribe'>
+   <!-- 底部客服 -->
+   <view class="customerService" bindtap='tapServicePhoneAction'>
+      <view class='customerService-title'>
+          <view class='customerService-title-item'>宠珍</view>
+          <view class='customerService-title-item'>客服</view>
+      </view>
+      <icon class="iconfont icondianhua tel" style=''></icon>
+   </view>
+   <!-- 预估金额 -->
+   <view class="money">
+      <view style='float:left;font:36rpx arial,sans-serif;'>预估金额</view>
+      <view style='text-align: left;font:36rpx arial,sans-serif;  padding-left: 5px;color:red'>¥{{totalPrice}}</view>
+   </view>
+   <!-- 预订  -->
+   <view class="pay">
+        <!-- 注册按钮 -->
+        <button class='button-confirm button-red' bindtap='tapTakeOrderAction'>预订</button>
+   </view>
+</view>
