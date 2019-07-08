@@ -90,6 +90,15 @@ Page({
   /* =========================== 点击事件 Start ================================ */
 
   /**
+   * 宠物集市
+   */
+  gotoPetMarket: function() {
+    wx.navigateTo({
+      url: '../petmarket/petmarket',
+    })
+  },
+
+  /**
    * 点击Banner
    */
   tapBannerAction: function(){

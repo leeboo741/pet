@@ -13,7 +13,7 @@
   </view>
 
   <view class='fun'>
-    <view class='radio shangcheng'><icon class='iconfont iconshangcheng ziti'></icon></view>
+    <view class='radio shangcheng' bindtap='gotoPetMarket'><icon class='iconfont iconshangcheng ziti'></icon></view>
     <label>宠物集市</label>
   </view>
 
