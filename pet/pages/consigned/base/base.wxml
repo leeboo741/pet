@@ -2,7 +2,7 @@
 <view class="swiper">
   <swiper class='index-banner' circular="{{true}}" indicator-dots="{{true}}" autoplay="{{true}}" interval="5000" duration="300" vertical="{{false}}" indicator-active-color="rgba(122,122,122,1)" indicator-color="rgba(0, 0, 0, .3)">
       <!-- Banner Item -->
-      <swiper-item wx:for="{{indexData.bannerData}}" wx:for-item="bannerItem" wx:key="{{bannerItem.bannerID}}" wx:for-index="bannerIndex" item-id="{{bannerIndex}}">
+      <swiper-item wx:for="{{bannerData}}" wx:for-item="bannerItem" wx:key="{{bannerItem.bannerID}}" wx:for-index="bannerIndex" item-id="{{bannerIndex}}">
         <image class='index-banner-item' data-index="{{bannerIndex}}" data-bannerurl="{{bannerItem.imgPath}}" bindtap='tapBannerAction' src='{{bannerItem.imgPath}}'></image>
       </swiper-item>
     </swiper>
@@ -12,9 +12,15 @@
   <view class='block-fillet' style='padding-top:10px'>
       <!-- 始发城市 目的城市 -->
       <view class='start-end'>
-        <input name='beginCity' class='input-under start' value='{{startCity}}' placeholder="始发城市" bindtap='bindBeginCityView' placeholder-class="input-under-placeholder" bindinput='phoneNumberInput' placeholder-class='input-normal-placeholder'></input>
+        <view class='begin-city {{(beginCity==null||beginCity.length<=0)?"city-placeholder":"city-normal"}}' 
+              bindtap='bindBeginCityView'>
+        {{(beginCity==null||beginCity.length<=0)?"始发城市":beginCity}}
+        </view>
         <view class='circular-feiji'><icon class="iconfont iconfeiji1 feiji"></icon></view>
-        <input name='endCity' class='input-under end input-right' value='{{endCity}}' bindtap='bindEndCityView'  placeholder="目的城市" placeholder-class="input-under-placeholder" bindinput='phoneNumberInput'  placeholder-class='input-normal-placeholder input-right'></input>
+        <view class='end-city {{(endCity==null||endCity.length<=0)?"city-placeholder":"city-normal"}}'
+              bindtap='bindEndCityView'>
+        {{(endCity==null||endCity.length<=0)?"目的城市":endCity}}
+        </view>
       </view>
       <!-- 日期 数量 -->
       <view class='go-date'>

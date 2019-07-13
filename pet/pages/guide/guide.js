@@ -32,14 +32,32 @@ Page({
    * 自有服务器登陆请求
    */
   login: function () {
+    wx.showLoading({
+      title: '登陆中...',
+    })
     let that = this;
-    if (app.globalData.code) {
-      that.startLogin(app.globalData.code)
-    } else {
-      app.codeReadyCallBack = res => {
-        that.startLogin(res.code)
-      }
-    }
+    // let that = this;
+    console.log("微信登陆")
+    // 登录
+    wx.login({
+      success: res => {
+        console.log("微信login success => " + res.code);
+        // 发送 res.code 到后台换取 openId, sessionKey, unionId
+        app.globalData.code = res.code
+        that.startLogin(res.code);
+      },
+      fail(res) {
+        console.log("微信login fail => " + JSON.stringify(res));
+        wx.hideLoading();
+        wx.showToast({
+          title: '微信登陆失败',
+          icon: 'none'
+        })
+      },
+      complete(res) {
+        console.log("微信login complete => " + JSON.stringify(res));
+      },
+    })
   },
 
   /**
@@ -54,73 +72,79 @@ Page({
           // 已经授权，可以直接调用 getUserInfo 获取头像昵称
           wx.getUserInfo({
             success(res) {
+              console.log("微信登陆 => \n" + JSON.stringify(res));
               const userInfo = res.userInfo
               app.globalData.userInfo.nickName = userInfo.nickName
               app.globalData.userInfo.avatarUrl = userInfo.avatarUrl
+              if (userInfo.gender != null && userInfo.gender == "1") {
+                userInfo.gender = "男";
+              } else {
+                userInfo.gender = "女";
+              }
               app.globalData.userInfo.gender = userInfo.gender
               app.globalData.userInfo.province = userInfo.province
               app.globalData.userInfo.city = userInfo.city
               app.globalData.userInfo.country = userInfo.country
-
-              wx.showLoading({
-                title: '登陆中...',
-              })
               let urlstr = app.url.url + app.url.login;
               // 向服务器请求登陆，返回 本微信 在服务器状态，注册|未注册，
-              // wx.request({
-              //   url: urlstr, // 服务器地址
-              //   data: {
-              //     "code": wxCode
-              //   }, // 参数
-              //   success: res => {
-              //     console.log("success => " + JSON.stringify(res));
-              //     if (res.data.prompt == app.valueName.promptSuccess) {
-              //       let root = JSON.parse(res.data.root);
-              //       if (root.yhmch != null) app.globalData.userInfo.nickName = root.yhmch;
-              //       if (root.yhbh != null) app.globalData.userInfo.phone = root.yhbh;
-              //       if (root.openid != null) app.globalData.userInfo.openid = root.openid;
-              //       if (root.yhxb != null) app.globalData.userInfo.gender = root.yhxb;
-              //       if (root.yhshr != null) app.globalData.userInfo.brithday = root.yhshr;
-              //       if (root.yhjf != null) app.globalData.userInfo.point = root.yhjf;
-              //       if (root.yhtx != null) app.globalData.userInfo.avatarUrl = root.yhtx;
-              //       if (root.qcda != null) app.globalData.userInfo.carNumber = root.qcda;
-              //       that.jumpToHome();
-              //     } else if (res.data.prompt == app.valueName.promptNotExist) {
-              //         app.globalData.userInfo.openid = res.data.root;
-              //         that.jumpToRegister();
-              //     } else {
-              //         wx.showModal({
-              //           showCancel: false,
-              //           title: '登陆错误！',
-              //           content: '登陆错误，请联系管理员或稍后再试',
-              //         })
-              //     }
-              //   }, // 请求成功回调 登陆成功 保存 用户信息。登陆失败，跳转注册页面
-              //   fail: res => {
-              //     console.log("fail => " + JSON.stringify(res));
-              //     wx.showModal({
-              //       showCancel: false,
-              //       title: '请求登陆失败！',
-              //       content: '登陆失败，请稍后重新尝试',
-              //       success(res) {
-              //         if (res.confirm) {
-              //           that.login();
-              //         }
-              //       }
-              //     })
-              //   }, // 请求失败回调,弹窗，重新请求
-              //   complete: res => {
-              //     console.log("complite => " + JSON.stringify(res));
-              //     wx.hideLoading();
-              //   }, // 请求完成回调，隐藏loading
-              // })
-              wx.reLaunch({
-                url: '../home/home'
+              wx.request({
+                url: urlstr, // 服务器地址
+                data: {
+                  "code": wxCode
+                }, // 参数
+                success: res => {
+                  console.log("success => " + JSON.stringify(res));
+                  if (res.data.prompt == app.requestPromptValueName.success) {
+                    let tempUserInfo = JSON.parse(res.data.root)
+                    app.globalData.userInfo.customerNo = tempUserInfo.customerNo
+                    app.globalData.userInfo.openid = tempUserInfo.openid
+                    app.globalData.userInfo.phone = tempUserInfo.phone
+                    app.globalData.userInfo.nickName = tempUserInfo.customerName
+                    app.globalData.userInfo.avatarUrl = tempUserInfo.headerImage
+                    app.globalData.userInfo.gender = tempUserInfo.sex
+                    that.jumpToHome();
+                  } else if (res.data.prompt == app.requestPromptValueName.notExist) {
+                    app.globalData.userInfo.openid = res.data.root;
+                    that.jumpToRegister();
+                  } else {
+                    wx.showModal({
+                      title: '登陆错误！',
+                      content: '登陆错误，请联系管理员或稍后再试',
+                      success(res) {
+                        if (res.confirm) {
+                          that.login();
+                        }
+                      }
+                    })
+                  }
+                }, // 请求成功回调 登陆成功 保存 用户信息。登陆失败，跳转注册页面
+                fail: res => {
+                  console.log("fail => " + JSON.stringify(res));
+                  wx.showModal({
+                    title: '请求登陆失败！',
+                    content: '登陆失败，请稍后重新尝试',
+                    success(res) {
+                      if (res.confirm) {
+                        that.login();
+                      }
+                    }
+                  })
+                }, // 请求失败回调,弹窗，重新请求
+                complete: res => {
+                  console.log("complite => " + JSON.stringify(res));
+                  wx.hideLoading();
+                }, // 请求完成回调，隐藏loading
               })
             }
-          }) 
+          })
         }
-      }
+      },
+      fail (res) {
+
+      },
+      complete (res) {
+        wx.hideLoading();
+      },
     })
   },
 
@@ -129,7 +153,7 @@ Page({
   },
 
   jumpToHome: function () {
-    wx.switchTab({
+    wx.redirectTo({
       url: '../home/home',
     })
   },

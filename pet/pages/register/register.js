@@ -16,9 +16,7 @@ Page({
    * 页面的初始数据
    */
   data: {
-    phoneNumber:"", // 输入的电话号码
-    checkAttention:false, // 是否确认了提醒事项
-    showPrivace:false, // 是否展示隐私政策
+    phoneNumber: "", // 输入的电话号码
   },
 
   /**
@@ -76,124 +74,117 @@ Page({
   },
 
   /**
+   * 判断手机号
+   */
+  isPoneAvailable:function(poneInput) {
+    var myreg = /^[1][3,4,5,6,7,8][0-9]{9}$/;
+    if (!myreg.test(poneInput)) {
+      return false;
+    } else {
+      return true;
+    }
+  },
+
+  /**
    * 注册账号 
    */
   registerAccount: function () {
     // 确认 手机号 输入
-    if (this.data.phoneNumber == null || this.data.phoneNumber.length <= 0) {
+    if (this.data.phoneNumber == null || 
+        this.data.phoneNumber.length <= 0 || 
+        !this.isPoneAvailable(this.data.phoneNumber)) {
       wx.showToast({
-        title: '请输入手机号码！',
-        icon:'none',
-      })
-      return;
-    }
-    // 确认 隐私政策
-    if (!this.data.checkAttention) {
-      wx.showToast({
-        title: '请确认已阅读隐私政策！',
-        icon: 'none'
+        title: '请输入正确手机号码！',
+        icon: 'none',
       })
       return;
     }
     // 请求注册
     wx.showLoading({
-      title: '绑定中...',
+      title: '注册中...',
     })
-    // wx.request({
-    //   url: app.url.url + app.url.register,
-    //   data: {
-    //     "phone": this.data.phoneNumber,
-    //     "openid": app.globalData.openid,
-    //   }, // 参数
-    //   header: {
-    //     'content-type': 'application/x-www-form-urlencoded'
-    //   },
-    //   method: "POST", // 请求方式
-    //   success: res => {
-    //     console.log("registerAccount success => " + JSON.stringify(res));
-    //     this.requestSuccess(res);
-    //   }, // 请求成功回调
-    //   fail: res => {
-    //     console.log("registerAccount fail => " + JSON.stringify(res));
-    //     this.requestFail(res);
-    //   }, // 请求失败回调
-    //   complete: res => {
-    //     console.log("registerAccount complite => " + JSON.stringify(res));
-    //     wx.hideLoading();
-    //   }, // 请求完成回调
-    // })
-  
-    wx.reLaunch({
-      url: '../consigned/consigned'
+    let tempData = null;
+    tempData = {
+      "openid": app.globalData.userInfo.openid,
+      "customerName": app.globalData.userInfo.nickName,
+      "headerImage": app.globalData.userInfo.avatarUrl,
+      "phone": this.data.phoneNumber,
+      "sex": app.globalData.userInfo.gender,
+    }
+    console.log("绑定数据 => " + JSON.stringify(tempData));
+    wx.request({
+      url: app.url.url + app.url.register,
+      data: tempData, // 参数
+      header: {
+        'content-type': 'application/x-www-form-urlencoded'
+      },
+      method: "POST", // 请求方式
+      success: res => {
+        console.log("registerAccount success => " + JSON.stringify(res));
+        this.requestSuccess(res);
+      }, // 请求成功回调
+      fail: res => {
+        console.log("registerAccount fail => " + JSON.stringify(res));
+        this.requestFail(res);
+      }, // 请求失败回调
+      complete: res => {
+        console.log("registerAccount complite => " + JSON.stringify(res));
+        wx.hideLoading();
+      }, // 请求完成回调
     })
   },
-
   /**
-   * 获取用户信息
-   */
-  getUserInfo:function(){
+     * 获取用户信息
+     */
+  getUserInfo: function () {
     let that = this;
     wx.showLoading({
       title: '登陆中...',
     })
-    // wx.request({
-    //   url: app.url.url + app.url.userinfo + this.data.phoneNumber,
-    //   success(res) {
-    //     console.log("reginster get user success => " + JSON.stringify(res));
-    //     that.getUserInfoSuccess(res);
-    //   },
-    //   fail(res) {
-    //     console.log("reginster get user fail => " + JSON.stringify(res));
-    //     that.getUserInfoFail(res);
-    //   }, // 请求失败回调,弹窗，重新请求
-    //   complete(res) {
-    //     console.log("reginster get user complite => " + JSON.stringify(res));
-    //     wx.hideLoading();
-    //   }, // 请求完成回调，隐藏loading
-    // })
-
-    wx.redirectTo({
-      url: '../consigned/consigned',
-    })
-  },
-
-  /**
-   * 获取用户信息成功
-   */
-  getUserInfoSuccess: function (res) {
-    if (res.data.prompt == app.valueName.promptSuccess) {
-      let root = res.data.root;
-      if (root.yhmch != null) app.globalData.userInfo.nickName = root.yhmch;
-      if (root.yhbh != null) app.globalData.userInfo.phone = root.yhbh;
-      if (root.openid != null) app.globalData.userInfo.openid = root.openid;
-      if (root.yhxb != null) app.globalData.userInfo.gender = root.yhxb;
-      if (root.yhshr != null) app.globalData.userInfo.brithday = root.yhshr;
-      if (root.yhjf != null) app.globalData.userInfo.point = root.yhjf;
-      if (root.yhtx != null) app.globalData.userInfo.avatarUrl = root.yhtx;
-      if (root.qcda != null) app.globalData.userInfo.carNumber = root.qcda;
-      this.jumpToHome();
-    } else {
-      wx.showModal({
-        showCancel: false,
-        title: '登陆错误！',
-        content: '登陆错误，请联系管理员或稍后再试',
-      })
-    }
-  },
-
-  /**
-   * 获取用户信息失败
-   */
-  getUserInfoFail: function (res) {
-    wx.showModal({
-      showCancel: false,
-      title: '请求登陆失败！',
-      content: '登陆失败，请稍后重新尝试',
-      success(res) {
-        if (res.confirm) {
-          that.getUserInfo();
+    wx.request({
+      url: app.url.url + app.url.login,
+      data:{
+        "code": app.globalData.code
+      },
+      success: res => {
+        console.log("success => " + JSON.stringify(res));
+        if (res.data.prompt == app.requestPromptValueName.success) {
+          let tempUserInfo = JSON.parse(res.data.root)
+          app.globalData.userInfo.customerNo = tempUserInfo.customerNo
+          app.globalData.userInfo.openid = tempUserInfo.openid
+          app.globalData.userInfo.phone = tempUserInfo.phone
+          app.globalData.userInfo.nickName = tempUserInfo.customerName
+          app.globalData.userInfo.avatarUrl = tempUserInfo.headerImage
+          app.globalData.userInfo.gender = tempUserInfo.sex
+          that.jumpToHome();
+        } else {
+          wx.showModal({
+            title: '登陆错误！',
+            content: '登陆错误，请联系管理员或稍后再试',
+            success(res) {
+              if (res.confirm) {
+                that.getUserInfo();
+              }
+            }
+          })
         }
-      }
+      }, // 请求成功回调 登陆成功 保存 用户信息。登陆失败，跳转注册页面
+      fail: res => {
+        console.log("fail => " + JSON.stringify(res));
+        wx.showModal({
+          title: '请求登陆失败！',
+          content: '登陆失败，请稍后重新尝试',
+          success(res) {
+            if (res.confirm) {
+              that.getUserInfo();
+            }
+          }
+        })
+      }, // 请求失败回调,弹窗，重新请求
+      complete: res => {
+        console.log("complite => " + JSON.stringify(res));
+        wx.hideLoading();
+      }, // 请求完成回调，隐藏loading
     })
   },
 
@@ -203,9 +194,9 @@ Page({
    */
   requestSuccess: function (res) {
     let that = this;
-    if (res.data.prompt == app.valueName.promptSuccess){
+    if (res.data.prompt == app.requestPromptValueName.success) {
       wx.showModal({
-        showCancel:false,
+        showCancel: false,
         title: res.data.root,
         message: "确定登陆！",
         success(res) {
@@ -215,9 +206,11 @@ Page({
         }
       })
     } else {
-      
-      wx.redirectTo({
-        url: '../consigned/consigned',
+      wx.showToast({
+        title: '绑定失败！',
+        icon: 'none',
+        image: '../../resource/request_fail.png',
+        duration: 2000,
       })
     }
   },
@@ -233,15 +226,12 @@ Page({
       image: '../../resource/request_fail.png',
       duration: 2000,
     })
-    wx.redirectTo({
-      url: '../consigned/consigned',
-    })
   },
 
   /**
    * 跳转首页
    */
-  jumpToHome: function(){
+  jumpToHome: function () {
     wx.switchTab({
       url: '../home/home',
     })
@@ -252,27 +242,7 @@ Page({
    */
   phoneNumberInput: function (e) {
     this.setData({
-      phoneNumber:e.detail.value
+      phoneNumber: e.detail.value
     })
   },
-
-  /**
-   * 点击隐私政策确认按钮
-   */
-  checkedAttention: function () {
-    let checkAttentionValue = !this.data.checkAttention;
-    this.setData({
-      checkAttention:checkAttentionValue
-    })
-  },
-
-  /**
-   * 展示隐私政策页面
-   */
-  showPrivaceViewAction:function () {
-    let show = !this.data.showPrivace;
-    this.setData({
-      showPrivace: show
-    })
-  }
 })

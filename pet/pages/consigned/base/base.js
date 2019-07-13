@@ -9,19 +9,17 @@ var util = require("../../../utils/util.js");
 
 Page({
   data: {
-    indexData: {
-      bannerData: [
-        { 
-          imgPath: 'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=2313265963,3645707579&fm=26&gp=0.jpg'
-        },
-        { 
-          imgPath: 'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=491368047,2525649626&fm=26&gp=0.jpg'
-        }
-      ]
-    }, // banner 数据
+    bannerData: [
+      { 
+        imgPath: 'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=2313265963,3645707579&fm=26&gp=0.jpg'
+      },
+      { 
+        imgPath: 'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=491368047,2525649626&fm=26&gp=0.jpg'
+      }
+    ], // banner 数据
     rate: 2, // 保价费率
     totalPrice: 0, // 总计金额
-    startCity: null, // 始发城市
+    beginCity: null, // 始发城市
     endCity: null, // 目的城市
     date: null, // 发货日期
     startDate: null, // 选择开始日期
@@ -31,16 +29,11 @@ Page({
     petType: null, // 宠物类型
     petBreed: null, // 宠物品种
     petWeight: 0, // 宠物重量
-    transportTypes:[
+    transportTypes: [
       {
-        transportName:"大巴", // 运输方式名称
-        transportId:0, // 运输方式id
-        transportDescription: "主人陪同坐大巴", // 运输方式说明
-      },
-      {
-        transportName: "空运", // 运输方式名称
+        transportName: "专车", // 运输方式名称
         transportId: 1, // 运输方式id
-        transportDescription: "主人陪同坐飞机", // 运输方式说明
+        transportDescription: "主人陪同坐专车", // 运输方式说明
       },
       {
         transportName: "铁路", // 运输方式名称
@@ -48,9 +41,19 @@ Page({
         transportDescription: "主人陪同坐火车", // 运输方式说明
       },
       {
-        transportName: "专车", // 运输方式名称
+        transportName: "单飞", // 运输方式名称
         transportId: 3, // 运输方式id
-        transportDescription: "主人陪同坐专车", // 运输方式说明
+        transportDescription: "主人陪同坐飞机", // 运输方式说明
+      },
+      {
+        transportName: "随机", // 运输方式名称
+        transportId: 4, // 运输方式id
+        transportDescription: "主人陪同坐飞机", // 运输方式说明
+      },
+      {
+        transportName: "大巴", // 运输方式名称
+        transportId: 5, // 运输方式id
+        transportDescription: "主人陪同坐大巴", // 运输方式说明
       },
     ], // 运输方式
     selectedTransportObj: null, // 选中运输方式Index
@@ -60,6 +63,7 @@ Page({
         valueAddedServicesId:0, // 增值服务Id
         valueAddedServicesPrice: 20, // 增值服务 价钱
         valueAddedServicesRate: 0, // 增值服务 费率
+        valueAddedServicesInfo: {}, // 增值服务 附加信息
         selected: false, // 是否选中
       },
       {
@@ -67,13 +71,16 @@ Page({
         valueAddedServicesId: 1, // 增值服务Id
         valueAddedServicesPrice: 20, // 增值服务 价钱
         valueAddedServicesRate: 0, // 增值服务 费率
+        valueAddedServicesInfo: {}, // 增值服务 附加信息
         selected: false, // 是否选中
+
       },
       {
         valueAddedServicesName: "送宠到家", // 增值服务名称
         valueAddedServicesId: 2, // 增值服务Id
         valueAddedServicesPrice: 20, // 增值服务 价钱
         valueAddedServicesRate: 0, // 增值服务 费率
+        valueAddedServicesInfo: {}, // 增值服务 附加信息
         selected: false, // 是否选中
       },
       {
@@ -81,6 +88,7 @@ Page({
         valueAddedServicesId: 3, // 增值服务Id
         valueAddedServicesPrice: 0, // 增值服务 价钱
         valueAddedServicesRate: 2, // 增值服务 费率
+        valueAddedServicesInfo: {}, // 增值服务 附加信息
         selected: false, // 是否选中
       },
     ], // 增值服务
@@ -116,7 +124,7 @@ Page({
   onShow: function () {
     if (app.globalData.trainBeginCity != null) {
       this.setData({
-        startCity: app.globalData.trainBeginCity
+        beginCity: app.globalData.trainBeginCity
       })
     }
     if (app.globalData.trainEndCity != null) {

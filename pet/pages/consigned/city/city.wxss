@@ -6,7 +6,6 @@
   right: 5rpx;
   color: #3399CC;
   font-size: 30rpx;
-  /* border: 1rpx solid #3399CC; */
 }
 
 
@@ -20,15 +19,14 @@
 
 .city-item {
   background: #fff;
-  /* margin-top: 5rpx; */
   width: 80%;  
   padding-left: 5%;
   margin-left: 5%;
   height: 90rpx;
-  font-size: 45rpx;
   line-height: 100rpx;
   border-bottom: 1rpx solid #CCCCCC;    
-  /* border:1rpx solid red; */
+  font-size: 32rpx;
+  color: #778899;
 }
 
 .city-item-A-Z{
@@ -46,12 +44,10 @@
   top: 0;
   position: fixed;
   width: 100%;
-  /* left:5%; */
   background: #eee;
   height: 110rpx;
   font-size: 30rpx;
   border-bottom:1rpx solid #DDDDDD; 
-     /* border: 1rpx solid red;   */
 }
 
 .search-input {
@@ -60,7 +56,6 @@
   width: 80%;
   margin-left: 7.5%;
   border-radius: 20rpx;
-  /* border: 1rpx solid red; */
   background: #fff;
   margin-top: 20rpx;
   padding-left: 5%;
@@ -69,3 +64,4 @@
 .search-input-placeholder {
   text-align: center;
 }
+
