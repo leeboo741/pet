@@ -187,3 +187,11 @@ page {
   background-color: #C93927;
   color: white;
 }
+
+.choose-color{
+  color: #ee2c2c;
+}
+
+.normal-color{
+  color: #597ED0;
+}

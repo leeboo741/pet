@@ -106,7 +106,7 @@ page {
   border-color: lightgray;
   flex-grow: 1;
   margin-left: 30rpx;
-  text-align: center;
+  text-align: left;
   height: 90rpx;
   line-height: 90rpx;
 }
@@ -118,7 +118,7 @@ page {
   flex-grow: 1;
   flex-shrink: 0;
   margin-right: 30rpx;
-  text-align: center;
+  text-align: right;
   height: 90rpx;
   line-height: 90rpx;
 }
@@ -259,15 +259,12 @@ page {
 
 .addedServer {
     width: 100%;
-    flex-wrap: wrap;
-    display:flex; justify-content:center;align-items:center;
-}
-
-.addedServer view {
-  width: 640rpx;
-  height:100rpx;
-  margin-top: 20rpx;
-  border-bottom: solid #D4D4D4 1rpx;
+    display: flex;
+    flex-direction: column;
+    /* flex-wrap: wrap;
+    display:flex;  */
+    justify-content:center;
+    align-items:center;
 }
 
 .gou{
@@ -358,4 +355,39 @@ page {
 
 .choose {
   color:red;
+}
+
+.disable{
+  color: lightgray;
+}
+
+.addedServer-item{
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  margin-top: 20rpx;
+  border-bottom: solid #D4D4D4 1rpx;
+}
+
+.addServer-info{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+
+.addServer-append-info{
+  margin-bottom: 20rpx;
+  display: flex;
+  flex-direction: column;
+}
+
+.air-box-info{
+  color: #ee2c2c;
+  font-size: 28rpx;
+}
+
+.insuredPrice-rate{
+  color: #ee2c2c;
+  font-size: 24rpx;
 }

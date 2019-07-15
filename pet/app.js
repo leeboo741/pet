@@ -91,14 +91,25 @@ App({
 
   /** =========== 网络请求 Start =========== */
   url: {
-    // url: "http://192.168.3.233:5050",
-    url: "http://192.168.3.187:5050",
+    url: "http://192.168.3.233:5050",
+    // url: "http://192.168.3.187:5050",
     /** ============== 用户 =================== */ 
-    register: "/api/customer/",
-    login: "/api/oAuth",
-    petType: "/api/petType",
-    petClassify: "/api/petClassify",
-    updateCustomer: "/api/customer/updateCustomer",
+    register: "/api/customer/", // 注册
+    login: "/api/oAuth", // 登陆
+    updateCustomer: "/api/customer/updateCustomer", // 更新用户
+
+    /** ============== 订单 =================== */
+    petType: "/api/petType", // 宠物类型
+    petClassify: "/api/petClassify", // 宠物种类
+
+    /** ============== 城市 =================== */
+    startCity: "/api/transport/listStartCity", // 始发城市
+    endCity: "/api/transport/listEndCity", // 目标城市
+    ableTransportType: "/api/transport/listTransportType", // 可用运输方式
+
+    /** ============== 价格 =================== */
+    predictPrice: "/api/order/getOrderPrice", // 获取预估价格
+
   },
   requestPromptValueName: {
     success: "Success",

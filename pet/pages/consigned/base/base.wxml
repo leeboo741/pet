@@ -1,22 +1,43 @@
 <!-- Banner -->
 <view class="swiper">
-  <swiper class='index-banner' circular="{{true}}" indicator-dots="{{true}}" autoplay="{{true}}" interval="5000" duration="300" vertical="{{false}}" indicator-active-color="rgba(122,122,122,1)" indicator-color="rgba(0, 0, 0, .3)">
+  <swiper class='index-banner'
+          circular="{{true}}" 
+          indicator-dots="{{true}}" 
+          autoplay="{{true}}" 
+          interval="5000" 
+          duration="300" 
+          vertical="{{false}}" 
+          indicator-active-color="rgba(122,122,122,1)" 
+          indicator-color="rgba(0, 0, 0, .3)">
       <!-- Banner Item -->
-      <swiper-item wx:for="{{bannerData}}" wx:for-item="bannerItem" wx:key="{{bannerItem.bannerID}}" wx:for-index="bannerIndex" item-id="{{bannerIndex}}">
-        <image class='index-banner-item' data-index="{{bannerIndex}}" data-bannerurl="{{bannerItem.imgPath}}" bindtap='tapBannerAction' src='{{bannerItem.imgPath}}'></image>
+      <swiper-item wx:for="{{bannerData}}" 
+                   wx:for-item="bannerItem" 
+                   wx:key="{{bannerItem.bannerID}}" 
+                   wx:for-index="bannerIndex" 
+                   item-id="{{bannerIndex}}">
+        <image class='index-banner-item' 
+               data-index="{{bannerIndex}}" 
+               data-bannerurl="{{bannerItem.imgPath}}" 
+               bindtap='tapBannerAction' 
+               src='{{bannerItem.imgPath}}'>
+        </image>
       </swiper-item>
     </swiper>
 </view>
 <!-- 托运信息 -->
 <view style='container'>
-  <view class='block-fillet' style='padding-top:10px'>
+  <view class='block-fillet' 
+        style='padding-top:10px'>
       <!-- 始发城市 目的城市 -->
       <view class='start-end'>
         <view class='begin-city {{(beginCity==null||beginCity.length<=0)?"city-placeholder":"city-normal"}}' 
               bindtap='bindBeginCityView'>
         {{(beginCity==null||beginCity.length<=0)?"始发城市":beginCity}}
         </view>
-        <view class='circular-feiji'><icon class="iconfont iconfeiji1 feiji"></icon></view>
+        <view class='circular-feiji'>
+          <icon class="iconfont iconfeiji1 feiji">
+          </icon>
+        </view>
         <view class='end-city {{(endCity==null||endCity.length<=0)?"city-placeholder":"city-normal"}}'
               bindtap='bindEndCityView'>
         {{(endCity==null||endCity.length<=0)?"目的城市":endCity}}
@@ -24,10 +45,21 @@
       </view>
       <!-- 日期 数量 -->
       <view class='go-date'>
-        <picker mode="date" value="{{date}}" start="{{startDate}}" end="{{endDate}}" bindchange="bindTimeChange">
+        <picker mode="date"
+                value="{{date}}"
+                start="{{startDate}}"
+                end="{{endDate}}"
+                bindchange="bindTimeChange">
           <view class="input-under goDate">{{date}} {{week}}</view>
         </picker>
-        <input name='petNum' class='input-under input-right petNum' value='{{petCount==0?null:petCount}}' placeholder='数量' placeholder-class='input-normal-placeholder input-right'></input>
+        <input name='petNum'
+               class='input-under input-right petNum'
+               value='{{petCount==0?null:petCount}}'
+               placeholder='数量'
+               placeholder-class='input-normal-placeholder input-right'
+               bindinput='countInput'
+               bindblur='countOutFocus'>
+        </input>
         <icon class="iconfont iconmore"></icon>
       </view>
       <!-- 类型 品种 重量 -->
@@ -36,24 +68,41 @@
               bindtap='bindpetTypeView'>
         {{(petType==null||petType.length<=0)?"宠物类型":petType}}      
         </view>
-        <view class='pet-type-area {{(petType==null||petType.length<=0)?"city-placeholder":"city-normal"}}'
+        <view class='pet-type-area {{petClassify==null?"city-placeholder":"city-normal"}}'
               bindtap='bindpetClassifyView'>
-        {{(petClassify==null||petClassify.length<=0)?"宠物种类":petClassify}}      
+        {{petClassify==null?"宠物种类":petClassify.petClassifyName}}      
         </view>
-        <!-- <input name='petType' class='input-under petType' placeholder="宠物类型" placeholder-class='input-normal-placeholder' bindtap='bindpetTypeView' value="{{petType}}"></input>
-        <icon class="iconfont iconTypemore"></icon>
-        <input name='petName' class='input-under petName' placeholder="宠物品种" placeholder-class='input-normal-placeholder' bindtap='bindpetClassifyView' value="{{petClassify}}"></input> -->
-        <input name='petKg' type='digit' class='input-under petKg input-right' placeholder-class='input-normal-placeholder' value='{{petWeight}}'></input>
-        <input class='input-under kg' value='kg' disabled='{{true}}'></input>
+        <input name='petKg'
+               type='digit'
+               class='input-under petKg input-right'
+               placeholder-class='input-normal-placeholder' 
+               placeholder='重量'  
+               value='{{petWeight==0?null:petWeight}}' 
+               bindinput='weightInput'
+               bindblur='weightOutFocus'>
+        </input>
+        <input class='input-under kg'
+               value='kg' 
+               disabled='{{true}}'>
+        </input>
       </view>
       <view class='shippModel'>
-        <label class='tip'>运输方式</label>
+        <label class='tip'>运输方式:</label>
         <view class='shippModel-item-area'>
-          <view class='shippModel-item' wx:for="{{transportTypes}}" wx:for-item="transportItem" wx:for-index="transportIndex" wx:key="{{transportItem.transportId}}" bindtap='tapTransportTypeAction' data-index="{{transportIndex}}">
-            <icon class='iconfont icongouhao gou {{selectedTransportObj.transportId==transportItem.transportId?"choose":""}}'></icon>
-            <label class='shippModel-item-title {{selectedTransportObj.transportId==transportItem.transportId?"choose":""}}'>{{transportItem.transportName}}</label>
+          <view class='shippModel-item'
+                wx:for="{{transportTypes}}" 
+                wx:for-item="transportItem" 
+                wx:for-index="transportIndex" 
+                wx:key="{{transportItem.transportId}}" 
+                bindtap='tapTransportTypeAction' 
+                data-index="{{transportIndex}}">
+            <icon class='iconfont icongouhao gou {{selectedTransportObj.transportId==transportItem.transportId?"choose":""}} {{transportItem.disable?"disable":""}}'></icon>
+            <label class='shippModel-item-title {{selectedTransportObj.transportId==transportItem.transportId?"choose":""}} {{transportItem.disable?"disable":""}}'>{{transportItem.transportName}}</label>
           </view>
-          <view class='labDescription'>(注：{{selectedTransportObj.transportDescription}})</view>
+          <view class='labDescription' 
+                hidden='{{selectedTransportObj.transportDescription==null||selectedTransportObj.transportDescription.length<=0}}'>
+          (注：{{selectedTransportObj.transportDescription}})
+          </view>
         </view>
       </view>
   </view>
@@ -65,10 +114,81 @@
          增值服务
       </label>
       <view class='addedServer'>
-        <view wx:for="{{valueAddedServices}}" wx:for-item="valueAddedServicesItem" wx:for-index="valueAddedServicesIndex" wx:key="{{valueAddedServicesItem.valueAddedServicesId}}" bindtap='tapValueAddedServicesAction' data-index="{{valueAddedServicesIndex}}">
-          <icon class="iconfont icongouhao gou {{valueAddedServicesItem.selected?'choose':''}}"></icon>
-          <label class="server {{valueAddedServicesItem.selected?'choose':''}}">{{valueAddedServicesItem.valueAddedServicesName}}</label>
-          <label class="{{valueAddedServicesItem.selected?'choose':''}}" style='font-size:28rpx' hidden='{{valueAddedServicesItem.valueAddedServicesRate==0}}'>(费率{{valueAddedServicesItem.valueAddedServicesRate}}%)</label>
+        <view class='addedServer-item'>
+          <view class='addServer-info' 
+                bindtap='tapAddServerAirBox'>
+            <icon class="iconfont icongouhao gou {{addServerAirBox.selected?'choose':''}}">
+            </icon>
+            <label class="server {{addServerAirBox.selected?'choose':''}}">
+            购买航空箱
+            </label>
+          </view>
+          <view class='addServer-append-info' hidden='{{addServerAirBox.selected}}'>
+            <view class='air-box-info'>
+            自备航空箱需符合航空公司要求的适用规则
+            </view>
+          </view>
+        </view>
+        <view class='addedServer-item'>
+          <view class='addServer-info' 
+                bindtap='tapAddServerReceivePet'>
+            <icon class="iconfont icongouhao gou {{addServerReceivePet.selected?'choose':''}}">
+            </icon>
+            <label class="server {{addServerReceivePet.selected?'choose':''}}">
+            上门接宠
+            </label>
+          </view>
+          <view class='addServer-append-info' hidden='{{!addServerReceivePet.selected}}'>
+            <input class='addServer-append-info-input'
+                   placeholder-class='addServer-append-info-input-placeholder'
+                   placeholder='请输入接宠地址'
+                   value='{{addServerReceivePet.address}}'
+                   bindinput='inputReceivePetAddress'
+                   bindblur='receivePetAddressOutFocus'>
+            </input>
+          </view>
+        </view>
+        <view class='addedServer-item'>
+          <view class='addServer-info' 
+                bindtap='tapAddServerSendPet'>
+            <icon class="iconfont icongouhao gou {{addServerSendPet.selected?'choose':''}}">
+            </icon>
+            <label class="server {{addServerSendPet.selected?'choose':''}}">
+            送宠到家
+            </label>
+          </view>
+          <view class='addServer-append-info' hidden='{{!addServerSendPet.selected}}'>
+            <input class='addServer-append-info-input'
+                   placeholder-class='addServer-append-info-input-placeholder'
+                   placeholder='请输入送宠地址'
+                   value='{{addServerSendPet.address}}'
+                   bindinput='inputSendPetAddress'
+                   bindblur='sendPetAddressOutFocus'>
+            </input>
+          </view>
+        </view>
+        <view class='addedServer-item'>
+          <view class='addServer-info' 
+                bindtap='tapAddServerInsuredPrice'>
+            <icon class="iconfont icongouhao gou {{addServerInsuredPrice.selected?'choose':''}}">
+            </icon>
+            <label class="server {{addServerInsuredPrice.selected?'choose':''}}">
+            保价
+            </label>
+            <label class='insuredPrice-rate'>
+            (费率：{{addServerInsuredPrice.rate}}%)
+            </label>
+          </view>
+          <view class='addServer-append-info' hidden='{{!addServerInsuredPrice.selected}}'>
+            <input class='addServer-append-info-input'
+                   placeholder-class='addServer-append-info-input-placeholder'
+                   placeholder='请输入保价金额'
+                   bindinput='inputInsuredPrice'
+                   bindblur='insuredPriceOutFocus'
+                   value='{{addServerInsuredPrice.price==0?"":addServerInsuredPrice.price}}'
+                   type='digit'>
+            </input>
+          </view>
         </view>
       </view>
   </view>

@@ -1,23 +1,61 @@
 <view class='container'>
   <!--寄宠人信息-->
   <view class='block-fillet sendInfo'>
-    <view class='sendTip'><icon class='iconfont iconfengexian'></icon><label>寄宠人信息</label></view>
+    <view class='sendTip'>
+      <icon class='iconfont iconfengexian'>
+      </icon>
+      <label>
+      寄宠人信息
+      </label>
+    </view>
     <view class='sendUserInfo'>
-    <input name='sendUserName' class='input-under sendUserName' value='{{sendName}}' placeholder="请填写联系人姓名" placeholder-class="input-under-placeholder normal" ></input>
-    <input name='sendUserPhone' type='number' class='input-under sendUserPhone' value='{{sendPhone}}' placeholder="手机"  placeholder-class="input-under-placeholder normal" bindinput='phoneNumberInput'></input>
+      <input name='sendUserName'
+            class='input-under sendUserName' 
+            value='{{sendName}}' 
+            placeholder="请填写联系人姓名" 
+            placeholder-class="input-under-placeholder normal" 
+            bindinput='inputSendName'>
+      </input>
+      <input name='sendUserPhone' 
+            type='number' 
+            class='input-under sendUserPhone' 
+            value='{{sendPhone}}' 
+            placeholder="手机"  
+            placeholder-class="input-under-placeholder normal" 
+            bindinput='phoneNumberInput'>
+      </input>
     </view>
     <!--收宠人信息-->
-    <view class='receiveTip'><icon class='iconfont iconfengexian'></icon><label>收宠人信息</label></view>
+    <view class='receiveTip'>
+      <icon class='iconfont iconfengexian'>
+      </icon>
+      <label>
+      收宠人信息
+      </label>
+    </view>
     <view class='receiveUserInfo'>
-    <input name='receiveUserName' class='input-under receiveUserName' value='{{receiveName}}' placeholder="请填写联系人姓名" placeholder-class="input-under-placeholder normal"></input>
-    <input name='receiveUserPhone' type='number' class='input-under receiveUserPhone' value='{{receivePhone}}' placeholder="手机"  placeholder-class="input-under-placeholder normal"></input>
+      <input name='receiveUserName' 
+            class='input-under receiveUserName' 
+            value='{{receiveName}}' 
+            placeholder="请填写联系人姓名" 
+            placeholder-class="input-under-placeholder normal"
+            bindinput='inputReceiveName'>
+      </input>
+      <input name='receiveUserPhone' 
+            type='number' 
+            class='input-under receiveUserPhone' 
+            value='{{receivePhone}}' 
+            placeholder="手机"  
+            placeholder-class="input-under-placeholder normal"
+            bindinput='inputReceivePhone'>
+      </input>
     </view>
   </view>
   <!--确认宠物条件-->
   <view class='block-fillet agreement'>
-    <view class='agreeAgreement'>
-      <icon class="iconfont icongouhao"></icon>
-      <label>已确认宠物符合以下条件</label>
+    <view class='agreeAgreement' style='margin-left:20rpx;' bindtap='tapCondition'>
+      <icon class="iconfont icongouhao {{confirmCondition?'choose-color':'normal-color'}}"></icon>
+      <label class="{{confirmCondition?'choose-color':'normal-color'}}">已确认宠物符合以下条件</label>
     </view>
     <view class='agreementContent'>
       <label>
@@ -41,16 +79,16 @@
   <view class='block-fillet clause'>
     <view class='clause'>
       <label class='equity' style='margin-left:25rpx;'>下单后会有专人联系您以确定发运航班，如未发运，全额退款</label>
-      <view>
-        <icon class="iconfont icongouhao" style='margin-left:25rpx;'></icon>
-        <label style='color:#597ED0;margin-left:10rpx;'>本人同意并接受《宠物托运交易条款》</label>
+      <view >
+        <icon bindtap='tapClause' class="iconfont icongouhao  {{confirmClause?'choose-color':'normal-color'}}" style='margin-left:25rpx;'></icon>
+        <label bindtap='checkClauseDetail' class="{{confirmClause?'choose-color':'normal-color'}}" style='margin-left:10rpx;font-size:32rpx;'>本人同意并接受《宠物托运交易条款》</label>
       </view>
     </view>
   </view>
 </view>
 <view class='subscribe'>
    <!-- 底部客服 -->
-   <view class="customerService">
+   <view class="customerService" bindtap='tapServicePhoneAction'>
       <view style='float:left;width:80rpx;padding-left:20rpx;'>
           <view style='font-family: sans-serif;font-size:12px'>舒宠</view>
           <view style='font-family: sans-serif;font-size:12px'>客服</view>
@@ -59,12 +97,12 @@
    </view>
    <!-- 预估金额 -->
    <view class="money">
-      <view style='float:left;font:20px arial,sans-serif;'>预估金额</view>
-      <view style='text-align: left;font:20px arial,sans-serif;  padding-left: 5px;color:red'>¥0</view>
+      <view style='float:left;font-size: 32rpx'>预估金额</view>
+      <view style='text-align: left;font-size:32rpx; padding-left: 5px;color:red'>¥{{predictPrice}}</view>
    </view>
    <!-- 预订  -->
    <view class="pay">
         <!-- 注册按钮 -->
-        <button class='button-confirm button-red' bindtap='registerAccount'>预订</button>
+        <button class='button-confirm button-red' bindtap='order'>提交</button>
    </view>
 </view>
