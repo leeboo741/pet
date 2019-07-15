@@ -26,9 +26,12 @@ Page({
     endDate: null, // 选择结束日期
     week: null, // 发货星期
     petCount: 0, // 发货数量
-    petType: null, // 宠物类型
+    petType: "狗", // 宠物列别
+    petClassify: "哈士奇", // 宠物类型
     petBreed: null, // 宠物品种
     petWeight: 0, // 宠物重量
+    petTypes: [],
+    petClassifys: [],
     transportTypes: [
       {
         transportName: "专车", // 运输方式名称
@@ -215,6 +218,67 @@ Page({
       url: '../city/city?cityType=end',
     })
   },
+
+  bindpetTypeView: function () {
+    let that = this;
+    
+    let urlstr = app.url.url + app.url.petType;
+    // 向服务器请求登陆，返回 本微信 在服务器状态，注册|未注册，
+    wx.request({
+      url: urlstr, // 服务器地址
+      success: res => {
+        console.log("success => " + JSON.stringify(res));
+        if (res.data.prompt == app.requestPromptValueName.success) {
+          that.petTypes = res.data.root;
+          wx.showActionSheet({
+            itemList: that.petTypes,
+            success: function (res) {
+              this.setData({
+                petType: that.petTypes[res.tapIndex]
+              })
+            },
+            fail: function (res) {
+              console.log(res.errMsg)
+            }
+          });
+        } else if (res.data.prompt == app.requestPromptValueName.notExist) {
+          app.globalData.userInfo.openid = res.data.root;
+          that.jumpToRegister();
+        } else {
+          wx.showModal({
+            title: '登陆错误！',
+            content: '登陆错误，请联系管理员或稍后再试',
+            success(res) {
+              if (res.confirm) {
+                that.login();
+              }
+            }
+          })
+        }
+      }, // 请求成功回调 登陆成功 保存 用户信息。登陆失败，跳转注册页面
+      fail: res => {
+        console.log("fail => " + JSON.stringify(res));
+        wx.showModal({
+          title: '请求登陆失败！',
+          content: '登陆失败，请稍后重新尝试',
+          success(res) {
+            if (res.confirm) {
+              that.login();
+            }
+          }
+        })
+      }, // 请求失败回调,弹窗，重新请求
+      complete: res => {
+        console.log("complite => " + JSON.stringify(res));
+        wx.hideLoading();
+      }, // 请求完成回调，隐藏loading
+    });
+  },
+
+  bindpetClassifyView: function () {
+
+  },
+
   /**
    * 点击拨打客服电话
    */

@@ -92,10 +92,12 @@ App({
 
   /** =========== 网络请求 Start =========== */
   url: {
-    url: "http://192.168.3.187:5050",
+    url: "http://192.168.3.233:5050",
     /** ============== 用户 =================== */ 
     register: "/api/customer/",
     login: "/api/oAuth",
+    petType: "/api/petType",
+    petClassify: "/api/petClassify",
     updateCustomer: "/api/customer/updateCustomer",
   },
   requestPromptValueName: {
