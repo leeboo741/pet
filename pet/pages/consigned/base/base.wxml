@@ -32,9 +32,17 @@
       </view>
       <!-- 类型 品种 重量 -->
       <view class='pet-weight'>
-        <input name='petType' class='input-under petType' placeholder="宠物类型" placeholder-class='input-normal-placeholder' bindtap='bindpetTypeView' value="{{petType}}"></input>
+        <view class='pet-type-area {{(petType==null||petType.length<=0)?"city-placeholder":"city-normal"}}'
+              bindtap='bindpetTypeView'>
+        {{(petType==null||petType.length<=0)?"宠物类型":petType}}      
+        </view>
+        <view class='pet-type-area {{(petType==null||petType.length<=0)?"city-placeholder":"city-normal"}}'
+              bindtap='bindpetClassifyView'>
+        {{(petClassify==null||petClassify.length<=0)?"宠物种类":petClassify}}      
+        </view>
+        <!-- <input name='petType' class='input-under petType' placeholder="宠物类型" placeholder-class='input-normal-placeholder' bindtap='bindpetTypeView' value="{{petType}}"></input>
         <icon class="iconfont iconTypemore"></icon>
-        <input name='petName' class='input-under petName' placeholder="宠物品种" placeholder-class='input-normal-placeholder' bindtap='bindpetClassifyView' value="{{petClassify}}"></input>
+        <input name='petName' class='input-under petName' placeholder="宠物品种" placeholder-class='input-normal-placeholder' bindtap='bindpetClassifyView' value="{{petClassify}}"></input> -->
         <input name='petKg' type='digit' class='input-under petKg input-right' placeholder-class='input-normal-placeholder' value='{{petWeight}}'></input>
         <input class='input-under kg' value='kg' disabled='{{true}}'></input>
       </view>

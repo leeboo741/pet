@@ -123,6 +123,18 @@ page {
   line-height: 90rpx;
 }
 
+.pet-type-area{
+  border-style: none none solid none;
+  border-width: 1rpx;
+  border-color: lightgray;
+  flex-grow: 1;
+  flex-shrink: 0;
+  margin-right: 30rpx;
+  text-align: center;
+  height: 85rpx;
+  line-height: 85rpx;
+}
+
 .city-placeholder{
   color: #D4D4D4;
   font-size: 36rpx;
@@ -153,7 +165,9 @@ page {
 .go-date {
   font-size: 32rpx;
   height: 90rpx;
-  display:flex; justify-content:center;align-items:center;
+  display:flex;
+  justify-content:center;
+  align-items:center;
 }
 
 .goDate {
@@ -178,6 +192,8 @@ page {
   height: 110rpx;
   display:flex; justify-content:center;align-items:center;
   background-color: #ffffff;
+  margin-left: 30rpx;
+  margin-right: 30rpx;
 }
 
 .petType {

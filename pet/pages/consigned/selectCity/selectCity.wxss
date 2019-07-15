@@ -1,0 +1,28 @@
+/* pages/consigned/selectCity/selectCity.wxss */
+.city-item{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.city-item-info{
+  margin: 20rpx 40rpx;
+  font-size: 36rpx;
+  color: #778899;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 90%;
+}
+
+.city-item-title{
+  flex-grow: 1;
+}
+
+.split-line{
+  width: 96%;
+  border-style: none none solid none;
+  border-color: lightgray;
+  border-width: 1rpx;
+  align-self: flex-end;
+}

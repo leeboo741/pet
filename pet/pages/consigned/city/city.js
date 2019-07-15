@@ -11,7 +11,8 @@ Page({
    */
   onLoad: function (options) {
     this.setData({
-      cityType: options.cityType
+      cityType: options.cityType,
+      transport: options.transport
     })
     if (this.data.cityResults == null) {
       this.setData({
@@ -158,10 +159,12 @@ Page({
    */
   onShareAppMessage: function () {
 
-  }, /**
+  }, 
+  /**
    * 页面的初始数据
    */
   data: {
+    transport: null,
     scrollAZ: null,
     scrollNow: 0,
     cityType: 'begin',

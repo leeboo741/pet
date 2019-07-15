@@ -10,7 +10,8 @@
     "pages/setting/setting",
     "pages/home/home",
     "pages/recharge/recharge",
-    "pages/withdrawal/withdrawal"
+    "pages/withdrawal/withdrawal",
+    "pages/consigned/selectCity/selectCity"
   ],
   "window": {
     "backgroundTextStyle": "light",

@@ -1,0 +1,19 @@
+<!--pages/consigned/selectCity/selectCity.wxml-->
+<i-panel title="{{title}}">
+  <view wx:for='{{citys}}'
+        wx:for-item='cityItem'
+        wx:for-index='cityIndex'
+        wx:key='{{cityIndex}}'
+        class='city-item'>
+    <view class='city-item-info'>
+      <view class='city-item-title'>
+      {{cityItem}}
+      </view>     
+      <i-icon type="enter"
+              size="28"
+              color='#778899'>
+      </i-icon>
+    </view>
+    <view class='split-line'> </view>
+  </view>
+</i-panel>
