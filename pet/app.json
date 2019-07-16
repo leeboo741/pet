@@ -10,7 +10,6 @@
     "pages/setting/setting",
     "pages/recharge/recharge",
     "pages/withdrawal/withdrawal",
-    "pages/consigned/selectCity/selectCity",
     "pages/index/index",
     "pages/logistics/logistics"
   ],
