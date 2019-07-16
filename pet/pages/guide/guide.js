@@ -153,8 +153,8 @@ Page({
   },
 
   jumpToHome: function () {
-    wx.redirectTo({
-      url: '../home/home',
+    wx.switchTab({
+      url: '../index/index',
     })
   },
 

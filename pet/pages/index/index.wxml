@@ -1,0 +1,108 @@
+<!--pages/index/index.wxml-->
+<!-- =========================================================================================== -->
+<!-- Banner -->
+<!-- =========================================================================================== -->
+<swiper class='banner'
+        circular="{{true}}"
+        indicator-dots="{{true}}"
+        autoplay="{{true}}"
+        interval="5000"
+        duration="300"
+        vertical="{{false}}"
+        indicator-active-color="#7bbfea"
+        indicator-color="#cccccc">
+  <swiper-item wx:for="{{bannerList}}"
+               wx:for-item="bannerItem"
+               wx:for-index="bannerIndex"
+               wx:key="bannerIndex">
+    <view class='banner-item'
+          data-index="{{bannerIndex}}"
+          data-targeturl="{{bannerItem.bannerTargetUrl}}"
+          data-bannerurl="{{bannerItem.bannerImageUrl}}"
+          bindtap='tapBanner'>
+      <image class='banner-item-image'
+           src='{{bannerItem.bannerImageUrl!=null?bannerItem.bannerImageUrl:"../../resource/placeholder_image.png"}}'
+           mode='scaleToFill'
+           lazy-load='{{true}}'>
+      </image>
+    </view>
+  </swiper-item>
+</swiper>
+<!-- =========================================================================================== -->
+<!-- Gird -->
+<!-- =========================================================================================== -->
+<view class='grid-view'>
+  <view wx:for='{{gridList}}'
+        wx:for-item='gridItem'
+        wx:for-index='gridIndex'
+        wx:key='{{gridIndex}}'
+        class='grid-item'
+        bindtap='tapGrid'
+        data-index='{{gridIndex}}'>
+    <view class='grid-item-content'>
+      <image class='grid-item-content-image'
+             src='{{gridItem.imagePath}}'
+             mode='scaleToFill'>
+      </image>
+      <view class='grid-item-content-title'>
+      {{gridItem.name}}
+      </view>
+    </view>
+  </view>
+</view>
+<!-- =========================================================================================== -->
+<!-- Big Button -->
+<!-- =========================================================================================== -->
+<view class='big-button-area'>
+  <image class='big-button-bg'
+         src='../../resource/transport_btn_bg.png'
+         mode='scaleToFill'>
+  </image>
+</view>
+<!-- =========================================================================================== -->
+<!-- 优惠券 -->
+<!-- =========================================================================================== -->
+<view class='coupon-title-area'>
+  <view class='coupon-title-left'>
+    <view class='coupon-title'>
+    优惠券
+    </view>
+  </view>
+  <view class='coupon-title-right'>
+    <view class='coupon-more'>
+    更多
+    </view>
+    <i-icon type='enter'
+            size='24'
+            color='#d2d2d2'>
+    </i-icon>
+  </view>
+</view>
+<view wx:for='{{couponList}}'
+      wx:for-item='couponItem'
+      wx:for-index='couponIndex'
+      wx:key='{{couponIndex}}'
+      class='coupon-item'>
+  <view class='coupon-item-info'>
+    <view class='coupon-item-info-left'>
+      <image class='coupon-item-image'
+             src='{{couponItem.imagePath!=null?couponItem.imagePath:"../../resource/red_package.png"}}'
+             mode='scaleToFill'>
+      </image>
+    </view>
+    <view class='coupon-item-info-right'>
+      <view class='coupon-item-title'>
+      {{couponItem.title}}
+      </view>
+      <view class='coupon-item-name'>
+      {{couponItem.name}}
+      </view>
+    </view>
+  </view>
+  <view class='coupon-item-receive'>
+    <image class='coupon-item-receive-bg'
+           src='../../resource/receive.png'
+           mode='scaleToFill'>
+    </image>
+  </view>
+</view>

@@ -309,8 +309,8 @@ Page({
    * 跳转首页
    */
   jumpToHome: function () {
-    wx.redirectTo({
-      url: '../home/home',
+    wx.switchTab({
+      url: '../index/index',
     })
   },
 

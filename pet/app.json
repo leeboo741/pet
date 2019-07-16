@@ -8,16 +8,44 @@
     "pages/consigned/outHarbour/outHarbour",
     "pages/me/me",
     "pages/setting/setting",
-    "pages/home/home",
     "pages/recharge/recharge",
     "pages/withdrawal/withdrawal",
-    "pages/consigned/selectCity/selectCity"
+    "pages/consigned/selectCity/selectCity",
+    "pages/index/index",
+    "pages/logistics/logistics"
   ],
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
     "navigationBarTitleText": "宠物托运",
     "navigationBarTextStyle": "black"
+  },
+  "tabBar": {
+    "color": "#cccccc",
+    "selectedColor": "#7bbfea",
+    "backgroundColor": "#fff",
+    "borderStyle": "white",
+    "position": "bottom",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页",
+        "iconPath": "resource/tabbar_index_unselected.png",
+        "selectedIconPath": "resource/tabbar_index_selected.png"
+      },
+      {
+        "pagePath": "pages/logistics/logistics",
+        "text": "物流",
+        "iconPath": "resource/tabbar_logistics_unselected.png",
+        "selectedIconPath": "resource/tabbar_logistics_selected.png"
+      },
+      {
+        "pagePath": "pages/me/me",
+        "text": "我的",
+        "iconPath": "resource/tabbar_me_unselected.png",
+        "selectedIconPath": "resource/tabbar_me_selected.png"
+      }
+    ]
   },
   "permission": {
     "scope.userLocation": {
