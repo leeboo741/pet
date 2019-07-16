@@ -11,11 +11,14 @@ Page({
   data: {
     bannerData: [
       { 
-        imgPath: 'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=2313265963,3645707579&fm=26&gp=0.jpg'
+        imgPath: 'http://47.99.244.168:6060/static/images/pet1.png'
       },
       { 
-        imgPath: 'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=491368047,2525649626&fm=26&gp=0.jpg'
-      }
+        imgPath: 'http://47.99.244.168:6060/static/images/pet2.png'
+      },
+      {
+        imgPath: 'http://47.99.244.168:6060/static/images/pet3.png'
+      },
     ], // banner 数据
     rate: 2, // 保价费率
     totalPrice: 0, // 总计金额
