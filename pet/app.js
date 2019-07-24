@@ -91,9 +91,10 @@ App({
 
   /** =========== 网络请求 Start =========== */
   url: {
-    url: "http://47.99.244.168:6060",
+    // url: "http://47.99.244.168:6060",
     // url: "http://192.168.3.233:5050",
     // url: "http://192.168.3.187:5050",
+    url: "http://192.168.3.111:5050",
     /** ============== 用户 =================== */ 
     register: "/api/customer/", // 注册
     login: "/api/oAuth", // 登陆
@@ -102,6 +103,7 @@ App({
     /** ============== 订单 =================== */
     petType: "/api/petType", // 宠物类型
     petClassify: "/api/petClassify", // 宠物种类
+    order: "/api/order/insertOrder", // 下单
 
     /** ============== 城市 =================== */
     startCity: "/api/transport/listStartCity", // 始发城市

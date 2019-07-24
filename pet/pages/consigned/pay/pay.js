@@ -14,25 +14,31 @@ Page({
    * 页面的初始数据
    */
   data: {
-    sendName: '', // 寄件人名称
-    receiveName: '', // 收件人名称
-    sendPhone: '', // 寄件人电话
-    receivePhone: '', // 收件人电话
     predictPrice: 0, // 预估金额
     confirmCondition: false, // 确认条件
     confirmClause: false, // 确认条款
 
+    sendName: '', // 寄件人名称
+    receiveName: '', // 收件人名称
+    sendPhone: '', // 寄件人电话
+    receivePhone: '', // 收件人电话
+
     startCity: null, // 始发城市
     endCity: null, // 目的城市
+    leaveDate: null, // 发货日期
+    transport: null, // 运输方式
+    petWeight: 0, // 重量
     petCount: 0, // 数量
     petType: null, // 宠物类型
     petClassify: null, // 宠物种类
-    petWeight: 0, // 重量
-    transport: null, // 运输方式
+
     airbox: null, // 购买航空箱
     receiveAddress: null, // 接宠地址
     sendAddress: null, // 送宠地址
-    insuredPrice: 0, // 保价金额
+    insuredPrice: null, // 保价金额
+    petCan: null, // 免费营养罐头
+
+    orderNo: null, // 订单编号
   },
 
   /* ============================= 页面生命周期 Start ============================== */
@@ -49,7 +55,13 @@ Page({
       petClassify: options.classify,
       petWeight: parseFloat(options.weight),
       transport: options.transport,
+      leaveDate: options.leavedate,
     })
+    if (options.petcan != null) {
+      this.setData({
+        petCan: options.petcan
+      })
+    }
     if (options.airbox != null) {
       this.setData({
         airbox: options.airbox
@@ -98,6 +110,7 @@ Page({
    * 生命周期函数--监听页面卸载
    */
   onUnload: function () {
+    console.log("/pay/pay 销毁")
   },
 
   /* ============================= 页面生命周期 End ============================== */
@@ -192,9 +205,7 @@ Page({
       return;
     }
 
-    wx.navigateTo({
-      url: '../paysuccess/paysuccess',
-    })
+    this.requestOrder();
   },
 
   /**
@@ -255,13 +266,109 @@ Page({
   /* ============================= 页面事件 End ============================== */
 
   /* ============================= 网络请求 Start ============================== */
+
+  /**
+   * 下单
+   */
+  requestOrder: function () {
+    wx.showLoading({
+      title: '提交订单中...',
+    })
+    let tempOrderObj = {
+      "openId": app.globalData.userInfo.openid,
+
+      "startCity": this.data.startCity,
+      "endCity": this.data.endCity,
+      "leaveDate": this.data.leaveDate,
+      "transportType": this.data.transport,
+      "weight": this.data.petWeight,
+      "num": this.data.petCount,
+      "petClassify": this.data.petClassify,
+      "petType": this.data.petType,
+
+      "receiverName": this.data.receiveName,
+      "receiverPhone": this.data.receivePhone,
+      "senderName": this.data.sendName,
+      "senderPhone": this.data.sendPhone,
+    }
+
+    if (this.data.airbox != null) {
+      tempOrderObj.buyAirBox = this.data.airbox;
+    }
+
+    if (this.data.receiveAddress != null) {
+      tempOrderObj.onDoorReceiveAddress = this.data.receiveAddress;
+    }
+
+    if (this.data.sendAddress != null) {
+      tempOrderObj.onDoorSendAddress = this.data.sendAddress;
+    } 
+
+    if (this.data.insuredPrice != null) {
+      tempOrderObj.insureAmount = this.data.insuredPrice;
+    }
+
+    let that = this;
+    wx.request({
+      url: app.url.url + app.url.order,
+      method: "POST",
+      data: tempOrderObj,
+      success(res) {
+        console.log("提交订单 success => \n" + JSON.stringify(res));
+        if (res.data.prompt == app.requestPromptValueName.success) {
+          that.setData({
+            orderNo: res.data.root
+          })
+          wx.showModal({
+            title: '订单:' + res.data.root + '提交成功',
+            content: '是否立即支付',
+            cancelText: '稍后支付',
+            confirmText: '立即付款',
+            success(res) {
+              if (res.confirm) {
+                console.log('用户点击立即付款')
+              } else if (res.cancel) {
+                console.log('用户点击稍后支付')
+                wx.switchTab({
+                  url: '/pages/index/index',
+                })
+              }
+            }
+          })
+        } else {
+          if (res.data.root != null) {
+            wx.showToast({
+              title: res.data.root,
+              icon: 'none'
+            })
+          } else {
+            wx.showToast({
+              title: "提交订单失败，请稍后再试",
+              icon: 'none'
+            })
+          }
+        }
+      },
+      fail(res) {
+        console.log("提交订单 fail => \n" + JSON.stringify(res));
+        wx.showToast({
+          title: '提交订单失败，请稍后再试',
+          icon: 'none'
+        })
+      },
+      complete(res) {
+        console.log("提交订单 complete => \n" + JSON.stringify(res));
+        wx.hideLoading();
+      },
+    })
+  },
+
   /**
    * 查询预估金额
    */
   requestPredictPrice: function () {
     wx.showLoading({
       title: '请稍等...',
-      icon: 'none'
     })
     let tempData = {
       "openId": app.globalData.userInfo.openid,
@@ -284,7 +391,7 @@ Page({
       tempData.buyAirBox = this.data.airbox
     }
 
-    if (this.data.insuredPrice != 0) {
+    if (this.data.insuredPrice != null) {
       tempData.insureAmount = this.data.insuredPrice;
     }
 

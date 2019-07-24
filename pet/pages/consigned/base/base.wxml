@@ -120,12 +120,12 @@
             <icon class="iconfont icongouhao gou {{addServerAirBox.selected?'choose':''}}">
             </icon>
             <label class="server {{addServerAirBox.selected?'choose':''}}">
-            购买航空箱
+            {{addServerAirBox.name}}
             </label>
           </view>
           <view class='addServer-append-info' hidden='{{addServerAirBox.selected}}'>
             <view class='air-box-info'>
-            自备航空箱需符合航空公司要求的适用规则
+            {{addServerAirBox.alert}}
             </view>
           </view>
         </view>
@@ -135,7 +135,7 @@
             <icon class="iconfont icongouhao gou {{addServerReceivePet.selected?'choose':''}}">
             </icon>
             <label class="server {{addServerReceivePet.selected?'choose':''}}">
-            上门接宠
+            {{addServerReceivePet.name}}
             </label>
           </view>
           <view class='addServer-append-info' hidden='{{!addServerReceivePet.selected}}'>
@@ -154,7 +154,7 @@
             <icon class="iconfont icongouhao gou {{addServerSendPet.selected?'choose':''}}">
             </icon>
             <label class="server {{addServerSendPet.selected?'choose':''}}">
-            送宠到家
+            {{addServerSendPet.name}}
             </label>
           </view>
           <view class='addServer-append-info' hidden='{{!addServerSendPet.selected}}'>
@@ -173,7 +173,7 @@
             <icon class="iconfont icongouhao gou {{addServerInsuredPrice.selected?'choose':''}}">
             </icon>
             <label class="server {{addServerInsuredPrice.selected?'choose':''}}">
-            保价
+            {{addServerInsuredPrice.name}}
             </label>
             <label class='insuredPrice-rate'>
             (费率：{{addServerInsuredPrice.rate}}%)
@@ -188,6 +188,21 @@
                    value='{{addServerInsuredPrice.price==0?"":addServerInsuredPrice.price}}'
                    type='digit'>
             </input>
+          </view>
+        </view>
+        <view class='addedServer-item'>
+          <view class='addServer-info' 
+                bindtap='tapAddServerPetCan'>
+            <icon class="iconfont icongouhao gou {{addServerPetCan.selected?'choose':''}}">
+            </icon>
+            <label class="server {{addServerPetCan.selected?'choose':''}}">
+            {{addServerPetCan.name}}
+            </label>
+          </view>
+          <view class='addServer-append-info'>
+            <view class='air-box-info'>
+            {{addServerPetCan.alert}}
+            </view>
           </view>
         </view>
       </view>

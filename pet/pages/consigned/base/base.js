@@ -29,11 +29,11 @@ Page({
     endDate: null, // 选择结束日期
     week: null, // 发货星期
     petCount: 0, // 发货数量
-    petType: null, // 宠物列别
-    petClassify: null, // 宠物类型
     petWeight: 0, // 宠物重量
-    petTypes: [],
-    petClassifys: [],
+    petType: null, // 选中宠物类别
+    petClassify: null, // 选中宠物类型
+    petTypes: [], // 宠物类别列表
+    petClassifys: [], // 宠物类型列表
     transportTypes: [
       {
         transportName: "专车", // 运输方式名称
@@ -70,6 +70,7 @@ Page({
     addServerAirBox: {
       name: "购买航空箱", // 增值服务名称
       selected: false, // 是否选中
+      alert: "自备航空箱需符合航空公司要求的适用规则", // 提示
     },
     addServerReceivePet: {
       name: "上门接宠",
@@ -87,6 +88,11 @@ Page({
       rate: 2, // 费率
       price: 0, // 保价金额
     },
+    addServerPetCan: {
+      name: "免费营养罐头", // 名称
+      selected: false, // 是否选中
+      alert: "免费提供给宠物在运输途中食用，非强制选用，本公司不承担由此造成的任何后果，选择即视为自愿接受此声明的约束"
+    }
   },
 
   /* ============================= 页面生命周期 Start ============================== */
@@ -95,6 +101,7 @@ Page({
   * 生命周期函数--监听页面加载
   */
   onLoad: function () {
+    // 初始化 发货日期 数据
     let tempDateObj = util.dateLater(new Date(),0);
     let endDateObj = util.dateLater(new Date(), 365);
     this.setData({
@@ -116,6 +123,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
+    // 接受 城市选择页面 返回数据
     if (app.globalData.trainBeginCity != null) {
       for (let i = 0; i < this.data.transportTypes.length; i++){
         this.data.transportTypes[i].disable = true;
@@ -147,21 +155,9 @@ Page({
    * 生命周期函数--监听页面卸载
    */
   onUnload: function () {
-
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-
+    app.globalData.trainBeginCity = null;
+    app.globalData.trainEndCity = null;
+    console.log("/base/base 销毁")
   },
 
   /* ============================= 页面生命周期 End ============================== */
@@ -169,7 +165,17 @@ Page({
   /* ============================= 页面事件 Start ============================== */
 
   /**
-   * 购买航空箱
+   * 点击领取免费罐头
+   */
+  tapAddServerPetCan: function () {
+    this.data.addServerPetCan.selected = !this.data.addServerPetCan.selected;
+    this.setData({
+      addServerPetCan: this.data.addServerPetCan
+    })
+  },
+
+  /**
+   * 点击购买航空箱
    */
   tapAddServerAirBox: function () {
     this.data.addServerAirBox.selected = !this.data.addServerAirBox.selected;
@@ -180,12 +186,14 @@ Page({
   },
 
   /**
-   * 上门接宠
+   * 点击选择上门接宠
    */
   tapAddServerReceivePet: function () {
     this.data.addServerReceivePet.selected = !this.data.addServerReceivePet.selected;
-    if (!this.data.addServerReceivePet.selected) {
-      this.data.addServerReceivePet.address = null
+    if (!this.data.addServerReceivePet.selected) { 
+      // 取消选中 置空 接宠地址 并且重新请求 价格数据
+      this.data.addServerReceivePet.address = null;
+      this.predictPrice();
     }
     this.setData({
       addServerReceivePet: this.data.addServerReceivePet
@@ -198,7 +206,9 @@ Page({
   tapAddServerSendPet: function () {
     this.data.addServerSendPet.selected = !this.data.addServerSendPet.selected;
     if (!this.data.addServerSendPet.selected) {
-      this.data.addServerSendPet.address = null
+      // 取消选中 置空 送宠地址 并且重新请求 价格数据
+      this.data.addServerSendPet.address = null;
+      this.predictPrice();
     }
     this.setData({
       addServerSendPet: this.data.addServerSendPet
@@ -211,7 +221,9 @@ Page({
   tapAddServerInsuredPrice: function () {
     this.data.addServerInsuredPrice.selected = !this.data.addServerInsuredPrice.selected;
     if (!this.data.addServerInsuredPrice.selected) {
-      this.data.addServerInsuredPrice.price = 0
+      // 取消选中 归零保价金额 并且重新请求 价格数据
+      this.data.addServerInsuredPrice.price = 0;
+      this.predictPrice();
     }
     this.setData({
       addServerInsuredPrice: this.data.addServerInsuredPrice
@@ -324,7 +336,7 @@ Page({
    */
   countInput: function (e) {
     let tempInput = e.detail.value;
-    if (tempInput == null) {
+    if (tempInput == null || tempInput.length <= 0) {
       tempInput = 0;
     }
     tempInput = parseInt(tempInput);
@@ -345,7 +357,7 @@ Page({
    */
   weightInput: function (e) {
     let tempInput = e.detail.value;
-    if (tempInput == null) {
+    if (tempInput == null || tempInput.length <= 0) {
       tempInput = 0;
     }
     tempInput = parseInt(tempInput);
@@ -430,13 +442,95 @@ Page({
    * 点击预定
    */
   tapTakeOrderAction: function(){
+    if (this.data.beginCity == null) {
+      wx.showToast({
+        title: '请选择始发城市',
+        icon: 'none'
+      })
+      return;
+    }
+    if (this.data.endCity == null) {
+      wx.showToast({
+        title: '请选择目的城市',
+        icon: 'none'
+      })
+      return;
+    }
+    if (this.data.petCount == 0) {
+      wx.showToast({
+        title: '请填写宠物数量',
+        icon: 'none'
+      })
+      return;
+    }
+    if (this.data.petWeight == 0) {
+      wx.showToast({
+        title: '请填写宠物重量',
+        icon: 'none'
+      })
+      return;
+    }
+    if (this.data.petType == null) {
+      wx.showToast({
+        title: '请选择宠物类别',
+        icon: 'none'
+      })
+      return;
+    }
+    if (this.data.petClassify == null) {
+      wx.showToast({
+        title: '请选择宠物品种',
+        icon: 'none'
+      })
+      return;
+    }
+    if (this.data.selectedTransportObj == null) {
+      wx.showToast({
+        title: '请选择运输方式',
+        icon: 'none'
+      })
+      return;
+    }
+    if (this.data.addServerReceivePet.selected) {
+      if (this.data.addServerReceivePet.address == null
+        || this.data.addServerReceivePet.address.length <= 0) {
+        wx.showToast({
+          title: '请输入接宠地址',
+          icon: 'none'
+        })
+        return;
+      }
+    }
+    if (this.data.addServerSendPet.selected) {
+      if (this.data.addServerSendPet.address == null
+        || this.data.addServerSendPet.address.length <= 0) {
+        wx.showToast({
+          title: '请输入送宠地址',
+          icon: 'none'
+        })
+        return;
+      }
+    }
+    if (this.data.addServerInsuredPrice.selected) {
+      if (this.data.addServerInsuredPrice.price == 0) {
+        wx.showToast({
+          title: '请输入保价金额',
+          icon: 'none'
+        })
+        return;
+      }
+    }
     let tempUrl = '../pay/pay?start=' + this.data.beginCity
                   + '&end=' + this.data.endCity
                   + '&count=' + this.data.petCount
                   + '&type=' + this.data.petType
                   + '&classify=' + this.data.petClassify.petClassifyName
                   + '&weight=' + this.data.petWeight
-                  + '&transport=' + this.data.selectedTransportObj.transportId;
+                  + '&transport=' + this.data.selectedTransportObj.transportId
+                  + '&leavedate=' + this.data.date;
+    if (this.data.addServerPetCan.selected) {
+      tempUrl = tempUrl + "&petcan=1";
+    }
     if (this.data.addServerAirBox.selected) {
       tempUrl = tempUrl + "&airbox=1";
     }
@@ -460,22 +554,51 @@ Page({
    */
   predictPrice: function () {
     if (this.data.beginCity == null) {
+      this.setData({
+        totalPrice: 0
+      })
       return;
     }
     if (this.data.endCity == null) {
+      this.setData({
+        totalPrice: 0
+      })
       return;
     }
     if (this.data.petCount == 0) {
+      this.setData({
+        totalPrice: 0
+      })
       return;
     }
     if (this.data.petWeight == 0) {
+      this.setData({
+        totalPrice: 0
+      })
       return;
     }
     if (this.data.selectedTransportObj == null) {
+      this.setData({
+        totalPrice: 0
+      })
       return;
     }
     this.requestPredictPrice();
   },
+
+  /**
+   * 页面相关事件处理函数--监听用户下拉动作
+   */
+  onPullDownRefresh: function () {
+
+  },
+
+  /**
+   * 用户点击右上角分享
+   */
+  onShareAppMessage: function () {
+
+  }, 
 
   /* ============================= 页面事件 End ============================== */
 
@@ -703,20 +826,6 @@ Page({
    * 请求Banner数据
    */
   requestBanner: function () {
-
-  },
-
-  /**
-   * 查询价格
-   */
-  requestPrice: function() {
-
-  },
-
-  /**
-   * 提交预定
-   */
-  requestOrder: function () {
 
   },
 
