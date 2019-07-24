@@ -18,6 +18,7 @@ Page({
    * 页面的初始数据
    */
   data: {
+    userInfo: null, // 用户信息
     selectedBillType: 0,
     billList: [
       {
@@ -47,6 +48,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+
   },
 
   /**
@@ -60,7 +62,9 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    this.setData({
+      userInfo: app.globalData.userInfo
+    })
   },
 
   /**
@@ -76,30 +80,18 @@ Page({
   onUnload: function () {
   },
 
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-
-  },
-
   /** ================================= 生命周期 End ==================================== */
 
   /** ================================= 页面事件 Start ==================================== */
+
+  /**
+   * 单据类型选择
+   */
+  tapButtonTypeAction: function(e) {
+    this.setData({
+      selectedBillType: e.currentTarget.dataset.type
+    })
+  },
 
   /**
    * 进入充值页面
@@ -142,7 +134,28 @@ Page({
     wx.navigateTo({
       url: '../consigned/inHarbour/inHarbour'
     })
-  }
+  },
+
+  /**
+   * 页面相关事件处理函数--监听用户下拉动作
+   */
+  onPullDownRefresh: function () {
+
+  },
+
+  /**
+   * 页面上拉触底事件的处理函数
+   */
+  onReachBottom: function () {
+
+  },
+
+  /**
+   * 用户点击右上角分享
+   */
+  onShareAppMessage: function () {
+
+  },
 
   /** ================================= 页面事件 End ==================================== */
 })

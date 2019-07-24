@@ -246,8 +246,9 @@ page {
 
 .common {
   display: flex;
-  padding-top: 50rpx;
+  padding-top: 20rpx;
   flex-direction: column;
+  padding-bottom: 20rpx;
 }
 
 .recharge {
