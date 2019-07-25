@@ -389,6 +389,7 @@ page {
 }
 
 .insuredPrice-rate{
+  margin-left: 20rpx;
   color: #ee2c2c;
   font-size: 24rpx;
 }

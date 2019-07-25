@@ -184,7 +184,7 @@
             </input>
           </view>
         </view>
-        <view class='addedServer-item'>
+        <view class='addedServer-item' hidden='{{addServerInsuredPrice.rate==0}}'>
           <view class='addServer-info' 
                 bindtap='tapAddServerInsuredPrice'>
             <icon class="iconfont icongouhao gou {{addServerInsuredPrice.selected?'choose':''}}">
@@ -192,7 +192,7 @@
             <label class="server {{addServerInsuredPrice.selected?'choose':''}}">
             {{addServerInsuredPrice.name}}
             </label>
-            <label class='insuredPrice-rate'>
+            <label class='insuredPrice-rate' hidden='{{addServerInsuredPrice.rate==0}}'>
             (费率：{{addServerInsuredPrice.rate}}%)
             </label>
           </view>

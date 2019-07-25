@@ -12,7 +12,7 @@
 
 const app = getApp();
 
-const bill_type_unpay = "待付款";
+const bill_type_unpay = "待支付";
 const bill_type_sendout = "待发货";
 const bill_type_receiving = "待收货";
 const bill_type_complete = "已完成";
@@ -70,6 +70,7 @@ Page({
     this.setData({
       userInfo: app.globalData.userInfo
     })
+    this.requestBillList();
   },
 
   /**
@@ -110,6 +111,7 @@ Page({
     this.setData({
       selectedBillType: e.currentTarget.dataset.type
     })
+    this.requestBillList();
   },
 
   /**
@@ -177,4 +179,56 @@ Page({
   },
 
   /** ================================= 页面事件 End ==================================== */
+
+  /** ================================= 网络请求 Start ==================================== */
+
+  /**
+   * 请求单据
+   */
+  requestBillList: function () {
+    wx.showLoading({
+      title: '请稍等...',
+    })
+    wx.request({
+      url: app.url.url + app.url.checkOrderListByOrderStatus,
+      data: {
+        "orderStatus": this.getSendBillType(this.data.selectedBillType),
+        "openId": app.globalData.userInfo.openId
+      },
+      success(res){
+        console.log("请求单据列表 success => \n" + JSON.stringify(res))
+      },
+      fail(res) {
+        console.log("请求单据列表 fail => \n" + JSON.stringify(res))
+      },
+      complete(res) {
+        console.log("请求单据列表 complete => \n" + JSON.stringify(res))
+        wx.hideLoading();
+      },
+    })
+  },
+
+  /** ================================= 网络请求 Start ==================================== */
+
+  /** ================================= 数据 Start ==================================== */
+
+  /**
+   * 设置订单类型
+   */
+  getSendBillType: function (billType) {
+    let sendBillType = null;
+    if (billType == 0) {
+      sendBillType = bill_type_unpay;
+    } else if (billType == 1) {
+      sendBillType = bill_type_sendout;
+    } else if (billType == 2) {
+      sendBillType = bill_type_receiving;
+    } else {
+      sendBillType = bill_type_complete;
+    }
+    return sendBillType;
+  },
+
+  /** ================================= 数据 End ==================================== */
+
 })

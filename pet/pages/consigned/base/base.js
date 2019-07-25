@@ -1,7 +1,8 @@
 /**
  * ******** 托运页面 ********
- * ===================================================================================================================================
- * 购买托运服务===================================================================================================================================
+ * ===============================================================================
+ * 购买托运服务
+ * ===============================================================================
  */
 //获取应用实例
 const app = getApp()
@@ -56,7 +57,7 @@ Page({
       {
         transportName: "随机", // 运输方式名称
         transportId: 4, // 运输方式id
-        // transportDescription: "主人陪同坐飞机", // 运输方式说明
+        // transportDescription: "主人跟随一起乘坐飞机", // 运输方式说明
         disable: true, // 是否禁用
       },
       {
@@ -89,7 +90,7 @@ Page({
     addServerInsuredPrice: {
       name: "保价",
       selected: false,
-      rate: 2, // 费率
+      rate: 0, // 费率
       price: 0, // 保价金额
     },
     addServerPetCan: {
@@ -129,32 +130,41 @@ Page({
   onShow: function () {
     // 接受 城市选择页面 返回数据
     if (app.globalData.trainBeginCity != null) {
+      // 重置运输方式
       for (let i = 0; i < this.data.transportTypes.length; i++){
         this.data.transportTypes[i].disable = true;
       }
+      // 重置 上门接宠 市区选择器
       this.data.addServerReceivePet.receiveDistrictList = DISTRICT[app.globalData.trainBeginCity];
       this.data.addServerReceivePet.receiveDistrict = this.data.addServerReceivePet.receiveDistrictList[0];
+      // 重置 送宠到家 市区选择器
       this.data.addServerSendPet.sendDistrictList = null;
       this.data.addServerSendPet.sendDistrict = null;
+      // 重置 送宠到家 地址 并且关闭 送宠到家
       this.data.addServerSendPet.address = null;
       this.data.addServerSendPet.selected = false;
+      // 根据 始发城市 获取 保价费率
+      this.data.addServerInsuredPrice.rate = 2;
       this.setData({
-        beginCity: app.globalData.trainBeginCity,
-        addServerReceivePet: this.data.addServerReceivePet,
-        endCity: null,
-        addServerSendPet: this.data.addServerSendPet,
-        selectedTransportObj: null,
-        transportTypes: this.data.transportTypes
+        beginCity: app.globalData.trainBeginCity, // 设置始发城市
+        addServerReceivePet: this.data.addServerReceivePet, // 设置 上门接宠
+        endCity: null, // 清空目的城市
+        addServerSendPet: this.data.addServerSendPet, // 重置 送宠到家
+        selectedTransportObj: null, // 清空 选中的 运输方式
+        transportTypes: this.data.transportTypes, // 重置 运输方式列表 
+        addServerInsuredPrice : this.data.addServerInsuredPrice, // 重置 保价费率
       })
     }
     if (app.globalData.trainEndCity != null) {
+      // 重置 送宠到家 市区选择器
       this.data.addServerSendPet.sendDistrictList = DISTRICT[app.globalData.trainEndCity];
       this.data.addServerSendPet.sendDistrict = this.data.addServerSendPet.sendDistrictList[0];
       this.setData({
-        addServerSendPet: this.data.addServerSendPet,
-        endCity: app.globalData.trainEndCity,
-        selectedTransportObj: null,
+        addServerSendPet: this.data.addServerSendPet, // 重置 送宠到家
+        endCity: app.globalData.trainEndCity, // 设置 目的城市
+        selectedTransportObj: null, // 清空 选中的 运输方式
       })
+      // 查询可用的运输方式列表
       this.checkAbleTransportType();
     }
   },
@@ -268,6 +278,13 @@ Page({
    * 保价
    */
   tapAddServerInsuredPrice: function () {
+    if (this.data.beginCity == null) {
+      wx.showToast({
+        title: '请先选择始发城市',
+        icon: 'none'
+      })
+      return;
+    }
     this.data.addServerInsuredPrice.selected = !this.data.addServerInsuredPrice.selected;
     if (!this.data.addServerInsuredPrice.selected) {
       // 取消选中 归零保价金额 并且重新请求 价格数据

@@ -104,6 +104,7 @@ App({
     petType: "/api/petType", // 宠物类型
     petClassify: "/api/petClassify", // 宠物种类
     order: "/api/order/insertOrder", // 下单
+    checkOrderListByOrderStatus:"/api/order/listOrderList", // 根据订单类型查询订单列表
 
     /** ============== 城市 =================== */
     startCity: "/api/transport/listStartCity", // 始发城市
