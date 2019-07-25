@@ -12,6 +12,11 @@
 
 const app = getApp();
 
+const bill_type_unpay = "待付款";
+const bill_type_sendout = "待发货";
+const bill_type_receiving = "待收货";
+const bill_type_complete = "已完成";
+
 Page({
 
   /**
@@ -83,6 +88,20 @@ Page({
   /** ================================= 生命周期 End ==================================== */
 
   /** ================================= 页面事件 Start ==================================== */
+
+  /**
+   * 点击呼叫
+   */
+  tapCall: function () {
+    console.log("点击呼叫")
+  },
+
+  /**
+   * 点击设置
+   */
+  tapSetting: function () {
+    console.log("点击设置")
+  },
 
   /**
    * 单据类型选择

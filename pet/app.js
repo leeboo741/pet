@@ -6,11 +6,11 @@ App({
   onLaunch: function () {
     console.log("------------ app onLaunch ------------");
     console.log("地址：" + this.url.url);
-    // var that = this;
-    // // 实例化API核心类
-    // qqmapsdk = new QQMapWX({
-    //   key: '3IQBZ-UHKR6-XS4S2-M5GKI-XYW76-5ZF2D'
-    // });
+    var that = this;
+    // 实例化API核心类
+    qqmapsdk = new QQMapWX({
+      key: 'L3ZBZ-2ZBWX-XGL4G-7QUPS-LXIG2-Q5BQY'
+    });
     // // 微信定位接口
     // wx.getLocation({
     //   type: "gcj02",

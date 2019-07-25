@@ -105,6 +105,7 @@ page {
   border-width: 1rpx;
   border-color: lightgray;
   flex-grow: 1;
+  flex-shrink: 0;
   margin-left: 30rpx;
   text-align: left;
   height: 90rpx;
@@ -390,4 +391,35 @@ page {
 .insuredPrice-rate{
   color: #ee2c2c;
   font-size: 24rpx;
+}
+
+.server-select-area{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 10rpx;
+}
+
+.server-select-button{
+  text-align: center;
+  font-size: 32rpx;
+  margin-right: 20rpx;
+}
+
+.select-button-placeholder{
+  color: #D4D4D4;
+}
+
+.more{
+  font-size: 32rpx;
+  transform: rotate(90deg);
+}
+
+.addServer-append-info-input{
+  font-size: 32rpx;
+}
+
+.addServer-append-info-input-placeholder{
+  font-size: 32rpx;
+  color: #D4D4D4;
 }

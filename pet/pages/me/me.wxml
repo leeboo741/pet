@@ -20,9 +20,9 @@
         <!--按钮-->
         <view class='btn'>
           <!--设置按钮-->
-          <icon class='iconfont iconshezhi-'></icon>
+          <icon class='iconfont iconshezhi-' bindtap='tapSetting'></icon>
           <!--联系客服按钮-->
-          <icon class='iconfont iconkefu'></icon>
+          <icon class='iconfont iconkefu' bindtap='tapCall'></icon>
         </view>
       </view>
     </view>

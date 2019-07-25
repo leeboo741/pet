@@ -139,6 +139,15 @@
             </label>
           </view>
           <view class='addServer-append-info' hidden='{{!addServerReceivePet.selected}}'>
+            <picker bindchange="bindReceivePickerChange" range="{{addServerReceivePet.receiveDistrictList}}">
+              <view class='server-select-area'>
+                <view class='server-select-button {{addServerReceivePet.receiveDistrict!=null?"":"select-button-placeholder"}}'>
+                {{addServerReceivePet.receiveDistrict!=null?addServerReceivePet.receiveDistrict:"请选择区县"}}
+                </view>
+                <i-icon type='enter' size='24' color='#D4D4D4' i-class='more'></i-icon>
+              </view>
+            </picker>
+            
             <input class='addServer-append-info-input'
                    placeholder-class='addServer-append-info-input-placeholder'
                    placeholder='请输入接宠地址'
@@ -158,6 +167,14 @@
             </label>
           </view>
           <view class='addServer-append-info' hidden='{{!addServerSendPet.selected}}'>
+            <picker bindchange="bindSendPickerChange" value='{{0}}' range="{{addServerSendPet.sendDistrictList}}">
+              <view class='server-select-area'>
+                <view class='server-select-button {{addServerSendPet.sendDistrict!=null?"":"select-button-placeholder"}}'>
+                {{addServerSendPet.sendDistrict!=null?addServerSendPet.sendDistrict:"请选择区县"}}
+                </view>
+                <i-icon type='enter' size='24' color='#D4D4D4' i-class='more'></i-icon>
+              </view>
+            </picker>
             <input class='addServer-append-info-input'
                    placeholder-class='addServer-append-info-input-placeholder'
                    placeholder='请输入送宠地址'
