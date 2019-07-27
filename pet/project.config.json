@@ -13,7 +13,7 @@
 		"checkInvalidKey": true
 	},
 	"compileType": "miniprogram",
-	"libVersion": "2.6.0",
+	"libVersion": "2.0.4",
 	"appid": "wxdcc6a90283c19b7b",
 	"projectname": "pet",
 	"debugOptions": {

@@ -102,6 +102,9 @@ Page({
    */
   tapSetting: function () {
     console.log("点击设置")
+    wx.navigateTo({
+      url: '/pages/setting/setting',
+    })
   },
 
   /**

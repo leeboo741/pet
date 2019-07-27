@@ -154,6 +154,8 @@ Page({
         transportTypes: this.data.transportTypes, // 重置 运输方式列表 
         addServerInsuredPrice : this.data.addServerInsuredPrice, // 重置 保价费率
       })
+      // 查询保价费率
+      this.requestInsurePriceRate();
     }
     if (app.globalData.trainEndCity != null) {
       // 重置 送宠到家 市区选择器
@@ -206,7 +208,7 @@ Page({
     this.data.addServerSendPet.sendDistrict = this.data.addServerSendPet.sendDistrictList[e.detail.value];
     this.setData({
       addServerSendPet: this.data.addServerSendPet
-    })
+    }) 
   },
 
   /**
@@ -669,6 +671,31 @@ Page({
   /* ============================= 页面事件 End ============================== */
 
   /* ============================= 网络请求 Start ============================== */
+
+  /**
+   * 查询保价费率
+   */
+  requestInsurePriceRate: function () {
+    wx.showLoading({
+      title: '请稍等...',
+    })
+    wx.request({
+      url: app.url.url + app.url.insureRate,
+      data: {
+        "startCity": this.data.beginCity
+      },
+      success(res){
+        console.log("查询保价费率 success => \n" + JSON.stringify(res))
+      },
+      fail(res) {
+        console.log("查询保价费率 fail => \n" + JSON.stringify(res))
+      },
+      complete(res) {
+        console.log("查询保价费率 complete => \n" + JSON.stringify(res))
+        wx.hideLoading();
+      },
+    })
+  },
 
   /**
    * 查询预估金额

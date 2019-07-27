@@ -61,6 +61,7 @@ App({
   globalData: {
     /** =========== 全局数据 Start =========== */
     servicePhone: "0791-012234221", // 客服电话
+    version: "beta1.1.7",
     /** =========== 全局数据 End =========== */
 
     /** =========== 地理信息 Start =========== */
@@ -113,6 +114,7 @@ App({
 
     /** ============== 价格 =================== */
     predictPrice: "/api/order/getOrderPrice", // 获取预估价格
+    insureRate: "/api/consign/insure", // 查询保价费率
 
   },
   requestPromptValueName: {

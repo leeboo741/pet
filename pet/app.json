@@ -11,7 +11,8 @@
     "pages/recharge/recharge",
     "pages/withdrawal/withdrawal",
     "pages/index/index",
-    "pages/logistics/logistics"
+    "pages/logistics/logistics",
+    "pages/register/register"
   ],
   "window": {
     "backgroundTextStyle": "light",
