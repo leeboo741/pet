@@ -87,12 +87,32 @@ page {
   font-family: sans-serif;
 }
 
+.remark{
+  display: flex;
+  flex-direction: column;
+}
+
+.remark-title{
+  font-size: 32rpx;
+  margin: 10rpx 30rpx;
+}
+
+.remark-content{
+  padding: 20rpx;
+  font-size: 32rpx;
+  margin: 20rpx auto;
+  width: 90%;
+  background: rgb(240, 240, 240);
+  border-radius: 8rpx;
+}
+
 .agreement {
-  margin-top:30px;
+  margin-top:10px;
   padding-top: 20rpx;
   padding-bottom: 50rpx;
   margin-bottom: 10px;
 }
+
 
 .agreeAgreement label {
   margin-left: 20rpx;

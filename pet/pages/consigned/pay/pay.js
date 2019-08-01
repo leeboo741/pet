@@ -23,6 +23,8 @@ Page({
     sendPhone: '', // 寄件人电话
     receivePhone: '', // 收件人电话
 
+    remark: "", // 订单备注
+
     startCity: null, // 始发城市
     endCity: null, // 目的城市
     leaveDate: null, // 发货日期
@@ -116,6 +118,15 @@ Page({
   /* ============================= 页面生命周期 End ============================== */
 
   /* ============================= 页面事件 Start ============================== */
+
+  /**
+   * 订单备注输入
+   */
+  remarkInput: function (e) {
+    this.setData({
+      remark: e.detail.value
+    })
+  },
 
   /**
    * 寄宠人姓名
@@ -290,6 +301,8 @@ Page({
       "receiverPhone": this.data.receivePhone,
       "senderName": this.data.sendName,
       "senderPhone": this.data.sendPhone,
+
+      "remarks": this.data.remark,
     }
 
     if (this.data.airbox != null) {

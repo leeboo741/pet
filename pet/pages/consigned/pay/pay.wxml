@@ -1,4 +1,4 @@
-<view class='container'>
+<view class='container' style="margin-bottom: 130rpx;">
   <!--寄宠人信息-->
   <view class='block-fillet sendInfo'>
     <view class='sendTip'>
@@ -50,6 +50,17 @@
             bindinput='inputReceivePhone'>
       </input>
     </view>
+  </view>
+  <!-- 备注信息 -->
+  <view class="block-fillet remark">
+    <view class="remark-title">订单备注</view>
+    <textarea class="remark-content"
+              placeholder="请输入订单备注信息"
+              placeholder-class="remark-content-placeholder"
+              auto-height='{{true}}'
+              bindinput='remarkInput'>
+    
+    </textarea>
   </view>
   <!--确认宠物条件-->
   <view class='block-fillet agreement'>
