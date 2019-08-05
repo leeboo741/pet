@@ -12,7 +12,8 @@
           <view class='mymoney'>
             <label>余额：</label>
             <label class="money">1000元</label>
-            <view class='recharge'bindtap='gotoRecharge'>
+            <view class='recharge' 
+                  bindtap='gotoRecharge'>
               <label>充值</label>
             </view>
           </view>
@@ -20,9 +21,11 @@
         <!--按钮-->
         <view class='btn'>
           <!--设置按钮-->
-          <icon class='iconfont iconshezhi-' bindtap='tapSetting'></icon>
+          <icon class='iconfont iconshezhi-' 
+                bindtap='tapSetting'></icon>
           <!--联系客服按钮-->
-          <icon class='iconfont iconkefu' bindtap='tapCall'></icon>
+          <icon class='iconfont iconkefu' 
+                bindtap='tapCall'></icon>
         </view>
       </view>
     </view>
@@ -30,23 +33,28 @@
     <!--常用功能-->
     <view class='block-fillet common'>
       <view class='description'>
-        <icon class='iconfont iconfengexian fenxian'></icon><label>我的常用</label>
+        <icon class='iconfont iconfengexian fenxian'></icon>
+        <label>我的常用</label>
       </view>
       <view class='btnCommon'>
         <view class="btnOper">
-          <icon class='iconfont iconruku'  bindtap='gotoInHarbour'></icon>
+          <icon class='iconfont iconruku'  
+                bindtap='gotoInHarbour'></icon>
           <label>入港</label>
         </view>
         <view class="btnOper">
-          <icon class='iconfont iconchuku' bindtap='gotoOutHarbour'></icon>
+          <icon class='iconfont iconchuku' 
+                bindtap='gotoOutHarbour'></icon>
           <label>出港</label>
         </view>
         <view class="btnOper">
-          <icon class='iconfont iconscan'  bindtap='gotoCheckBill'></icon>
+          <icon class='iconfont iconscan' 
+                bindtap='gotoCheckBill'></icon>
           <label>查单</label>
         </view>
         <view class="btnOper">
-          <icon class='iconfont icontixian' bindtap='gotoWithDrawal'></icon>
+          <icon class='iconfont icontixian' 
+                bindtap='gotoWithDrawal'></icon>
           <label>提现</label>
         </view>
       </view>
@@ -54,44 +62,255 @@
     <!--订单信息-->
     <!-- 订单类型选择 -->
     <view class='block-fillet order'>
-      <view class='bill-type-button {{selectedBillType==0?"selectedLine":""}}' bindtap='tapButtonTypeAction' data-type="0">待付款</view>
-      <view class='bill-type-button {{selectedBillType==1?"selectedLine":""}}' bindtap='tapButtonTypeAction' data-type="1">待发货</view>
-      <view class='bill-type-button {{selectedBillType==2?"selectedLine":""}}' bindtap='tapButtonTypeAction' data-type="2">待收货</view>
-      <view class='bill-type-button {{selectedBillType==3?"selectedLine":""}}' bindtap='tapButtonTypeAction' data-type="3">已完成</view>
+      <view class='bill-type-button {{selectedBillType==0?"selectedLine":""}}' 
+            bindtap='tapButtonTypeAction' 
+            data-type="0">
+      待付款
+      </view>
+      <view class='bill-type-button {{selectedBillType==1?"selectedLine":""}}' 
+            bindtap='tapButtonTypeAction' 
+            data-type="1">
+      待发货
+      </view>
+      <view class='bill-type-button {{selectedBillType==2?"selectedLine":""}}' 
+            bindtap='tapButtonTypeAction' 
+            data-type="2">
+      待收货
+      </view>
+      <view class='bill-type-button {{selectedBillType==3?"selectedLine":""}}' 
+            bindtap='tapButtonTypeAction' 
+            data-type="3">
+      已完成
+      </view>
     </view>
     <!-- 订单列表 -->
     <scroll-view class='block-fillet list-scroll' scroll-y="{{true}}">
-       <!-- 全部 -->
-      <view wx:if="{{selectedBillType==0}}" wx:for="{{billList}}" wx:for-item="billItem" wx:for-index="billIndex" wx:key="{{billItem.ddbh}}">
+      <!-- 待付款 -->
+      <view wx:if="{{selectedBillType==0}}"
+            wx:for="{{unpayList}}" 
+            wx:for-item="unpayItem" 
+            wx:for-index="unpayIndex" 
+            wx:key="{{unpayIndex}}">
         <!-- 单据信息 -->
         <view class='bill-info-box'>
-            <view class='bill-info-icon'><icon class='iconfont iconfeiji1'></icon></view>
-            <view class='bill-info-billNo'>{{billItem.orderNo}}</view>
-            <view class='bill-info-time'>{{billItem.express}}</view>
+            <view class='bill-info-icon'>
+              <icon class='iconfont iconfeiji1'>
+              </icon>
+            </view>
+            <view class='bill-info-billNo'>
+            {{unpayItem.orderNo}}
+            </view>
+            <view class='bill-info-time'>
+            {{unpayItem.express}}
+            </view>
         </view>
         <view class='bill-info-split-line'></view>
         <view class='bill-info-content'>
           <view class='bill-info-way'>
-            <view class='bill-info-way-date'>{{billItem.orderDate}}</view>
-            <view class='bill-info-way-start'>{{billItem.startCity}}</view>
+            <view class='bill-info-way-date'>{{unpayItem.orderDate}}</view>
+            <view class='bill-info-way-start'>{{unpayItem.startCity}}</view>
             <view class='bill-info-way-split'>-</view>
-            <view class='bill-info-way-end'>{{billItem.endCity}}</view>
+            <view class='bill-info-way-end'>{{unpayItem.endCity}}</view>
           </view>
           <view class='bill-info-pet'>
-            <view class='bill-info-pet-type'>{{billItem.petBreed}}</view>
-            <view class='bill-info-pet-info'>{{billItem.petType}}</view>
-            <view class='bill-info-pet-mode'>{{billItem.transportType}}</view>
+            <view class='bill-info-pet-type'>{{unpayItem.petBreed}}</view>
+            <view class='bill-info-pet-info'>{{unpayItem.petType}}</view>
+            <view class='bill-info-pet-mode'>{{unpayItem.transportType}}</view>
           </view>
           <view class='bill-info-pay'>
-            <view class='bill-info-pay-label'>支付状态</view>
-            <view class='bill-info-pay-info'>{{billItem.payState}}</view>
-            <view class='bill-info-pay-money'>￥{{billItem.amount}}</view>
+            <view class='bill-info-pay-label'>支付状态:</view>
+            <view class='bill-info-pay-info'>{{unpayItem.state}}</view>
+            <view class='bill-info-pay-money'>￥{{unpayItem.amount}}</view>
           </view>
         </view>
         <!-- 按钮区域 -->
         <view class='bill-operate-box'>
-          <view class='bill-operate-button' bindtap='tapSimilarStore' data-tapindex="{{billAllIndex}}">订单详情</view>
-          <view class='bill-operate-button-complain' bindtap='tapComplainAction' data-tapindex="{{billAllIndex}}">投诉</view>
+          <view class='bill-operate-button'
+                bindtap='tapCancelOrder' 
+                data-tapindex="{{unpayIndex}}"
+                data-orderno='{{unpayItem.orderNo}}'>
+          取消订单
+          </view>
+          <view class='bill-operate-button'
+                bindtap='tapOrderDetail' 
+                data-tapindex="{{unpayIndex}}"
+                data-orderno='{{unpayItem.orderNo}}'>
+          订单详情
+          </view>
+          <view class='bill-operate-button-complain' 
+                bindtap='tapToPay' 
+                data-tapindex="{{unpayIndex}}"
+                data-orderno='{{unpayItem.orderNo}}'>
+          去支付
+          </view>
+        </view>
+      </view>
+      <!-- 待发货 -->
+      <view wx:if="{{selectedBillType==1}}"
+            wx:for="{{unsendList}}" 
+            wx:for-item="unsendItem" 
+            wx:for-index="unsendIndex" 
+            wx:key="{{unsendIndex}}">
+        <!-- 单据信息 -->
+        <view class='bill-info-box'>
+            <view class='bill-info-icon'>
+              <icon class='iconfont iconfeiji1'>
+              </icon>
+            </view>
+            <view class='bill-info-billNo'>
+            {{unsendItem.orderNo}}
+            </view>
+            <view class='bill-info-time'>
+            {{unsendItem.express}}
+            </view>
+        </view>
+        <view class='bill-info-split-line'></view>
+        <view class='bill-info-content'>
+          <view class='bill-info-way'>
+            <view class='bill-info-way-date'>{{unsendItem.orderDate}}</view>
+            <view class='bill-info-way-start'>{{unsendItem.startCity}}</view>
+            <view class='bill-info-way-split'>-</view>
+            <view class='bill-info-way-end'>{{unsendItem.endCity}}</view>
+          </view>
+          <view class='bill-info-pet'>
+            <view class='bill-info-pet-type'>{{unsendItem.petBreed}}</view>
+            <view class='bill-info-pet-info'>{{unsendItem.petType}}</view>
+            <view class='bill-info-pet-mode'>{{unsendItem.transportType}}</view>
+          </view>
+          <view class='bill-info-pay'>
+            <view class='bill-info-pay-label'>支付状态:</view>
+            <view class='bill-info-pay-info'>{{unsendItem.state}}</view>
+            <view class='bill-info-pay-money'>￥{{unsendItem.amount}}</view>
+          </view>
+        </view>
+        <!-- 按钮区域 -->
+        <view class='bill-operate-box'>
+          <view class='bill-operate-button'
+                bindtap='tapCancelOrder' 
+                data-tapindex="{{unsendIndex}}"
+                data-orderno='{{unsendItem.orderNo}}'>
+          取消订单
+          </view>
+          <view class='bill-operate-button'
+                bindtap='tapOrderDetail' 
+                data-tapindex="{{unsendIndex}}"
+                data-orderno='{{unsendItem.orderNo}}'>
+          订单详情
+          </view>
+          <view class='bill-operate-button-complain' 
+                bindtap='tapComplain' 
+                data-tapindex="{{unsendIndex}}"
+                data-orderno='{{unsendItem.orderNo}}'>
+          投诉
+          </view>
+        </view>
+      </view>
+      <!-- 待收货 -->
+      <view wx:if="{{selectedBillType==2}}"
+            wx:for="{{unreceiveList}}" 
+            wx:for-item="unreceiveItem" 
+            wx:for-index="unreceiveIndex" 
+            wx:key="{{unreceiveIndex}}">
+        <!-- 单据信息 -->
+        <view class='bill-info-box'>
+            <view class='bill-info-icon'>
+              <icon class='iconfont iconfeiji1'>
+              </icon>
+            </view>
+            <view class='bill-info-billNo'>
+            {{unreceiveItem.orderNo}}
+            </view>
+            <view class='bill-info-time'>
+            {{unreceiveItem.express}}
+            </view>
+        </view>
+        <view class='bill-info-split-line'></view>
+        <view class='bill-info-content'>
+          <view class='bill-info-way'>
+            <view class='bill-info-way-date'>{{unreceiveItem.orderDate}}</view>
+            <view class='bill-info-way-start'>{{unreceiveItem.startCity}}</view>
+            <view class='bill-info-way-split'>-</view>
+            <view class='bill-info-way-end'>{{unreceiveItem.endCity}}</view>
+          </view>
+          <view class='bill-info-pet'>
+            <view class='bill-info-pet-type'>{{unreceiveItem.petBreed}}</view>
+            <view class='bill-info-pet-info'>{{unreceiveItem.petType}}</view>
+            <view class='bill-info-pet-mode'>{{unreceiveItem.transportType}}</view>
+          </view>
+          <view class='bill-info-pay'>
+            <view class='bill-info-pay-label'>支付状态:</view>
+            <view class='bill-info-pay-info'>{{unreceiveItem.state}}</view>
+            <view class='bill-info-pay-money'>￥{{unreceiveItem.amount}}</view>
+          </view>
+        </view>
+        <!-- 按钮区域 -->
+        <view class='bill-operate-box'>
+          <view class='bill-operate-button'
+                bindtap='tapOrderDetail' 
+                data-tapindex="{{unreceiveIndex}}"
+                data-orderno='{{unreceiveItem.orderNo}}'>
+          订单详情
+          </view>
+          <view class='bill-operate-button-complain' 
+                bindtap='tapComplain' 
+                data-tapindex="{{unreceiveIndex}}"
+                data-orderno='{{unreceiveItem.orderNo}}'>
+          投诉
+          </view>
+        </view>
+      </view>
+      <!-- 待收货 -->
+      <view wx:if="{{selectedBillType==3}}"
+            wx:for="{{completeList}}" 
+            wx:for-item="completeItem" 
+            wx:for-index="completeIndex" 
+            wx:key="{{completeIndex}}">
+        <!-- 单据信息 -->
+        <view class='bill-info-box'>
+            <view class='bill-info-icon'>
+              <icon class='iconfont iconfeiji1'>
+              </icon>
+            </view>
+            <view class='bill-info-billNo'>
+            {{completeItem.orderNo}}
+            </view>
+            <view class='bill-info-time'>
+            {{completeItem.express}}
+            </view>
+        </view>
+        <view class='bill-info-split-line'></view>
+        <view class='bill-info-content'>
+          <view class='bill-info-way'>
+            <view class='bill-info-way-date'>{{completeItem.orderDate}}</view>
+            <view class='bill-info-way-start'>{{completeItem.startCity}}</view>
+            <view class='bill-info-way-split'>-</view>
+            <view class='bill-info-way-end'>{{completeItem.endCity}}</view>
+          </view>
+          <view class='bill-info-pet'>
+            <view class='bill-info-pet-type'>{{completeItem.petBreed}}</view>
+            <view class='bill-info-pet-info'>{{completeItem.petType}}</view>
+            <view class='bill-info-pet-mode'>{{completeItem.transportType}}</view>
+          </view>
+          <view class='bill-info-pay'>
+            <view class='bill-info-pay-label'>支付状态:</view>
+            <view class='bill-info-pay-info'>{{completeItem.state}}</view>
+            <view class='bill-info-pay-money'>￥{{completeItem.amount}}</view>
+          </view>
+        </view>
+        <!-- 按钮区域 -->
+        <view class='bill-operate-box'>
+          <view class='bill-operate-button'
+                bindtap='tapOrderDetail' 
+                data-tapindex="{{completeIndex}}"
+                data-orderno='{{completeItem.orderNo}}'>
+          订单详情
+          </view>
+          <view class='bill-operate-button-complain' 
+                bindtap='tapComplain' 
+                data-tapindex="{{completeIndex}}"
+                data-orderno='{{completeItem.orderNo}}'>
+          投诉
+          </view>
         </view>
       </view>
     </scroll-view>

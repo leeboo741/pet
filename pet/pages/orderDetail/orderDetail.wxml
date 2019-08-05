@@ -1,0 +1,127 @@
+<!--pages/orderDetail/orderDetail.wxml-->
+<i-panel i-class="panel" 
+         title='订单内容'>
+  <i-cell-group>
+    <i-cell title='订单编号' 
+            value='{{orderData.orderNo}}'></i-cell>
+    <i-cell title='订单时间' 
+            value='{{orderData.orderDate}}'></i-cell>
+    <i-cell title='订单状态' 
+            value='{{orderData.state}}'></i-cell>
+    <i-cell title='物流公司' 
+            value='{{orderData.express}}'></i-cell>
+    <i-cell title='物流区间' 
+            value='{{orderData.startCity}}-{{orderData.endCity}}'></i-cell>
+    <i-cell title='运输方式' 
+            value='{{orderData.transportType}}'></i-cell>
+    <i-cell title='宠物数量' 
+            value='{{orderData.count}}'></i-cell>
+    <i-cell title='宠物重量' 
+            value='{{orderData.weight}}kg'></i-cell>
+    <i-cell title='宠物种类' 
+            value='{{orderData.petType}}'></i-cell>
+    <i-cell title='宠物品种' 
+            value='{{orderData.petBreed}}'></i-cell>
+  </i-cell-group>
+</i-panel>
+<i-panel i-class="panel" 
+         title='增值服务'>
+  <i-cell-group>
+    <i-cell title='购买航空箱' 
+            value='{{(orderData.airbox==null||orderData.airbox==0)?"否":"是"}}'></i-cell>
+    <i-cell title='上门接宠' 
+            value='{{(orderData.receivePetAddress==null||orderData.receivePetAddress.length<=0)?"否":"是"}}' 
+            label="{{orderData.receivePetAddress}}"></i-cell>
+    <i-cell title='送宠到家' 
+            value='{{(orderData.sendPetAddress==null||orderData.sendPetAddress.length<=0)?"否":"是"}}' 
+            label="{{orderData.sendPetAddress}}"></i-cell>
+    <i-cell title='保价' 
+            value='{{(orderData.insuredPrice==null||orderData.insuredPrice==0)?"否":"是"}}' 
+            label="{{(orderData.insuredPrice==null||orderData.insuredPrice==0)?'':'￥'+order.insuredPrice}}"></i-cell>
+    <i-cell title='免费营养罐头' 
+            value='{{(orderData.petCan==null||orderData.petCan==0)?"否":"是"}}'></i-cell>
+  </i-cell-group>
+</i-panel>
+<i-panel i-class="panel" 
+         title='收寄人信息'>
+  <i-cell-group>
+    <i-cell title='寄件人' 
+            value='{{orderData.sendCustomerPhone}}'
+            label='{{orderData.sendCustomerName}}'></i-cell>
+    <i-cell title='收件人' 
+            value='{{orderData.receiveCustomerPhone}}' 
+            label="{{orderData.receiveCustomerName}}"></i-cell>
+  </i-cell-group>
+</i-panel>
+<i-panel i-class="panel" 
+         title='备注'
+         wx:if="{{orderData.remark!=null && orderData.remark.length > 0}}">
+  <view class="remark">
+  {{orderData.remark}}
+  </view>
+</i-panel>
+<i-panel i-class="panel"
+         title='物流信息'>
+  <i-steps i-class='steps'
+           direction="vertical">
+    <i-step wx:for='{{orderData.stepList}}'
+            wx:for-item='stepItem'
+            wx:for-index='stepIndex'
+            wx:key='{{stepIndex}}'
+            status="{{parse.getStepStatus(stepItem.state)}}">
+      <view slot="title" 
+            class="step-title-area">
+        <view class="step-title-content">
+        {{stepItem.step}}
+        </view>
+        <view class="step-title-time">
+        {{stepItem.time}}
+        </view> 
+      </view>
+      <view slot="content" 
+            class="step-content-area">
+        <view class="step-content-image-area">
+          <view wx:for='{{stepItem.images}}'
+                wx:for-item='stepImageItem'
+                wx:for-index='stepImageIndex'
+                wx:key='{{stepImageIndex}}'
+                class="step-content-image-box">
+            <image class="step-content-image"
+                   src="{{stepImageItem}}"
+                   lazy-load="{{true}}"
+                   mode="scaleToFit"
+                   bindtap="tapImage"
+                   data-stepindex='{{stepIndex}}'
+                   data-imageindex='{{stepImageIndex}}'>
+            </image>
+          </view>
+        </view>
+        <view class="step-content-video-area"
+              wx:if="{{stepItem.video}}">
+          <video src="{{stepItem.video}}" 
+                 data-id="{{index}}" 
+                 class='video'
+                 objectFit='contain'
+                 controls>
+          </video>
+        </view>
+      </view>
+    </i-step>
+  </i-steps>
+</i-panel>
+
+<wxs module='parse'>
+  module.exports={
+    getStepStatus: function(state){
+      if (state == '已完成') {
+        return "finish";
+      } else if (state == '进行中') {
+        return "process";
+      } else if (state == '出错') {
+        return "error";
+      } else {
+        return "wait";
+      }
+    }
+  }
+</wxs>

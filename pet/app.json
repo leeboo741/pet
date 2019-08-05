@@ -12,7 +12,9 @@
     "pages/withdrawal/withdrawal",
     "pages/index/index",
     "pages/logistics/logistics",
-    "pages/register/register"
+    "pages/register/register",
+    "pages/orderDetail/orderDetail",
+    "pages/consigned/inHarbour/inHarbour"
   ],
   "window": {
     "backgroundTextStyle": "light",

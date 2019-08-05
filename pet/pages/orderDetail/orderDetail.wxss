@@ -1,0 +1,63 @@
+/* pages/orderDetail/orderDetail.wxss */
+.panel{
+  background: rgb(240, 240, 240);
+}
+
+.remark{
+  font-size: 28rpx;
+  color: #1c2438;
+  padding: 30rpx;
+}
+
+.steps{
+  padding: 30rpx;
+}
+
+.step-title-area{
+  display: flex;
+  flex-direction: column;
+}
+
+.step-title-content{
+  font-size: 28rpx;
+  color: #1c2438;
+}
+
+.step-title-time{
+  font-size: 24rpx;
+  color: gray;
+}
+
+.step-content-area{
+  display: flex;
+  flex-direction: column;
+}
+
+.step-content-image-area{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.step-content-image-box{
+  display: flex;
+  width: 30%;
+  height: 200rpx;
+  align-items: center;
+  justify-content: center;
+  margin: 5rpx;
+}
+
+.step-content-image{
+  width: 100%;
+  height: 100%;
+}
+
+.step-content-video-area{
+
+}
+
+.video{
+
+}

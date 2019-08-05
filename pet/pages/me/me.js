@@ -24,25 +24,123 @@ Page({
    */
   data: {
     userInfo: null, // 用户信息
-    selectedBillType: 0,
-    billList: [
+    selectedBillType: 0, // 选中单据类型
+    unpayList:[
       {
-        shjda: {
-          shjmch: '测试商家' // 商家名称
+        shjda:{
+          shjmch: "测试商家"
         }, // 商家
-        express: '江西舒宠快运', // 快递
-        ontime: '11:11:11',
-        orderNo:'19050611111111', // 单号
-        amount:10000, // 价格
-        orderDate: "2019-06-01", // 下单日期
-        startCity: "南昌", // 始发城市
+        express: "江西舒宠快运", // 快递
+        orderDate: "2019-06-01 11:12:32", // 下单时间
+        orderNo: "1905061231112311", // 单号
+        amount: 100000, // 金额
+        startCity: '南昌', // 始发城市
         endCity: "北京", // 收货城市
         petBreed: "哈士奇", // 宠物品种
-        petType: "小母狗", // 宠物类型
-        transportType: "空运单非", // 运输类型
-        payState: "已支付", // 支付状态
-      }
-    ]
+        petType: "狗", // 宠物类型
+        transportType: "空运单飞", // 运输类型
+        state: "待支付", // 状态
+        count: 1, // 数量
+        weight: 10, // 重量
+        airbox: null, // 是否购买航空箱
+        receivePetAddress: null, // 上门接宠地址
+        sendPetAddress: null, // 送宠到家地址
+        insuredPrice: 0, // 保价金额
+        petCan: null, // 是否领取免费罐头
+        sendCustomerName: '李三', // 寄件人名称
+        receiveCustomerName: '张思', // 收件人名称
+        sendCustomerPhone: '16678542215', // 寄件人电话
+        receiveCustomerPhone: '18542214571', // 收件人电话
+        remark: "ceshiceshi", // 订单备注
+      },
+    ], // 待支付
+    unsendList: [
+      {
+        shjda: {
+          shjmch: "测试商家"
+        }, // 商家
+        express: "江西舒宠快运", // 快递
+        orderDate: "2019-06-01 11:12:32", // 下单时间
+        orderNo: "1905061231112311", // 单号
+        amount: 100000, // 金额
+        startCity: '南昌', // 始发城市
+        endCity: "北京", // 收货城市
+        petBreed: "哈士奇", // 宠物品种
+        petType: "狗", // 宠物类型
+        transportType: "空运单飞", // 运输类型
+        state: "待发货", // 状态
+        count: 1, // 数量
+        weight: 10, // 重量
+        airbox: null, // 是否购买航空箱
+        receivePetAddress: null, // 上门接宠地址
+        sendPetAddress: null, // 送宠到家地址
+        insuredPrice: 0, // 保价金额
+        petCan: null, // 是否领取免费罐头
+        sendCustomerName: '李三', // 寄件人名称
+        receiveCustomerName: '张思', // 收件人名称
+        sendCustomerPhone: '16678542215', // 寄件人电话
+        receiveCustomerPhone: '18542214571', // 收件人电话
+        remark: "ceshiceshi", // 订单备注
+      },
+    ], // 待发货
+    unreceiveList: [
+      {
+        shjda: {
+          shjmch: "测试商家"
+        }, // 商家
+        express: "江西舒宠快运", // 快递
+        orderDate: "2019-06-01 11:12:32", // 下单时间
+        orderNo: "1905061231112311", // 单号
+        amount: 100000, // 金额
+        startCity: '南昌', // 始发城市
+        endCity: "北京", // 收货城市
+        petBreed: "哈士奇", // 宠物品种
+        petType: "狗", // 宠物类型
+        transportType: "空运单飞", // 运输类型
+        state: "待收货", // 状态
+        count: 1, // 数量
+        weight: 10, // 重量
+        airbox: null, // 是否购买航空箱
+        receivePetAddress: null, // 上门接宠地址
+        sendPetAddress: null, // 送宠到家地址
+        insuredPrice: 0, // 保价金额
+        petCan: null, // 是否领取免费罐头
+        sendCustomerName: '李三', // 寄件人名称
+        receiveCustomerName: '张思', // 收件人名称
+        sendCustomerPhone: '16678542215', // 寄件人电话
+        receiveCustomerPhone: '18542214571', // 收件人电话
+        remark: "ceshiceshi", // 订单备注
+      },
+    ], // 待收货
+    completeList: [
+      {
+        shjda: {
+          shjmch: "测试商家"
+        }, // 商家
+        express: "江西舒宠快运", // 快递
+        orderDate: "2019-06-01 11:12:32", // 下单时间
+        orderNo: "1905061231112311", // 单号
+        amount: 100000, // 金额
+        startCity: '南昌', // 始发城市
+        endCity: "北京", // 收货城市
+        petBreed: "哈士奇", // 宠物品种
+        petType: "狗", // 宠物类型
+        transportType: "空运单飞", // 运输类型
+        state: "已完成", // 状态
+        count: 1, // 数量
+        weight: 10, // 重量
+        airbox: null, // 是否购买航空箱
+        receivePetAddress: null, // 上门接宠地址
+        sendPetAddress: null, // 送宠到家地址
+        insuredPrice: 0, // 保价金额
+        petCan: null, // 是否领取免费罐头
+        sendCustomerName: '李三', // 寄件人名称
+        receiveCustomerName: '张思', // 收件人名称
+        sendCustomerPhone: '16678542215', // 寄件人电话
+        receiveCustomerPhone: '18542214571', // 收件人电话
+        remark: "ceshiceshi", // 订单备注
+      },
+    ], // 已完成
   },
 
 
@@ -89,6 +187,37 @@ Page({
   /** ================================= 生命周期 End ==================================== */
 
   /** ================================= 页面事件 Start ==================================== */
+
+  /**
+   * 投诉
+   */
+  tapComplain: function (e) {
+    console.log("投诉：\n" + e.currentTarget.dataset.orderno)
+  },
+
+  /**
+   * 订单详情
+   */
+  tapOrderDetail: function (e) {
+    console.log("详情：\n" + e.currentTarget.dataset.orderno)
+    wx.navigateTo({
+      url: '../orderDetail/orderDetail',
+    })
+  },
+
+  /**
+   * 取消订单
+   */
+  tapCancelOrder: function (e) {
+    console.log("取消：\n" + e.currentTarget.dataset.orderno)
+  },
+
+  /**
+   * 支付订单
+   */
+  tapToPay: function (e) {
+    console.log("支付：\n" + e.currentTarget.dataset.orderno)
+  },
 
   /**
    * 点击呼叫
@@ -188,7 +317,7 @@ Page({
   /**
    * 请求单据
    */
-  requestBillList: function () {
+  requestBillList: function (billType) {
     wx.showLoading({
       title: '请稍等...',
     })
