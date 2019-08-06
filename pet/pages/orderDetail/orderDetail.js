@@ -130,5 +130,17 @@ Page({
    */
   onShareAppMessage: function () {
 
-  }
+  },
+
+  /**
+   * 点击图片
+   */
+  tapImage: function (e) {
+    let tempOrder = this.data.orderData.stepList[e.currentTarget.dataset.stepindex];
+    let currrentUrl = e.currentTarget.dataset.imageurl;
+    wx.previewImage({
+      urls: tempOrder.images,
+      current: currrentUrl
+    })
+  },
 })

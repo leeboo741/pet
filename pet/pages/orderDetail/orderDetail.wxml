@@ -92,7 +92,7 @@
                    mode="scaleToFit"
                    bindtap="tapImage"
                    data-stepindex='{{stepIndex}}'
-                   data-imageindex='{{stepImageIndex}}'>
+                   data-imageurl='{{stepImageItem}}'>
             </image>
           </view>
         </view>

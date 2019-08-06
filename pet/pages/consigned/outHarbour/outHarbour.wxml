@@ -41,7 +41,10 @@
           <image class="bill-image"
                  src="{{orderImageItem}}"
                  lazy-load="{{true}}"
-                 mode="scaleToFit">
+                 mode="scaleToFit"
+                 bindtap="tapImage"
+                 data-orderindex='{{orderIndex}}'
+                 data-imageurl='{{orderImageItem}}'>
           </image>      
         </view>
         <!-- 单据内将要上传的图片 -->
@@ -53,7 +56,10 @@
           <image class="bill-image"
                  src="{{orderImageItem}}"
                  lazy-load="{{true}}"
-                 mode="scaleToFit">
+                 mode="scaleToFit"
+                 bindtap="tapImage"
+                 data-orderindex='{{orderIndex}}'
+                 data-imageurl='{{orderImageItem}}'>
           </image>
           <image class="bill-image-delete"
                  src="/resource/delete.png"
