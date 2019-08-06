@@ -5,6 +5,8 @@
  */
 
 const app = getApp();
+const maxImageCount = 8;
+const maxVideoLength = 30;
 
 Page({
 
@@ -62,6 +64,13 @@ Page({
         sendCustomerPhone: '16678542215', // 寄件人电话
         receiveCustomerPhone: '18542214571', // 收件人电话
         remark: "", // 订单备注
+        images: [
+          "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1564985161453&di=6e36fd20ecd7cc47ca483684829669d4&imgtype=0&src=http%3A%2F%2Fpic51.nipic.com%2Ffile%2F20141025%2F8649940_220505558734_2.jpg",
+          "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1564985161453&di=4439ed00d168eeb2b2695235fa6f6aa7&imgtype=0&src=http%3A%2F%2Fpic26.nipic.com%2F20130121%2F9252150_101440518391_2.jpg",
+          "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1564985161453&di=6e36fd20ecd7cc47ca483684829669d4&imgtype=0&src=http%3A%2F%2Fpic51.nipic.com%2Ffile%2F20141025%2F8649940_220505558734_2.jpg",
+          "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1564985161453&di=4439ed00d168eeb2b2695235fa6f6aa7&imgtype=0&src=http%3A%2F%2Fpic26.nipic.com%2F20130121%2F9252150_101440518391_2.jpg",
+          ],
+        video: "http://wxsnsdy.tc.qq.com/105/20210/snsdyvideodownload?filekey=30280201010421301f0201690402534804102ca905ce620b1241b726bc41dcff44e00204012882540400&bizid=1023&hy=SH&fileparam=302c020101042530230204136ffd93020457e3c4ff02024ef202031e8d7f02030f42400204045a320a0201000400",
       },
     ], // 订单列表
   },
@@ -121,11 +130,65 @@ Page({
   },
 
   /**
-   * 点击上传
+   * 处理
    */
-  tapUpdate: function (e) {
+  handleReadyToUpload: function (order) {
+    if ((order.uploadImages == null || order.uploadImages.length <= 0)
+      && (order.uploadVideo == null || order.uploadVideo.length <= 0)) {
+      order.readyToUpload = false;
+    } else {
+      order.readyToUpload = true;
+    }
+    this.setData({
+      orderList: this.data.orderList
+    })
+  },
+
+  /**
+   * 删除视频
+   */
+  deleteUploadVideo: function (e) {
     let tempOrder = this.data.orderList[e.currentTarget.dataset.tapindex];
-    let tempImageCount = 6;
+    tempOrder.uploadVideo = null;
+    this.handleReadyToUpload(tempOrder);
+  },
+
+  /**
+   * 删除上传图片
+   */
+  deleteUploadImage: function (e) {
+    let tempOrder = this.data.orderList[e.currentTarget.dataset.tapindex];
+    tempOrder.uploadImages.splice(e.currentTarget.dataset.imageindex,1);
+    this.handleReadyToUpload(tempOrder);
+  },
+
+  /**
+   * 取消上传
+   */
+  tapCancelUpload: function (e) {
+    let tempOrder = this.data.orderList[e.currentTarget.dataset.tapindex];
+    tempOrder.uploadImages = null;
+    tempOrder.uploadVideo = null;
+    this.handleReadyToUpload(tempOrder);
+  },
+
+  /**
+   * 确定上传
+   */
+  tapConfirmUpload: function (e) {
+    let tempOrder = this.data.orderList[e.currentTarget.dataset.tapindex];
+    console.log("需要上传的文件 => \n图片:\n"+JSON.stringify(tempOrder.uploadImages)+"\n视频：\n"+JSON.stringify(tempOrder.uploadVideo));
+  },
+
+  /**
+   * 点击准备上传
+   */
+  tapUpload: function (e) {
+    let tempOrder = this.data.orderList[e.currentTarget.dataset.tapindex];
+    let tempImageCount = maxImageCount;
+    if (tempOrder.images != null) {
+      tempImageCount = tempImageCount - tempOrder.images.length;
+    }
     if (tempOrder.uploadImages != null) {
       tempImageCount = tempImageCount - tempOrder.uploadImages.length;
     }
@@ -135,31 +198,49 @@ Page({
       success(res) {
         console.log(res.tapIndex)
         if(res.tapIndex == 0) {
+          if (tempOrder.image != null && tempOrder.images.length >= maxImageCount) {
+            wx.showToast({
+              title: '已经上传全部'+maxImageCount+'张图片',
+              icon:'none'
+            })
+            return;
+          }
           if (tempImageCount <= 0) {
             wx.showToast({
-              title: '上传图片达到最大数量',
+              title: '可上传图片达到最大数量，请先取消部分图片',
               icon: "none",
             })
             return;
           }
-          let that2 = that;
           wx.chooseImage({
             count: tempImageCount,
             success: function(res) {
               if (tempOrder.uploadImages == null) {
                 tempOrder.uploadImages = [];
               }
-              tempOrder.uploadImages = tempOrder.uploadImages.concat(res.tempFilePaths);
-              that2.setData({
-                orderList: that2.data.orderList
-              })
+              if (res.tempFilePaths != null && res.tempFilePaths.length > 0) {
+                tempOrder.uploadImages = tempOrder.uploadImages.concat(res.tempFilePaths);
+                that.handleReadyToUpload(tempOrder);
+              }
             },
           })
         } else {
+          if (tempOrder.video != null && tempOrder.video.length > 0) {
+            wx.showToast({
+              title: '已经上传视频，请勿重复上传！',
+              icon:'none'
+            })
+            return;
+          }
           wx.chooseVideo({
-            
+            maxDuration: maxVideoLength,
+            success(res) {
+              if (res.tempFilePath != null && res.tempFilePath.length > 0) {
+                tempOrder.uploadVideo = res.tempFilePath;
+                that.handleReadyToUpload(tempOrder);
+              }
+            }
           })
-
         }
       },
     })
