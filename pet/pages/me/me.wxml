@@ -107,20 +107,32 @@
         <view class='bill-info-split-line'></view>
         <view class='bill-info-content'>
           <view class='bill-info-way'>
-            <view class='bill-info-way-date'>{{unpayItem.orderDate}}</view>
-            <view class='bill-info-way-start'>{{unpayItem.startCity}}</view>
+            <view class='bill-info-way-date'>{{unpayItem.orderDate}} {{unpayItem.orderTime}}</view>
+            <view class='bill-info-way-start'>{{unpayItem.transport.startCity}}</view>
             <view class='bill-info-way-split'>-</view>
-            <view class='bill-info-way-end'>{{unpayItem.endCity}}</view>
+            <view class='bill-info-way-end'>{{unpayItem.transport.endCity}}</view>
           </view>
           <view class='bill-info-pet'>
-            <view class='bill-info-pet-type'>{{unpayItem.petBreed}}</view>
-            <view class='bill-info-pet-info'>{{unpayItem.petType}}</view>
-            <view class='bill-info-pet-mode'>{{unpayItem.transportType}}</view>
+            <view class='bill-info-pet-type'>{{unpayItem.petClassify.petClassifyName}}</view>
+            <view class='bill-info-pet-info'>{{unpayItem.petType.petTypeName}}</view>
+            <view class='bill-info-pet-mode'>{{parse.getTransportType(unpayItem.transport.transportType)}}</view>
+          </view>
+          <view class="bill-info-person">
+            <view class="bill-info-person-label">寄件人：</view>
+            <view class="bill-info-person-name">{{unpayItem.senderName}}</view>
+            <view class="bill-info-person-label">电话：</view>
+            <view class="bill-info-person-phone">{{unpayItem.senderPhone}}</view>
+          </view>
+          <view class="bill-info-person">
+            <view class="bill-info-person-label">收件人：</view>
+            <view class="bill-info-person-name">{{unpayItem.receiverName}}</view>
+            <view class="bill-info-person-label">电话：</view>
+            <view class="bill-info-person-phone">{{unpayItem.receiverPhone}}</view>
           </view>
           <view class='bill-info-pay'>
-            <view class='bill-info-pay-label'>支付状态:</view>
+            <view class='bill-info-pay-label'>支付状态：</view>
             <view class='bill-info-pay-info'>{{unpayItem.state}}</view>
-            <view class='bill-info-pay-money'>￥{{unpayItem.amount}}</view>
+            <view class='bill-info-pay-money'>￥{{unpayItem.paymentAmount}}</view>
           </view>
         </view>
         <!-- 按钮区域 -->
@@ -167,20 +179,32 @@
         <view class='bill-info-split-line'></view>
         <view class='bill-info-content'>
           <view class='bill-info-way'>
-            <view class='bill-info-way-date'>{{unsendItem.orderDate}}</view>
-            <view class='bill-info-way-start'>{{unsendItem.startCity}}</view>
+            <view class='bill-info-way-date'>{{unsendItem.orderDate}} {{unsendItem.orderTime}}</view>
+            <view class='bill-info-way-start'>{{unsendItem.transport.startCity}}</view>
             <view class='bill-info-way-split'>-</view>
-            <view class='bill-info-way-end'>{{unsendItem.endCity}}</view>
+            <view class='bill-info-way-end'>{{unsendItem.transport.endCity}}</view>
           </view>
           <view class='bill-info-pet'>
-            <view class='bill-info-pet-type'>{{unsendItem.petBreed}}</view>
-            <view class='bill-info-pet-info'>{{unsendItem.petType}}</view>
-            <view class='bill-info-pet-mode'>{{unsendItem.transportType}}</view>
+            <view class='bill-info-pet-type'>{{unsendItem.petClassify.petClassifyName}}</view>
+            <view class='bill-info-pet-info'>{{unsendItem.petType.petTypeName}}</view>
+            <view class='bill-info-pet-mode'>{{parse.getTransportType(unsendItem.transport.transportType)}}</view>
+          </view>
+          <view class="bill-info-person">
+            <view class="bill-info-person-label">寄件人：</view>
+            <view class="bill-info-person-name">{{unsendItem.senderName}}</view>
+            <view class="bill-info-person-label">电话：</view>
+            <view class="bill-info-person-phone">{{unsendItem.senderPhone}}</view>
+          </view>
+          <view class="bill-info-person">
+            <view class="bill-info-person-label">收件人：</view>
+            <view class="bill-info-person-name">{{unsendItem.receiverName}}</view>
+            <view class="bill-info-person-label">电话：</view>
+            <view class="bill-info-person-phone">{{unsendItem.receiverPhone}}</view>
           </view>
           <view class='bill-info-pay'>
             <view class='bill-info-pay-label'>支付状态:</view>
             <view class='bill-info-pay-info'>{{unsendItem.state}}</view>
-            <view class='bill-info-pay-money'>￥{{unsendItem.amount}}</view>
+            <view class='bill-info-pay-money'>￥{{unsendItem.paymentAmount}}</view>
           </view>
         </view>
         <!-- 按钮区域 -->
@@ -227,20 +251,32 @@
         <view class='bill-info-split-line'></view>
         <view class='bill-info-content'>
           <view class='bill-info-way'>
-            <view class='bill-info-way-date'>{{unreceiveItem.orderDate}}</view>
-            <view class='bill-info-way-start'>{{unreceiveItem.startCity}}</view>
+            <view class='bill-info-way-date'>{{unreceiveItem.orderDate}} {{unreceiveItem.orderTime}}</view>
+            <view class='bill-info-way-start'>{{unreceiveItem.transport.startCity}}</view>
             <view class='bill-info-way-split'>-</view>
-            <view class='bill-info-way-end'>{{unreceiveItem.endCity}}</view>
+            <view class='bill-info-way-end'>{{unreceiveItem.transport.endCity}}</view>
           </view>
           <view class='bill-info-pet'>
-            <view class='bill-info-pet-type'>{{unreceiveItem.petBreed}}</view>
-            <view class='bill-info-pet-info'>{{unreceiveItem.petType}}</view>
-            <view class='bill-info-pet-mode'>{{unreceiveItem.transportType}}</view>
+            <view class='bill-info-pet-type'>{{unreceiveItem.petClassify.petClassifyName}}</view>
+            <view class='bill-info-pet-info'>{{unreceiveItem.petType.petTypeName}}</view>
+            <view class='bill-info-pet-mode'>{{parse.getTransportType(unreceiveItem.transport.transportType)}}</view>
+          </view>
+          <view class="bill-info-person">
+            <view class="bill-info-person-label">寄件人：</view>
+            <view class="bill-info-person-name">{{unreceiveItem.senderName}}</view>
+            <view class="bill-info-person-label">电话：</view>
+            <view class="bill-info-person-phone">{{unreceiveItem.senderPhone}}</view>
+          </view>
+          <view class="bill-info-person">
+            <view class="bill-info-person-label">收件人：</view>
+            <view class="bill-info-person-name">{{unreceiveItem.receiverName}}</view>
+            <view class="bill-info-person-label">电话：</view>
+            <view class="bill-info-person-phone">{{unreceiveItem.receiverPhone}}</view>
           </view>
           <view class='bill-info-pay'>
             <view class='bill-info-pay-label'>支付状态:</view>
             <view class='bill-info-pay-info'>{{unreceiveItem.state}}</view>
-            <view class='bill-info-pay-money'>￥{{unreceiveItem.amount}}</view>
+            <view class='bill-info-pay-money'>￥{{unreceiveItem.paymentAmount}}</view>
           </view>
         </view>
         <!-- 按钮区域 -->
@@ -281,20 +317,32 @@
         <view class='bill-info-split-line'></view>
         <view class='bill-info-content'>
           <view class='bill-info-way'>
-            <view class='bill-info-way-date'>{{completeItem.orderDate}}</view>
-            <view class='bill-info-way-start'>{{completeItem.startCity}}</view>
+            <view class='bill-info-way-date'>{{completeItem.orderDate}} {{completeItem.orderTime}}</view>
+            <view class='bill-info-way-start'>{{completeItem.transport.startCity}}</view>
             <view class='bill-info-way-split'>-</view>
-            <view class='bill-info-way-end'>{{completeItem.endCity}}</view>
+            <view class='bill-info-way-end'>{{completeItem.transport.endCity}}</view>
           </view>
           <view class='bill-info-pet'>
-            <view class='bill-info-pet-type'>{{completeItem.petBreed}}</view>
-            <view class='bill-info-pet-info'>{{completeItem.petType}}</view>
-            <view class='bill-info-pet-mode'>{{completeItem.transportType}}</view>
+            <view class='bill-info-pet-type'>{{completeItem.petClassify.petClassifyName}}</view>
+            <view class='bill-info-pet-info'>{{completeItem.petType.petTypeName}}</view>
+            <view class='bill-info-pet-mode'>{{parse.getTransportType(completeItem.transport.transportType)}}</view>
+          </view>
+          <view class="bill-info-person">
+            <view class="bill-info-person-label">寄件人：</view>
+            <view class="bill-info-person-name">{{completeItem.senderName}}</view>
+            <view class="bill-info-person-label">电话：</view>
+            <view class="bill-info-person-phone">{{completeItem.senderPhone}}</view>
+          </view>
+          <view class="bill-info-person">
+            <view class="bill-info-person-label">收件人：</view>
+            <view class="bill-info-person-name">{{completeItem.receiverName}}</view>
+            <view class="bill-info-person-label">电话：</view>
+            <view class="bill-info-person-phone">{{completeItem.receiverPhone}}</view>
           </view>
           <view class='bill-info-pay'>
             <view class='bill-info-pay-label'>支付状态:</view>
             <view class='bill-info-pay-info'>{{completeItem.state}}</view>
-            <view class='bill-info-pay-money'>￥{{completeItem.amount}}</view>
+            <view class='bill-info-pay-money'>￥{{completeItem.paymentAmount}}</view>
           </view>
         </view>
         <!-- 按钮区域 -->
@@ -316,3 +364,22 @@
     </scroll-view>
 
 </view>
+
+<wxs module='parse'>
+  module.exports={
+    getTransportType: function(type){
+      if (type == 0) {
+        return "专车";
+      } else if (type == 1) {
+        return "铁路";
+      } else if (type == 2) {
+        return "单飞";
+      } else if (type == 3) {
+        return "随机";
+      } else {
+        return "大巴";
+      }
+    }
+  }
+
+</wxs>

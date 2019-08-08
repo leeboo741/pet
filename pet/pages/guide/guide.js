@@ -154,7 +154,7 @@ Page({
 
   jumpToHome: function () {
     wx.switchTab({
-      url: '../index/index',
+      url: '/pages/consigned/base/base',
     })
   },
 

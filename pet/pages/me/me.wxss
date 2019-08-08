@@ -66,7 +66,8 @@ page {
 
 .bill-info-billNo {
   margin-left: 10rpx;
-  width: 300rpx;
+  /* width: 300rpx; */
+  flex-grow: 1;
   font-size: 32rpx;
   text-align: left;
 }
@@ -111,6 +112,34 @@ page {
   margin-bottom: 20rpx;
 }
 
+.bill-info-person{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding-left: 20rpx;
+  margin-bottom: 20rpx;
+}
+
+.bill-info-person-label{
+  font-family: sans-serif;
+  font-size: 32rpx;
+  flex-shrink: 0;
+}
+
+.bill-info-person-name{
+  flex-grow: 1;
+  margin-left: 20rpx;
+  font-family: sans-serif;
+  font-size: 32rpx;
+}
+
+.bill-info-person-phone{
+  flex-grow: 1;
+  margin-left: 20rpx;
+  font-family: sans-serif;
+  font-size: 32rpx;
+}
+
 .bill-info-pay {
   margin-bottom: 20rpx;
   padding-left: 20rpx;
@@ -140,7 +169,7 @@ page {
 .bill-info-pay-label {
   font-family: sans-serif;
   font-size: 32rpx;
-  width: 20%;
+  width: 25%;
 }
 
 

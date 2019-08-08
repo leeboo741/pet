@@ -1,4 +1,4 @@
-<view class='container' style="margin-bottom: 130rpx;">
+<view class='container'>
   <!--寄宠人信息-->
   <view class='block-fillet sendInfo'>
     <view class='sendTip'>
@@ -97,6 +97,8 @@
     </view>
   </view>
 </view>
+
+<view style="padding-bottom: 130rpx"></view>
 <view class='subscribe'>
    <!-- 底部客服 -->
    <view class="customerService" bindtap='tapServicePhoneAction'>

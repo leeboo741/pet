@@ -30,16 +30,10 @@
     "position": "bottom",
     "list": [
       {
-        "pagePath": "pages/index/index",
+        "pagePath": "pages/consigned/base/base",
         "text": "首页",
         "iconPath": "resource/tabbar_index_unselected.png",
         "selectedIconPath": "resource/tabbar_index_selected.png"
-      },
-      {
-        "pagePath": "pages/logistics/logistics",
-        "text": "物流",
-        "iconPath": "resource/tabbar_logistics_unselected.png",
-        "selectedIconPath": "resource/tabbar_logistics_selected.png"
       },
       {
         "pagePath": "pages/me/me",

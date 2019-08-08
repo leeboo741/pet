@@ -21,7 +21,7 @@ Page({
         imgPath: 'http://47.99.244.168:6060/static/images/pet3.png'
       },
     ], // banner 数据
-    rate: 2, // 保价费率
+    rate: 0, // 保价费率
     totalPrice: 0, // 总计金额
     beginCity: null, // 始发城市 
     endCity: null, // 目的城市
@@ -86,6 +86,7 @@ Page({
       sendDistrictList: null, // 送宠到家区县列表
       sendDistrict: null, // 送宠到家区县
       address: null, // 地址
+      haveAbleStation: false, // 是否有可用站点
     },
     addServerInsuredPrice: {
       name: "保价",
@@ -143,8 +144,7 @@ Page({
       // 重置 送宠到家 地址 并且关闭 送宠到家
       this.data.addServerSendPet.address = null;
       this.data.addServerSendPet.selected = false;
-      // 根据 始发城市 获取 保价费率
-      this.data.addServerInsuredPrice.rate = 2;
+      
       this.setData({
         beginCity: app.globalData.trainBeginCity, // 设置始发城市
         addServerReceivePet: this.data.addServerReceivePet, // 设置 上门接宠
@@ -152,10 +152,9 @@ Page({
         addServerSendPet: this.data.addServerSendPet, // 重置 送宠到家
         selectedTransportObj: null, // 清空 选中的 运输方式
         transportTypes: this.data.transportTypes, // 重置 运输方式列表 
-        addServerInsuredPrice : this.data.addServerInsuredPrice, // 重置 保价费率
       })
       // 查询保价费率
-      this.requestInsurePriceRate();
+      this.requestInsurePriceRate(app.globalData.trainBeginCity);
     }
     if (app.globalData.trainEndCity != null) {
       // 重置 送宠到家 市区选择器
@@ -168,6 +167,8 @@ Page({
       })
       // 查询可用的运输方式列表
       this.checkAbleTransportType();
+      // 查询是否有可用站点
+      this.checkAbleStation(app.globalData.trainEndCity);
     }
   },
 
@@ -377,6 +378,7 @@ Page({
             petType: that.data.petTypes[res.tapIndex],
             petClassify: null
           })
+          that.predictPrice();
         },
         fail: function (res) {
           console.log(res.errMsg)
@@ -603,10 +605,10 @@ Page({
       tempUrl = tempUrl + "&airbox=1";
     }
     if (this.data.addServerReceivePet.selected) {
-      tempUrl = tempUrl + "&receiveaddress=" + this.data.addServerReceivePet.receiveDistrict + this.data.addServerReceivePet.address;
+      tempUrl = tempUrl + "&receiveaddress=" + this.data.beginCity + this.data.addServerReceivePet.receiveDistrict + this.data.addServerReceivePet.address;
     }
     if (this.data.addServerSendPet.selected) {
-      tempUrl = tempUrl + "&sendaddress=" + this.data.addServerSendPet.sendDistrict + this.data.addServerSendPet.address;
+      tempUrl = tempUrl + "&sendaddress=" + this.data.endCity + this.data.addServerSendPet.sendDistrict + this.data.addServerSendPet.address;
     }
     if (this.data.addServerInsuredPrice.selected) {
       tempUrl = tempUrl + "&insuredprice=" + this.data.addServerInsuredPrice.price;
@@ -651,6 +653,18 @@ Page({
       })
       return;
     }
+    if (this.data.petClassify == null) {
+      this.setData({
+        totalPrice: 0
+      })
+      return;
+    }
+    if (this.data.petType == null) {
+      this.setData({
+        totalPrice: 0
+      })
+      return;
+    }
     this.requestPredictPrice();
   },
 
@@ -675,20 +689,35 @@ Page({
   /**
    * 查询保价费率
    */
-  requestInsurePriceRate: function () {
+  requestInsurePriceRate: function (cityName) {
     wx.showLoading({
       title: '请稍等...',
     })
+    let that = this;
     wx.request({
       url: app.url.url + app.url.insureRate,
       data: {
-        "startCity": this.data.beginCity
+        "startCity": cityName
       },
       success(res){
         console.log("查询保价费率 success => \n" + JSON.stringify(res))
+        if (res.data.data != null) {
+          that.data.addServerInsuredPrice.rate = res.data.data.rate * 100;
+        } else {
+          that.data.addServerInsuredPrice.rate = 0;
+          that.data.addServerInsuredPrice.selected = false;
+          that.data.addServerInsuredPrice.price = 0;
+        }
+        that.setData({
+          addServerInsuredPrice: that.data.addServerInsuredPrice
+        })
       },
       fail(res) {
         console.log("查询保价费率 fail => \n" + JSON.stringify(res))
+        wx.showToast({
+          title: '查询保价费率失败',
+          icon: 'none'
+        })
       },
       complete(res) {
         console.log("查询保价费率 complete => \n" + JSON.stringify(res))
@@ -712,8 +741,16 @@ Page({
       "transportType": this.data.selectedTransportObj.transportId,
       "weight": this.data.petWeight,
       "num": this.data.petCount,
+      "leaveDate": this.data.date,
+      "petClassify": this.data.petClassify.petClassifyName,
+      "petType": this.data.petType,
+      "receiverName" : "",
+      "receiverPhone": "",
+      "senderName": "",
+      "senderPhone": "",
+      "remarks": "",
     };
-
+    tempData.sendAddress = "";
     if (this.data.addServerSendPet.selected) {
       if (this.data.addServerSendPet.address == null
         || this.data.addServerSendPet.address.length <= 0) {
@@ -723,10 +760,10 @@ Page({
         })
         return;
       } else {
-        tempData.sendAddress = this.data.addServerSendPet.sendDistrict + this.data.addServerSendPet.address;
+        tempData.sendAddress = this.data.endCity + this.data.addServerSendPet.sendDistrict + this.data.addServerSendPet.address;
       }
     }
-
+    tempData.receiptAddress = "";
     if (this.data.addServerReceivePet.selected) {
       if (this.data.addServerReceivePet.address == null 
         || this.data.addServerReceivePet.address.length <= 0) {
@@ -736,14 +773,18 @@ Page({
         })
         return;
       } else {
-        tempData.receiptAddress = this.data.addServerReceivePet.receiveDistrict + this.data.addServerReceivePet.address;
+        tempData.receiptAddress = this.data.beginCity + this.data.addServerReceivePet.receiveDistrict + this.data.addServerReceivePet.address;
       }
     }
-
+    tempData.buyAirBox = "0";
     if (this.data.addServerAirBox.selected) {
       tempData.buyAirBox = "1"
     }
-
+    tempData.giveFood = "0";
+    if (this.data.addServerPetCan.selected) {
+      tempData.giveFood = "1";
+    }
+    tempData.petAmount = 0;
     if (this.data.addServerInsuredPrice.selected) {
       if (this.data.addServerInsuredPrice.price == 0) {
         wx.showToast({
@@ -752,7 +793,7 @@ Page({
         })
         return;
       } else {
-        tempData.insureAmount = this.data.addServerInsuredPrice.price;
+        tempData.petAmount = this.data.addServerInsuredPrice.price;
       }
     }
     let that = this;
@@ -766,8 +807,12 @@ Page({
             totalPrice: res.data.root
           })
         } else {
+          let msg = res.data.root;
+          if (msg == null) {
+            msg = "系统异常"
+          }
           wx.showToast({
-            title: res.data.root,
+            title: msg,
             icon: 'none'
           })
         }
@@ -870,6 +915,44 @@ Page({
   },
 
   /**
+   * 查询可用站点
+   */
+  checkAbleStation: function (cityName) {
+    let urlStr = app.url.url + app.url.ableStation;
+    let that = this;
+    wx.request({
+      url: urlStr,
+      data: {
+        "endCity": cityName 
+      },
+      success(res) {
+        console.log("获取可用站点 success => \n" + JSON.stringify(res));
+        if (res.data.data == null) {
+          that.data.addServerSendPet.haveAbleStation = false;
+          that.data.addServerSendPet.address = null;
+          that.data.addServerSendPet.selected = false;
+          that
+        } else {
+          that.data.addServerSendPet.haveAbleStation = true;
+        }
+        that.setData({
+          addServerSendPet: that.data.addServerSendPet
+        })
+      },
+      fail(res) {
+        console.log("获取可用站点 fail => \n" + JSON.stringify(res));
+        wx.showToast({
+          title: '查询可用站点失败',
+          icon: 'none'
+        })
+      },
+      complete(res) {
+        console.log("获取可用站点 complete => \n" + JSON.stringify(res));
+      }
+    })
+  },
+
+  /**
    * 请求宠物种类
    */
   requestPetClassify: function (currentType) {
@@ -898,6 +981,7 @@ Page({
               that.setData({
                 petClassify: that.data.petClassifys[res.tapIndex]
               })
+              that.predictPrice();
             },
             fail: function (res) {
               console.log(res.errMsg)

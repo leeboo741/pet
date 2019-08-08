@@ -25,122 +25,10 @@ Page({
   data: {
     userInfo: null, // 用户信息
     selectedBillType: 0, // 选中单据类型
-    unpayList:[
-      {
-        shjda:{
-          shjmch: "测试商家"
-        }, // 商家
-        express: "江西舒宠快运", // 快递
-        orderDate: "2019-06-01 11:12:32", // 下单时间
-        orderNo: "1905061231112311", // 单号
-        amount: 100000, // 金额
-        startCity: '南昌', // 始发城市
-        endCity: "北京", // 收货城市
-        petBreed: "哈士奇", // 宠物品种
-        petType: "狗", // 宠物类型
-        transportType: "空运单飞", // 运输类型
-        state: "待支付", // 状态
-        count: 1, // 数量
-        weight: 10, // 重量
-        airbox: null, // 是否购买航空箱
-        receivePetAddress: null, // 上门接宠地址
-        sendPetAddress: null, // 送宠到家地址
-        insuredPrice: 0, // 保价金额
-        petCan: null, // 是否领取免费罐头
-        sendCustomerName: '李三', // 寄件人名称
-        receiveCustomerName: '张思', // 收件人名称
-        sendCustomerPhone: '16678542215', // 寄件人电话
-        receiveCustomerPhone: '18542214571', // 收件人电话
-        remark: "ceshiceshi", // 订单备注
-      },
-    ], // 待支付
-    unsendList: [
-      {
-        shjda: {
-          shjmch: "测试商家"
-        }, // 商家
-        express: "江西舒宠快运", // 快递
-        orderDate: "2019-06-01 11:12:32", // 下单时间
-        orderNo: "1905061231112311", // 单号
-        amount: 100000, // 金额
-        startCity: '南昌', // 始发城市
-        endCity: "北京", // 收货城市
-        petBreed: "哈士奇", // 宠物品种
-        petType: "狗", // 宠物类型
-        transportType: "空运单飞", // 运输类型
-        state: "待发货", // 状态
-        count: 1, // 数量
-        weight: 10, // 重量
-        airbox: null, // 是否购买航空箱
-        receivePetAddress: null, // 上门接宠地址
-        sendPetAddress: null, // 送宠到家地址
-        insuredPrice: 0, // 保价金额
-        petCan: null, // 是否领取免费罐头
-        sendCustomerName: '李三', // 寄件人名称
-        receiveCustomerName: '张思', // 收件人名称
-        sendCustomerPhone: '16678542215', // 寄件人电话
-        receiveCustomerPhone: '18542214571', // 收件人电话
-        remark: "ceshiceshi", // 订单备注
-      },
-    ], // 待发货
-    unreceiveList: [
-      {
-        shjda: {
-          shjmch: "测试商家"
-        }, // 商家
-        express: "江西舒宠快运", // 快递
-        orderDate: "2019-06-01 11:12:32", // 下单时间
-        orderNo: "1905061231112311", // 单号
-        amount: 100000, // 金额
-        startCity: '南昌', // 始发城市
-        endCity: "北京", // 收货城市
-        petBreed: "哈士奇", // 宠物品种
-        petType: "狗", // 宠物类型
-        transportType: "空运单飞", // 运输类型
-        state: "待收货", // 状态
-        count: 1, // 数量
-        weight: 10, // 重量
-        airbox: null, // 是否购买航空箱
-        receivePetAddress: null, // 上门接宠地址
-        sendPetAddress: null, // 送宠到家地址
-        insuredPrice: 0, // 保价金额
-        petCan: null, // 是否领取免费罐头
-        sendCustomerName: '李三', // 寄件人名称
-        receiveCustomerName: '张思', // 收件人名称
-        sendCustomerPhone: '16678542215', // 寄件人电话
-        receiveCustomerPhone: '18542214571', // 收件人电话
-        remark: "ceshiceshi", // 订单备注
-      },
-    ], // 待收货
-    completeList: [
-      {
-        shjda: {
-          shjmch: "测试商家"
-        }, // 商家
-        express: "江西舒宠快运", // 快递
-        orderDate: "2019-06-01 11:12:32", // 下单时间
-        orderNo: "1905061231112311", // 单号
-        amount: 100000, // 金额
-        startCity: '南昌', // 始发城市
-        endCity: "北京", // 收货城市
-        petBreed: "哈士奇", // 宠物品种
-        petType: "狗", // 宠物类型
-        transportType: "空运单飞", // 运输类型
-        state: "已完成", // 状态
-        count: 1, // 数量
-        weight: 10, // 重量
-        airbox: null, // 是否购买航空箱
-        receivePetAddress: null, // 上门接宠地址
-        sendPetAddress: null, // 送宠到家地址
-        insuredPrice: 0, // 保价金额
-        petCan: null, // 是否领取免费罐头
-        sendCustomerName: '李三', // 寄件人名称
-        receiveCustomerName: '张思', // 收件人名称
-        sendCustomerPhone: '16678542215', // 寄件人电话
-        receiveCustomerPhone: '18542214571', // 收件人电话
-        remark: "ceshiceshi", // 订单备注
-      },
-    ], // 已完成
+    unpayList:[], // 待支付
+    unsendList: [], // 待发货
+    unreceiveList: [], // 待收货
+    completeList: [], // 已完成
   },
 
 
@@ -168,7 +56,7 @@ Page({
     this.setData({
       userInfo: app.globalData.userInfo
     })
-    this.requestBillList();
+    this.requestBillList(this.data.selectedBillType);
   },
 
   /**
@@ -243,7 +131,7 @@ Page({
     this.setData({
       selectedBillType: e.currentTarget.dataset.type
     })
-    this.requestBillList();
+    this.requestBillList(this.data.selectedBillType);
   },
 
   /**
@@ -321,14 +209,33 @@ Page({
     wx.showLoading({
       title: '请稍等...',
     })
+    const tempType = billType;
+    let that = this;
     wx.request({
       url: app.url.url + app.url.checkOrderListByOrderStatus,
       data: {
-        "orderStatus": this.getSendBillType(this.data.selectedBillType),
-        "openId": app.globalData.userInfo.openId
+        "orderStatus": this.getSendBillType(tempType),
+        "openId": app.globalData.userInfo.openid
       },
       success(res){
         console.log("请求单据列表 success => \n" + JSON.stringify(res))
+        if (tempType == 0) {
+          that.setData({
+            unpayList: res.data.root
+          })
+        } else if (tempType == 1) {
+          that.setData({
+            unsendList: res.data.root
+          })
+        } else if (tempType == 2) {
+          that.setData({
+            unreceiveList: res.data.root
+          })
+        } else {
+          that.setData({
+            completeList: res.data.root
+          })
+        }
       },
       fail(res) {
         console.log("请求单据列表 fail => \n" + JSON.stringify(res))

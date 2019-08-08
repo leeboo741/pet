@@ -305,20 +305,29 @@ Page({
       "remarks": this.data.remark,
     }
 
+    tempOrderObj.buyAirBox = "0";
     if (this.data.airbox != null) {
       tempOrderObj.buyAirBox = this.data.airbox;
     }
 
-    if (this.data.receiveAddress != null) {
-      tempOrderObj.onDoorReceiveAddress = this.data.receiveAddress;
+    tempOrderObj.giveFood = "0";
+    if (this.data.petCan != null) {
+      tempOrderObj.giveFood = this.data.petCan;
     }
 
+    tempOrderObj.receiptAddress = "";
+    if (this.data.receiveAddress != null) {
+      tempOrderObj.receiptAddress = this.data.receiveAddress;
+    }
+
+    tempOrderObj.sendAddress = "";
     if (this.data.sendAddress != null) {
-      tempOrderObj.onDoorSendAddress = this.data.sendAddress;
+      tempOrderObj.sendAddress = this.data.sendAddress;
     } 
 
+    tempOrderObj.petAmount = 0;
     if (this.data.insuredPrice != null) {
-      tempOrderObj.insureAmount = this.data.insuredPrice;
+      tempOrderObj.petAmount = this.data.insuredPrice;
     }
 
     let that = this;
@@ -343,7 +352,7 @@ Page({
               } else if (res.cancel) {
                 console.log('用户点击稍后支付')
                 wx.switchTab({
-                  url: '/pages/index/index',
+                  url: '/pages/consigned/base/base',
                 })
               }
             }
@@ -390,6 +399,15 @@ Page({
       "transportType": this.data.transport,
       "weight": this.data.petWeight,
       "num": this.data.petCount,
+
+      "leaveDate": this.data.leaveDate,
+      "petClassify": this.data.petClassify,
+      "petType": this.data.petType,
+      "receiverName": "",
+      "receiverPhone": "",
+      "senderName": "",
+      "senderPhone": "",
+      "remarks": "",
     };
 
     if (this.data.sendAddress != null) {

@@ -157,7 +157,7 @@
             </input>
           </view>
         </view>
-        <view class='addedServer-item'>
+        <view class='addedServer-item' hidden="{{!addServerSendPet.haveAbleStation}}">
           <view class='addServer-info' 
                 bindtap='tapAddServerSendPet'>
             <icon class="iconfont icongouhao gou {{addServerSendPet.selected?'choose':''}}">
