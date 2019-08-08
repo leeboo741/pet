@@ -89,7 +89,7 @@ Page({
   tapOrderDetail: function (e) {
     console.log("详情：\n" + e.currentTarget.dataset.orderno)
     wx.navigateTo({
-      url: '../orderDetail/orderDetail',
+      url: '../orderDetail/orderDetail?orderno='+e.currentTarget.dataset.orderno,
     })
   },
 

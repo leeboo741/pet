@@ -38,6 +38,7 @@ App({
     order: "/api/order/insertOrder", // 下单
     checkOrderListByOrderStatus:"/api/order/listOrderList", // 根据订单类型查询订单列表
     uploadFile: "/api/consign/orderState/uploadFile", // 上传文件
+    orderDetail: "/api/order/orderDetail", // 订单详情
 
     /** ============== 城市 =================== */
     startCity: "/api/transport/listStartCity", // 始发城市

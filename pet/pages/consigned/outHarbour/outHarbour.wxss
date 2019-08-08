@@ -57,7 +57,7 @@ page {
 
 .bill-info-billNo {
   margin-left: 10rpx;
-  width: 300rpx;
+  flex-grow: 1；
   font-size: 32rpx;
   text-align: left;
 }
@@ -177,7 +177,7 @@ page {
 }
 
 .bill-info-time {
-  width: 300rpx;
+  flex-shrink: 0;
   font-size: 12px;
   text-align: right;
 }
