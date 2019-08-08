@@ -72,6 +72,7 @@ Page({
       name: "购买航空箱", // 增值服务名称
       selected: false, // 是否选中
       alert: "自备航空箱需符合航空公司要求的适用规则", // 提示
+      haveAbleStation: false, // 是否有可用站点
     },
     addServerReceivePet: {
       name: "上门接宠",
@@ -155,6 +156,7 @@ Page({
       })
       // 查询保价费率
       this.requestInsurePriceRate(app.globalData.trainBeginCity);
+      this.checkAbleAirbox(app.globalData.trainBeginCity)
     }
     if (app.globalData.trainEndCity != null) {
       // 重置 送宠到家 市区选择器
@@ -915,7 +917,44 @@ Page({
   },
 
   /**
-   * 查询可用站点
+   * 查询航空箱可用站点
+   */
+  checkAbleAirbox: function (cityName) {
+    let urlStr = app.url.url + app.url.ableAirBox;
+    let that = this;
+    wx.request({
+      url: urlStr,
+      data: {
+        "startCity": cityName
+      },
+      success(res) {
+        console.log("获取航空箱可用站点 success => \n" + JSON.stringify(res));
+        if (res.data.data == null || res.data.data.length <= 0) {
+          that.data.addServerAirBox.haveAbleStation = false;
+          that.data.addServerAirBox.selected = false;
+          that
+        } else {
+          that.data.addServerAirBox.haveAbleStation = true;
+        }
+        that.setData({
+          addServerAirBox: that.data.addServerAirBox
+        })
+      },
+      fail(res) {
+        console.log("获取航空箱可用站点 fail => \n" + JSON.stringify(res));
+        wx.showToast({
+          title: '查询航空箱可用站点失败',
+          icon: 'none'
+        })
+      },
+      complete(res) {
+        console.log("获取航空箱可用站点 complete => \n" + JSON.stringify(res));
+      }
+    })
+  },
+
+  /**
+   * 查询送宠可用站点
    */
   checkAbleStation: function (cityName) {
     let urlStr = app.url.url + app.url.ableStation;
@@ -926,8 +965,8 @@ Page({
         "endCity": cityName 
       },
       success(res) {
-        console.log("获取可用站点 success => \n" + JSON.stringify(res));
-        if (res.data.data == null) {
+        console.log("查询送宠可用站点 success => \n" + JSON.stringify(res));
+        if (res.data.data == null || res.data.data.length <= 0) {
           that.data.addServerSendPet.haveAbleStation = false;
           that.data.addServerSendPet.address = null;
           that.data.addServerSendPet.selected = false;
@@ -940,14 +979,14 @@ Page({
         })
       },
       fail(res) {
-        console.log("获取可用站点 fail => \n" + JSON.stringify(res));
+        console.log("查询送宠可用站点 fail => \n" + JSON.stringify(res));
         wx.showToast({
-          title: '查询可用站点失败',
+          title: '查询送宠可用站点失败',
           icon: 'none'
         })
       },
       complete(res) {
-        console.log("获取可用站点 complete => \n" + JSON.stringify(res));
+        console.log("查询送宠可用站点 complete => \n" + JSON.stringify(res));
       }
     })
   },

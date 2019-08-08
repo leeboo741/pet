@@ -44,6 +44,7 @@ App({
     endCity: "/api/transport/listEndCity", // 目标城市
     ableTransportType: "/api/transport/listTransportType", // 可用运输方式
     ableStation: "/api/consign/onDoorService/getEndCityStation", // 是否有可用站点
+    ableAirBox: "/aip/consign/airBox/listStationAixBox", // 是否有可用站点
 
     /** ============== 价格 =================== */
     predictPrice: "/api/order/getOrderPrice", // 获取预估价格
