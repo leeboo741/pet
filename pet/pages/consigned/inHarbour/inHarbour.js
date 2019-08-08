@@ -17,10 +17,9 @@ Page({
   data: {
     orderList: [
       {
-        orderNo: "19231131545321",
         express: "江西舒宠快运", // 快递
         orderDate: "2019-06-01 11:12:32", // 下单时间
-        orderNo: "1905061231112311", // 单号
+        orderNo: "20190807-nanchang0004", // 单号
         amount: 100000, // 金额
         startCity: '南昌', // 始发城市
         endCity: "北京", // 收货城市
@@ -42,7 +41,6 @@ Page({
         remark: "", // 订单备注
       },
       {
-        orderNo: "19231131545321",
         express: "江西舒宠快运", // 快递
         orderDate: "2019-06-01 11:12:32", // 下单时间
         orderNo: "1905061231112311", // 单号
@@ -197,7 +195,100 @@ Page({
    */
   tapConfirmUpload: function (e) {
     let tempOrder = this.data.orderList[e.currentTarget.dataset.tapindex];
+    let uploadList = [];
+    let lastIsVideo = false;
+    if (tempOrder.uploadImages != null && tempOrder.uploadImages.length > 0) {
+      uploadList = uploadList.concat(tempOrder.uploadImages);
+    }
+    if (tempOrder.uploadVideo != null && tempOrder.uploadVideo.length > 0) {
+      uploadList.push(tempOrder.uploadVideo);
+      lastIsVideo = true;
+    }
+    let uploadIndex = 0;
+    let uploadLength = uploadList.length;
     console.log("需要上传的文件 => \n图片:\n" + JSON.stringify(tempOrder.uploadImages) + "\n视频：\n" + JSON.stringify(tempOrder.uploadVideo));
+    this.requestUploadFile(uploadList, uploadIndex, tempOrder, lastIsVideo);
+    
+  },
+
+  /**
+   * 上传文件
+   * @param fileList 文件列表
+   * @param uploadIndex 要上传的文件下标
+   * @param order 单据
+   * @param lastIsVideo 最后数据是否是视频
+   * @param callback 回调函数
+   */
+  requestUploadFile: function (fileList, uploadIndex, order, lastIsVideo, callback) {
+    wx.showLoading({
+      title: '上传中...',
+    })
+    let that = this;
+    wx.uploadFile({
+      url: app.url.url + app.url.uploadFile,
+      filePath: fileList[uploadIndex],
+      name: 'multipartFiles',
+      header: { "Content-Type": "multipart/form-data" },
+      formData: {
+        "orderNo": order.orderNo,
+        "sn": 0,
+      },
+      success(res) {
+        console.log("upload success =>" + JSON.stringify(res));
+        const data = res.data;
+        if (res.data.prompt != null && res.data.prompt == 'Error') {
+          wx.showToast({
+            title: "文件上传失败",
+            icon: 'none'
+          })
+          typeof callback == "function" && callback("fail");
+        } else {
+          typeof callback == "function" && callback("success");
+          if (lastIsVideo && (uploadIndex == (fileList.length - 1))) {
+            order.video = fileList[uploadIndex];
+          } else {
+            if (order.images == null) {
+              order.images = [];
+            }
+            let tempFile = fileList[uploadIndex];
+            let tempIndex = that.getIndexOf(tempFile, order.uploadImages);
+            order.images.push(fileList[uploadIndex]);
+            order.uploadImages.splice(tempIndex, 1);
+          }
+          that.setData({
+            orderList: that.data.orderList
+          })
+        } 
+      },
+      fail(res) {
+        wx.showToast({
+          title: "一个文件上传失败",
+          icon: 'none'
+        })
+        typeof callback == "function" && callback("fail");
+      },
+      complete(res) {
+        uploadIndex ++;
+        if (uploadIndex < fileList.length) {
+          that.requestUploadFile(fileList, uploadIndex, order, lastIsVideo)
+        } else {
+          wx.hideLoading();
+          wx.showToast({
+            title: '上传完成',
+          })
+        }
+      }
+    })
+  },
+
+  /**
+   * 获取元素下标
+   */
+  getIndexOf: function(ele, array) {
+    for (var i = 0; i < array.length; i++) {
+      if (array[i] == ele) return i;
+    }
+    return -1; 
   },
 
   /**
