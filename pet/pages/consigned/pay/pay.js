@@ -349,6 +349,7 @@ Page({
             success(res) {
               if (res.confirm) {
                 console.log('用户点击立即付款')
+                that.requestPay(that.data.orderNo)
               } else if (res.cancel) {
                 console.log('用户点击稍后支付')
                 wx.switchTab({
@@ -382,6 +383,28 @@ Page({
         console.log("提交订单 complete => \n" + JSON.stringify(res));
         wx.hideLoading();
       },
+    })
+  },
+
+  /**
+   * 支付
+   */
+  requestPay: function(orderNo){
+    wx.request({
+      url: app.url.url + app.url.payment,
+      data: {
+        orderNo: orderNo,
+        openId: app.globalData.userInfo.openid
+      },
+      success(res){
+        console.log("支付 success：\n" + JSON.stringify(res));
+      },
+      fail(res) {
+        console.log("支付 fail：\n" + JSON.stringify(res));
+      },
+      complete(res) {
+        console.log("支付 complete：\n" + JSON.stringify(res));
+      }
     })
   },
 

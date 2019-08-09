@@ -2,14 +2,15 @@
 
 App({
   onLaunch: function () {
+
   },
   globalData: {
-    /** =========== 全局数据 Start =========== */
-    servicePhone: "0791-012234221", // 客服电话
-    version: "beta1.1.14",
-    /** =========== 全局数据 End =========== */
 
-    /** 用户信息 */
+    /** =========== 全局数据 =========== */
+    servicePhone: "0791-012234221", // 客服电话
+    version: "beta1.1.14", // 版本号
+
+    /** =========== 用户数据 =========== */
     userInfo: {
       customerNo: null, // id
       nickName: null, // 昵称
@@ -18,10 +19,9 @@ App({
       openid: null, // openId
       phone: null, // 手机号
     }, // 用户信息
-
   },
 
-  /** =========== 网络请求 Start =========== */
+  /** =========== 网络请求 url =========== */
   url: {
     // url: "http://47.99.244.168:6060",
     // url: "http://192.168.3.233:5050",
@@ -39,6 +39,9 @@ App({
     checkOrderListByOrderStatus:"/api/order/listOrderList", // 根据订单类型查询订单列表
     uploadFile: "/api/consign/orderState/uploadFile", // 上传文件
     orderDetail: "/api/order/orderDetail", // 订单详情
+    payment: "/api/order/getOrderPayParam", // 请求支付
+    inHarbour: "/api/consign/port/inPort", // 入港单
+    outHarbour: "/api/consign/port/outPort", // 出港单
 
     /** ============== 城市 =================== */
     startCity: "/api/transport/listStartCity", // 始发城市
@@ -57,5 +60,4 @@ App({
     error: "Error",
     notExist: "NotExist"
   }
-  /** =========== 网络请求 End =========== */
 })

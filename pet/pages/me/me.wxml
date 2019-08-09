@@ -362,8 +362,15 @@
         </view>
       </view>
     </scroll-view>
-
 </view>
+
+<!-- <view class="pop-view-bg">
+  <view class="pop-view-mask">
+  </view>
+  <view class="pop-view-content">
+    <view class="pop-view"></view>
+  </view>
+</view> -->
 
 <wxs module='parse'>
   module.exports={

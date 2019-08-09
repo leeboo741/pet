@@ -282,6 +282,16 @@ Page({
   },
 
   /**
+   * 请求入港单
+   */
+  requestInHarbour: function(){
+    wx.showLoading({
+      title: '请稍等...',
+    })
+    
+  },
+
+  /**
    * 获取元素下标
    */
   getIndexOf: function(ele, array) {
