@@ -25,6 +25,8 @@ Page({
   data: {
     userInfo: null, // 用户信息
     selectedBillType: 0, // 选中单据类型
+    showCheckBillPopView: false, // 展示查单页面
+    checkBillNo: null, // 查单单号
     unpayList:[], // 待支付
     unsendList: [], // 待发货
     unreceiveList: [], // 待收货
@@ -75,6 +77,46 @@ Page({
   /** ================================= 生命周期 End ==================================== */
 
   /** ================================= 页面事件 Start ==================================== */
+
+  /**
+   * 隐藏弹出框
+   */
+  hiddenPopMask: function(){
+    this.data.checkBillNo = null;
+    this.setData({
+      showCheckBillPopView: false
+    })
+  },
+
+  /**
+   * 点击弹出框蒙层
+   */
+  tapPopMask: function (e) {
+    this.hiddenPopMask();
+    console.log("checkBillNo:\n" + this.data.checkBillNo);
+  },
+
+  /**
+   * 查单输入
+   */
+  searchInputAction: function(e) {
+    this.data.checkBillNo = e.detail.value;
+    console.log("checkBillNo:\n" + this.data.checkBillNo);
+  },
+
+  /**
+   * 查单键盘确认
+   */
+  confirmSearchAction: function(e) {
+
+  },
+
+  /**
+   * 查单确认按钮
+   */
+  searchBillAction: function(e) {
+
+  },
 
   /**
    * 投诉
@@ -147,7 +189,10 @@ Page({
    * 查单
    */
   gotoCheckBill: function(){
-
+    this.setData({
+      showCheckBillPopView : true
+    })
+    console.log("checkBillNo:\n" + this.data.checkBillNo);
   },
 
   /**

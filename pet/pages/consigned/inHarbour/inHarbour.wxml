@@ -19,15 +19,15 @@
       <view class='block-fillet bill-info-split-line'></view>
       <view class='block-fillet bill-info-content'>
         <view class='bill-info-way'>
-          <view class='bill-info-way-date'>{{orderItem.orderDate}}</view>
-          <view class='bill-info-way-start'>{{orderItem.startCity}}</view>
+          <view class='bill-info-way-date'>{{orderItem.orderDate}} {{orderItem.orderTime}}</view>
+          <view class='bill-info-way-start'>{{orderItem.transport.startCity}}</view>
           <view class='bill-info-way-split'>-</view>
-          <view class='bill-info-way-end'>{{orderItem.endCity}}</view>
+          <view class='bill-info-way-end'>{{orderItem.transport.endCity}}</view>
         </view>
         <view class='bill-info-pet'>
-          <view class='bill-info-pet-type'>{{orderItem.petBreed}}</view>
-          <view class='bill-info-pet-info'>{{orderItem.petType}}</view>
-          <view class='bill-info-pet-mode'>{{orderItem.transportType}}</view>
+          <view class='bill-info-pet-type'>{{orderItem.petClassify.petClassifyName}}</view>
+          <view class='bill-info-pet-info'>{{orderItem.petType.petTypeName}}</view>
+          <view class='bill-info-pet-mode'>{{parse.getTransportType(orderData.transport.transportType)}}</view>
         </view>
       </view>
       <!-- 照片 -->
@@ -105,6 +105,19 @@
 
 <wxs module='parse'>
   module.exports={
+    getTransportType: function(type){
+      if (type == 0) {
+        return "专车";
+      } else if (type == 1) {
+        return "铁路";
+      } else if (type == 2) {
+        return "单飞";
+      } else if (type == 3) {
+        return "随机";
+      } else {
+        return "大巴";
+      }
+    },
     showImageArea: function(orderItem){
       if ((orderItem.uploadImages != null && orderItem.uploadImages.length > 0)
           || (orderItem.images != null && orderItem.images.length > 0)) {

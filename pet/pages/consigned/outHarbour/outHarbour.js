@@ -77,6 +77,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    this.requestOutHarbour();
   },
 
   /**
@@ -248,6 +249,31 @@ Page({
           })
         }
       }
+    })
+  },
+  
+  /**
+   * 请求出港单
+   */
+  requestOutHarbour: function (searchKey) {
+    wx.showLoading({
+      title: '请稍等...',
+    })
+    wx.request({
+      url: app.url.url + app.url.outHarbour,
+      data: {
+        openId: app.globalData.userInfo.openid
+      },
+      success(res) {
+        console.log("请求出港单 success：\n" + JSON.stringify(res));
+      },
+      fail(res) {
+        console.log("请求出港单 fail：\n" + JSON.stringify(res));
+      },
+      complete(res) {
+        console.log("请求出港单 complete：\n" + JSON.stringify(res));
+        wx.hideLoading();
+      },
     })
   },
 

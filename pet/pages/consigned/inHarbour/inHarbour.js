@@ -78,6 +78,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    this.requestInHarbour();
   },
 
   /**
@@ -208,7 +209,6 @@ Page({
     let uploadLength = uploadList.length;
     console.log("需要上传的文件 => \n图片:\n" + JSON.stringify(tempOrder.uploadImages) + "\n视频：\n" + JSON.stringify(tempOrder.uploadVideo));
     this.requestUploadFile(uploadList, uploadIndex, tempOrder, lastIsVideo);
-    
   },
 
   /**
@@ -284,11 +284,30 @@ Page({
   /**
    * 请求入港单
    */
-  requestInHarbour: function(){
+  requestInHarbour: function(searchKey){
     wx.showLoading({
       title: '请稍等...',
     })
-    
+    let that = this;
+    wx.request({
+      url: app.url.url + app.url.inHarbour,
+      data: {
+        openId: app.globalData.userInfo.openid
+      },
+      success(res){
+        console.log("请求入港单 success：\n" + JSON.stringify(res));
+        that.setData({
+          orderList: res.data.data
+        })
+      },
+      fail(res) {
+        console.log("请求入港单 fail：\n" + JSON.stringify(res));
+      },
+      complete(res) {
+        console.log("请求入港单 complete：\n" + JSON.stringify(res));
+        wx.hideLoading();
+      },
+    })
   },
 
   /**
