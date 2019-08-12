@@ -108,14 +108,28 @@ Page({
    * 查单键盘确认
    */
   confirmSearchAction: function(e) {
-
+    if (e.detail.value == null || e.detail.value.length <= 0) {
+      wx.showToast({
+        title: '请输入查询内容',
+        icon: 'none'
+      })
+      return;
+    }
+    this.requestCheckOrderNoByOrderNo(e.detail.value)
   },
 
   /**
    * 查单确认按钮
    */
-  searchBillAction: function(e) {
-
+  searchBillAction: function (e) {
+    if (this.data.checkBillNo == null || this.data.checkBillNo.length <= 0) {
+      wx.showToast({
+        title: '请输入查询内容',
+        icon: 'none'
+      })
+      return;
+    }
+    this.requestCheckOrderNoByOrderNo(this.data.checkBillNo)
   },
 
   /**
@@ -140,6 +154,7 @@ Page({
    */
   tapCancelOrder: function (e) {
     console.log("取消：\n" + e.currentTarget.dataset.orderno)
+    this.requestCancelOrder(e.currentTarget.dataset.orderno, e.currentTarget.data.tapindex)
   },
 
   /**
@@ -246,6 +261,127 @@ Page({
   /** ================================= 页面事件 End ==================================== */
 
   /** ================================= 网络请求 Start ==================================== */
+
+  /**
+   * 查单
+   */
+  requestCheckOrderNoByOrderNo: function (inputOrderNo) {
+    wx.showLoading({
+      title: '请稍等...',
+    })
+    let that = this;
+    wx.request({
+      url: app.url.url + app.url.getOrderNoByOrderNo,
+      data: {
+        openId: app.globalData.userInfo.openid,
+        orderNo: inputOrderNo
+      },
+      success(res) {
+        console.log("查单 success：\n" + JSON.stringify(res));
+        if (res.data.root != null && res.data.prompt == "Success") {
+          that.hiddenPopMask();
+          wx.navigateTo({
+            url: '../orderDetail/orderDetail?orderno=' + res.data.root,
+          })
+
+        } else {
+          if (res.data.root != null) {
+            wx.showToast({
+              title: res.data.root,
+              icon: 'none'
+            })
+          } else {
+            wx.showToast({
+              title: '未能查到相应单据！',
+              icon: "none"
+            })
+          }
+        }
+      },
+      fail(res) {
+        console.log("查单 fail：\n" + JSON.stringify(res));
+      },
+      complete(res) {
+        console.log("查单 complete：\n" + JSON.stringify(res));
+        wx.hideLoading();
+      },
+    })
+  },
+
+  /**
+   * 取消订单
+   */
+  requestCancelOrder: function (orderNo, orderIndex) {
+    wx.showLoading({
+      title: '取消订单中...',
+    })
+    const tempType = this.data.selectedBillType;
+    const tempIndex = orderIndex;
+    let that = this;
+    wx.request({
+      url: app.url.url + app.url.cancelOrder,
+      data: {
+        openId: app.globalData.userInfo.openid,
+        orderNo: orderNo
+      },
+      method: "PUT",
+      header: {
+        'content-type': "application/x-www-form-urlencoded"
+      },
+      success(res) {
+        console.log("取消订单 success：\n" + JSON.stringify(res));
+        if (res.data.root != null && res.data.prompt == "Success") {
+          if (tempType == 0) {
+            that.data.unpayList.splice(tempIndex, 1);
+            that.setData({
+              unpayList: that.data.unpayList
+            })
+          } else if (tempType == 1) {
+            that.data.unsendList.splice(tempIndex, 1)
+            that.setData({
+              unsendList: that.data.unsendList
+            })
+          } else if (tempType == 2) {
+            that.data.unreceiveList.splice(tempIndex, 1)
+            that.setData({
+              unreceiveList: that.data.unreceiveList
+            })
+          } else {
+            that.data.completeList.splice(tempIndex, 1)
+            that.setData({
+              completeList: that.data.completeList
+            })
+          }
+          wx.showToast({
+            title: '取消订单成功！'
+          })
+        } else {
+          if (res.data.root != null) {
+            wx.showToast({
+              title: res.data.root,
+              icon: 'none'
+            })
+          } else {
+            wx.showToast({
+              title: '取消订单失败！',
+              icon: "none"
+            })
+          }
+        }
+      },
+      fail(res) {
+        console.log("取消订单 fail：\n" + JSON.stringify(res));
+        wx.showToast({
+          title: '取消订单失败',
+          icon: 'none'
+        })
+      },
+      complete(res) {
+        console.log("取消订单 complete：\n" + JSON.stringify(res));
+        wx.hideLoading();
+      },
+    })
+  },
 
   /**
    * 请求单据

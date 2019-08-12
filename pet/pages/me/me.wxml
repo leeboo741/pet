@@ -138,7 +138,7 @@
       <!-- 按钮区域 -->
       <view class='bill-operate-box'>
         <view class='bill-operate-button'
-              bindtap='tapCancelOrder' 
+              bindtap='tapCancelOrder'
               data-tapindex="{{unpayIndex}}"
               data-orderno='{{unpayItem.orderNo}}'>
         取消订单

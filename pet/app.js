@@ -27,6 +27,7 @@ App({
     // url: "http://192.168.3.233:5050",
     // url: "http://192.168.3.187:5050",
     url: "http://192.168.3.111:5050",
+    // url: "http://192.168.3.123:5050",
     /** ============== 用户 =================== */ 
     register: "/api/customer/", // 注册
     login: "/api/oAuth", // 登陆
@@ -42,6 +43,8 @@ App({
     payment: "/api/order/getOrderPayParam", // 请求支付
     inHarbour: "/api/consign/port/inPort", // 入港单
     outHarbour: "/api/consign/port/outPort", // 出港单
+    cancelOrder: "/api/order/cancelOrder", // 取消订单
+    getOrderNoByOrderNo: "/api/order/getOrderNoByOrderNo", // 通过单号模糊查询单号
 
     /** ============== 城市 =================== */
     startCity: "/api/transport/listStartCity", // 始发城市

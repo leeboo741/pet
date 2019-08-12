@@ -230,8 +230,9 @@ Page({
       name: 'multipartFiles',
       header: { "Content-Type": "multipart/form-data" },
       formData: {
-        "orderNo": order.orderNo,
-        "sn": 0,
+        "orderNo": order.orderStates[0].orderNo,
+        "sn": order.orderStates[0].sn,
+        "orderType": order.orderStates[0].orderType
       },
       success(res) {
         console.log("upload success =>" + JSON.stringify(res));
@@ -276,6 +277,7 @@ Page({
           wx.showToast({
             title: '上传完成',
           })
+          that.handleReadyToUpload(order)
         }
       }
     })
