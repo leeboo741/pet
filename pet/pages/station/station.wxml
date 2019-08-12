@@ -1,2 +1,9 @@
 <!--pages/station/station.wxml-->
-<text>pages/station/station.wxml</text>
+<view class="station-item"
+      wx:for='{{stationList}}'
+      wx:for-index='stationIndex'
+      wx:for-item='stationItem'
+      wx:key='{{stationIndex}}'>
+      
+      
+</view>

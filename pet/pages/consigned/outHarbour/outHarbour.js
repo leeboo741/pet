@@ -162,6 +162,7 @@ Page({
           typeof callback == "function" && callback("success");
           if (lastIsVideo && (uploadIndex == (fileList.length - 1))) {
             order.video = fileList[uploadIndex];
+            order.uploadVideo = null;
           } else {
             if (order.images == null) {
               order.images = [];

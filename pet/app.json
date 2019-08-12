@@ -37,6 +37,12 @@
         "selectedIconPath": "resource/tabbar_index_selected.png"
       },
       {
+        "pagePath": "pages/station/station",
+        "text": "驿站",
+        "iconPath": "resource/tabbar_station_unselected.png",
+        "selectedIconPath": "resource/tabbar_station_selected.png"
+      },
+      {
         "pagePath": "pages/me/me",
         "text": "我的",
         "iconPath": "resource/tabbar_me_unselected.png",
