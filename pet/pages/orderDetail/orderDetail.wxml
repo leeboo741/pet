@@ -89,18 +89,18 @@
                 wx:key='{{stepImageIndex}}'
                 class="step-content-image-box">
             <image class="step-content-image"
-                   src="{{urlHead}}{{stepImageItem.mediaAddress}}"
+                   src="{{stepImageItem.mediaAddress}}"
                    lazy-load="{{true}}"
                    mode="scaleToFit"
                    bindtap="tapImage"
                    data-stepindex='{{stepIndex}}'
-                   data-imageurl='{{urlHead}}{{stepImageItem.mediaAddress}}'>
+                   data-imageurl='{{stepImageItem.mediaAddress}}'>
             </image>
           </view>
         </view>
         <view class="step-content-video-area"
               wx:if="{{stepItem.videoList}}">
-          <video src="{{urlHead}}{{stepItem.videoList[0].mediaAddress}}" 
+          <video src="{{stepItem.videoList[0].mediaAddress}}" 
                  data-id="{{index}}" 
                  class='video'
                  objectFit='contain'

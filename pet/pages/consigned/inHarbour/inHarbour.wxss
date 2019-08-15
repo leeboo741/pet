@@ -247,8 +247,8 @@ page {
 
 .bill-operate-box{
   display: flex;
-  width: 700rpx;
   flex-direction: row;
+  width: 100%;
   justify-content: flex-end;
 }
 
@@ -280,36 +280,6 @@ page {
   width: 700rpx;
   height: 2rpx;
   margin-bottom: 20rpx;
-}
-
-
-.bill-operate-box{
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-}
-
-.bill-operate-button{
-  margin: 15rpx;
-  font-size: 30rpx;
-  color: white;
-  background: rgb(100, 149, 237);
-  text-align: center;
-  padding: 10rpx;
-  width: 150rpx;
-  border-radius: 15rpx;
-}
-
-
-.bill-operate-button-complain{
-  margin: 15rpx;
-  font-size: 30rpx;
-  color: white;
-  background: rgb(216, 55, 55);
-  text-align: center;
-  padding: 10rpx;
-  width: 150rpx;
-  border-radius: 15rpx;
 }
 
 .bill-image-area{

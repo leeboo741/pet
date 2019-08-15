@@ -1,3 +1,4 @@
+/* pages/consigned/outHarbour/outHarbour.wxss */
 page {
     background-color: #F3F3F3;
 }
@@ -57,7 +58,7 @@ page {
 
 .bill-info-billNo {
   margin-left: 10rpx;
-  flex-grow: 1；
+  flex-grow: 1;
   font-size: 32rpx;
   text-align: left;
 }
@@ -110,6 +111,7 @@ page {
   width: 100%;
   margin-bottom: 20rpx;
 }
+
 .bill-info-person{
   width: 100%;
   display: flex;
@@ -172,6 +174,38 @@ page {
   width: 25%;
 }
 
+.bill-info-pay {
+  margin-bottom: 20rpx;
+  padding-left: 20rpx;
+  display: flex;
+  justify-content: left;
+  align-items: center;
+}
+
+.bill-info-pay-info {
+  text-align: center;
+  width: 20%;
+  font-size: 32rpx;
+  font-family: sans-serif;
+  font-weight: bold;
+  color: red;
+}
+
+.bill-info-pay-money {
+  text-align: right;
+  width: 50%;
+  font-size: 32rpx;
+  font-family: sans-serif;
+  font-weight: bold;
+  color: #F1B000;
+}
+
+.bill-info-pay-label {
+  font-family: sans-serif;
+  font-size: 32rpx;
+  width: 20%;
+}
+
 
 .bill-info-pet-type {
   text-align: left;
@@ -213,8 +247,8 @@ page {
 
 .bill-operate-box{
   display: flex;
-  width: 700rpx;
   flex-direction: row;
+  width: 100%;
   justify-content: flex-end;
 }
 
@@ -246,36 +280,6 @@ page {
   width: 700rpx;
   height: 2rpx;
   margin-bottom: 20rpx;
-}
-
-
-.bill-operate-box{
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-}
-
-.bill-operate-button{
-  margin: 15rpx;
-  font-size: 30rpx;
-  color: white;
-  background: rgb(100, 149, 237);
-  text-align: center;
-  padding: 10rpx;
-  width: 150rpx;
-  border-radius: 15rpx;
-}
-
-
-.bill-operate-button-complain{
-  margin: 15rpx;
-  font-size: 30rpx;
-  color: white;
-  background: rgb(216, 55, 55);
-  text-align: center;
-  padding: 10rpx;
-  width: 150rpx;
-  border-radius: 15rpx;
 }
 
 .bill-image-area{

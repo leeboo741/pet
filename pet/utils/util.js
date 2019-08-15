@@ -41,8 +41,16 @@ const formatNumber = n => {
   return n[1] ? n : '0' + n
 }
 
+function isEmpty(obj) {
+  if (obj == null || obj.length <= 0) {
+    return true;
+  }
+  return false;
+}
+
 module.exports = {
   formatTime: formatTime,
   dateLater: dateLater,
   formatYMD: formatYMD,
+  isEmpty: isEmpty,
 }

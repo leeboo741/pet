@@ -5,6 +5,8 @@
  * =========================================================================================
  */
 
+const util = require("../../../utils/util.js")
+
 const app = getApp();
 const maxImageCount = 8;
 const maxVideoLength = 30;
@@ -50,6 +52,7 @@ Page({
    * 生命周期函数--监听页面卸载
    */
   onUnload: function () {
+
   },
 
   /**
@@ -77,11 +80,27 @@ Page({
    * 处理
    */
   handleReadyToUpload: function (order) {
-    if ((order.uploadImages == null || order.uploadImages.length <= 0)
-      && (order.uploadVideo == null || order.uploadVideo.length <= 0)) {
+    if (util.isEmpty(order.uploadImages)
+      && util.isEmpty(order.uploadVideo)) {
       order.readyToUpload = false;
     } else {
       order.readyToUpload = true;
+    }
+    this.setData({
+      orderList: this.data.orderList
+    })
+  },
+
+  /**
+   * 是否可以入港
+   */
+  handleReadyToInHarbour: function (order){
+    if ((!util.isEmpty(order.images) || !util.isEmpty(order.video)) 
+    && util.isEmpty(order.uploadImages) 
+    && util.isEmpty(order.uploadVideo)) {
+      order.readyToInHarbour = true;
+    } else {
+      order.readyToInHarbour = false;
     }
     this.setData({
       orderList: this.data.orderList
@@ -95,6 +114,7 @@ Page({
     let tempOrder = this.data.orderList[e.currentTarget.dataset.tapindex];
     tempOrder.uploadVideo = null;
     this.handleReadyToUpload(tempOrder);
+    this.handleReadyToInHarbour(tempOrder);
   },
 
   /**
@@ -104,40 +124,12 @@ Page({
     let tempOrder = this.data.orderList[e.currentTarget.dataset.tapindex];
     tempOrder.uploadImages.splice(e.currentTarget.dataset.imageindex, 1);
     this.handleReadyToUpload(tempOrder);
+    this.handleReadyToInHarbour(tempOrder);
   },
 
   /**
-   * 点击图片
-   */
-  tapImage: function (e) {
-    let tempOrder = this.data.orderList[e.currentTarget.dataset.orderindex];
-    let tempImageList = [];
-    if (tempOrder.images != null && tempOrder.images.length > 0) {
-      tempImageList = tempImageList.concat(tempOrder.images);
-    }
-    if (tempOrder.uploadImages != null && tempOrder.uploadImages.length > 0) {
-      tempImageList = tempImageList.concat(tempOrder.uploadImages);
-    }
-    let currrentUrl = e.currentTarget.dataset.imageurl;
-    wx.previewImage({
-      urls: tempImageList,
-      current: currrentUrl
-    })
-  },
-
-  /**
-   * 取消上传
-   */
-  tapCancelUpload: function (e) {
-    let tempOrder = this.data.orderList[e.currentTarget.dataset.tapindex];
-    tempOrder.uploadImages = null;
-    tempOrder.uploadVideo = null;
-    this.handleReadyToUpload(tempOrder);
-  },
-
-  /**
-   * 确定上传
-   */
+    * 确定上传
+    */
   tapConfirmUpload: function (e) {
     let tempOrder = this.data.orderList[e.currentTarget.dataset.tapindex];
     let uploadList = [];
@@ -153,6 +145,7 @@ Page({
     let uploadLength = uploadList.length;
     console.log("需要上传的文件 => \n图片:\n" + JSON.stringify(tempOrder.uploadImages) + "\n视频：\n" + JSON.stringify(tempOrder.uploadVideo));
     this.requestUploadFile(uploadList, uploadIndex, tempOrder, lastIsVideo);
+
   },
 
   /**
@@ -161,9 +154,8 @@ Page({
    * @param uploadIndex 要上传的文件下标
    * @param order 单据
    * @param lastIsVideo 最后数据是否是视频
-   * @param callback 回调函数
    */
-  requestUploadFile: function (fileList, uploadIndex, order, lastIsVideo, callback) {
+  requestUploadFile: function (fileList, uploadIndex, order, lastIsVideo) {
     wx.showLoading({
       title: '上传中...',
     })
@@ -180,17 +172,15 @@ Page({
       },
       success(res) {
         console.log("upload success =>" + JSON.stringify(res));
-        const data = res.data;
+        let tempObj = JSON.parse(res.data);
         if (res.data.prompt != null && res.data.prompt == 'Error') {
           wx.showToast({
             title: "文件上传失败",
             icon: 'none'
           })
-          typeof callback == "function" && callback("fail");
         } else {
-          typeof callback == "function" && callback("success");
           if (lastIsVideo && (uploadIndex == (fileList.length - 1))) {
-            order.video = fileList[uploadIndex];
+            order.video = tempObj.data[0].fileAddress;
             order.uploadVideo = null;
           } else {
             if (order.images == null) {
@@ -198,13 +188,13 @@ Page({
             }
             let tempFile = fileList[uploadIndex];
             let tempIndex = that.getIndexOf(tempFile, order.uploadImages);
-            order.images.push(fileList[uploadIndex]);
+            order.images.push(tempObj.data[0].fileAddress);
             order.uploadImages.splice(tempIndex, 1);
           }
           that.setData({
             orderList: that.data.orderList
           })
-        } 
+        }
       },
       fail(res) {
         wx.showToast({
@@ -214,7 +204,7 @@ Page({
         typeof callback == "function" && callback("fail");
       },
       complete(res) {
-        uploadIndex ++;
+        uploadIndex++;
         if (uploadIndex < fileList.length) {
           that.requestUploadFile(fileList, uploadIndex, order, lastIsVideo)
         } else {
@@ -223,9 +213,20 @@ Page({
             title: '上传完成',
           })
           that.handleReadyToUpload(order)
+          that.handleReadyToInHarbour(order);
         }
       }
     })
+  },
+
+  /**
+   * 获取元素下标
+   */
+  getIndexOf: function (ele, array) {
+    for (var i = 0; i < array.length; i++) {
+      if (array[i] == ele) return i;
+    }
+    return -1;
   },
 
   /**
@@ -258,13 +259,29 @@ Page({
   },
 
   /**
-   * 获取元素下标
+   * 点击图片
    */
-  getIndexOf: function(ele, array) {
-    for (var i = 0; i < array.length; i++) {
-      if (array[i] == ele) return i;
+  tapImage: function (e) {
+    let tempOrder = this.data.orderList[e.currentTarget.dataset.orderindex];
+    let tempImageList = [];
+    if (tempOrder.images != null && tempOrder.images.length > 0) {
+      tempImageList = tempImageList.concat(tempOrder.images);
     }
-    return -1; 
+    if (tempOrder.uploadImages != null && tempOrder.uploadImages.length > 0) {
+      tempImageList = tempImageList.concat(tempOrder.uploadImages);
+    }
+    let currrentUrl = e.currentTarget.dataset.imageurl;
+    wx.previewImage({
+      urls: tempImageList,
+      current: currrentUrl
+    })
+  },
+
+  /**
+   * 入港
+   */
+  tapInHarbour: function (e) {
+
   },
 
   /**
@@ -308,6 +325,7 @@ Page({
               if (res.tempFilePaths != null && res.tempFilePaths.length > 0) {
                 tempOrder.uploadImages = tempOrder.uploadImages.concat(res.tempFilePaths);
                 that.handleReadyToUpload(tempOrder);
+                that.handleReadyToInHarbour(tempOrder);
               }
             },
           })
@@ -325,6 +343,7 @@ Page({
               if (res.tempFilePath != null && res.tempFilePath.length > 0) {
                 tempOrder.uploadVideo = res.tempFilePath;
                 that.handleReadyToUpload(tempOrder);
+                that.handleReadyToInHarbour(tempOrder);
               }
             }
           })

@@ -104,10 +104,10 @@
       </view>
       <!-- 按钮区域 -->
       <view class='bill-operate-box'>
-        <view class='bill-operate-button' 
-              bindtap='tapCancelUpload' 
+        <view class='bill-operate-button-complain' 
+              bindtap='tapInHarbour' 
               data-tapindex="{{orderIndex}}"
-              wx:if='{{orderItem.readyToUpload}}'>取消上传</view>
+              wx:if='{{orderItem.readyToInHarbour}}'>入港</view>
         <view class='bill-operate-button' 
               bindtap='tapConfirmUpload' 
               data-tapindex="{{orderIndex}}"

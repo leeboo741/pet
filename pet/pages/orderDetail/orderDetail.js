@@ -6,7 +6,6 @@ Page({
    * 页面的初始数据
    */
   data: {
-    urlHead: null,
     orderData: null,
   },
 
@@ -14,9 +13,6 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    this.setData({
-      urlHead: app.url.url
-    })
     this.requestOrderDetail(options.orderno)
   },
 
