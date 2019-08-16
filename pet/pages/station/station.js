@@ -15,13 +15,14 @@ Page({
         stationBusinessHours: "08:00-22:00",
       }
     ],
+    location:null, // 位置信息
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
+    this.requestLocation();
   },
 
   /**
@@ -81,4 +82,48 @@ Page({
       phoneNumber: e.currentTarget.dataset.phonenumber,
     })
   },
+
+  /**
+   * 请求当前位置
+   */
+  requestLocation: function() {
+    wx.showLoading({
+      title: '请稍等...',
+    })
+    if (this.data.location) {
+      this.requestStation();
+    } else {
+      let that = this;
+      wx.getLocation({
+        type: "gcj02",
+        success: function (res) {
+          console.log("------------ 定位成功 ------------");
+          console.log(res);
+          // 将经纬度交给 globalData 保管
+          const latitude = res.latitude;
+          const longitude = res.longitude;  
+          that.data.location = {};
+          that.data.location.latitude = latitude;
+          that.data.location.longitude = longitude;
+          that.requestStation();
+        },
+        fail: function (res) {
+          wx.showToast({
+            title: '定位失败,请重新再试',
+            icon: 'none'
+          })
+        },
+      })
+    }
+  },
+
+  /**
+   * 请求数据
+   */
+  requestStation: function () {
+    const latitude = this.data.location.latitude;
+    const longitude = this.data.location.longitude;
+    wx.hideLoading();
+  },
+
 })
