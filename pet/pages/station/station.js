@@ -71,5 +71,14 @@ Page({
    */
   onShareAppMessage: function () {
 
-  }
+  },
+
+  /**
+   * 拨打电话
+   */
+  callPhone: function (e) {
+    wx.makePhoneCall({
+      phoneNumber: e.currentTarget.dataset.phonenumber,
+    })
+  },
 })

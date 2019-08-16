@@ -4,6 +4,47 @@
       wx:for-index='stationIndex'
       wx:for-item='stationItem'
       wx:key='{{stationIndex}}'>
-      
-      
+  <view class="station-item-head">
+    
+  </view>
+  <view class="station-item-content">
+    <view class="station-logo-box">
+      <image class="station-logo"
+             src="{{stationItem.stationLogo}}"
+             lazy-load="{{true}}"
+             mode="scaleToFit">
+      </image>
+    </view>
+    <view class="station-info-box">
+      <view class="station-name">
+      {{stationItem.stationName}}
+      </view>
+      <view class="station-business-hours">
+        <i-icon type="time"
+                size='15'
+                color="#b5d7eb">
+        </i-icon>
+      营业时间：{{stationItem.stationBusinessHours}}
+      </view>
+      <view class="station-phone"
+            bindtap="callPhone"
+            data-phonenumber='{{stationItem.stationPhone}}'>
+        <i-icon type="mobilephone"
+                size='15'
+                color="#b5d7eb">
+        </i-icon>
+      联系电话：{{stationItem.stationPhone}}
+      </view>
+      <view class="station-address">
+        <i-icon type="coordinates"
+                size='15'
+                color="#b5d7eb">
+        </i-icon>
+      地址：{{stationItem.stationAddress}}
+      </view>
+    </view>
+  </view>
+  <view class="station-item-foot">
+  
+  </view>    
 </view>

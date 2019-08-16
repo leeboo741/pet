@@ -1,4 +1,6 @@
 {
-  "usingComponents": {},
+  "usingComponents": {
+    "i-icon":"/dist/icon/index"
+  },
   "navigationBarTitleText": "驿站"
 }
