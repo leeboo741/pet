@@ -180,7 +180,7 @@ Page({
           })
         } else {
           if (lastIsVideo && (uploadIndex == (fileList.length - 1))) {
-            order.video = tempObj.data[0].fileAddress;
+            order.video = tempObj.data[0].viewAddress;
             order.uploadVideo = null;
           } else {
             if (order.images == null) {
@@ -188,7 +188,7 @@ Page({
             }
             let tempFile = fileList[uploadIndex];
             let tempIndex = that.getIndexOf(tempFile, order.uploadImages);
-            order.images.push(tempObj.data[0].fileAddress);
+            order.images.push(tempObj.data[0].viewAddress);
             order.uploadImages.splice(tempIndex, 1);
           }
           that.setData({
@@ -281,7 +281,71 @@ Page({
    * 入港
    */
   tapInHarbour: function (e) {
+    this.requestConfirmInHarbour(e.currentTarget.dataset.tapindex);
+  },
 
+  /**
+   * 确认入港
+   */
+  requestConfirmInHarbour: function(orderIndex) {
+    const tempIndex = orderIndex;
+    let order = this.data.orderList[tempIndex];
+    wx.showLoading({
+      title: '请稍等...',
+    })
+    let fileList = [];
+    if (!util.isEmpty(order.images)) {
+      fileList = fileList.concat(order.images);
+    }
+    if (!util.isEmpty(order.video)) {
+      fileList.push(order.video)
+    }
+    let that = this;
+    wx.request({
+      url: app.url.url + app.url.confirmInOutHarbour,
+      header: {
+        'content-type': 'application/x-www-form-urlencoded'
+      },
+      method: "POST", // 请求方式
+      data: {
+        fileList: fileList,
+        sn: order.orderStates[0].sn,
+        orderNo: order.orderStates[0].orderNo,
+        orderType: order.orderStates[0].orderType,
+      },
+      success(res) {
+        console.log("确定入港 success: \n" + JSON.stringify(res));
+        if (res.data.prompt != null && res.data.prompt == "Error") {
+          let msg = "系统异常，入港失败";
+          if (res.data.root) {
+            msg = res.data.root
+          }
+          wx.showToast({
+            title: msg,
+            icon: 'none'
+          })
+        } else {
+          wx.showToast({
+            title: '入港成功',
+          })
+          that.data.orderList.splice(tempIndex, 1);
+          that.setData({
+            orderList: that.data.orderList
+          })
+        }
+      },
+      fail(res) {
+        console.log("确定入港 fail: \n" + JSON.stringify(res));
+        wx.showToast({
+          title: "网络异常，入港失败",
+          icon: 'none'
+        })
+      },
+      complete(res) {
+        console.log("确定入港 complete: \n" + JSON.stringify(res));
+        wx.hideLoading();
+      }
+    })
   },
 
   /**

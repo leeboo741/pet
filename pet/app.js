@@ -45,6 +45,7 @@ App({
     outHarbour: "/api/consign/port/outPort", // 出港单
     cancelOrder: "/api/order/cancelOrder", // 取消订单
     getOrderNoByOrderNo: "/api/order/getOrderNoByOrderNo", // 通过单号模糊查询单号
+    confirmInOutHarbour: "/api/consign/orderState/inOrOutPort", // 确认出入港
 
     /** ============== 城市 =================== */
     startCity: "/api/transport/listStartCity", // 始发城市

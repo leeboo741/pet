@@ -154,7 +154,7 @@ Page({
    */
   tapCancelOrder: function (e) {
     console.log("取消：\n" + e.currentTarget.dataset.orderno)
-    this.requestCancelOrder(e.currentTarget.dataset.orderno, e.currentTarget.data.tapindex)
+    this.requestCancelOrder(e.currentTarget.dataset.orderno, e.currentTarget.dataset.tapindex)
   },
 
   /**
