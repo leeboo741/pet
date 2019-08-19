@@ -13,7 +13,7 @@ Page({
    * 页面的初始数据
    */
   data: {
-    
+    rechargeAmount: 0, // 充值金额
   },
 
   /**
@@ -68,5 +68,57 @@ Page({
    */
   onShareAppMessage: function () {
 
-  }
+  },
+
+  /**
+   * 金额输入
+   */
+  amountInput: function(e) {
+    if (e.detail.value.length > 0) {
+      this.setData({
+        rechargeAmount: parseFloat(e.detail.value)
+      })
+    } else {
+      this.setData({
+        rechargeAmount: 0
+      })
+    }
+  },
+
+  /**
+   * 充值
+   */
+  recharge: function(e) {
+    wx.showLoading({
+      title: '支付中...',
+    })
+    wx.request({
+      url: app.url.url + app.url.recharge,
+      data: {
+        openId: app.globalData.userInfo.openid,
+        rechargeAmount: this.data.rechargeAmount
+      },
+      success(res){
+        console.log("充值 success => \n" + JSON.stringify(res))
+        wx.requestPayment({
+          timeStamp: res.data.data.timeStamp,
+          nonceStr: res.data.data.nonceStr,
+          package: res.data.data.package,
+          signType: res.data.data.signType,
+          paySign: res.data.data.paySign,
+        })
+      },
+      fail(res) {
+        console.log("充值 fail => \n" + JSON.stringify(res))
+        wx.showToast({
+          title: '网络问题，支付失败',
+          icon: 'none'
+        })
+      },
+      complete(res) {
+        console.log("充值 complete => \n" + JSON.stringify(res))
+        wx.hideLoading();
+      },
+    })
+  },
 })

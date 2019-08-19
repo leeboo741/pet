@@ -8,7 +8,7 @@ App({
 
     /** =========== 全局数据 =========== */
     servicePhone: "0791-012234221", // 客服电话
-    version: "beta1.1.17", // 版本号
+    version: "beta1.1.19", // 版本号
 
     /** =========== 用户数据 =========== */
     userInfo: {
@@ -42,6 +42,7 @@ App({
     uploadFile: "/api/consign/orderState/uploadFile", // 上传文件
     orderDetail: "/api/order/orderDetail", // 订单详情
     payment: "/api/weChat/pay/getOrderPayParam", // 请求支付
+    recharge: "/api/weChat/pay/getRechargeParam", // 充值请求
     inHarbour: "/api/consign/port/inPort", // 入港单
     outHarbour: "/api/consign/port/outPort", // 出港单
     cancelOrder: "/api/order/cancelOrder", // 取消订单
