@@ -26,8 +26,9 @@ App({
     // url: "http://47.99.244.168:6060",
     // url: "http://192.168.3.233:5050",
     // url: "http://192.168.3.187:5050",
-    url: "http://192.168.3.111:5050",
+    // url: "http://192.168.3.111:5050",
     // url: "http://192.168.3.123:5050",
+    url: "http://huji820.oicp.net",
     /** ============== 用户 =================== */ 
     register: "/api/customer/", // 注册
     login: "/api/oAuth", // 登陆
@@ -40,7 +41,7 @@ App({
     checkOrderListByOrderStatus:"/api/order/listOrderList", // 根据订单类型查询订单列表
     uploadFile: "/api/consign/orderState/uploadFile", // 上传文件
     orderDetail: "/api/order/orderDetail", // 订单详情
-    payment: "/api/order/getOrderPayParam", // 请求支付
+    payment: "/api/weChat/pay/getOrderPayParam", // 请求支付
     inHarbour: "/api/consign/port/inPort", // 入港单
     outHarbour: "/api/consign/port/outPort", // 出港单
     cancelOrder: "/api/order/cancelOrder", // 取消订单

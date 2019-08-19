@@ -9,6 +9,7 @@
       <!--常规信息-->
       <view class='userInfo'>
         <label class='nikeName'>{{userInfo.nickName}}</label>
+        <label class='phone'>{{userInfo.phone}}</label>
         <view class='mymoney'>
           <label>余额：</label>
           <label class="money">1000元</label>
@@ -25,7 +26,8 @@
               bindtap='tapSetting'></icon>
         <!--联系客服按钮-->
         <icon class='iconfont iconkefu' 
-              bindtap='tapCall'></icon>
+              bindtap='tapCall'
+              hidden="{{true}}"></icon>
       </view>
     </view>
   </view>
@@ -153,7 +155,7 @@
               bindtap='tapToPay' 
               data-tapindex="{{unpayIndex}}"
               data-orderno='{{unpayItem.orderNo}}'>
-        去支付
+        支付
         </view>
       </view>
     </view>

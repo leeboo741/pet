@@ -264,6 +264,15 @@ page {
   font-weight: bold;
 }
 
+.phone{
+  font-size: 28rpx;
+  color: lightgray;
+  font-family: Microsoft YaHei;
+  display: flex;
+  flex-direction: row;
+  margin-top: 10rpx;
+}
+
 .mymoney {
   margin-top: 10rpx;
   display: flex;

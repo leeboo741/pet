@@ -390,20 +390,35 @@ Page({
    * 支付
    */
   requestPay: function(orderNo){
+    wx.showLoading({
+      title: '支付中...',
+    })
     wx.request({
       url: app.url.url + app.url.payment,
       data: {
         orderNo: orderNo,
         openId: app.globalData.userInfo.openid
       },
-      success(res){
+      success(res) {
         console.log("支付 success：\n" + JSON.stringify(res));
+        wx.requestPayment({
+          timeStamp: res.data.data.timeStamp,
+          nonceStr: res.data.data.nonceStr,
+          package: res.data.data.package,
+          signType: res.data.data.signType,
+          paySign: res.data.data.paySign,
+        })
       },
       fail(res) {
         console.log("支付 fail：\n" + JSON.stringify(res));
+        wx.showToast({
+          title: '网络原因,支付失败',
+          icon: 'none'
+        })
       },
       complete(res) {
         console.log("支付 complete：\n" + JSON.stringify(res));
+        wx.hideLoading();
       }
     })
   },

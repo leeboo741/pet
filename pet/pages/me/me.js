@@ -161,14 +161,18 @@ Page({
    * 支付订单
    */
   tapToPay: function (e) {
-    console.log("支付：\n" + e.currentTarget.dataset.orderno)
+    console.log("支付：\n" + e.currentTarget.dataset.orderno);
+    this.requestPay(e.currentTarget.dataset.orderno);
   },
 
   /**
    * 点击呼叫
    */
-  tapCall: function () {
+  tapCall: function (e) {
     console.log("点击呼叫")
+    wx.makePhoneCall({
+      phoneNumber: app.globalData.servicePhone,
+    })
   },
 
   /**
@@ -261,6 +265,43 @@ Page({
   /** ================================= 页面事件 End ==================================== */
 
   /** ================================= 网络请求 Start ==================================== */
+
+  /**
+   * 支付
+   */
+  requestPay: function (orderNo) {
+    wx.showLoading({
+      title: '支付中...',
+    })
+    wx.request({
+      url: app.url.url + app.url.payment,
+      data: {
+        orderNo: orderNo,
+        openId: app.globalData.userInfo.openid
+      },
+      success(res) {
+        console.log("支付 success：\n" + JSON.stringify(res));
+        wx.requestPayment({
+          timeStamp: res.data.data.timeStamp,
+          nonceStr: res.data.data.nonceStr,
+          package: res.data.data.package,
+          signType: res.data.data.signType,
+          paySign: res.data.data.paySign,
+        })
+      },
+      fail(res) {
+        console.log("支付 fail：\n" + JSON.stringify(res));
+        wx.showToast({
+          title: '网络原因,支付失败',
+          icon: 'none'
+        })
+      },
+      complete(res) {
+        console.log("支付 complete：\n" + JSON.stringify(res));
+        wx.hideLoading();
+      }
+    })
+  },
 
   /**
    * 查单
