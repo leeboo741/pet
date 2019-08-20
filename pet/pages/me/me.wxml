@@ -75,8 +75,7 @@
   </view>
   <!--订单信息-->
   <!-- 订单类型选择 -->
-  <view class='block-fillet order'
-        hidden="{{userInfo.role == 1}}">
+  <view class='block-fillet order'>
     <view class='bill-type-button {{selectedBillType==0?"selectedLine":""}}' 
           bindtap='tapButtonTypeAction' 
           data-type="0">
@@ -100,8 +99,7 @@
   </view>
   <!-- 订单列表 -->
   <scroll-view class='block-fillet list-scroll'
-               scroll-y="{{true}}"
-               hidden="{{userInfo.role == 1}}">
+               scroll-y="{{true}}">
     <!-- 待付款 -->
     <view wx:if="{{selectedBillType==0}}"
           wx:for="{{unpayList}}" 
