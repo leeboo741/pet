@@ -38,6 +38,8 @@ const URL_GetOrderListByOrderStatus = "/api/order/listOrderList"; // 根据订�
 const URL_OrderDetail = "/api/order/orderDetail"; // 查询订单详情
 const URL_GetOrderNoByOrderNo = "/api/order/getOrderNoByOrderNo"; // 通过单号模糊查询单号
 
+const URL_GetCouponList = '/aip/coupon/listByOpenId'; // 获取优惠券列表
+
 const URL_Payment = "/api/weChat/pay/getOrderPayParam"; // 获取支付参数
 const URL_Recharge = "/api/weChat/pay/getRechargeParam"; // 获取充值参数
 
@@ -59,14 +61,13 @@ const Role_Customer = 0; // 用户角色
 const Role_Staff = 1; // 员工角色
 
 
-
 module.exports = {
   Service_Phone, // 客服电话
   Version_Name, // 版本名称
   Version_Code, // 版本编号
 
   URL_Service, // 请求路径
-  
+
   URL_Register, // 注册
   URL_Login, // 登陆
   URL_UpdateCustomer, // 更新用户
@@ -87,6 +88,8 @@ module.exports = {
   URL_GetOrderListByOrderStatus, // 根据订单类型查询订单列表
   URL_OrderDetail, // 查询订单详情
   URL_GetOrderNoByOrderNo, // 通过单号模糊查询单号
+
+  URL_GetCouponList, // 获取优惠券列表
 
   URL_Payment, // 获取支付参数
   URL_Recharge, // 获取充值参数

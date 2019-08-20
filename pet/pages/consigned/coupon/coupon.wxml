@@ -1,2 +1,38 @@
 <!--pages/consigned/coupon/coupon.wxml-->
-<text>pages/consigned/coupon/coupon.wxml</text>
+<view wx:for='{{couponList}}'
+      wx:for-item='couponItem'
+      wx:for-index='couponIndex'
+      wx:key='{{couponIndex}}'
+      class='coupon-item'>
+  <view class='coupon-item-info'>
+    <view class='coupon-item-info-left'>
+      <image class='coupon-item-image'
+             src='{{couponItem.imagePath!=null?couponItem.imagePath:"../../../resource/red_package.png"}}'
+             mode='scaleToFill'>
+      </image>
+    </view>
+    <view class='coupon-item-info-right'>
+      <view class='coupon-item-title'>
+      {{couponItem.couponName}}
+      </view>
+      <view class='coupon-item-name'>
+      {{couponItem.couponDescribe}}
+      </view>
+      <view class="coupon-item-time">
+      起始：{{couponItem.releaseTime}}
+      </view>
+      <view class="coupon-item-time">
+      失效：{{couponItem.failureTime}}
+      </view>
+    </view>
+  </view>
+  <view class='coupon-item-receive'
+        bindtap="receiveCoupon"
+        data-couponid='{{couponItem.couponNo}}'
+        data-couponindex='{{couponIndex}}'>
+    <image class='coupon-item-receive-bg'
+           src='../../../resource/receive.png'
+           mode='scaleToFill'>
+    </image>
+  </view>
+</view>

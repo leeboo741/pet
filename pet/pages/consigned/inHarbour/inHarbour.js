@@ -249,7 +249,7 @@ Page({
     if (searchKey != null) {
       tempSearchKey = searchKey
     }
-    let orderType = "未入港";
+    let orderType = "待入港";
     wx.request({
       url: config.URL_Service + config.URL_GetInOrOutHarbourList,
       data: {

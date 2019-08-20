@@ -213,6 +213,8 @@ Page({
                     app.globalData.userInfo.nickName = tempUserInfo.customerName
                     app.globalData.userInfo.avatarUrl = tempUserInfo.headerImage
                     app.globalData.userInfo.gender = tempUserInfo.sex
+                    app.globalData.userInfo.role = tempUserInfo.role
+                    app.globalData.userInfo.balance = tempUserInfo.balance
                     that.jumpToHome();
                   } else {
                     wx.showModal({

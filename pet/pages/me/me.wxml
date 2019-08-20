@@ -54,18 +54,24 @@
       <view class="btnOper"
             hidden="{{userInfo.role == 0}}" 
             bindtap='gotoCheckBill'>
-        <icon class='iconfont iconscan'></icon>
+        <i-icon type="scan"
+                color="#F1B000"
+                size="32">
+        </i-icon>
         <label>查单</label>
       </view>
       <view class="btnOper" 
             bindtap='gotoWithDrawal'>
-        <icon class='iconfont icontixian'></icon>
+        <i-icon type="redpacket"
+                color="#F1B000"
+                size="32">
+        </i-icon>
         <label>提现</label>
       </view>
       <view class="btnOper"
             hidden="{{userInfo.role == 1}}"
             bindtap="getCoupon">
-        <i-icon type="redpacket"
+        <i-icon type="coupons_fill"
                 color="#F1B000"
                 size="32">
         </i-icon>
@@ -155,7 +161,8 @@
         <view class='bill-operate-button'
               bindtap='tapCancelOrder'
               data-tapindex="{{unpayIndex}}"
-              data-orderno='{{unpayItem.orderNo}}'>
+              data-orderno='{{unpayItem.orderNo}}'
+              hidden="{{parse.disableCancelOrder(unpayItem.state)}}">
         取消订单
         </view>
         <view class='bill-operate-button'
@@ -227,7 +234,8 @@
         <view class='bill-operate-button'
               bindtap='tapCancelOrder' 
               data-tapindex="{{unsendIndex}}"
-              data-orderno='{{unsendItem.orderNo}}'>
+              data-orderno='{{unsendItem.orderNo}}'
+              hidden="{{parse.disableCancelOrder(unpayItem.state)}}">
         取消订单
         </view>
         <view class='bill-operate-button'
@@ -413,6 +421,13 @@
         return "随机";
       } else {
         return "大巴";
+      }
+    },
+    disableCancelOrder: function(orderStatus){
+      if (orderStatus == "未支付") {
+        return false;
+      } else {
+        return true;
       }
     }
   }
