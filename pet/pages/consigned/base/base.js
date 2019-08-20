@@ -7,6 +7,7 @@
 //获取应用实例
 const app = getApp()
 var util = require("../../../utils/util.js");
+const config = require("../../../utils/config.js")
 
 Page({
   data: {
@@ -506,7 +507,7 @@ Page({
    */
   tapServicePhoneAction: function(){
     wx.makePhoneCall({
-      phoneNumber: app.globalData.servicePhone,
+      phoneNumber: config.Service_Phone,
     })
   },
 
@@ -697,7 +698,7 @@ Page({
     })
     let that = this;
     wx.request({
-      url: app.url.url + app.url.insureRate,
+      url: config.URL_Service + config.URL_InsureRate,
       data: {
         "startCity": cityName
       },
@@ -800,11 +801,11 @@ Page({
     }
     let that = this;
     wx.request({
-      url: app.url.url + app.url.predictPrice,
+      url: config.URL_Service + config.URL_PredictPrice,
       data: tempData,
       success(res) {
         console.log("获取预估价格 success => \n" + JSON.stringify(res));
-        if (res.data.prompt == app.requestPromptValueName.success) {
+        if (res.data.prompt == config.Prompt_Success) {
           that.setData({
             totalPrice: res.data.root
           })
@@ -842,7 +843,7 @@ Page({
       icon: 'none'
     })
     wx.request({
-      url: app.url.url + app.url.ableTransportType,
+      url: config.URL_Service + config.URL_AbleTransportType,
       data: {
         "startCity" : this.data.beginCity,
         "endCity" : this.data.endCity,
@@ -882,13 +883,13 @@ Page({
     wx.showLoading({
       title: '请稍等...',
     })
-    let urlstr = app.url.url + app.url.petType;
+    let urlstr = config.URL_Service + config.URL_PetType;
     // 向服务器请求登陆，返回 本微信 在服务器状态，注册|未注册，
     wx.request({
       url: urlstr, // 服务器地址
       success: res => {
         console.log("success => " + JSON.stringify(res));
-        if (res.data.prompt == app.requestPromptValueName.success) {
+        if (res.data.prompt == config.Prompt_Success) {
           that.data.petTypes = res.data.root;
           wx.showActionSheet({
             itemList: that.data.petTypes,
@@ -920,7 +921,7 @@ Page({
    * 查询航空箱可用站点
    */
   checkAbleAirbox: function (cityName) {
-    let urlStr = app.url.url + app.url.ableAirBox;
+    let urlStr = config.URL_Service + config.URL_AbleAirBox;
     let that = this;
     wx.request({
       url: urlStr,
@@ -957,7 +958,7 @@ Page({
    * 查询送宠可用站点
    */
   checkAbleStation: function (cityName) {
-    let urlStr = app.url.url + app.url.ableStation;
+    let urlStr = config.URL_Service + config.URL_AbleStation;
     let that = this;
     wx.request({
       url: urlStr,
@@ -999,7 +1000,7 @@ Page({
     wx.showLoading({
       title: '请稍等...',
     })
-    let urlstr = app.url.url + app.url.petClassify;
+    let urlstr = config.URL_Service + config.URL_PetClassify;
     // 向服务器请求登陆，返回 本微信 在服务器状态，注册|未注册，
     wx.request({
       url: urlstr, // 服务器地址
@@ -1008,7 +1009,7 @@ Page({
       },
       success: res => {
         console.log("success => " + JSON.stringify(res));
-        if (res.data.prompt == app.requestPromptValueName.success) {
+        if (res.data.prompt == config.Prompt_Success) {
           that.data.petClassifys = res.data.root;
           let tempList = [];
           for (let i = 0; i < that.data.petClassifys.length; i++) {

@@ -1,5 +1,6 @@
 // pages/orderDetail/orderDetail.js
 const app = getApp();
+const config = require("../../utils/config.js");
 Page({
 
   /**
@@ -86,7 +87,7 @@ Page({
     })
     let that = this;
     wx.request({
-      url: app.url.url + app.url.orderDetail,
+      url: config.URL_Service + config.URL_OrderDetail,
       data: {
         "orderNo": orderNo
       },

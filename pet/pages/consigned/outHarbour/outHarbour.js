@@ -5,6 +5,7 @@
  */
 
 const util = require("../../../utils/util.js")
+const config = require("../../../utils/config.js")
 
 const app = getApp();
 const maxImageCount = 8;
@@ -159,7 +160,7 @@ Page({
     })
     let that = this;
     wx.uploadFile({
-      url: app.url.url + app.url.uploadFile,
+      url: config.URL_Service + config.URL_UploadFile,
       filePath: fileList[uploadIndex],
       name: 'multipartFiles',
       header: { "Content-Type": "multipart/form-data" },
@@ -248,7 +249,7 @@ Page({
     }
     let orderType = "未出港";
     wx.request({
-      url: app.url.url + app.url.inOrOutHarbour,
+      url: config.URL_Service + config.URL_GetInOrOutHarbourList,
       data: {
         openId: app.globalData.userInfo.openid,
         orderNo: tempSearchKey,
@@ -314,7 +315,7 @@ Page({
     }
     let that = this;
     wx.request({
-      url: app.url.url + app.url.confirmInOutHarbour,
+      url: config.URL_Service + config.URL_ConfirmInOutHarbour,
       header: {
         'content-type': 'application/x-www-form-urlencoded'
       },

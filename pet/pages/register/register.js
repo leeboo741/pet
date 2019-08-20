@@ -9,7 +9,7 @@
  */
 
 const app = getApp();
-
+const config = require("../../utils/config.js");
 Page({
 
   /**
@@ -113,7 +113,7 @@ Page({
     }
     console.log("绑定数据 => " + JSON.stringify(tempData));
     wx.request({
-      url: app.url.url + app.url.register,
+      url: config.URL_Service + config.URL_Register,
       data: tempData, // 参数
       header: {
         'content-type': 'application/x-www-form-urlencoded'
@@ -196,7 +196,7 @@ Page({
               app.globalData.userInfo.province = userInfo.province
               app.globalData.userInfo.city = userInfo.city
               app.globalData.userInfo.country = userInfo.country
-              let urlstr = app.url.url + app.url.login;
+              let urlstr = config.URL_Service + config.URL_Login;
               // 向服务器请求登陆，返回 本微信 在服务器状态，注册|未注册，
               wx.request({
                 url: urlstr, // 服务器地址
@@ -205,7 +205,7 @@ Page({
                 }, // 参数
                 success: res => {
                   console.log("success => " + JSON.stringify(res));
-                  if (res.data.prompt == app.requestPromptValueName.success) {
+                  if (res.data.prompt == config.Prompt_Success) {
                     let tempUserInfo = JSON.parse(res.data.root)
                     app.globalData.userInfo.customerNo = tempUserInfo.customerNo
                     app.globalData.userInfo.openid = tempUserInfo.openid
@@ -271,7 +271,7 @@ Page({
    */
   requestSuccess: function (res) {
     let that = this;
-    if (res.data.prompt == app.requestPromptValueName.success) {
+    if (res.data.prompt == config.Prompt_Success) {
       wx.showModal({
         showCancel: false,
         title: res.data.root,

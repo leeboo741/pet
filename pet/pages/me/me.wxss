@@ -327,7 +327,7 @@ page {
 
 .btnCommon {
   display: flex;
-  justify-content: center;
+  /* justify-content: center; */
   align-items: center;
 }
 
@@ -343,7 +343,7 @@ page {
 
 .btnOper {
   display: flex;
-  width: 33%;
+  width: 20%;
   justify-content: center;
   align-items: center;
   flex-direction: column;

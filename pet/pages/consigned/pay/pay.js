@@ -7,7 +7,7 @@
  */
 
 const app = getApp();
-
+const config = require("../../../utils/config.js")
 Page({
 
   /**
@@ -249,7 +249,7 @@ Page({
    */
   tapServicePhoneAction: function () {
     wx.makePhoneCall({
-      phoneNumber: app.globalData.servicePhone,
+      phoneNumber: config.Service_Phone,
     })
   },
 
@@ -332,12 +332,12 @@ Page({
 
     let that = this;
     wx.request({
-      url: app.url.url + app.url.order,
+      url: config.URL_Service + config.URL_Order,
       method: "POST",
       data: tempOrderObj,
       success(res) {
         console.log("提交订单 success => \n" + JSON.stringify(res));
-        if (res.data.prompt == app.requestPromptValueName.success) {
+        if (res.data.prompt == config.Prompt_Success) {
           that.setData({
             orderNo: res.data.root
           })
@@ -394,7 +394,7 @@ Page({
       title: '支付中...',
     })
     wx.request({
-      url: app.url.url + app.url.payment,
+      url: config.URL_Service + config.URL_Payment,
       data: {
         orderNo: orderNo,
         openId: app.globalData.userInfo.openid
@@ -466,11 +466,11 @@ Page({
 
     let that = this;
     wx.request({
-      url: app.url.url + app.url.predictPrice,
+      url: config.URL_Service + config.URL_PredictPrice,
       data: tempData,
       success(res) {
         console.log("获取预估价格 success => \n" + JSON.stringify(res));
-        if (res.data.prompt == app.requestPromptValueName.success) {
+        if (res.data.prompt == config.Prompt_Success) {
           that.setData({
             predictPrice: res.data.root
           })

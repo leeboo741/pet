@@ -6,7 +6,7 @@
  */
 
 const app = getApp();
-
+const config = require("../../utils/config.js");
 Page({
 
   /**
@@ -93,7 +93,7 @@ Page({
       title: '支付中...',
     })
     wx.request({
-      url: app.url.url + app.url.recharge,
+      url: config.URL_Service + config.URL_Recharge,
       data: {
         openId: app.globalData.userInfo.openid,
         rechargeAmount: this.data.rechargeAmount

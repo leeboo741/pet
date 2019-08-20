@@ -15,7 +15,8 @@
     "pages/register/register",
     "pages/orderDetail/orderDetail",
     "pages/consigned/inHarbour/inHarbour",
-    "pages/station/station"
+    "pages/station/station",
+    "pages/consigned/coupon/coupon"
   ],
   "window": {
     "backgroundTextStyle": "light",

@@ -11,6 +11,8 @@
 //获取应用实例
 const app = getApp()
 
+const config = require("../../utils/config.js")
+
 Page({
 
   /**
@@ -26,6 +28,7 @@ Page({
    */
   onLoad: function () {
     this.login();
+    console.log("要死啊" + config.URL_Service)
   },
 
   /**
@@ -85,7 +88,7 @@ Page({
               app.globalData.userInfo.province = userInfo.province
               app.globalData.userInfo.city = userInfo.city
               app.globalData.userInfo.country = userInfo.country
-              let urlstr = app.url.url + app.url.login;
+              let urlstr = config.URL_Service + config.URL_Login;
               // 向服务器请求登陆，返回 本微信 在服务器状态，注册|未注册，
               wx.request({
                 url: urlstr, // 服务器地址
@@ -94,7 +97,7 @@ Page({
                 }, // 参数
                 success: res => {
                   console.log("success => " + JSON.stringify(res));
-                  if (res.data.prompt == app.requestPromptValueName.success) {
+                  if (res.data.prompt == config.Prompt_Success) {
                     let tempUserInfo = JSON.parse(res.data.root)
                     app.globalData.userInfo.customerNo = tempUserInfo.customerNo
                     app.globalData.userInfo.openid = tempUserInfo.openid
@@ -102,8 +105,10 @@ Page({
                     app.globalData.userInfo.nickName = tempUserInfo.customerName
                     app.globalData.userInfo.avatarUrl = tempUserInfo.headerImage
                     app.globalData.userInfo.gender = tempUserInfo.sex
+                    app.globalData.userInfo.role = tempUserInfo.role
+                    app.globalData.userInfo.balance = tempUserInfo.balance
                     that.jumpToHome();
-                  } else if (res.data.prompt == app.requestPromptValueName.notExist) {
+                  } else if (res.data.prompt == config.Prompt_NotExist) {
                     app.globalData.userInfo.openid = res.data.root;
                     that.jumpToRegister();
                   } else {

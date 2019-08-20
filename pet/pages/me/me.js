@@ -17,6 +17,8 @@ const bill_type_sendout = "待发货";
 const bill_type_receiving = "待收货";
 const bill_type_complete = "已完成";
 
+const config = require("../../utils/config.js");
+
 Page({
 
   /**
@@ -31,10 +33,7 @@ Page({
     unsendList: [], // 待发货
     unreceiveList: [], // 待收货
     completeList: [], // 已完成
-    balance:0, // 余额
   },
-
-
 
   /** ================================= 生命周期 Start ==================================== */
 
@@ -173,7 +172,7 @@ Page({
   tapCall: function (e) {
     console.log("点击呼叫")
     wx.makePhoneCall({
-      phoneNumber: app.globalData.servicePhone,
+      phoneNumber: config.Service_Phone,
     })
   },
 
@@ -244,6 +243,15 @@ Page({
   },
 
   /**
+   * 领券
+   */
+  getCoupon: function() {
+    wx.navigateTo({
+      url: '../consigned/coupon/coupon',
+    })
+  },
+
+  /**
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
@@ -274,14 +282,15 @@ Page({
   requestBalance: function(){
     let that = this;
     wx.request({
-      url: app.url.url + app.url.checkBalance,
+      url: config.URL_Service + config.URL_CheckBalance,
       data: {
         openId: app.globalData.userInfo.openid
       },
       success(res){
         console.log("查询余额 success => \n" + JSON.stringify(res));
+        that.data.userInfo.balance = res.data.data
         that.setData({
-          balance: res.data.data
+          userInfo: that.data.userInfo
         })
       },
       fail(res) {
@@ -305,7 +314,7 @@ Page({
       title: '支付中...',
     })
     wx.request({
-      url: app.url.url + app.url.payment,
+      url: config.URL_Service + config.URL_Payment,
       data: {
         orderNo: orderNo,
         openId: app.globalData.userInfo.openid
@@ -343,7 +352,7 @@ Page({
     })
     let that = this;
     wx.request({
-      url: app.url.url + app.url.getOrderNoByOrderNo,
+      url: config.URL_Service + config.URL_GetOrderNoByOrderNo,
       data: {
         openId: app.globalData.userInfo.openid,
         orderNo: inputOrderNo
@@ -391,7 +400,7 @@ Page({
     const tempIndex = orderIndex;
     let that = this;
     wx.request({
-      url: app.url.url + app.url.cancelOrder,
+      url: config.URL_Service + config.URL_CancelOrder,
       data: {
         openId: app.globalData.userInfo.openid,
         orderNo: orderNo
@@ -465,7 +474,7 @@ Page({
     const tempType = billType;
     let that = this;
     wx.request({
-      url: app.url.url + app.url.checkOrderListByOrderStatus,
+      url: config.URL_Service + config.URL_GetOrderListByOrderStatus,
       data: {
         "orderStatus": this.getSendBillType(tempType),
         "openId": app.globalData.userInfo.openid

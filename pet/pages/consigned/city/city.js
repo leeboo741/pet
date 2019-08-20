@@ -4,7 +4,7 @@
  * 选择城市===================================================================================================================================
  */
 const app = getApp()
-
+const config = require("../../../utils/config.js")
 Page({
   /**
    * 生命周期函数--监听页面加载
@@ -35,7 +35,7 @@ Page({
       title: '请稍等...',
     })
     wx.request({
-      url: app.url.url + app.url.startCity,
+      url: config.URL_Service + config.URL_StartCity,
       success (res) {
         that.data.citys = res.data.root.bodys;
         that.data.cityAZ = res.data.root.headers;
@@ -65,7 +65,7 @@ Page({
       title: '请稍等...',
     })
     wx.request({
-      url: app.url.url + app.url.endCity,
+      url: config.URL_Service + config.URL_EndCity,
       data: {
         "startCity": this.data.startCity
       },

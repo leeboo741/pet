@@ -12,7 +12,7 @@
         <label class='phone'>{{userInfo.phone}}</label>
         <view class='mymoney'>
           <label>余额：</label>
-          <label class="money">{{balance}}元</label>
+          <label class="money">{{userInfo.balance}}元</label>
           <view class='recharge' 
                 bindtap='gotoRecharge'>
             <label>充值</label>
@@ -39,31 +39,44 @@
       <label>我的常用</label>
     </view>
     <view class='btnCommon'>
-      <view class="btnOper">
-        <icon class='iconfont iconruku'  
-              bindtap='gotoInHarbour'></icon>
+      <view class="btnOper"
+            hidden="{{userInfo.role == 0}}"  
+            bindtap='gotoInHarbour'>
+        <icon class='iconfont iconruku'></icon>
         <label>入港</label>
       </view>
-      <view class="btnOper">
-        <icon class='iconfont iconchuku' 
-              bindtap='gotoOutHarbour'></icon>
+      <view class="btnOper"
+            hidden="{{userInfo.role == 0}}" 
+            bindtap='gotoOutHarbour'>
+        <icon class='iconfont iconchuku'></icon>
         <label>出港</label>
       </view>
-      <view class="btnOper">
-        <icon class='iconfont iconscan' 
-              bindtap='gotoCheckBill'></icon>
+      <view class="btnOper"
+            hidden="{{userInfo.role == 0}}" 
+            bindtap='gotoCheckBill'>
+        <icon class='iconfont iconscan'></icon>
         <label>查单</label>
       </view>
-      <view class="btnOper">
-        <icon class='iconfont icontixian' 
-              bindtap='gotoWithDrawal'></icon>
+      <view class="btnOper" 
+            bindtap='gotoWithDrawal'>
+        <icon class='iconfont icontixian'></icon>
         <label>提现</label>
+      </view>
+      <view class="btnOper"
+            hidden="{{userInfo.role == 1}}"
+            bindtap="getCoupon">
+        <i-icon type="redpacket"
+                color="#F1B000"
+                size="32">
+        </i-icon>
+        <label>领券</label>
       </view>
     </view>
   </view>
   <!--订单信息-->
   <!-- 订单类型选择 -->
-  <view class='block-fillet order'>
+  <view class='block-fillet order'
+        hidden="{{userInfo.role == 1}}">
     <view class='bill-type-button {{selectedBillType==0?"selectedLine":""}}' 
           bindtap='tapButtonTypeAction' 
           data-type="0">
@@ -86,7 +99,9 @@
     </view>
   </view>
   <!-- 订单列表 -->
-  <scroll-view class='block-fillet list-scroll' scroll-y="{{true}}">
+  <scroll-view class='block-fillet list-scroll'
+               scroll-y="{{true}}"
+               hidden="{{userInfo.role == 1}}">
     <!-- 待付款 -->
     <view wx:if="{{selectedBillType==0}}"
           wx:for="{{unpayList}}" 
