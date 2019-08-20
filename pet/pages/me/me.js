@@ -31,6 +31,7 @@ Page({
     unsendList: [], // 待发货
     unreceiveList: [], // 待收货
     completeList: [], // 已完成
+    balance:0, // 余额
   },
 
 
@@ -59,6 +60,7 @@ Page({
       userInfo: app.globalData.userInfo
     })
     this.requestBillList(this.data.selectedBillType);
+    this.requestBalance();
   },
 
   /**
@@ -265,6 +267,35 @@ Page({
   /** ================================= 页面事件 End ==================================== */
 
   /** ================================= 网络请求 Start ==================================== */
+
+  /**
+   * 查询余额
+   */
+  requestBalance: function(){
+    let that = this;
+    wx.request({
+      url: app.url.url + app.url.checkBalance,
+      data: {
+        openId: app.globalData.userInfo.openid
+      },
+      success(res){
+        console.log("查询余额 success => \n" + JSON.stringify(res));
+        that.setData({
+          balance: res.data.data
+        })
+      },
+      fail(res) {
+        console.log("查询余额 fail => \n" + JSON.stringify(res));
+        wx.showToast({
+          title: '查询余额失败',
+          icon: 'none'
+        })
+      },
+      complete(res) {
+        console.log("查询余额 complete => \n" + JSON.stringify(res));
+      }
+    })
+  },
 
   /**
    * 支付

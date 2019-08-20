@@ -253,7 +253,7 @@ page {
 }
 
 .userInfo {
-  padding-top: 40rpx;
+  padding-top: 10rpx;
   padding-left: 20rpx;
   width: 450rpx;
 }

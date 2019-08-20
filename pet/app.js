@@ -26,9 +26,9 @@ App({
     // url: "http://47.99.244.168:6060",
     // url: "http://192.168.3.233:5050",
     // url: "http://192.168.3.187:5050",
-    // url: "http://192.168.3.111:5050",
+    url: "http://192.168.3.111:5050",
     // url: "http://192.168.3.123:5050",
-    url: "http://huji820.oicp.net",
+    // url: "http://huji820.oicp.net",
     /** ============== 用户 =================== */ 
     register: "/api/customer/", // 注册
     login: "/api/oAuth", // 登陆
@@ -45,9 +45,11 @@ App({
     recharge: "/api/weChat/pay/getRechargeParam", // 充值请求
     inHarbour: "/api/consign/port/inPort", // 入港单
     outHarbour: "/api/consign/port/outPort", // 出港单
+    inOrOutHarbour: "/api/consign/port/listByLikeOrderNo", // 出入港单据
     cancelOrder: "/api/order/cancelOrder", // 取消订单
     getOrderNoByOrderNo: "/api/order/getOrderNoByOrderNo", // 通过单号模糊查询单号
     confirmInOutHarbour: "/api/consign/orderState/inOrOutPort", // 确认出入港
+    checkBalance: "/api/balance", // 查询余额
 
     /** ============== 城市 =================== */
     startCity: "/api/transport/listStartCity", // 始发城市

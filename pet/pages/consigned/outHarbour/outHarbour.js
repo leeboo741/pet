@@ -226,7 +226,14 @@ Page({
     }
     return -1;
   },
-  
+
+  /**
+   * 搜索单据
+   */
+  searchOrder: function(e) {
+    this.requestOutHarbour(e.detail.value)
+  },
+
   /**
    * 请求出港单
    */
@@ -235,10 +242,17 @@ Page({
       title: '请稍等...',
     })
     let that = this;
+    let tempSearchKey = "";
+    if (searchKey != null) {
+      tempSearchKey = searchKey
+    }
+    let orderType = "未出港";
     wx.request({
-      url: app.url.url + app.url.outHarbour,
+      url: app.url.url + app.url.inOrOutHarbour,
       data: {
-        openId: app.globalData.userInfo.openid
+        openId: app.globalData.userInfo.openid,
+        orderNo: tempSearchKey,
+        orderType: orderType
       },
       success(res) {
         console.log("请求出港单 success：\n" + JSON.stringify(res));

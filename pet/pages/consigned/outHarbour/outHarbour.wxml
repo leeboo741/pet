@@ -3,7 +3,9 @@
   <view class='block-fillet' 
         style="width:100%">
     <input class='input-under' 
-           placeholder='请输入单据的后4位'>
+           placeholder='请输入单据号'
+           confirm-type="search"
+           bindconfirm='searchOrder'>
     </input>
   </view>
   <!-- 单据信息 -->

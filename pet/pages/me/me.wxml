@@ -12,7 +12,7 @@
         <label class='phone'>{{userInfo.phone}}</label>
         <view class='mymoney'>
           <label>余额：</label>
-          <label class="money">1000元</label>
+          <label class="money">{{balance}}元</label>
           <view class='recharge' 
                 bindtap='gotoRecharge'>
             <label>充值</label>
@@ -23,11 +23,11 @@
       <view class='btn'>
         <!--设置按钮-->
         <icon class='iconfont iconshezhi-' 
-              bindtap='tapSetting'></icon>
+              bindtap='tapSetting'
+              hidden="{{true}}"></icon>
         <!--联系客服按钮-->
         <icon class='iconfont iconkefu' 
-              bindtap='tapCall'
-              hidden="{{true}}"></icon>
+              bindtap='tapCall'></icon>
       </view>
     </view>
   </view>
