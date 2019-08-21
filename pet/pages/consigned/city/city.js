@@ -204,6 +204,7 @@ Page({
    */
   onUnload: function () {
 
+    console.log("/city/city 销毁")
   },
 
   /**

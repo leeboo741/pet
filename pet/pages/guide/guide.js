@@ -28,7 +28,6 @@ Page({
    */
   onLoad: function () {
     this.login();
-    console.log("要死啊" + config.URL_Service)
   },
 
   /**
@@ -197,7 +196,7 @@ Page({
    * 生命周期函数--监听页面卸载
    */
   onUnload: function () {
-
+    console.log("/guide/guide 销毁")
   },
 
   /**
