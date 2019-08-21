@@ -27,7 +27,8 @@
               hidden="{{true}}"></icon>
         <!--联系客服按钮-->
         <icon class='iconfont iconkefu' 
-              bindtap='tapCall'></icon>
+              bindtap='tapCall'
+              hidden="{{true}}"></icon>
       </view>
     </view>
   </view>
