@@ -14,6 +14,9 @@ Page({
    * 页面的初始数据
    */
   data: {
+
+    storePhone: null, // 获取商家电话
+
     predictPrice: 0, // 预估金额
     confirmCondition: false, // 确认条件
     confirmClause: false, // 确认条款
@@ -85,6 +88,7 @@ Page({
       })
     }
     this.predictPrice();
+    this.requestStroePhoneByCityName(this.data.startCity)
   },
 
   /**
@@ -248,8 +252,15 @@ Page({
    * 拨打电话
    */
   tapServicePhoneAction: function () {
+    if (this.data.storePhone == null) {
+      wx.showToast({
+        title: '尚未找到对应商家客服电话，请稍后',
+        icon: 'none'
+      })
+      return;
+    }
     wx.makePhoneCall({
-      phoneNumber: config.Service_Phone,
+      phoneNumber: this.data.storePhone,
     })
   },
 
@@ -493,6 +504,36 @@ Page({
       },
     })
   },
+
+  /**
+   * 请求商家电话
+   */
+  requestStroePhoneByCityName: function (cityName) {
+    let that = this;
+    wx.request({
+      url: config.URL_Service + config.URL_GetStorePhoneByCityName,
+      data: {
+        cityName: cityName
+      },
+      success(res) {
+        console.log("获取商家电话 城市（" + cityName + "） success => \n" + JSON.stringify(res));
+        that.setData({
+          storePhone: res.data.data
+        })
+      },
+      fail(res) {
+        console.log("获取商家电话 城市（" + cityName + "） fail => \n" + JSON.stringify(res));
+        wx.showToast({
+          title: '网络原因，获取客服电话失败',
+          icon: 'none'
+        })
+      },
+      complete(res) {
+        console.log("获取商家电话 城市（" + cityName + "） complete => \n" + JSON.stringify(res));
+      },
+    })
+  },
+
   /* ============================= 网络请求 End ============================== */
 
   /* ============================= 数据处理 Start ============================== */

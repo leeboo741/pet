@@ -31,6 +31,7 @@ const URL_AbleStation = "/api/consign/onDoorService/getEndCityStation"; // 是�
 const URL_AbleAirBox = "/aip/consign/airBox/listStationAixBox"; // 航空箱是否可用
 const URL_InsureRate = "/api/consign/insure"; // 查询保价费率
 const URL_PredictPrice = "/api/order/getOrderPrice"; // 获取预估价格
+const URL_GetStorePhoneByCityName = "/api/business/getPhoneByCityName"; // 通过城市获取商家电话
 
 const URL_Order = "/api/order/insertOrder"; // 下单
 const URL_CancelOrder = "/api/order/cancelOrder"; // 取消订单
@@ -82,6 +83,7 @@ module.exports = {
   URL_AbleAirBox, // 航空箱是否可用
   URL_InsureRate, // 查询保价费率
   URL_PredictPrice, // 获取预估价格
+  URL_GetStorePhoneByCityName, // 通过城市名称 获取商家电话
 
   URL_Order, // 下单
   URL_CancelOrder, // 取消订单

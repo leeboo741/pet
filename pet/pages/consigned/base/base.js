@@ -22,6 +22,7 @@ Page({
         imgPath: 'http://47.99.244.168:6060/static/images/pet3.png'
       },
     ], // banner 数据
+    storePhone:null, // 商家电话
     rate: 0, // 保价费率
     totalPrice: 0, // 总计金额
     beginCity: null, // 始发城市 
@@ -156,8 +157,10 @@ Page({
         transportTypes: this.data.transportTypes, // 重置 运输方式列表 
       })
       // 查询保价费率
+      this.requestStroePhoneByCityName(app.globalData.trainBeginCity);
       this.requestInsurePriceRate(app.globalData.trainBeginCity);
       this.checkAbleAirbox(app.globalData.trainBeginCity)
+      app.globalData.trainBeginCity = null;
     }
     if (app.globalData.trainEndCity != null) {
       // 重置 送宠到家 市区选择器
@@ -172,6 +175,7 @@ Page({
       this.checkAbleTransportType();
       // 查询是否有可用站点
       this.checkAbleStation(app.globalData.trainEndCity);
+      app.globalData.trainEndCity = null;
     }
   },
 
@@ -506,8 +510,22 @@ Page({
    * 点击拨打客服电话
    */
   tapServicePhoneAction: function(){
+    if (this.data.beginCity == null) {
+      wx.showToast({
+        title: '请先选择始发城市',
+        icon:'none'
+      })
+      return;
+    }
+    if (this.data.storePhone == null) {
+      wx.showToast({
+        title: '尚未找到对应商家客服电话，请稍后',
+        icon: 'none'
+      })
+      return;
+    }
     wx.makePhoneCall({
-      phoneNumber: config.Service_Phone,
+      phoneNumber: this.data.storePhone,
     })
   },
 
@@ -1037,6 +1055,35 @@ Page({
       },
       complete(res) {
         wx.hideLoading();
+      },
+    })
+  },
+
+  /**
+   * 请求商家电话
+   */
+  requestStroePhoneByCityName: function(cityName) {
+    let that = this;
+    wx.request({
+      url: config.URL_Service + config.URL_GetStorePhoneByCityName,
+      data: {
+        cityName: cityName
+      },
+      success(res){
+        console.log("获取商家电话 城市（" + cityName + "） success => \n" + JSON.stringify(res));
+        that.setData({
+          storePhone: res.data.data
+        })
+      },
+      fail(res) {
+        console.log("获取商家电话 城市（" + cityName + "） fail => \n" + JSON.stringify(res));
+        wx.showToast({
+          title: '网络原因，获取客服电话失败',
+          icon: 'none'
+        })
+      },
+      complete(res) {
+        console.log("获取商家电话 城市（" + cityName + "） complete => \n" + JSON.stringify(res));
       },
     })
   },

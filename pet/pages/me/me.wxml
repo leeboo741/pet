@@ -159,6 +159,14 @@
       <!-- 按钮区域 -->
       <view class='bill-operate-box'>
         <view class='bill-operate-button'
+              bindtap='tapCallStore'
+              data-tapindex="{{unpayIndex}}"
+              data-phone="{{unpayItem.transport.station.phone}}"
+              data-orderno='{{unpayItem.orderNo}}'
+              hidden="{{parse.hiddenMakePhone(unpayItem.transport.station.phone)}}">
+        联系商家
+        </view>
+        <view class='bill-operate-button'
               bindtap='tapCancelOrder'
               data-tapindex="{{unpayIndex}}"
               data-orderno='{{unpayItem.orderNo}}'
@@ -231,6 +239,14 @@
       </view>
       <!-- 按钮区域 -->
       <view class='bill-operate-box'>
+        <view class='bill-operate-button'
+              bindtap='tapCallStore'
+              data-tapindex="{{unsendIndex}}"
+              data-phone="{{unsendItem.transport.station.phone}}"
+              data-orderno='{{unsendItem.orderNo}}'
+              hidden="{{parse.hiddenMakePhone(unsendItem.transport.station.phone)}}">
+        联系商家
+        </view>
         <view class='bill-operate-button'
               bindtap='tapCancelOrder' 
               data-tapindex="{{unsendIndex}}"
@@ -306,6 +322,14 @@
       <!-- 按钮区域 -->
       <view class='bill-operate-box'>
         <view class='bill-operate-button'
+              bindtap='tapCallStore'
+              data-tapindex="{{unreceiveIndex}}"
+              data-phone="{{unreceiveItem.transport.station.phone}}"
+              data-orderno='{{unreceiveItem.orderNo}}'
+              hidden="{{parse.hiddenMakePhone(unreceiveItem.transport.station.phone)}}">
+        联系商家
+        </view>
+        <view class='bill-operate-button'
               bindtap='tapOrderDetail' 
               data-tapindex="{{unreceiveIndex}}"
               data-orderno='{{unreceiveItem.orderNo}}'>
@@ -373,6 +397,14 @@
       <!-- 按钮区域 -->
       <view class='bill-operate-box'>
         <view class='bill-operate-button'
+              bindtap='tapCallStore'
+              data-tapindex="{{completeIndex}}"
+              data-phone="{{completeItem.transport.station.phone}}"
+              data-orderno='{{completeItem.orderNo}}'
+              hidden="{{parse.hiddenMakePhone(completeItem.transport.station.phone)}}">
+        联系商家
+        </view>
+        <view class='bill-operate-button'
               bindtap='tapOrderDetail' 
               data-tapindex="{{completeIndex}}"
               data-orderno='{{completeItem.orderNo}}'>
@@ -432,7 +464,13 @@
       } else {
         return true;
       }
-    }
+    },
+    hiddenMakePhone: function(phoneNumber){
+      if (phoneNumber == null || phoneNumber.length <= 0) {
+        return true;
+      }
+      return false;
+    },
   }
 
 </wxs>

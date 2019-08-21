@@ -80,6 +80,15 @@ Page({
   /** ================================= 页面事件 Start ==================================== */
 
   /**
+   * 联系商家
+   */
+  tapCallStore: function(e) {
+    wx.makePhoneCall({
+      phoneNumber: e.currentTarget.dataset.phone,
+    })
+  },
+
+  /**
    * 隐藏弹出框
    */
   hiddenPopMask: function(){

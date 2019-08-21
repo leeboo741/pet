@@ -244,6 +244,9 @@
    <!-- 预订  -->
    <view class="pay">
         <!-- 注册按钮 -->
-        <button class='button-confirm button-red' bindtap='tapTakeOrderAction'>预订</button>
+        <button class='button-confirm button-red' 
+                bindtap='tapTakeOrderAction'>
+        预订
+        </button>
    </view>
 </view>
