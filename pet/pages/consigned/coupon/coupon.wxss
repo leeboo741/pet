@@ -36,6 +36,13 @@
   flex-direction: column;
 }
 
+.coupon-item-number{
+  font-size: 30rpx;
+  color: #ee2c2c;
+  margin: 10rpx 10rpx 10rpx 0rpx;
+  flex-wrap: wrap;
+}
+
 .coupon-item-title{
   font-size: 30rpx;
   color: #464547;

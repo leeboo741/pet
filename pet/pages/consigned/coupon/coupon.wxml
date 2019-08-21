@@ -15,6 +15,9 @@
       <view class='coupon-item-title'>
       {{couponItem.couponName}}
       </view>
+      <view class='coupon-item-number'>
+        {{couponItem.couponNo}}
+      </view>
       <view class='coupon-item-name'>
       {{couponItem.couponDescribe}}
       </view>
@@ -29,7 +32,8 @@
   <view class='coupon-item-receive'
         bindtap="receiveCoupon"
         data-couponid='{{couponItem.couponNo}}'
-        data-couponindex='{{couponIndex}}'>
+        data-couponindex='{{couponIndex}}'
+        hidden="{{true}}">
     <image class='coupon-item-receive-bg'
            src='../../../resource/receive.png'
            mode='scaleToFill'>

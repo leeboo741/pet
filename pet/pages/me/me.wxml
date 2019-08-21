@@ -247,7 +247,8 @@
         <view class='bill-operate-button-complain' 
               bindtap='tapComplain' 
               data-tapindex="{{unsendIndex}}"
-              data-orderno='{{unsendItem.orderNo}}'>
+              data-orderno='{{unsendItem.orderNo}}'
+              hidden="{{true}}">
         投诉
         </view>
       </view>
@@ -313,7 +314,8 @@
         <view class='bill-operate-button-complain' 
               bindtap='tapComplain' 
               data-tapindex="{{unreceiveIndex}}"
-              data-orderno='{{unreceiveItem.orderNo}}'>
+              data-orderno='{{unreceiveItem.orderNo}}'
+              hidden="{{true}}">
         投诉
         </view>
       </view>
@@ -379,7 +381,8 @@
         <view class='bill-operate-button-complain' 
               bindtap='tapComplain' 
               data-tapindex="{{completeIndex}}"
-              data-orderno='{{completeItem.orderNo}}'>
+              data-orderno='{{completeItem.orderNo}}'
+              hidden="{{true}}">
         投诉
         </view>
       </view>

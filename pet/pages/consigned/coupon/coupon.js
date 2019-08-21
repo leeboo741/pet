@@ -9,23 +9,7 @@ Page({
    * 页面的初始数据
    */
   data: {
-    couponList: [
-      {
-        name: "限时最高满￥700减￥150",
-        imagePath: null,
-        title: "您有一份优惠券待领取"
-      },
-      {
-        name: "全场通用打5折",
-        imagePath: null,
-        title: "您有一份优惠券待领取"
-      },
-      {
-        name: "全场食品类买一送五",
-        imagePath: null,
-        title: "您有一份优惠券待领取"
-      },
-    ], // 优惠券列表
+    couponList: [], // 优惠券列表
   },
 
   /**

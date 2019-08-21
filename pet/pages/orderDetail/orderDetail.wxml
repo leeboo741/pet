@@ -89,18 +89,18 @@
                 wx:key='{{stepImageIndex}}'
                 class="step-content-image-box">
             <image class="step-content-image"
-                   src="{{stepImageItem.mediaAddress}}"
+                   src="{{stepImageItem.viewAddress}}"
                    lazy-load="{{true}}"
                    mode="scaleToFit"
                    bindtap="tapImage"
                    data-stepindex='{{stepIndex}}'
-                   data-imageurl='{{stepImageItem.mediaAddress}}'>
+                   data-imageurl='{{stepImageItem.viewAddress}}'>
             </image>
           </view>
         </view>
         <view class="step-content-video-area"
-              wx:if="{{stepItem.videoList}}">
-          <video src="{{stepItem.videoList[0].mediaAddress}}" 
+              wx:if="{{parse.showVideo(stepItem.videoList)}}">
+          <video src="{{stepItem.videoList[0].viewAddress}}" 
                  data-id="{{index}}" 
                  class='video'
                  objectFit='contain'
@@ -137,6 +137,12 @@
       } else {
         return "大巴";
       }
+    },
+    showVideo: function(videoList){
+      if (videoList!=null && videoList.length>0) {
+        return true;
+      }
+      return false;
     }
   }
 </wxs>

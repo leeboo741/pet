@@ -70,10 +70,15 @@ Page({
    * 点击图片
    */
   tapImage: function (e) {
-    let tempOrder = this.data.orderData.stepList[e.currentTarget.dataset.stepindex];
+    let tempOrder = this.data.orderData.orderStates[e.currentTarget.dataset.stepindex];
+    let tempOrderImageList = [];
+    for (let i = 0; i < tempOrder.pictureList.length; i++) {
+      let tempOrderImage = tempOrder.pictureList[i];
+      tempOrderImageList.push(tempOrderImage.viewAddress);
+    }
     let currrentUrl = e.currentTarget.dataset.imageurl;
     wx.previewImage({
-      urls: tempOrder.images,
+      urls: tempOrderImageList,
       current: currrentUrl
     })
   },
