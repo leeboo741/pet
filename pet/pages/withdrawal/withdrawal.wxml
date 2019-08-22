@@ -1,5 +1,17 @@
 <view class='container'>
-  <view class='balance-label'>系统余额(元)</view>
-  <view class='balance-money'>1000</view>
-  <view class='balance-withdrawal'>提现</view>
+  <view class='balance-label'>系统余额（{{balanceAmount}}元）</view>
+  <view class="balance-money">
+    <view class="balance-money-icon">
+      <icon class='iconfont iconrenminbi'>
+      </icon>
+    </view>
+    <input class='balance-money-input' 
+          type="digit" 
+          bindinput="amountInput" 
+          placeholder="0"
+          bindinput="inputAmount">
+    </input>
+  </view>
+  <view class='balance-withdrawal'
+        bindtap="tapWithdrawal">提现</view>
 </view>

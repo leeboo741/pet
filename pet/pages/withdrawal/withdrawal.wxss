@@ -13,13 +13,32 @@
 
 .balance-money {
   margin-top: 50rpx;
-  color: #656571;
-  text-align: center;
-  font-size: 64px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.balance-money icon {
+  font-size: 40px;
+  color:black;
+  font-weight: bold;
+  text-align: center;  
+}
+
+.balance-money-icon{
+
+}
+
+.balance-money-input {
+  width: 350rpx;
+  height:80px;
+  line-height: 80px;
+  font-weight: bold;
+  font-size: 40px;
 }
 
 .balance-withdrawal {
-  margin-top: 100px;
+  margin-top: 50px;
   background-color: #F14E4F;
   width: 500rpx;
   text-align: center;

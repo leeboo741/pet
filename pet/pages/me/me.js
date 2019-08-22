@@ -298,7 +298,8 @@ Page({
       },
       success(res){
         console.log("查询余额 success => \n" + JSON.stringify(res));
-        that.data.userInfo.balance = res.data.data
+        that.data.userInfo.balance = res.data.data;
+        app.globalData.userInfo.balance = res.data.data;
         that.setData({
           userInfo: that.data.userInfo
         })

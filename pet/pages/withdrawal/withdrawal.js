@@ -12,13 +12,17 @@ Page({
    * 页面的初始数据
    */
   data: {
-
+    withdrawalAmount: null, // 提现金额
+    balanceAmount: 0, // 系统余额
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    this.setData({
+      balanceAmount: app.globalData.userInfo.balance
+    })
   },
 
   /**
@@ -68,5 +72,37 @@ Page({
    */
   onShareAppMessage: function () {
 
-  }
+  },
+
+  /**
+   * 提现
+   */
+  tapWithdrawal: function() {
+    if (this.data.withdrawalAmount == null || this.data.withdrawalAmount == 0) {
+      wx.showToast({
+        title: '提现金额不能为零',
+        icon: 'none'
+      })
+      return;
+    }
+    if (this.data.withdrawalAmount > this.data.balanceAmount) {
+      wx.showToast({
+        title: '余额不足',
+        icon: 'none'
+      })
+      return;
+    } 
+    wx.showModal({
+      title: '提现申请已经提交',
+      content: '请耐心等待...',
+    })
+    console.log("提现申请 金额：" + this.data.withdrawalAmount);
+  },
+
+  /**
+   * 金额输入
+   */
+  inputAmount: function(e) {
+    this.data.withdrawalAmount = e.detail.value
+  },
 })
