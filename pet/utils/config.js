@@ -6,7 +6,7 @@
  */
 /** =================================================== */
 const Service_Phone = "0793-322132153"; // 客服电话
-const Version_Name = "Beta 1.1.23"; // 版本名称
+const Version_Name = "Beta 1.1.24"; // 版本名称
 const Version_Code = 1; // 版本编号
 
 /** =================================================== */
@@ -14,8 +14,8 @@ const Version_Code = 1; // 版本编号
  *                      网络请求
  */
 /** =================================================== */
-const URL_Service = "http://192.168.3.111:5050"; // 路径
-// const URL_Service = "http://huji820.oicp.net"; // 路径
+// const URL_Service = "http://192.168.3.111:5050"; // 路径
+const URL_Service = "http://huji820.oicp.net"; // 路径
 
 const URL_Register = "/api/customer/"; // 注册
 const URL_Login = "/api/oAuth"; // 登陆
