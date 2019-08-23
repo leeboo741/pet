@@ -364,7 +364,7 @@ Page({
               } else if (res.cancel) {
                 console.log('用户点击稍后支付')
                 wx.switchTab({
-                  url: '/pages/consigned/base/base',
+                  url: '/pages/index/index2',
                 })
               }
             }

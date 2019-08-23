@@ -14,8 +14,8 @@ const Version_Code = 1; // 版本编号
  *                      网络请求
  */
 /** =================================================== */
-// const URL_Service = "http://192.168.3.111:5050"; // 路径
-const URL_Service = "http://huji820.oicp.net"; // 路径
+const URL_Service = "http://192.168.3.111:5050"; // 路径
+// const URL_Service = "http://huji820.oicp.net"; // 路径
 
 const URL_Register = "/api/customer/"; // 注册
 const URL_Login = "/api/oAuth"; // 登陆
@@ -38,6 +38,8 @@ const URL_CancelOrder = "/api/order/cancelOrder"; // 取消订单
 const URL_GetOrderListByOrderStatus = "/api/order/listOrderList"; // 根据订单类型查询订单列表
 const URL_OrderDetail = "/api/order/orderDetail"; // 查询订单详情
 const URL_GetOrderNoByOrderNo = "/api/order/getOrderNoByOrderNo"; // 通过单号模糊查询单号
+const URL_ConfirmOrder = "/api/order/confirmOrder"; // 确认收货
+const URL_GetUnConfirmOrderList = "/api/order/listUncertainty"; // 获取未确认收货订单
 
 const URL_GetCouponList = '/aip/coupon/listByOpenId'; // 获取优惠券列表
 
@@ -90,6 +92,8 @@ module.exports = {
   URL_GetOrderListByOrderStatus, // 根据订单类型查询订单列表
   URL_OrderDetail, // 查询订单详情
   URL_GetOrderNoByOrderNo, // 通过单号模糊查询单号
+  URL_ConfirmOrder, // 确认收货
+  URL_GetUnConfirmOrderList, // 获取未确认收货订单列表
 
   URL_GetCouponList, // 获取优惠券列表
 

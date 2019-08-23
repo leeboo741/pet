@@ -1,0 +1,179 @@
+<!--pages/unConfirmOrder/unConfirmOrder.wxml-->
+<view wx:for="{{orderList}}" 
+      wx:for-item="orderItem" 
+      wx:for-index="orderIndex" 
+      wx:key="{{orderIndex}}"
+      class="bill-item">
+  <!-- 单据信息 -->
+  <view class='bill-info-box'>
+    <view class='bill-info-icon'>
+      <icon class='iconfont iconfeiji1'>
+      </icon>
+    </view>
+    <view class='bill-info-billNo'>
+    {{orderItem.orderNo}}
+    </view>
+    <view class='bill-info-time'>
+    {{orderItem.express}}
+    </view>
+  </view>
+  <view class='bill-info-split-line'></view>
+  <view class='bill-info-content'>
+    <view class='bill-info-way'>
+      <view class='bill-info-way-date'>{{orderItem.orderDate}} {{orderItem.orderTime}}</view>
+      <view class='bill-info-way-start'>{{orderItem.transport.startCity}}</view>
+      <view class='bill-info-way-split'>-</view>
+      <view class='bill-info-way-end'>{{orderItem.transport.endCity}}</view>
+    </view>
+    <view class='bill-info-pet'>
+      <view class='bill-info-pet-type'>{{orderItem.petClassify.petClassifyName}}</view>
+      <view class='bill-info-pet-info'>{{orderItem.petType.petTypeName}}</view>
+      <view class='bill-info-pet-mode'>{{parse.getTransportType(orderItem.transport.transportType)}}</view>
+    </view>
+    <view class="bill-info-person">
+      <view class="bill-info-person-label">寄件人：</view>
+      <view class="bill-info-person-name">{{orderItem.senderName}}</view>
+      <view class="bill-info-person-label">电话：</view>
+      <view class="bill-info-person-phone">{{orderItem.senderPhone}}</view>
+    </view>
+    <view class="bill-info-person">
+      <view class="bill-info-person-label">收件人：</view>
+      <view class="bill-info-person-name">{{orderItem.receiverName}}</view>
+      <view class="bill-info-person-label">电话：</view>
+      <view class="bill-info-person-phone">{{orderItem.receiverPhone}}</view>
+    </view>
+    <view class='bill-info-pay'>
+      <view class='bill-info-pay-label'>支付状态:</view>
+      <view class='bill-info-pay-info'>{{orderItem.state}}</view>
+      <view class='bill-info-pay-money'>￥{{orderItem.paymentAmount}}</view>
+    </view>
+  </view>
+  <!-- 照片 -->
+  <view class="bill-image-area"
+        wx:if='{{parse.showImageArea(orderItem)}}'>
+    <!-- 单据内已经上传的图片 -->
+    <view class="bill-image-box"
+          wx:for='{{orderItem.images}}'
+          wx:for-item='orderImageItem'
+          wx:for-index='orderImageIndex'
+          wx:key='{{orderImageIndex}}'>
+      <image class="bill-image"
+              src="{{orderImageItem}}"
+              lazy-load="{{true}}"
+              mode="scaleToFit"
+              bindtap="tapImage"
+              data-orderindex='{{orderIndex}}'
+              data-imageurl='{{orderImageItem}}'>
+      </image>      
+    </view>
+    <!-- 单据内将要上传的图片 -->
+    <view class="bill-image-box"
+          wx:for='{{orderItem.uploadImages}}'
+          wx:for-item='orderImageItem'
+          wx:for-index='orderImageIndex'
+          wx:key='{{orderImageIndex}}'>
+      <image class="bill-image"
+              src="{{orderImageItem}}"
+              lazy-load="{{true}}"
+              mode="scaleToFit"
+              bindtap="tapImage"
+              data-orderindex='{{orderIndex}}'
+              data-imageurl='{{orderImageItem}}'>
+      </image>
+      <image class="bill-image-delete"
+              src="/resource/delete.png"
+              bindtap="deleteUploadImage"
+              data-tapindex="{{orderIndex}}"
+              data-imageindex="{{orderImageIndex}}">
+      </image>    
+    </view>
+  </view>
+  <!-- 视频 -->
+  <view class="bill-video-area"
+        wx:if='{{parse.showVideoArea(orderItem)}}'>
+    <video src="{{parse.getVideoSrc(orderItem)}}"
+            class='video'
+            objectFit='contain'
+            controls>
+    </video>
+    <image class="bill-image-delete"
+            src="/resource/delete.png"
+            bindtap="deleteUploadVideo"
+            data-tapindex="{{orderIndex}}"
+            wx:if='{{parse.showVideoDelete(orderItem)}}'>
+    </image> 
+  </view>
+  <!-- 按钮区域 -->
+  <view class='bill-operate-box'>
+    <view class='bill-operate-button'
+          bindtap='tapOrderDetail' 
+          data-tapindex="{{orderIndex}}"
+          data-orderno='{{orderItem.orderNo}}'>
+    订单详情
+    </view>
+    <view class='bill-operate-button' 
+          bindtap='tapConfirmUpload' 
+          data-tapindex="{{orderIndex}}"
+          wx:if='{{orderItem.readyToUpload}}'>
+    确定上传
+    </view>
+    <view class='bill-operate-button' 
+          bindtap='tapUpload' 
+          data-tapindex="{{orderIndex}}">
+    上传
+    </view>
+    <view class='bill-operate-button-complain' 
+          bindtap='tapReceive' 
+          data-tapindex="{{orderIndex}}"
+          data-orderno='{{orderItem.orderNo}}'
+          wx:if='{{orderItem.readyToConfirm}}'>
+    确认收货
+    </view>
+  </view>
+</view>
+<wxs module='parse'>
+  module.exports={
+    getTransportType: function(type){
+      if (type == 0) {
+        return "专车";
+      } else if (type == 1) {
+        return "铁路";
+      } else if (type == 2) {
+        return "单飞";
+      } else if (type == 3) {
+        return "随机";
+      } else {
+        return "大巴";
+      }
+    },
+    showImageArea: function(orderItem){
+      if ((orderItem.uploadImages != null && orderItem.uploadImages.length > 0)
+          || (orderItem.images != null && orderItem.images.length > 0)) {
+        return true;
+      } 
+      return false;
+    },
+    showVideoArea: function(orderItem) {
+      if ((orderItem.uploadVideo != null && orderItem.uploadVideo.length > 0) 
+          || (orderItem.video != null && orderItem.video.length > 0)) {
+        return true;
+      }
+      return false;
+    },
+    getVideoSrc: function(orderItem) {
+      if (orderItem.video != null && orderItem.video.length > 0) {
+        return orderItem.video;
+      } else if (orderItem.uploadVideo != null && orderItem.uploadVideo.length > 0) {
+        return orderItem.uploadVideo;
+      }
+      return "";
+    },
+    showVideoDelete: function (orderItem) {
+      if (orderItem.video != null && orderItem.video.length > 0) {
+        return false;
+      }
+      return true;
+    },
+  }
+
+</wxs>

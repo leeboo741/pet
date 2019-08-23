@@ -17,7 +17,8 @@ Page({
    * 页面的初始数据
    */
   data: {
-    orderList:[], // 订单列表
+    orderList: [], // 订单列表
+    finishPage: false, // 页面是否终结
   },
 
   /**
@@ -53,6 +54,7 @@ Page({
    */
   onUnload: function () {
     console.log("/outharbour/outharbour 销毁")
+    this.data.finishPage = true;
   },
 
   /**
@@ -205,15 +207,17 @@ Page({
       },
       complete(res) {
         uploadIndex++;
-        if (uploadIndex < fileList.length) {
-          that.requestUploadFile(fileList, uploadIndex, order, lastIsVideo)
-        } else {
-          wx.hideLoading();
-          wx.showToast({
-            title: '上传完成',
-          })
-          that.handleReadyToUpload(order)
-          that.handleReadyToInHarbour(order);
+        wx.hideLoading();
+        if (!that.data.finishPage) {
+          if (uploadIndex < fileList.length) {
+            that.requestUploadFile(fileList, uploadIndex, order, lastIsVideo)
+          } else {
+            wx.showToast({
+              title: '上传完成',
+            })
+            that.handleReadyToUpload(order)
+            that.handleReadyToInHarbour(order);
+          }
         }
       }
     })

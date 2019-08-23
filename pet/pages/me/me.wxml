@@ -72,11 +72,20 @@
       <view class="btnOper"
             hidden="{{userInfo.role == 1}}"
             bindtap="getCoupon">
-        <i-icon type="coupons_fill"
+        <i-icon type="coupons"
                 color="#F1B000"
                 size="32">
         </i-icon>
         <label>领券</label>
+      </view>
+      <view class="btnOper"
+            hidden="{{userInfo.role == 0}}"
+            bindtap="receiveOrder">
+        <i-icon type="document"
+                color="#F1B000"
+                size="32">
+        </i-icon>
+        <label>收货</label>
       </view>
     </view>
   </view>
@@ -337,15 +346,14 @@
         订单详情
         </view>
         <view class='bill-operate-button-complain' 
-              bindtap='tapComplain' 
+              bindtap='tapReceive' 
               data-tapindex="{{unreceiveIndex}}"
-              data-orderno='{{unreceiveItem.orderNo}}'
-              hidden="{{true}}">
-        投诉
+              data-orderno='{{unreceiveItem.orderNo}}'>
+        确认收货
         </view>
       </view>
     </view>
-    <!-- 待收货 -->
+    <!-- 已完成 -->
     <view wx:if="{{selectedBillType==3}}"
           wx:for="{{completeList}}" 
           wx:for-item="completeItem" 

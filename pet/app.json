@@ -17,7 +17,8 @@
     "pages/consigned/inHarbour/inHarbour",
     "pages/station/station",
     "pages/consigned/coupon/coupon",
-    "pages/index/index2"
+    "pages/index/index2",
+    "pages/unConfirmOrder/unConfirmOrder"
   ],
   "window": {
     "backgroundTextStyle": "light",

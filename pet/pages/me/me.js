@@ -12,7 +12,7 @@
 
 const app = getApp();
 
-const bill_type_unpay = "待支付";
+const bill_type_unpay = "待付款";
 const bill_type_sendout = "待发货";
 const bill_type_receiving = "待收货";
 const bill_type_complete = "已完成";
@@ -144,10 +144,10 @@ Page({
   },
 
   /**
-   * 投诉
+   * 确认收货
    */
-  tapComplain: function (e) {
-    console.log("投诉：\n" + e.currentTarget.dataset.orderno)
+  tapReceive: function (e) {
+    this.requestRecieve(e.currentTarget.dataset.orderno, e.currentTarget.dataset.tapindex);
   },
 
   /**
@@ -262,6 +262,15 @@ Page({
   },
 
   /**
+   * 收货
+   */
+  receiveOrder: function () {
+    wx.navigateTo({
+      url: '../unConfirmOrder/unConfirmOrder',
+    })
+  },
+
+  /**
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
@@ -285,6 +294,46 @@ Page({
   /** ================================= 页面事件 End ==================================== */
 
   /** ================================= 网络请求 Start ==================================== */
+
+  /**
+   * 收货请求
+   */
+  requestRecieve: function(orderNo, orderIndex) {
+    wx.showLoading({
+      title: '请稍等...',
+    })
+    wx.request({
+      url: config.URL_Service + config.URL_ConfirmOrder,
+      header: {
+        'content-type': 'application/x-www-form-urlencoded'
+      },
+      method: "POST", // 请求方式
+      data: {
+        orderNo: orderNo,
+        openId: app.globalData.userInfo.openid
+      },
+      success(res) {
+        console.log ("确认收货 success: \n" + JSON.stringify(res));
+        if (res.data.prompt == config.Prompt_Success) {
+          wx.showToast({
+            title: '收货成功',
+          })
+          that.data.unreceiveList.splice(orderIndex, 1);
+          that.setData({
+            unreceiveList: that.data.unreceiveList
+          })
+        }
+      },
+      fail(res) {
+        console.log("确认收货 fail: \n" + JSON.stringify(res));
+      },
+      complete(res) {
+        console.log("确认收货 complete: \n" + JSON.stringify(res));
+        wx.hideLoading();
+      },
+
+    })
+  },
 
   /**
    * 查询余额

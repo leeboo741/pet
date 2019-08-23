@@ -1,17 +1,10 @@
-// pages/consigned/inHarbour/inHarbour.js
-/**
- * ******** 入港 ********
- * =========================================================================================
- * =========================================================================================
- */
-
-const util = require("../../../utils/util.js")
-const config = require("../../../utils/config.js")
-
+// pages/unConfirmOrder/unConfirmOrder.js
 const app = getApp();
+const config = require("../../utils/config.js");
+const util = require("../../utils/util.js");
+
 const maxImageCount = 8;
 const maxVideoLength = 30;
-
 Page({
 
   /**
@@ -26,7 +19,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    this.requestInHarbour();
+    this.requestUnConfirmOrderList();
   },
 
   /**
@@ -54,7 +47,7 @@ Page({
    * 生命周期函数--监听页面卸载
    */
   onUnload: function () {
-    console.log("/inharbour/inharbour 销毁")
+    console.log("/unConfirmOrder/unConfirmOrder 销毁")
     this.data.finishPage = true;
   },
 
@@ -97,13 +90,13 @@ Page({
   /**
    * 是否可以入港
    */
-  handleReadyToInHarbour: function (order){
-    if ((!util.isEmpty(order.images) || !util.isEmpty(order.video)) 
-    && util.isEmpty(order.uploadImages) 
-    && util.isEmpty(order.uploadVideo)) {
-      order.readyToInHarbour = true;
+  handleReadyToConfirm: function (order) {
+    if ((!util.isEmpty(order.images) || !util.isEmpty(order.video))
+      && util.isEmpty(order.uploadImages)
+      && util.isEmpty(order.uploadVideo)) {
+      order.readyToConfirm = true;
     } else {
-      order.readyToInHarbour = false;
+      order.readyToConfirm = false;
     }
     this.setData({
       orderList: this.data.orderList
@@ -117,7 +110,7 @@ Page({
     let tempOrder = this.data.orderList[e.currentTarget.dataset.tapindex];
     tempOrder.uploadVideo = null;
     this.handleReadyToUpload(tempOrder);
-    this.handleReadyToInHarbour(tempOrder);
+    this.handleReadyToConfirm(tempOrder);
   },
 
   /**
@@ -127,7 +120,7 @@ Page({
     let tempOrder = this.data.orderList[e.currentTarget.dataset.tapindex];
     tempOrder.uploadImages.splice(e.currentTarget.dataset.imageindex, 1);
     this.handleReadyToUpload(tempOrder);
-    this.handleReadyToInHarbour(tempOrder);
+    this.handleReadyToConfirm(tempOrder);
   },
 
   /**
@@ -148,7 +141,6 @@ Page({
     let uploadLength = uploadList.length;
     console.log("需要上传的文件 => \n图片:\n" + JSON.stringify(tempOrder.uploadImages) + "\n视频：\n" + JSON.stringify(tempOrder.uploadVideo));
     this.requestUploadFile(uploadList, uploadIndex, tempOrder, lastIsVideo);
-
   },
 
   /**
@@ -169,14 +161,12 @@ Page({
       name: 'multipartFiles',
       header: { "Content-Type": "multipart/form-data" },
       formData: {
-        "orderNo": order.orderStates[0].orderNo,
-        "sn": order.orderStates[0].sn,
-        "orderType": order.orderStates[0].orderType
+        "orderNo": order.orderNo
       },
       success(res) {
         console.log("upload success =>" + JSON.stringify(res));
         let tempObj = JSON.parse(res.data);
-        if (res.data.prompt != null && res.data.prompt == 'Error') {
+        if (res.data.prompt != null && res.data.prompt == config.Prompt_Error) {
           wx.showToast({
             title: "文件上传失败",
             icon: 'none'
@@ -205,7 +195,6 @@ Page({
           title: "一个文件上传失败",
           icon: 'none'
         })
-        typeof callback == "function" && callback("fail");
       },
       complete(res) {
         console.log("上传完成 index: " + uploadIndex);
@@ -219,7 +208,7 @@ Page({
               title: '上传完成',
             })
             that.handleReadyToUpload(order)
-            that.handleReadyToInHarbour(order);
+            that.handleReadyToConfirm(order);
           }
         }
       }
@@ -236,44 +225,39 @@ Page({
     return -1;
   },
 
-  /**
-   * 搜索单据
-   */
-  searchOrder: function (e) {
-    this.requestInHarbour(e.detail.value)
-  },
 
   /**
-   * 请求入港单
+   * 请求未确认订单列表
    */
-  requestInHarbour: function(searchKey){
+  requestUnConfirmOrderList: function () {
     wx.showLoading({
       title: '请稍等...',
     })
     let that = this;
-    let tempSearchKey = "";
-    if (searchKey != null) {
-      tempSearchKey = searchKey
-    }
-    let orderType = "待入港";
     wx.request({
-      url: config.URL_Service + config.URL_GetInOrOutHarbourList,
+      url: config.URL_Service + config.URL_GetUnConfirmOrderList,
       data: {
-        openId: app.globalData.userInfo.openid,
-        orderNo: tempSearchKey,
-        orderType: orderType
+
+        openId: app.globalData.userInfo.openid
       },
-      success(res){
-        console.log("请求入港单 success：\n" + JSON.stringify(res));
-        that.setData({
-          orderList: res.data.data
+      success: function (res) {
+        console.log("获取未收货订单 success: \n" + JSON.stringify(res));
+        if (res.data.prompt = config.Prompt_Success) {
+          that.data.orderList = that.data.orderList.concat(res.data.root)
+          that.setData({
+            orderList: that.data.orderList
+          })
+        }
+      },
+      fail: function (res) {
+        console.log("获取未收货订单 fail: \n" + JSON.stringify(res));
+        wx.showToast({
+          title: '网络原因，获取订单失败',
+          icon: 'none'
         })
       },
-      fail(res) {
-        console.log("请求入港单 fail：\n" + JSON.stringify(res));
-      },
-      complete(res) {
-        console.log("请求入港单 complete：\n" + JSON.stringify(res));
+      complete: function (res) {
+        console.log("获取未收货订单 complete: \n" + JSON.stringify(res));
         wx.hideLoading();
       },
     })
@@ -299,73 +283,59 @@ Page({
   },
 
   /**
-   * 入港
+   * 确认收货
    */
-  tapInHarbour: function (e) {
-    this.requestConfirmInHarbour(e.currentTarget.dataset.tapindex);
+  tapReceive: function (e) {
+    this.requestRecieve(e.currentTarget.dataset.orderno, e.currentTarget.dataset.tapindex);
   },
 
   /**
-   * 确认入港
-   */
-  requestConfirmInHarbour: function(orderIndex) {
-    const tempIndex = orderIndex;
-    let order = this.data.orderList[tempIndex];
+     * 收货请求
+     */
+  requestRecieve: function (orderNo, orderIndex) {
+    let tempOrder = this.data.orderList[orderIndex];
+    let fileList = [];
+    if (!util.isEmpty(tempOrder.images)) {
+      fileList = fileList.concat(tempOrder.images);
+    }
+    if (!util.isEmpty(tempOrder.video)) {
+      fileList.push(tempOrder.video)
+    }
+    let that = this;
     wx.showLoading({
       title: '请稍等...',
     })
-    let fileList = [];
-    if (!util.isEmpty(order.images)) {
-      fileList = fileList.concat(order.images);
-    }
-    if (!util.isEmpty(order.video)) {
-      fileList.push(order.video)
-    }
-    let that = this;
     wx.request({
-      url: config.URL_Service + config.URL_ConfirmInOutHarbour,
+      url: config.URL_Service + config.URL_ConfirmOrder,
       header: {
         'content-type': 'application/x-www-form-urlencoded'
       },
       method: "POST", // 请求方式
       data: {
         fileList: fileList,
-        sn: order.orderStates[0].sn,
-        orderNo: order.orderStates[0].orderNo,
-        orderType: order.orderStates[0].orderType,
+        orderNo: orderNo,
+        openId: app.globalData.userInfo.openid
       },
       success(res) {
-        console.log("确定入港 success: \n" + JSON.stringify(res));
-        if (res.data.prompt != null && res.data.prompt == "Error") {
-          let msg = "系统异常，入港失败";
-          if (res.data.root) {
-            msg = res.data.root
-          }
+        console.log("确认收货 success: \n" + JSON.stringify(res));
+        if (res.data.prompt == config.Prompt_Success) {
           wx.showToast({
-            title: msg,
-            icon: 'none'
+            title: '收货成功',
           })
-        } else {
-          wx.showToast({
-            title: '入港成功',
-          })
-          that.data.orderList.splice(tempIndex, 1);
+          that.data.orderList.splice(orderIndex, 1);
           that.setData({
             orderList: that.data.orderList
           })
         }
       },
       fail(res) {
-        console.log("确定入港 fail: \n" + JSON.stringify(res));
-        wx.showToast({
-          title: "网络异常，入港失败",
-          icon: 'none'
-        })
+        console.log("确认收货 fail: \n" + JSON.stringify(res));
       },
       complete(res) {
-        console.log("确定入港 complete: \n" + JSON.stringify(res));
+        console.log("确认收货 complete: \n" + JSON.stringify(res));
         wx.hideLoading();
-      }
+      },
+
     })
   },
 
@@ -410,7 +380,7 @@ Page({
               if (res.tempFilePaths != null && res.tempFilePaths.length > 0) {
                 tempOrder.uploadImages = tempOrder.uploadImages.concat(res.tempFilePaths);
                 that.handleReadyToUpload(tempOrder);
-                that.handleReadyToInHarbour(tempOrder);
+                that.handleReadyToConfirm(tempOrder);
               }
             },
           })
@@ -428,7 +398,7 @@ Page({
               if (res.tempFilePath != null && res.tempFilePath.length > 0) {
                 tempOrder.uploadVideo = res.tempFilePath;
                 that.handleReadyToUpload(tempOrder);
-                that.handleReadyToInHarbour(tempOrder);
+                that.handleReadyToConfirm(tempOrder);
               }
             }
           })
