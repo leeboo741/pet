@@ -1,0 +1,71 @@
+<!--pages/index/index2.wxml-->
+<view class='page'>
+  <image class="banner-image"
+        src="{{bannerImagePath}}">
+
+  </image>
+
+  <view class="business-navigation-area">
+    <view class="business-navigation-content">
+      <i-panel>
+        <view class="business-navigation-title-area">
+          <view class="business-navigation-title-icon">
+          1
+          </view>
+          <view class="business-navigation-title">
+          业务导航
+          </view>
+        </view>
+      </i-panel>
+      <i-panel>
+        <view class="business-navigation-search-area">
+          <view class="business-navigation-search-box">
+            <view class="business-navigation-search-icon">
+              <i-icon type='search'
+                      size="20"
+                      color="#aaaaaa">
+              </i-icon>
+            </view>
+            <input class="business-navigation-search-input"
+                  bindconfirm="confirmSearch"
+                  placeholder="查找订单"
+                  placeholder-class="business-navigation-search-placeholder">
+            </input>
+          </view>
+        </view>
+      </i-panel>
+      <i-panel>
+        <view class="business-action-box">
+          <view wx:for='{{businessList}}'
+                wx:for-item='businessItem'
+                wx:for-index='businessIndex'
+                wx:key='{{businessIndex}}'
+                class="business-item {{parse.businessSpliceLine(businessIndex)}}"
+                bindtap="tapBusiness"
+                data-target='{{businessItem.target}}'
+                data-actiontype='{{businessItem.actionType}}'>
+            <image class="business-item-icon"
+                  src="{{businessItem.icon}}">
+            </image>
+            <view class="business-item-title">
+            {{businessItem.name}}
+            </view>
+          </view>
+        </view>
+      </i-panel>
+    </view>
+  </view>
+</view>
+
+<wxs module="parse">
+  module.exports={
+    businessSpliceLine: function(index) {
+      if ((index + 1) % 2 == 0){
+        return "business-item-splice-line-none";
+      } else {
+        return "business-item-splice-line";
+      }
+    }
+  }
+
+</wxs>

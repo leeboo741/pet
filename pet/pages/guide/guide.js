@@ -158,7 +158,8 @@ Page({
 
   jumpToHome: function () {
     wx.switchTab({
-      url: '/pages/consigned/base/base',
+      // url: '/pages/consigned/base/base',
+      url: '/pages/index/index2'
     })
   },
 

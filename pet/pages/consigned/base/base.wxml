@@ -58,7 +58,8 @@
                placeholder='数量'
                placeholder-class='input-normal-placeholder input-right'
                bindinput='countInput'
-               bindblur='countOutFocus'>
+               bindblur='countOutFocus'
+               type="number">
         </input>
         <icon class="iconfont iconmore"></icon>
       </view>

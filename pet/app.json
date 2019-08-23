@@ -16,7 +16,8 @@
     "pages/orderDetail/orderDetail",
     "pages/consigned/inHarbour/inHarbour",
     "pages/station/station",
-    "pages/consigned/coupon/coupon"
+    "pages/consigned/coupon/coupon",
+    "pages/index/index2"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -32,7 +33,7 @@
     "position": "bottom",
     "list": [
       {
-        "pagePath": "pages/consigned/base/base",
+        "pagePath": "pages/index/index2",
         "text": "首页",
         "iconPath": "resource/tabbar_index_unselected.png",
         "selectedIconPath": "resource/tabbar_index_selected.png"
