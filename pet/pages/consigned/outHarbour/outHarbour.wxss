@@ -318,7 +318,17 @@ page {
 
 .bill-video-area{
   position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
+
+.bill-video-box{
+  position: relative;
+  margin: 10rpx auto;
+}
+
 
 .video{
 

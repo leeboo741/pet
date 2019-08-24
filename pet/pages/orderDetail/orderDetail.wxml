@@ -100,8 +100,13 @@
         </view>
         <view class="step-content-video-area"
               wx:if="{{parse.showVideo(stepItem.videoList)}}">
-          <video src="{{stepItem.videoList[0].viewAddress}}" 
-                 data-id="{{index}}" 
+          <video wx:for="{{stepItem.videoList}}"
+                 wx:for-item='videoItem'
+                 wx:for-index='videoIndex'
+                 wx:key='{{videoIndex}}'
+                 src="{{videoItem.viewAddress}}" 
+                 data-videoindex="{{videoIndex}}"
+                 data-stepindex='{{stepIndex}}'
                  class='video'
                  objectFit='contain'
                  controls>

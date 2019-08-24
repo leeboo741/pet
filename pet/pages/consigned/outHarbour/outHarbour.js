@@ -8,8 +8,9 @@ const util = require("../../../utils/util.js")
 const config = require("../../../utils/config.js")
 
 const app = getApp();
-const maxImageCount = 8;
-const maxVideoLength = 30;
+const maxImageCount = 8; // 最大图片数量限制
+const maxVideoCount = 8; // 最大视频数量限制
+const maxVideoLength = 30; // 最大视频长度限制
 
 Page({
 
@@ -83,7 +84,7 @@ Page({
    */
   handleReadyToUpload: function (order) {
     if (util.isEmpty(order.uploadImages)
-      && util.isEmpty(order.uploadVideo)) {
+      && util.isEmpty(order.uploadVideos)) {
       order.readyToUpload = false;
     } else {
       order.readyToUpload = true;
@@ -97,9 +98,9 @@ Page({
    * 是否可以入港
    */
   handleReadyToInHarbour: function (order) {
-    if ((!util.isEmpty(order.images) || !util.isEmpty(order.video))
+    if ((!util.isEmpty(order.images) || !util.isEmpty(order.videos))
       && util.isEmpty(order.uploadImages)
-      && util.isEmpty(order.uploadVideo)) {
+      && util.isEmpty(order.uploadVideos)) {
       order.readyToInHarbour = true;
     } else {
       order.readyToInHarbour = false;
@@ -114,7 +115,7 @@ Page({
    */
   deleteUploadVideo: function (e) {
     let tempOrder = this.data.orderList[e.currentTarget.dataset.tapindex];
-    tempOrder.uploadVideo = null;
+    tempOrder.uploadVideos.splice(e.currentTarget.dataset.videoindex, 1);
     this.handleReadyToUpload(tempOrder);
     this.handleReadyToInHarbour(tempOrder);
   },
@@ -135,18 +136,16 @@ Page({
   tapConfirmUpload: function (e) {
     let tempOrder = this.data.orderList[e.currentTarget.dataset.tapindex];
     let uploadList = [];
-    let lastIsVideo = false;
-    if (tempOrder.uploadImages != null && tempOrder.uploadImages.length > 0) {
+    if (!util.isEmpty(tempOrder.uploadImages)) {
       uploadList = uploadList.concat(tempOrder.uploadImages);
     }
-    if (tempOrder.uploadVideo != null && tempOrder.uploadVideo.length > 0) {
-      uploadList.push(tempOrder.uploadVideo);
-      lastIsVideo = true;
+    if (!util.isEmpty(tempOrder.uploadVideos)) {
+      uploadList = uploadList.concat(tempOrder.uploadVideos)
     }
     let uploadIndex = 0;
     let uploadLength = uploadList.length;
-    console.log("需要上传的文件 => \n图片:\n" + JSON.stringify(tempOrder.uploadImages) + "\n视频：\n" + JSON.stringify(tempOrder.uploadVideo));
-    this.requestUploadFile(uploadList, uploadIndex, tempOrder, lastIsVideo);
+    console.log("需要上传的文件 => \n图片:\n" + JSON.stringify(tempOrder.uploadImages) + "\n视频：\n" + JSON.stringify(tempOrder.uploadVideos));
+    this.requestUploadFile(uploadList, uploadIndex, tempOrder);
 
   },
 
@@ -155,9 +154,8 @@ Page({
    * @param fileList 文件列表
    * @param uploadIndex 要上传的文件下标
    * @param order 单据
-   * @param lastIsVideo 最后数据是否是视频
    */
-  requestUploadFile: function (fileList, uploadIndex, order, lastIsVideo) {
+  requestUploadFile: function (fileList, uploadIndex, order) {
     wx.showLoading({
       title: '上传中...',
     })
@@ -175,15 +173,22 @@ Page({
       success(res) {
         console.log("upload success =>" + JSON.stringify(res));
         let tempObj = JSON.parse(res.data);
-        if (res.data.prompt != null && res.data.prompt == 'Error') {
+        if (res.data.prompt != null && res.data.prompt == config.Prompt_Error) {
           wx.showToast({
             title: "文件上传失败",
             icon: 'none'
           })
         } else {
-          if (lastIsVideo && (uploadIndex == (fileList.length - 1))) {
-            order.video = tempObj.data[0].viewAddress;
-            order.uploadVideo = null;
+          let mediaAddress = tempObj.data[0].viewAddress;
+
+          if (util.isVideo(mediaAddress)) {
+            if (order.videos == null) {
+              order.videos = [];
+            }
+            let tempFile = fileList[uploadIndex];
+            let tempIndex = that.getIndexOf(tempFile, order.uploadVideos);
+            order.videos.push(mediaAddress);
+            order.uploadVideos.splice(tempIndex, 1);
           } else {
             if (order.images == null) {
               order.images = [];
@@ -210,7 +215,7 @@ Page({
         wx.hideLoading();
         if (!that.data.finishPage) {
           if (uploadIndex < fileList.length) {
-            that.requestUploadFile(fileList, uploadIndex, order, lastIsVideo)
+            that.requestUploadFile(fileList, uploadIndex, order)
           } else {
             wx.showToast({
               title: '上传完成',
@@ -315,8 +320,8 @@ Page({
     if (!util.isEmpty(order.images)) {
       fileList = fileList.concat(order.images);
     }
-    if (!util.isEmpty(order.video)) {
-      fileList.push(order.video)
+    if (!util.isEmpty(order.videos)) {
+      fileList = fileList.concat(order.videos);
     }
     let that = this;
     wx.request({
@@ -412,7 +417,7 @@ Page({
             },
           })
         } else {
-          if (tempOrder.video != null && tempOrder.video.length > 0) {
+          if (!util.isEmpty(tempOrder.videos)) {
             wx.showToast({
               title: '已经上传视频，请勿重复上传！',
               icon: 'none'
@@ -422,8 +427,11 @@ Page({
           wx.chooseVideo({
             maxDuration: maxVideoLength,
             success(res) {
-              if (res.tempFilePath != null && res.tempFilePath.length > 0) {
-                tempOrder.uploadVideo = res.tempFilePath;
+              if (tempOrder.uploadVideos == null) {
+                tempOrder.uploadVideos = [];
+              }
+              if (!util.isEmpty(res.tempFilePath)) {
+                tempOrder.uploadVideos.push(res.tempFilePath)
                 that.handleReadyToUpload(tempOrder);
                 that.handleReadyToInHarbour(tempOrder);
               }

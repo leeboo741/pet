@@ -92,17 +92,34 @@
       <!-- 视频 -->
       <view class="bill-video-area"
             wx:if='{{parse.showVideoArea(orderItem)}}'>
-        <video src="{{parse.getVideoSrc(orderItem)}}"
-               class='video'
-               objectFit='contain'
-               controls>
-        </video>
-        <image class="bill-image-delete"
-                src="/resource/delete.png"
-                bindtap="deleteUploadVideo"
-                data-tapindex="{{orderIndex}}"
-                wx:if='{{parse.showVideoDelete(orderItem)}}'>
-        </image> 
+        <view class="bill-video-box"
+              wx:for='{{orderItem.videos}}'
+              wx:for-item='orderVideoItem'
+              wx:for-index='orderVideoIndex'
+              wx:key='{{orderVideoIndex}}'>
+          <video src="{{orderVideoItem}}"
+                 class='video'
+                 objectFit='contain'
+                 controls>
+          </video>
+        </view>
+        <view class="bill-video-box"
+              wx:for='{{orderItem.uploadVideos}}'
+              wx:for-item='orderVideoItem'
+              wx:for-index='orderVideoIndex'
+              wx:key='{{orderVideoIndex}}'>
+          <video src="{{orderVideoItem}}"
+                 class='video'
+                 objectFit='contain'
+                 controls>
+          </video>
+          <image class="bill-image-delete"
+                 src="/resource/delete.png"
+                 bindtap="deleteUploadVideo"
+                 data-tapindex="{{orderIndex}}"
+                 data-videoindex='{{orderVideoIndex}}'>
+          </image> 
+        </view>
       </view>
       <!-- 按钮区域 -->
       <view class='bill-operate-box'>
@@ -145,14 +162,14 @@
       return false;
     },
     showVideoArea: function(orderItem) {
-      if ((orderItem.uploadVideo != null && orderItem.uploadVideo.length > 0) 
-          || (orderItem.video != null && orderItem.video.length > 0)) {
+      if ((orderItem.uploadVideos != null && orderItem.uploadVideos.length > 0) 
+          || (orderItem.videos != null && orderItem.videos.length > 0)) {
         return true;
       }
       return false;
     },
     getVideoSrc: function(orderItem) {
-      if (orderItem.video != null && orderItem.video.length > 0) {
+      if (orderItem.videos != null && orderItem.videos.length > 0) {
         return orderItem.video;
       } else if (orderItem.uploadVideo != null && orderItem.uploadVideo.length > 0) {
         return orderItem.uploadVideo;

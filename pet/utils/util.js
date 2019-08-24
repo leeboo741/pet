@@ -48,9 +48,25 @@ function isEmpty(obj) {
   return false;
 }
 
+function isVideo(fileAddress) {
+  let index = fileAddress.lastIndexOf(".");
+  let suffix = fileAddress.substring(index + 1);
+  if (suffix == "mp4" ||
+      suffix == "mov" ||
+      suffix == "m4v" ||
+      suffix == "3gp" ||
+      suffix == "avi" ||
+      suffix == "m3u8" ||
+      suffix == "webm"){
+    return true;
+  }
+  return false;
+}
+
 module.exports = {
   formatTime: formatTime,
   dateLater: dateLater,
   formatYMD: formatYMD,
   isEmpty: isEmpty,
+  isVideo: isVideo,
 }

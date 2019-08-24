@@ -299,6 +299,7 @@ Page({
    * 收货请求
    */
   requestRecieve: function(orderNo, orderIndex) {
+    let that = this;
     wx.showLoading({
       title: '请稍等...',
     })
