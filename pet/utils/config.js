@@ -15,13 +15,14 @@ const Version_Code = 1; // 版本编号
  */
 /** =================================================== */
 // const URL_Service = "http://huji820.oicp.net"; // 路径
-// const URL_Service = "http://192.168.3.111:5050"; // 路径
-const URL_Service = "http://192.168.3.123:5050"; // 路径
+const URL_Service = "http://192.168.3.111:5050"; // 路径
+// const URL_Service = "http://192.168.3.123:5050"; // 路径
 
 const URL_Register = "/api/customer/"; // 注册
 const URL_Login = "/api/oAuth"; // 登陆
 const URL_UpdateCustomer = "/api/customer/updateCustomer"; // 更新用户
 const URL_CheckBalance = "/api/balance"; // 查询余额
+const URL_Withdraw ="/api/withdraw/staff"; // 提现
 
 const URL_PetType = "/api/petType"; // 宠物类型
 const URL_PetClassify = "/api/petClassify"; // 宠物品种
@@ -77,6 +78,7 @@ module.exports = {
   URL_Login, // 登陆
   URL_UpdateCustomer, // 更新用户
   URL_CheckBalance, // 查询余额
+  URL_Withdraw, // 提现
 
   URL_PetType, // 宠物类型
   URL_PetClassify, // 宠物品种

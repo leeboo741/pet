@@ -5,6 +5,7 @@
  */
 
 const app = getApp();
+const config = require("../../utils/config.js");
 
 Page({
 
@@ -92,11 +93,35 @@ Page({
       })
       return;
     } 
-    wx.showModal({
-      title: '提现申请已经提交',
-      content: '请耐心等待...',
+    wx.showLoading({
+      title: '请稍等...',
     })
-    console.log("提现申请 金额：" + this.data.withdrawalAmount);
+    let that = this;
+    wx.request({
+      url: config.URL_Service + config.URL_Withdraw,
+      data: {
+        openId: app.globalData.userInfo.openid,
+        amount: this.data.withdrawalAmount
+      },
+      header: {
+        'content-type': 'application/x-www-form-urlencoded'
+      },
+      method: "POST", // 请求方式
+      success(res) {
+        console.log("提现 success : \n" + JSON.stringify(res));
+        wx.showModal({
+          title: '提现申请已经提交',
+          content: '请耐心等待...',
+        })
+      },
+      fail(res) {
+        console.log("提现 fail : \n" + JSON.stringify(res));
+      },
+      complete(res) {
+        console.log("提现 complete : \n" + JSON.stringify(res));
+        wx.hideLoading();
+      },
+    })
   },
 
   /**
