@@ -429,6 +429,20 @@
       </view>
     </view>
   </scroll-view>
+  
+  <view class="empty-area"
+        wx:if="{{parse.showEmpty(selectedBillType, unpayList, unsendList, unreceiveList, completeList)}}">
+    <view class="empty-content">
+      <i-icon type="service"
+              size="30"
+              color="#778899">
+      </i-icon>
+      <view class="empty-title">
+      当前单据没有数据
+      </view>
+    </view>
+  </view>
+
   <view class="pop-view-bg" 
         wx:if='{{showCheckBillPopView}}'>
     <view class="pop-view-mask"
@@ -480,6 +494,22 @@
       }
       return false;
     },
+    showEmpty: function(type, unpayList, unsendList, unreceiveList, completeList){
+      var datasource = null;
+      if (type == 0) {
+        datasource = unpayList;
+      } else if (type == 1) {
+        datasource = unsendList;
+      } else if (type == 2) {
+        datasource = unreceiveList;
+      } else {
+        datasource = completeList;
+      }
+      if (datasource == null || datasource.length <= 0) {
+        return true;
+      }
+      return false;
+    }
   }
 
 </wxs>

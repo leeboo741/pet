@@ -137,6 +137,20 @@
       </view>
     </view>
   </view>
+  
+  <view class="empty-area"
+        wx:if="{{parse.showEmpty(orderList)}}">
+    <view class="empty-content">
+      <i-icon type="service"
+              size="30"
+              color="#778899">
+      </i-icon>
+      <view class="empty-title">
+      暂无入港单据
+      </view>
+    </view>
+  </view>
+
 </view>
 
 <wxs module='parse'>
@@ -182,5 +196,11 @@
       }
       return true;
     },
+    showEmpty: function(datasource){
+      if (datasource == null || datasource.length <= 0) {
+        return true;
+      }
+      return false;
+    }
   }
 </wxs>

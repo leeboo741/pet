@@ -14,9 +14,9 @@ const Version_Code = 1; // 版本编号
  *                      网络请求
  */
 /** =================================================== */
-const URL_Service = "http://huji820.oicp.net"; // 路径
+// const URL_Service = "http://huji820.oicp.net"; // 路径
 // const URL_Service = "http://192.168.3.111:5050"; // 路径
-// const URL_Service = "http://192.168.3.123:5050"; // 路径
+const URL_Service = "http://192.168.3.123:5050"; // 路径
 
 const URL_Register = "/api/customer/"; // 注册
 const URL_Login = "/api/oAuth"; // 登陆
@@ -52,15 +52,16 @@ const URL_ConfirmInOutHarbour = "/api/consign/orderState/inOrOutPort"; // 确认
 
 const URL_UploadFile = "/api/consign/orderState/uploadFile"; // 上传文件
 
+/** =================================================== */
+/** 
+ *                      Enum
+ */
+/** =================================================== */
+
 const Prompt_Success = "Success"; // 成功标识
 const Prompt_Error = "Error"; // 错误标识
 const Prompt_NotExist = "NotExist"; // 不存在标识
 
-/** =================================================== */
-/**
- *                      
- */
-/** =================================================== */
 const Role_Customer = 0; // 用户角色
 const Role_Staff = 1; // 员工角色
 
