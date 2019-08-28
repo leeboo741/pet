@@ -147,7 +147,7 @@ Page({
 
       },
       complete (res) {
-        wx.hideLoading();
+        
       },
     })
   },

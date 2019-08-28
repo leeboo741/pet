@@ -151,7 +151,6 @@ Page({
       success(res) {
         console.log("查单 success：\n" + JSON.stringify(res));
         if (res.data.root != null && res.data.prompt == "Success") {
-          that.hiddenPopMask();
           wx.navigateTo({
             url: '../orderDetail/orderDetail?orderno=' + res.data.root,
           })
