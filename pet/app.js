@@ -1,8 +1,8 @@
 //app.js
-
+const config = require("/utils/config.js");
 App({
   onLaunch: function () {
-
+    console.log("当前路径：" + config.URL_Service);
   },
   globalData: {
 
