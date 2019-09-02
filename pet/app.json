@@ -1,6 +1,6 @@
 {
   "pages": [
-    "pages/guide/guide",
+    "pages/index/index2",
     "pages/consigned/base/base",
     "pages/consigned/city/city",
     "pages/consigned/pay/pay",
@@ -17,7 +17,6 @@
     "pages/consigned/inHarbour/inHarbour",
     "pages/station/station",
     "pages/consigned/coupon/coupon",
-    "pages/index/index2",
     "pages/unConfirmOrder/unConfirmOrder"
   ],
   "window": {

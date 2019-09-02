@@ -7,6 +7,8 @@
 
 const app = getApp();
 const config = require("../../utils/config.js");
+const loginUtil = require("../../utils/loginUtils.js");
+
 Page({
 
   /**
@@ -89,17 +91,27 @@ Page({
   /**
    * 充值
    */
-  recharge: function(e) {
+  recharge: function() {
+    let that = this;
+    loginUtil.checkLogin(function alreadyLoginCallback() {
+      that.requestRecharge();
+    })
+  },
+
+  /**
+   * 请求充值
+   */
+  requestRecharge: function() {
     wx.showLoading({
       title: '支付中...',
     })
     wx.request({
       url: config.URL_Service + config.URL_Recharge,
       data: {
-        openId: app.globalData.userInfo.openid,
+        openId: loginUtil.getOpenID(),
         rechargeAmount: this.data.rechargeAmount
       },
-      success(res){
+      success(res) {
         console.log("充值 success => \n" + JSON.stringify(res))
         wx.requestPayment({
           timeStamp: res.data.data.timeStamp,

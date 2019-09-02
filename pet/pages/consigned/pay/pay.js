@@ -7,7 +7,9 @@
  */
 
 const app = getApp();
-const config = require("../../../utils/config.js")
+const config = require("../../../utils/config.js");
+const loginUtil = require("../../../utils/loginUtils.js");
+
 Page({
 
   /**
@@ -219,8 +221,10 @@ Page({
       })
       return;
     }
-
-    this.requestOrder();
+    let that = this;
+    loginUtil.checkLogin(function alreadyLoginCallback() {
+      that.requestOrder();
+    })
   },
 
   /**
@@ -297,7 +301,7 @@ Page({
       title: '提交订单中...',
     })
     let tempOrderObj = {
-      "openId": app.globalData.userInfo.openid,
+      "openId": loginUtil.getOpenID(),
 
       "startCity": this.data.startCity,
       "endCity": this.data.endCity,
@@ -360,7 +364,9 @@ Page({
             success(res) {
               if (res.confirm) {
                 console.log('用户点击立即付款')
-                that.requestPay(that.data.orderNo)
+                loginUtil.checkLogin(function alreadyLoginCallback() {
+                  that.requestOrder();
+                })
               } else if (res.cancel) {
                 console.log('用户点击稍后支付')
                 wx.switchTab({
@@ -408,7 +414,7 @@ Page({
       url: config.URL_Service + config.URL_Payment,
       data: {
         orderNo: orderNo,
-        openId: app.globalData.userInfo.openid
+        openId: loginUtil.getOpenID(),
       },
       success(res) {
         console.log("支付 success：\n" + JSON.stringify(res));
@@ -442,7 +448,7 @@ Page({
       title: '请稍等...',
     })
     let tempData = {
-      "openId": app.globalData.userInfo.openid,
+      "openId": loginUtil.getOpenID(),
       "startCity": this.data.startCity,
       "endCity": this.data.endCity,
       "transportType": this.data.transport,
@@ -569,7 +575,10 @@ Page({
     if (this.data.transport == null) {
       return;
     }
-    this.requestPredictPrice();
+    let that = this;
+    loginUtil.checkLogin(function alreadyLoginCallback() {
+      that.requestPredictPrice();
+    })
   },
 
   /* ============================= 数据处理 End ============================== */

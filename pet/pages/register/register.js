@@ -10,6 +10,7 @@
 
 const app = getApp();
 const config = require("../../utils/config.js");
+const loginUtil = require("../../utils/loginUtils.js");
 Page({
 
   /**
@@ -105,12 +106,13 @@ Page({
       title: '注册中...',
     })
     let tempData = null;
+    let userInfo = loginUtil.getUserInfo();
     tempData = {
-      "openid": app.globalData.userInfo.openid,
-      "customerName": app.globalData.userInfo.nickName,
-      "headerImage": app.globalData.userInfo.avatarUrl,
+      "openid": app.globalData.openID,
+      "customerName": app.globalData.nickName,
+      "headerImage": app.globalData.avatarUrl,
+      "sex": app.globalData.gender,
       "phone": this.data.phoneNumber,
-      "sex": app.globalData.userInfo.gender,
     }
     console.log("绑定数据 => " + JSON.stringify(tempData));
     wx.request({
@@ -138,134 +140,20 @@ Page({
      * 获取用户信息
      */
   getUserInfo: function () {
-    this.login();
-  },
-
-  /**
-   * 自有服务器登陆请求
-   */
-  login: function () {
-    wx.showLoading({
-      title: '登陆中...',
-    })
-    let that = this;
-    // let that = this;
-    console.log("微信登陆")
-    // 登录
-    wx.login({
-      success: res => {
-        console.log("微信login success => " + res.code);
-        // 发送 res.code 到后台换取 openId, sessionKey, unionId
-        that.startLogin(res.code);
-      },
-      fail(res) {
-        console.log("微信login fail => " + JSON.stringify(res));
-        wx.hideLoading();
+    loginUtil.login(function loginCallback(state, msg){
+      if (state == loginUtil.Login_Success) {
+        wx.navigateBack({
+          delta: 1
+        })
+      } else if (state == loginUtil.Login_Fail) {
         wx.showToast({
-          title: '微信登陆失败',
+          title: msg,
           icon: 'none'
         })
-      },
-      complete(res) {
-        console.log("微信login complete => " + JSON.stringify(res));
-      },
-    })
-  },
+      } else {
 
-  /**
-   * 开始登陆
-   */
-  startLogin: function (wxCode) {
-    let that = this;
-    // 查看是否授权
-    wx.getSetting({
-      success(res) {
-        if (res.authSetting['scope.userInfo']) {
-          // 已经授权，可以直接调用 getUserInfo 获取头像昵称
-          wx.getUserInfo({
-            success(res) {
-              console.log("微信登陆 => \n" + JSON.stringify(res));
-              const userInfo = res.userInfo
-              app.globalData.userInfo.nickName = userInfo.nickName
-              app.globalData.userInfo.avatarUrl = userInfo.avatarUrl
-              if (userInfo.gender != null && userInfo.gender == "1") {
-                userInfo.gender = "男";
-              } else {
-                userInfo.gender = "女";
-              }
-              app.globalData.userInfo.gender = userInfo.gender
-              app.globalData.userInfo.province = userInfo.province
-              app.globalData.userInfo.city = userInfo.city
-              app.globalData.userInfo.country = userInfo.country
-              let urlstr = config.URL_Service + config.URL_Login;
-              // 向服务器请求登陆，返回 本微信 在服务器状态，注册|未注册，
-              wx.request({
-                url: urlstr, // 服务器地址
-                data: {
-                  "code": wxCode
-                }, // 参数
-                success: res => {
-                  console.log("success => " + JSON.stringify(res));
-                  if (res.data.prompt == config.Prompt_Success) {
-                    let tempUserInfo = JSON.parse(res.data.root)
-                    app.globalData.userInfo.customerNo = tempUserInfo.customerNo
-                    app.globalData.userInfo.openid = tempUserInfo.openid
-                    app.globalData.userInfo.phone = tempUserInfo.phone
-                    app.globalData.userInfo.nickName = tempUserInfo.customerName
-                    app.globalData.userInfo.avatarUrl = tempUserInfo.headerImage
-                    app.globalData.userInfo.gender = tempUserInfo.sex
-                    app.globalData.userInfo.role = tempUserInfo.role
-                    app.globalData.userInfo.balance = tempUserInfo.balance
-                    that.jumpToHome();
-                  } else {
-                    wx.showModal({
-                      title: '登陆错误！',
-                      content: '登陆错误，请联系管理员或稍后再试',
-                      success(res) {
-                        if (res.confirm) {
-                          that.login();
-                        }
-                      }
-                    })
-                  }
-                }, // 请求成功回调 登陆成功 保存 用户信息。登陆失败，跳转注册页面
-                fail: res => {
-                  console.log("fail => " + JSON.stringify(res));
-                  wx.showModal({
-                    title: '请求登陆失败！',
-                    content: '登陆失败，请稍后重新尝试',
-                    success(res) {
-                      if (res.confirm) {
-                        that.login();
-                      }
-                    }
-                  })
-                }, // 请求失败回调,弹窗，重新请求
-                complete: res => {
-                  console.log("complite => " + JSON.stringify(res));
-                  wx.hideLoading();
-                }, // 请求完成回调，隐藏loading
-              })
-            }
-          })
-        }
-      },
-      fail(res) {
-        console.log("fail => " + JSON.stringify(res));
-        wx.showModal({
-          title: '请求登陆失败！',
-          content: '登陆失败，请稍后重新尝试',
-          success(res) {
-            if (res.confirm) {
-              that.login();
-            }
-          }
-        })
-      },
-      complete(res) {
-        wx.hideLoading();
-      },
-    })
+      }
+    });
   },
 
   /**
@@ -305,15 +193,6 @@ Page({
       icon: 'none',
       image: '../../resource/request_fail.png',
       duration: 2000,
-    })
-  },
-
-  /**
-   * 跳转首页
-   */
-  jumpToHome: function () {
-    wx.switchTab({
-      url: '/pages/index/index2',
     })
   },
 

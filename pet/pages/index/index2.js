@@ -2,6 +2,7 @@
 
 const app = getApp();
 const config = require("../../utils/config.js");
+const loginUtil = require("../../utils/loginUtils.js");
 
 const BUSINESS_ACTION_TYPE_NAVIGATE = 0;
 const BUSINESS_ACTION_TYPE_SWITCH = 1;
@@ -131,7 +132,10 @@ Page({
    * 查找订单
    */
   confirmSearch: function (e) {
-    this.requestCheckOrderNoByOrderNo(e.detail.value)
+    let that = this;
+    loginUtil.checkLogin(function alreadyLoginCallback(){
+      that.requestCheckOrderNoByOrderNo(e.detail.value)
+    })
   },
 
   /**
@@ -142,10 +146,11 @@ Page({
       title: '请稍等...',
     })
     let that = this;
+    let openID = loginUtil.getOpenID();
     wx.request({
       url: config.URL_Service + config.URL_GetOrderNoByOrderNo,
       data: {
-        openId: app.globalData.userInfo.openid,
+        openId: openID,
         orderNo: inputOrderNo
       },
       success(res) {

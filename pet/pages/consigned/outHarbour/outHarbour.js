@@ -4,8 +4,9 @@
  * =========================================================================================
  */
 
-const util = require("../../../utils/util.js")
-const config = require("../../../utils/config.js")
+const util = require("../../../utils/util.js");
+const config = require("../../../utils/config.js");
+const loginUtil = require("../../../utils/loginUtils.js");
 
 const app = getApp();
 const maxImageCount = 8; // 最大图片数量限制
@@ -26,7 +27,10 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    this.requestOutHarbour();
+    let that = this;
+    loginUtil.checkLogin(function alreadyLoginCallback() {
+      that.requestOutHarbour(e.detail.value);
+    })
   },
 
   /**
@@ -241,8 +245,11 @@ Page({
   /**
    * 搜索单据
    */
-  searchOrder: function(e) {
-    this.requestOutHarbour(e.detail.value)
+  searchOrder: function (e) {
+    let that = this;
+    loginUtil.checkLogin(function alreadyLoginCallback() {
+      that.requestOutHarbour(e.detail.value);
+    })
   },
 
   /**
@@ -261,7 +268,7 @@ Page({
     wx.request({
       url: config.URL_Service + config.URL_GetInOrOutHarbourList,
       data: {
-        openId: app.globalData.userInfo.openid,
+        openId: loginUtil.getOpenID(),
         orderNo: tempSearchKey,
         orderType: orderType
       },

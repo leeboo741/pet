@@ -7,7 +7,8 @@
 //获取应用实例
 const app = getApp()
 var util = require("../../../utils/util.js");
-const config = require("../../../utils/config.js")
+const config = require("../../../utils/config.js");
+const loginUtil = require("../../../utils/loginUtils.js");
 
 Page({
   data: {
@@ -686,7 +687,10 @@ Page({
       })
       return;
     }
-    this.requestPredictPrice();
+    let that = this;
+    loginUtil.checkLogin(function alreadyLoginCallback() {
+      that.requestPredictPrice();
+    })
   },
 
   /**
@@ -756,7 +760,7 @@ Page({
       icon: 'none'
     })
     let tempData = {
-      "openId": app.globalData.userInfo.openid,
+      "openId": loginUtil.getOpenID(),
       "startCity": this.data.beginCity,
       "endCity": this.data.endCity,
       "transportType": this.data.selectedTransportObj.transportId,

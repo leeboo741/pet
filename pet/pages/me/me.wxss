@@ -37,6 +37,19 @@ page {
   align-items: center;
 }
 
+.login-button{
+  width: 158rpx;
+  height: 158rpx;
+  color: #778899;
+  font-size: 35rpx;
+  border-radius: 79rpx;
+  border-width: 1rpx;
+  border-color: lightgray;
+  border-style: solid;
+  line-height: 158rpx;
+  text-align: center;
+}
+
 .bill-info-box {
   display: flex;
   justify-content: left;

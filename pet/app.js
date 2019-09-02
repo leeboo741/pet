@@ -6,6 +6,8 @@ App({
   },
   globalData: {
 
+    openID: null,
+
     /** =========== 用户数据 =========== */
     userInfo: {
       customerNo: null, // id

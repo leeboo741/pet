@@ -18,6 +18,7 @@ const bill_type_receiving = "待收货";
 const bill_type_complete = "已完成";
 
 const config = require("../../utils/config.js");
+const loginUtil = require("../../utils/loginUtils.js");
 
 Page({
 
@@ -56,10 +57,13 @@ Page({
    */
   onShow: function () {
     this.setData({
-      userInfo: app.globalData.userInfo
+      userInfo: loginUtil.getUserInfo()
     })
-    this.requestBillList(this.data.selectedBillType);
-    this.requestBalance();
+    let that = this;
+    loginUtil.checkLogin(function alreadyLoginCallback() {
+      that.requestBillList(that.data.selectedBillType);
+      that.requestBalance();
+    })
   },
 
   /**
@@ -79,6 +83,38 @@ Page({
   /** ================================= 生命周期 End ==================================== */
 
   /** ================================= 页面事件 Start ==================================== */
+
+  /**
+   * 点击登陆|注册
+   */
+  tapLoginOrRegister: function(){
+    let that = this;
+    loginUtil.login(function loginCallback(state, msg){
+      if (state == loginUtil.Login_Success) {
+        wx.showToast({
+          title: '登陆成功',
+        })
+        that.setData({
+          userInfo: loginUtil.getUserInfo()
+        })
+      } else if (state == loginUtil.Login_Fail) {
+        wx.showModal({
+          title: '登陆失败',
+          content: msg,
+          showCancel: false,
+          success(res) {
+            if (res.confirm) {
+              that.tapLoginOrRegister();
+            }
+          }
+        })
+      } else {
+        wx.navigateTo({
+          url: '/pages/register/register',
+        })
+      }
+    })
+  },
 
   /**
    * 联系商家
@@ -126,7 +162,10 @@ Page({
       })
       return;
     }
-    this.requestCheckOrderNoByOrderNo(e.detail.value)
+    let that = this;
+    loginUtil.checkLogin(function alreadyLoginCallback() {
+      that.requestCheckOrderNoByOrderNo(e.detail.value);
+    })
   },
 
   /**
@@ -140,14 +179,20 @@ Page({
       })
       return;
     }
-    this.requestCheckOrderNoByOrderNo(this.data.checkBillNo)
+    let that = this;
+    loginUtil.checkLogin(function alreadyLoginCallback() {
+      that.requestCheckOrderNoByOrderNo(that.data.checkBillNo);
+    })
   },
 
   /**
    * 确认收货
    */
   tapReceive: function (e) {
-    this.requestRecieve(e.currentTarget.dataset.orderno, e.currentTarget.dataset.tapindex);
+    let that = this;
+    loginUtil.checkLogin(function alreadyLoginCallback() {
+      that.requestRecieve(e.currentTarget.dataset.orderno, e.currentTarget.dataset.tapindex);
+    })
   },
 
   /**
@@ -165,7 +210,10 @@ Page({
    */
   tapCancelOrder: function (e) {
     console.log("取消：\n" + e.currentTarget.dataset.orderno)
-    this.requestCancelOrder(e.currentTarget.dataset.orderno, e.currentTarget.dataset.tapindex)
+    let that = this;
+    loginUtil.checkLogin(function alreadyLoginCallback() {
+      that.requestCancelOrder(e.currentTarget.dataset.orderno, e.currentTarget.dataset.tapindex);
+    })
   },
 
   /**
@@ -173,7 +221,10 @@ Page({
    */
   tapToPay: function (e) {
     console.log("支付：\n" + e.currentTarget.dataset.orderno);
-    this.requestPay(e.currentTarget.dataset.orderno);
+    let that = this;
+    loginUtil.checkLogin(function alreadyLoginCallback() {
+      that.requestPay(e.currentTarget.dataset.orderno);
+    })
   },
 
   /**
@@ -203,7 +254,10 @@ Page({
     this.setData({
       selectedBillType: e.currentTarget.dataset.type
     })
-    this.requestBillList(this.data.selectedBillType);
+    let that = this;
+    loginUtil.checkLogin(function alreadyLoginCallback() {
+      that.requestBillList(that.data.selectedBillType);
+    })
   },
 
   /**
@@ -311,7 +365,7 @@ Page({
       method: "POST", // 请求方式
       data: {
         orderNo: orderNo,
-        openId: app.globalData.userInfo.openid
+        openId: loginUtil.getOpenID()
       },
       success(res) {
         console.log ("确认收货 success: \n" + JSON.stringify(res));
@@ -344,7 +398,7 @@ Page({
     wx.request({
       url: config.URL_Service + config.URL_CheckBalance,
       data: {
-        openId: app.globalData.userInfo.openid
+        openId: loginUtil.getOpenID()
       },
       success(res){
         console.log("查询余额 success => \n" + JSON.stringify(res));
@@ -378,7 +432,7 @@ Page({
       url: config.URL_Service + config.URL_Payment,
       data: {
         orderNo: orderNo,
-        openId: app.globalData.userInfo.openid
+        openId: loginUtil.getOpenID()
       },
       success(res) {
         console.log("支付 success：\n" + JSON.stringify(res));
@@ -415,7 +469,7 @@ Page({
     wx.request({
       url: config.URL_Service + config.URL_GetOrderNoByOrderNo,
       data: {
-        openId: app.globalData.userInfo.openid,
+        openId: loginUtil.getOpenID(),
         orderNo: inputOrderNo
       },
       success(res) {
@@ -463,7 +517,7 @@ Page({
     wx.request({
       url: config.URL_Service + config.URL_CancelOrder,
       data: {
-        openId: app.globalData.userInfo.openid,
+        openId: loginUtil.getOpenID(),
         orderNo: orderNo
       },
       method: "PUT",
@@ -538,7 +592,7 @@ Page({
       url: config.URL_Service + config.URL_GetOrderListByOrderStatus,
       data: {
         "orderStatus": this.getSendBillType(tempType),
-        "openId": app.globalData.userInfo.openid
+        "openId": loginUtil.getOpenID()
       },
       success(res){
         console.log("请求单据列表 success => \n" + JSON.stringify(res))

@@ -6,6 +6,7 @@
 
 const app = getApp();
 const config = require("../../utils/config.js");
+const loginUtil = require("../../utils/loginUtils.js");
 
 Page({
 
@@ -79,6 +80,16 @@ Page({
    * 提现
    */
   tapWithdrawal: function() {
+    let that = this;
+    loginUtil.checkLogin(function alreadyLoginCallback() {
+      that.requestWithdrawal();
+    })
+  },
+
+  /**
+   * 请求提现
+   */
+  requestWithdrawal: function () {
     if (this.data.withdrawalAmount == null || this.data.withdrawalAmount == 0) {
       wx.showToast({
         title: '提现金额不能为零',
@@ -100,7 +111,7 @@ Page({
     wx.request({
       url: config.URL_Service + config.URL_Withdraw,
       data: {
-        openId: app.globalData.userInfo.openid,
+        openId: loginUtil.getOpenID(),
         amount: this.data.withdrawalAmount
       },
       header: {

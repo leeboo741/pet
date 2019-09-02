@@ -4,7 +4,14 @@
     <view class='info'>
       <!--个人头像-->
       <view class='pic'>
-          <image src='{{userInfo.avatarUrl}}'></image>
+          <image src='{{userInfo.avatarUrl}}' 
+                 wx:if='{{userInfo != null && userInfo.avatarUrl != null && userInfo.avatarUrl.length > 0}}'>
+          </image>
+          <view wx:else
+                class="login-button"
+                bindtap="tapLoginOrRegister">
+          登陆|注册
+          </view>
       </view>
       <!--常规信息-->
       <view class='userInfo'>

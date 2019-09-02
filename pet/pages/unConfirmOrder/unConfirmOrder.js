@@ -2,6 +2,7 @@
 const app = getApp();
 const config = require("../../utils/config.js");
 const util = require("../../utils/util.js");
+const loginUtil = require("../../utils/loginUtils.js");
 
 const maxImageCount = 8; // 最大图片数量限制
 const maxVideoCount = 8; // 最大视频数量限制
@@ -20,7 +21,10 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    this.requestUnConfirmOrderList();
+    let that = this;
+    loginUtil.checkLogin(function alreadyLoginCallback() {
+      that.requestUnConfirmOrderList();
+    })
   },
 
   /**
@@ -243,7 +247,7 @@ Page({
       url: config.URL_Service + config.URL_GetUnConfirmOrderList,
       data: {
 
-        openId: app.globalData.userInfo.openid
+        openId: loginUtil.getOpenID()
       },
       success: function (res) {
         console.log("获取未收货订单 success: \n" + JSON.stringify(res));
@@ -291,7 +295,10 @@ Page({
    * 确认收货
    */
   tapReceive: function (e) {
-    this.requestRecieve(e.currentTarget.dataset.orderno, e.currentTarget.dataset.tapindex);
+    let that = this;
+    loginUtil.checkLogin(function alreadyLoginCallback() {
+      that.requestRecieve(e.currentTarget.dataset.orderno, e.currentTarget.dataset.tapindex);
+    })
   },
 
   /**
@@ -319,7 +326,7 @@ Page({
       data: {
         fileList: fileList,
         orderNo: orderNo,
-        openId: app.globalData.userInfo.openid
+        openId: loginUtil.getOpenID()
       },
       success(res) {
         console.log("确认收货 success: \n" + JSON.stringify(res));

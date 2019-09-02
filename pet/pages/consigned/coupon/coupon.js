@@ -1,7 +1,8 @@
 // pages/consigned/coupon/coupon.js
 
 const app = getApp();
-const config = require("../../../utils/config.js")
+const config = require("../../../utils/config.js");
+const loginUtil = require("../../../utils/loginUtils.js");
 
 Page({
 
@@ -16,7 +17,10 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    this.requestCouponList();
+    let that = this;
+    loginUtil.checkLogin(function alreadyLoginCallback() {
+      that.requestCouponList();
+    })
   },
 
   /**
@@ -76,7 +80,7 @@ Page({
     wx.request({
       url: config.URL_Service + config.URL_GetCouponList,
       data: {
-        openId: app.globalData.userInfo.openid
+        openId: loginUtil.getOpenID()
       },
       success(res){
         console.log("获取优惠券 success => \n" + JSON.stringify(res));
