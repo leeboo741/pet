@@ -41,13 +41,15 @@ page {
   width: 158rpx;
   height: 158rpx;
   color: #778899;
-  font-size: 35rpx;
+  font-size: 28rpx;
   border-radius: 79rpx;
   border-width: 1rpx;
   border-color: lightgray;
   border-style: solid;
   line-height: 158rpx;
   text-align: center;
+  padding: 0rpx;
+  margin: 0rpx;
 }
 
 .bill-info-box {

@@ -4,6 +4,7 @@ const config = require("../utils/config.js");
 const Login_Success = 0;
 const Login_NotExist = 1;
 const Login_Fail = 2;
+const Login_NoAuthSetting = 3;
 
 const Key_UserInfo = "userInfo";
 
@@ -69,7 +70,9 @@ function login(loginCallback, msg) {
       // 查看是否授权
       wx.getSetting({
         success(res) {
+          console.log("获取授权成功")
           if (res.authSetting['scope.userInfo']) {
+            console.log("获取 scope.userInfo 授权成功")
             // 已经授权，可以直接调用 getUserInfo 获取头像昵称
             wx.getUserInfo({
               success(res) {
@@ -129,13 +132,18 @@ function login(loginCallback, msg) {
                 })
               }
             })
+          } else {
+            wx.hideLoading();
+            if (loginCallback) {
+              loginCallback(Login_NoAuthSetting, "未授权！");
+            }
           }
         },
         fail(res) {
-
+          console.log("获取授权失败");
+          wx.hideLoading();
         },
         complete(res) {
-
         },
       })
     },
@@ -182,6 +190,18 @@ function checkLogin(alreadyLoginCallback){
                 success (res) {
                   if (res.confirm) {
                     checkLogin();
+                  }
+                }
+              })
+            } else if (state == Login_NoAuthSetting) {
+              wx.showModal({
+                title: '获取用户信息授权失败',
+                content: '登陆注册需要获取您的昵称、头像等基本信息。请在个人中心点击(登陆|注册)按钮进行授权。',
+                success(result) {
+                  if (result.confirm) {
+                    wx.switchTab({
+                      url: "/pages/me/me",
+                    })
                   }
                 }
               })

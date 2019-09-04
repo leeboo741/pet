@@ -7,11 +7,12 @@
           <image src='{{userInfo.avatarUrl}}' 
                  wx:if='{{userInfo != null && userInfo.avatarUrl != null && userInfo.avatarUrl.length > 0}}'>
           </image>
-          <view wx:else
-                class="login-button"
-                bindtap="tapLoginOrRegister">
+          <button wx:else
+                  class="login-button"
+                  bindtap="tapLoginOrRegister"
+                  open-type="getUserInfo">
           登陆|注册
-          </view>
+          </button>
       </view>
       <!--常规信息-->
       <view class='userInfo'>
