@@ -18,8 +18,10 @@ Page({
    */
   onLoad: function (options) {
     let that = this;
-    loginUtil.checkLogin(function alreadyLoginCallback() {
-      that.requestCouponList();
+    loginUtil.checkLogin(function alreadyLoginCallback(state) {
+      if (state) {
+        that.requestCouponList(); 
+      }
     })
   },
 

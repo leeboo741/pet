@@ -22,8 +22,10 @@ Page({
    */
   onLoad: function (options) {
     let that = this;
-    loginUtil.checkLogin(function alreadyLoginCallback() {
-      that.requestUnConfirmOrderList();
+    loginUtil.checkLogin(function alreadyLoginCallback(state) {
+      if (state) {
+        that.requestUnConfirmOrderList();
+      }
     })
   },
 
@@ -296,8 +298,22 @@ Page({
    */
   tapReceive: function (e) {
     let that = this;
-    loginUtil.checkLogin(function alreadyLoginCallback() {
-      that.requestRecieve(e.currentTarget.dataset.orderno, e.currentTarget.dataset.tapindex);
+    loginUtil.checkLogin(function alreadyLoginCallback(state) {
+      if (state) {
+        that.requestRecieve(e.currentTarget.dataset.orderno, e.currentTarget.dataset.tapindex);
+      } else {
+        wx.showModal({
+          title: '暂未登录',
+          content: '请先登录后使用该功能',
+          success(res) {
+            if (res.confirm) {
+              wx.switchTab({
+                url: '/pages/me/me',
+              })
+            }
+          }
+        })
+      }
     })
   },
 

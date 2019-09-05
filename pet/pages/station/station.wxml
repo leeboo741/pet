@@ -28,7 +28,7 @@
       </view>
       <view class="station-phone"
             bindtap="callPhone"
-            data-phonenumber='{{stationItem.stationPhone}}'>
+            data-phonenumber='{{stationItem.phoneNumber}}'>
         <i-icon type="mobilephone"
                 size='15'
                 color="#b5d7eb">

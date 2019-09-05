@@ -40,3 +40,26 @@
     </image>
   </view>
 </view>
+
+<view class="empty-area"
+      wx:if="{{parse.showEmpty(couponList)}}">
+  <view class="empty-content">
+    <i-icon type="service"
+            size="30"
+            color="#778899">
+    </i-icon>
+    <view class="empty-title">
+    暂无优惠券
+    </view>
+  </view>
+</view>
+<wxs module='parse'>
+  module.exports={
+    showEmpty: function(datasource){
+      if (datasource == null || datasource.length <= 0) {
+        return true;
+      }
+      return false;
+    }
+  }
+</wxs>

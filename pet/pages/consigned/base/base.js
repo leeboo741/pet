@@ -688,8 +688,22 @@ Page({
       return;
     }
     let that = this;
-    loginUtil.checkLogin(function alreadyLoginCallback() {
-      that.requestPredictPrice();
+    loginUtil.checkLogin(function alreadyLoginCallback(state) {
+      if (state) {
+        that.requestPredictPrice();
+      } else {
+        wx.showModal({
+          title: '暂未登录',
+          content: '登录后才能获取预估价格',
+          success(res){
+            if (res.confirm) {
+              wx.switchTab({
+                url: '/pages/me/me',
+              })
+            }
+          }
+        })
+      }
     })
   },
 

@@ -60,9 +60,11 @@ Page({
       userInfo: loginUtil.getUserInfo()
     })
     let that = this;
-    loginUtil.checkLogin(function alreadyLoginCallback() {
-      that.requestBillList(that.data.selectedBillType);
-      that.requestBalance();
+    loginUtil.checkLogin(function alreadyLoginCallback(state) {
+      if (state) {
+        that.requestBillList(that.data.selectedBillType);
+        that.requestBalance();
+      }
     })
   },
 
@@ -163,8 +165,22 @@ Page({
       return;
     }
     let that = this;
-    loginUtil.checkLogin(function alreadyLoginCallback() {
-      that.requestCheckOrderNoByOrderNo(e.detail.value);
+    loginUtil.checkLogin(function alreadyLoginCallback(state) {
+      if (state) {
+        that.requestCheckOrderNoByOrderNo(e.detail.value);
+      } else {
+        wx.showModal({
+          title: '暂未登录',
+          content: '请先登录后使用该功能',
+          success(res){
+            if (res.confirm) {
+              wx.switchTab({
+                url: '/pages/me/me',
+              })
+            }
+          }
+        })
+      }
     })
   },
 
@@ -180,8 +196,22 @@ Page({
       return;
     }
     let that = this;
-    loginUtil.checkLogin(function alreadyLoginCallback() {
-      that.requestCheckOrderNoByOrderNo(that.data.checkBillNo);
+    loginUtil.checkLogin(function alreadyLoginCallback(state) {
+      if (state) {
+        that.requestCheckOrderNoByOrderNo(that.data.checkBillNo);
+      } else {
+        wx.showModal({
+          title: '暂未登录',
+          content: '请先登录后使用该功能',
+          success(res) {
+            if (res.confirm) {
+              wx.switchTab({
+                url: '/pages/me/me',
+              })
+            }
+          }
+        })
+      }
     })
   },
 
@@ -190,8 +220,22 @@ Page({
    */
   tapReceive: function (e) {
     let that = this;
-    loginUtil.checkLogin(function alreadyLoginCallback() {
-      that.requestRecieve(e.currentTarget.dataset.orderno, e.currentTarget.dataset.tapindex);
+    loginUtil.checkLogin(function alreadyLoginCallback(state) {
+      if (state) {
+        that.requestRecieve(e.currentTarget.dataset.orderno, e.currentTarget.dataset.tapindex);
+      } else {
+        wx.showModal({
+          title: '暂未登录',
+          content: '请先登录后使用该功能',
+          success(res) {
+            if (res.confirm) {
+              wx.switchTab({
+                url: '/pages/me/me',
+              })
+            }
+          }
+        })
+      }
     })
   },
 
@@ -211,8 +255,22 @@ Page({
   tapCancelOrder: function (e) {
     console.log("取消：\n" + e.currentTarget.dataset.orderno)
     let that = this;
-    loginUtil.checkLogin(function alreadyLoginCallback() {
-      that.requestCancelOrder(e.currentTarget.dataset.orderno, e.currentTarget.dataset.tapindex);
+    loginUtil.checkLogin(function alreadyLoginCallback(state) {
+      if (state) {
+        that.requestCancelOrder(e.currentTarget.dataset.orderno, e.currentTarget.dataset.tapindex);
+      } else {
+        wx.showModal({
+          title: '暂未登录',
+          content: '请先登录后使用该功能',
+          success(res){
+            if (res.confirm) {
+              wx.switchTab({
+                url: '/pages/me/me',
+              })
+            }
+          }
+        })
+      }
     })
   },
 
@@ -222,8 +280,22 @@ Page({
   tapToPay: function (e) {
     console.log("支付：\n" + e.currentTarget.dataset.orderno);
     let that = this;
-    loginUtil.checkLogin(function alreadyLoginCallback() {
-      that.requestPay(e.currentTarget.dataset.orderno);
+    loginUtil.checkLogin(function alreadyLoginCallback(state) {
+      if (state) {
+        that.requestPay(e.currentTarget.dataset.orderno);
+      } else {
+        wx.showModal({
+          title: '暂未登录',
+          content: '请先登录后使用该功能',
+          success(res){
+            if (res.confirm) {
+              wx.switchTab({
+                url: '/pages/me/me',
+              })
+            }
+          }
+        })
+      }
     })
   },
 
@@ -255,8 +327,10 @@ Page({
       selectedBillType: e.currentTarget.dataset.type
     })
     let that = this;
-    loginUtil.checkLogin(function alreadyLoginCallback() {
-      that.requestBillList(that.data.selectedBillType);
+    loginUtil.checkLogin(function alreadyLoginCallback(state) {
+      if (state) {
+        that.requestBillList(that.data.selectedBillType);
+      }
     })
   },
 

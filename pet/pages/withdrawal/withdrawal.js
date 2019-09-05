@@ -81,8 +81,22 @@ Page({
    */
   tapWithdrawal: function() {
     let that = this;
-    loginUtil.checkLogin(function alreadyLoginCallback() {
-      that.requestWithdrawal();
+    loginUtil.checkLogin(function alreadyLoginCallback(state) {
+      if (state) {
+        that.requestWithdrawal();
+      } else {
+        wx.showModal({
+          title: '暂未登录',
+          content: '请先登录后使用该功能',
+          success(res){
+            if (res.confirm) {
+              wx.switchTab({
+                url: '/pages/me/me',
+              })
+            }
+          }
+        })
+      }
     })
   },
 

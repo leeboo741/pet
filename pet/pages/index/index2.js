@@ -133,8 +133,22 @@ Page({
    */
   confirmSearch: function (e) {
     let that = this;
-    loginUtil.checkLogin(function alreadyLoginCallback(){
-      that.requestCheckOrderNoByOrderNo(e.detail.value)
+    loginUtil.checkLogin(function alreadyLoginCallback(state){
+      if (state) {
+        that.requestCheckOrderNoByOrderNo(e.detail.value)
+      } else {
+        wx.showModal({
+          title: '暂未登录',
+          content: '请登录后使用该功能',
+          success (res) {
+            if (res.confirm) {
+              wx.switchTab({
+                url: '/pages/me/me',
+              })
+            }
+          }
+        })
+      }
     })
   },
 

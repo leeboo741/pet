@@ -1,0 +1,5 @@
+/* pages/consigned/text/text.wxss */
+
+.content{
+  margin: 30rpx 20rpx;
+}

@@ -55,7 +55,7 @@ function isLogin() {
 }
 
 
-function login(loginCallback, msg) {
+function login(loginCallback) {
   wx.showLoading({
     title: '登陆中...',
   })
@@ -166,56 +166,62 @@ function login(loginCallback, msg) {
 function checkLogin(alreadyLoginCallback){
   if (isLogin()) {
     if (alreadyLoginCallback) {
-      alreadyLoginCallback();
+      alreadyLoginCallback(true);
     }
   } else {
-    wx.showModal({
-      title: '尚未登陆',
-      content: '需要登陆使用该功能',
-      cancelText: '暂不登陆',
-      confirmText: '登陆',
-      success(res) {
-        if (res.confirm) {
-          login(function loginCallback(state, msg) {
-            if (state == Login_Success) {
-              wx.showToast({
-                title: '登陆成功',
-              })
-            } else if (state == Login_Fail) {
-              wx.showModal({
-                title: '登陆失败',
-                content: msg,
-                showCancel: false,
-                confirmText: "重新登陆",
-                success (res) {
-                  if (res.confirm) {
-                    checkLogin();
-                  }
-                }
-              })
-            } else if (state == Login_NoAuthSetting) {
-              wx.showModal({
-                title: '获取用户信息授权失败',
-                content: '登陆注册需要获取您的昵称、头像等基本信息。请在个人中心点击(登陆|注册)按钮进行授权。',
-                success(result) {
-                  if (result.confirm) {
-                    wx.switchTab({
-                      url: "/pages/me/me",
-                    })
-                  }
-                }
-              })
-            } else {
-              wx.navigateTo({
-                url: '/pages/register/register',
-              })
-            }
-          })
-        } else if (res.cancel) {
+    if (alreadyLoginCallback) {
+      alreadyLoginCallback(false);
+    }
+    // wx.showModal({
+    //   title: '尚未登陆',
+    //   content: '需要登陆使用该功能',
+    //   cancelText: '暂不登陆',
+    //   confirmText: '登陆',
+    //   success(res) {
+    //     if (res.confirm) {
+    //       wx.switchTab({
+    //         url: '/pages/me/me',
+    //       })
+          // login(function loginCallback(state, msg) {
+          //   if (state == Login_Success) {
+          //     wx.showToast({
+          //       title: '登陆成功',
+          //     })
+          //   } else if (state == Login_Fail) {
+          //     wx.showModal({
+          //       title: '登陆失败',
+          //       content: msg,
+          //       showCancel: false,
+          //       confirmText: "重新登陆",
+          //       success (res) {
+          //         if (res.confirm) {
+          //           checkLogin();
+          //         }
+          //       }
+          //     })
+          //   } else if (state == Login_NoAuthSetting) {
+          //     wx.showModal({
+          //       title: '获取用户信息授权失败',
+          //       content: '登陆注册需要获取您的昵称、头像等基本信息。请在个人中心点击(登陆|注册)按钮进行授权。',
+          //       success(result) {
+          //         if (result.confirm) {
+          //           wx.switchTab({
+          //             url: "/pages/me/me",
+          //           })
+          //         }
+          //       }
+          //     })
+          //   } else {
+          //     wx.navigateTo({
+          //       url: '/pages/register/register',
+          //     })
+          //   }
+          // })
+    //     } else if (res.cancel) {
 
-        }
-      },
-    })
+    //     }
+    //   },
+    // })
   }
 }
 

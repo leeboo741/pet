@@ -29,8 +29,10 @@ Page({
    */
   onLoad: function (options) {
     let that = this;
-    loginUtil.checkLogin(function alreadyLoginCallback() {
-      that.requestInHarbour();
+    loginUtil.checkLogin(function alreadyLoginCallback(state) {
+      if (state) {
+        that.requestInHarbour();
+      } 
     })
   },
 
@@ -250,8 +252,11 @@ Page({
    */
   searchOrder: function (e) {
     let that = this;
-    loginUtil.checkLogin(function alreadyLoginCallback() {
-      that.requestInHarbour(e.detail.value);
+    loginUtil.checkLogin(function alreadyLoginCallback(state) {
+      
+      if (state) {
+        that.requestInHarbour(e.detail.value);
+      } 
     })
   },
 

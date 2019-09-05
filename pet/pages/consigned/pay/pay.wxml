@@ -81,7 +81,7 @@
       <label>
         4、不患有任何疾病
       </label>
-      <label style='color:#597ED0'>
+      <label style='color:#597ED0' hidden>
         《动物检疫合格证明》
       </label>
     </view>

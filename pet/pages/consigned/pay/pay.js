@@ -222,8 +222,23 @@ Page({
       return;
     }
     let that = this;
-    loginUtil.checkLogin(function alreadyLoginCallback() {
-      that.requestOrder();
+    loginUtil.checkLogin(function alreadyLoginCallback(state) {
+      
+      if (state) {
+        that.requestOrder(); 
+      } else {
+        wx.showModal({
+          title: '暂未登录',
+          content: '请先登录后下单',
+          success(res) {
+            if (res.confirm) {
+              wx.switchTab({
+                url: '/pages/me/me',
+              })
+            }
+          }
+        })
+      }
     })
   },
 
@@ -249,7 +264,9 @@ Page({
    * 查看条款
    */
   checkClauseDetail: function () {
-
+    wx.navigateTo({
+      url: '../text/text',
+    })
   },
 
   /**
@@ -364,8 +381,22 @@ Page({
             success(res) {
               if (res.confirm) {
                 console.log('用户点击立即付款')
-                loginUtil.checkLogin(function alreadyLoginCallback() {
-                  that.requestOrder();
+                loginUtil.checkLogin(function alreadyLoginCallback(state) {
+                  if (state) {
+                    that.requestOrder();
+                  } else {
+                    wx.showModal({
+                      title: '暂未登录',
+                      content: '请先登录后付款',
+                      success(res) {
+                        if (res.confirm) {
+                          wx.switchTab({
+                            url: '/pages/me/me',
+                          })
+                        }
+                      }
+                    })
+                  }
                 })
               } else if (res.cancel) {
                 console.log('用户点击稍后支付')
@@ -576,8 +607,22 @@ Page({
       return;
     }
     let that = this;
-    loginUtil.checkLogin(function alreadyLoginCallback() {
-      that.requestPredictPrice();
+    loginUtil.checkLogin(function alreadyLoginCallback(state) {
+      if (state) {
+        that.requestPredictPrice();
+      } else {
+        wx.showModal({
+          title: '暂未登录',
+          content: '请先登录后才能获取预估价格',
+          success(res) {
+            if (res.confirm) {
+              wx.switchTab({
+                url: '/pages/me/me',
+              })
+            }
+          }
+        })
+      }
     })
   },
 

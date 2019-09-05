@@ -75,3 +75,22 @@
   width: 100%;
   height: 100%;
 }
+
+.empty-area{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 160rpx 40rpx;
+  background: #00000000;
+}
+
+.empty-content{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.empty-title{
+  font-size: 30rpx;
+  color: #778899;
+}

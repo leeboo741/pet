@@ -28,8 +28,11 @@ Page({
    */
   onLoad: function (options) {
     let that = this;
-    loginUtil.checkLogin(function alreadyLoginCallback() {
-      that.requestOutHarbour(e.detail.value);
+    loginUtil.checkLogin(function alreadyLoginCallback(state) {
+      
+      if (state) {
+        that.requestOutHarbour();
+      } 
     })
   },
 
@@ -247,8 +250,11 @@ Page({
    */
   searchOrder: function (e) {
     let that = this;
-    loginUtil.checkLogin(function alreadyLoginCallback() {
-      that.requestOutHarbour(e.detail.value);
+    loginUtil.checkLogin(function alreadyLoginCallback(state) {
+      
+      if (state) {
+        that.requestOutHarbour(e.detail.value);
+      } 
     })
   },
 
