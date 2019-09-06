@@ -31,6 +31,7 @@ Page({
       {
         icon: '../../resource/index_business_abroad.png',
         name: '宠物出国',
+        // target: '../goAboard/goAboard',
         target: '../consigned/base/base',
         actionType: BUSINESS_ACTION_TYPE_NAVIGATE,
       },

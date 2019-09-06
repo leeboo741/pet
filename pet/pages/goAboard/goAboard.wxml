@@ -1,0 +1,176 @@
+<!--pages/goAboard/goAboard.wxml-->
+<i-panel title='基本信息' 
+         i-class='panel-class'>
+  <i-cell-group>
+    <i-cell title='寄宠城市' 
+            is-link 
+            url="/pages/consigned/city/city?cityType=begin"
+            value='{{parse.getCityStr(beginCity)}}'>
+    </i-cell>
+    <i-cell title='到达国家'>
+      <input slot="footer" 
+             placeholder="请输入"
+             bindinput="inputTargetCountry">
+      </input>
+    </i-cell>
+    <i-cell title='出境时间'
+            is-link>
+      <picker mode='date'
+              slot='footer'
+              bindchange='selectAboardDate'>
+        <view>
+        {{parse.getAboardDateStr(selectOutDate)}}
+        </view>
+      </picker>
+    </i-cell>
+  </i-cell-group>
+</i-panel>
+
+<i-panel title='宠物信息（未知的可不填写）'
+         i-class='panel-class'>
+  <i-cell-group>
+    <i-cell title='宠物类型' 
+            is-link>
+      <picker range="{{petTypeList}}"
+              slot='footer'
+              bindchange='selectPetType'>
+        <view>
+        {{parse.getPetTypeStr(petType)}}
+        </view>
+      </picker>
+    </i-cell>
+    <i-cell title='宠物品种' 
+            is-link>
+      <picker range="{{petClassifyList}}"
+              slot='footer'
+              bindchange='selectPetClassify'>
+        <view>
+        {{parse.getPetClassifyStr(petClassify)}}
+        </view>
+      </picker>
+    </i-cell>
+    <i-cell title='宠物性别' 
+            is-link>
+      <view slot='footer'
+            bindtap="selectPetSex">
+      {{parse.getPetSexStr(petSex)}}
+      </view>
+    </i-cell>
+    <i-cell title='宠物颜色'>
+      <input slot="footer" 
+             placeholder="请输入"
+             bindinput="inputPetColor">
+      </input>
+    </i-cell>
+    <i-cell title='出生日期'
+            is-link>
+      <picker mode='date'
+              slot='footer'
+              bindchange='selectBirthday'>
+        <view>
+        {{parse.getBirthDayStr(birthDay)}}
+        </view>
+      </picker>
+    </i-cell>
+    <i-cell title='宠物芯片号'>
+      <input slot="footer" 
+             placeholder="请输入"
+             bindinput="inputPetCode">
+      </input>
+    </i-cell>
+    <i-cell title='狂犬疫苗注射日期'
+            is-link>
+      <picker mode='date'
+              slot='footer'
+              bindchange='selectVaccineDate'>
+        <view>
+        {{parse.getVaccineDateStr(vaccineDate)}}
+        </view>
+      </picker>
+    </i-cell>
+  </i-cell-group>
+</i-panel>
+
+<i-panel title='主人信息'
+         i-class='panel-class'>
+  <i-cell-group>
+    <i-cell title='姓名'>
+      <input slot="footer" 
+             placeholder="请输入"
+             bindinput="inputName">
+      </input>
+    </i-cell>
+    <i-cell title='电话'>
+      <input slot="footer" 
+             placeholder="请输入"
+             bindinput="inputPhone">
+      </input>
+    </i-cell>
+    <i-cell title='通讯地址'>
+      <input slot="footer" 
+             placeholder="请输入"
+             bindinput="inputAddress">
+      </input>
+    </i-cell>
+  </i-cell-group>
+</i-panel>
+
+<i-panel i-class='panel-class'>
+  <view class="commit-button"
+        bindtap="tapCommitOrder">
+  提交出国订单
+  </view>
+</i-panel>
+<wxs module='parse'>
+  module.exports={
+    getCityStr: function(city) {
+      if (city == null || city.length <= 0) {
+        return "请选择";
+      } else {
+        return city;
+      }
+    },
+    getAboardDateStr: function (date) {
+      if (date == null || date.length <= 0) {
+        return "请选择";
+      } else {
+        return date;
+      }
+    },
+    getPetTypeStr: function (petType) {
+      if (petType == null || petType.length <= 0) {
+        return "请选择";
+      } else {
+        return petType;
+      }
+    },
+    getPetClassifyStr: function (petClassify) {
+      if (petClassify == null || petClassify.length <= 0) {
+        return "请选择";
+      } else {
+        return petClassify;
+      }
+    },
+    getPetSexStr: function (petSex) {
+      if (petSex == null || petSex.length <= 0) {
+        return "请选择";
+      } else {
+        return petSex;
+      }
+    },
+    getBirthDayStr: function (date) {
+      if (date == null || date.length <= 0) {
+        return "请选择";
+      } else {
+        return date;
+      }
+    },
+    getVaccineDateStr: function (date) {
+      if (date == null || date.length <= 0) {
+        return "请选择";
+      } else {
+        return date;
+      }
+    }
+  }
+</wxs>

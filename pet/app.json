@@ -18,7 +18,8 @@
     "pages/station/station",
     "pages/consigned/coupon/coupon",
     "pages/unConfirmOrder/unConfirmOrder",
-    "pages/consigned/text/text"
+    "pages/consigned/text/text",
+    "pages/goAboard/goAboard"
   ],
   "window": {
     "backgroundTextStyle": "light",
