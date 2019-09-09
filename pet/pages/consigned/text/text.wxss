@@ -1,5 +1,49 @@
 /* pages/consigned/text/text.wxss */
 
 .content{
-  margin: 30rpx 20rpx;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.content-text{
+  width: 90%;
+  height: 96%;
+}
+
+.button-box{
+  position: relative;
+  /* bottom: 0rpx;
+  left: 0rpx; */
+  height: 100rpx;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  width: 100%;
+  background: white;
+}
+
+.cancel-button{
+  width: 45%;
+  height: 80rpx;
+  border-radius: 35rpx;
+  border: 1rpx solid lightgray;
+  color: #778899;
+  font-size: 36rpx;
+  line-height: 80rpx;
+  text-align: center;
+}
+
+.confirm-button{
+  width: 45%;
+  height: 80rpx;
+  border-radius: 35rpx;
+  border: 1rpx solid #ee2c2c;
+  font-size: 36rpx;
+  line-height: 80rpx;
+  text-align: center;
+  background: #ee2c2c;
+  color: white;
 }

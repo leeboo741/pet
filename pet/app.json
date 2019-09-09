@@ -19,7 +19,9 @@
     "pages/consigned/coupon/coupon",
     "pages/unConfirmOrder/unConfirmOrder",
     "pages/consigned/text/text",
-    "pages/goAboard/goAboard"
+    "pages/goAboard/goAboard",
+    "pages/login/login",
+    "pages/registerStation/registerStation"
   ],
   "window": {
     "backgroundTextStyle": "light",

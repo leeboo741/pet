@@ -95,6 +95,15 @@
         </i-icon>
         <label>收货</label>
       </view>
+      <view class="btnOper"
+            hidden="{{userInfo.role == 0}}"
+            bindtap="applyStation">
+        <i-icon type="businesscard"
+                color="#F1B000"
+                size="32">
+        </i-icon>
+        <label>入驻</label>
+      </view>
     </view>
   </view>
   <!--订单信息-->
@@ -188,7 +197,7 @@
               bindtap='tapCancelOrder'
               data-tapindex="{{unpayIndex}}"
               data-orderno='{{unpayItem.orderNo}}'
-              hidden="{{parse.disableCancelOrder(unpayItem.state)}}">
+              hidden="{{false}}">
         取消订单
         </view>
         <view class='bill-operate-button'
@@ -269,7 +278,7 @@
               bindtap='tapCancelOrder' 
               data-tapindex="{{unsendIndex}}"
               data-orderno='{{unsendItem.orderNo}}'
-              hidden="{{parse.disableCancelOrder(unpayItem.state)}}">
+              hidden="{{true}}">
         取消订单
         </view>
         <view class='bill-operate-button'

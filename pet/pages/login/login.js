@@ -1,4 +1,8 @@
-// pages/consigned/text/text.js
+// pages/login/login.js
+
+
+const loginUtil = require("../../utils/loginUtils.js");
+
 Page({
 
   /**
@@ -64,25 +68,32 @@ Page({
 
   },
 
-  tapNotAgree: function(e) {
-    let pages = getCurrentPages(); //获取当前页面js里面的pages里的所有信息。
-    let prevPage = pages[pages.length - 2];
-    prevPage.setData({
-      confirmClause: false,
-    })
-    wx.navigateBack({
-      
+  /**
+   * 点击登陆|注册
+   */
+  tapLoginOrRegister: function () {
+    let that = this;
+    loginUtil.login(function loginCallback(state, msg) {
+      if (state == loginUtil.Login_Success) {
+        wx.navigateBack({
+          delta: 1,
+        })
+      } else if (state == loginUtil.Login_Fail) {
+        wx.showModal({
+          title: '登陆失败',
+          content: msg,
+          showCancel: false,
+          success(res) {
+            if (res.confirm) {
+              that.tapLoginOrRegister();
+            }
+          }
+        })
+      } else {
+        wx.navigateTo({
+          url: '/pages/register/register?backtype=1',
+        })
+      }
     })
   },
-
-  tapAgree: function (e) {
-    let pages = getCurrentPages(); //获取当前页面js里面的pages里的所有信息。
-    let prevPage = pages[pages.length - 2];  
-    prevPage.setData({
-      confirmClause: true,
-    })
-    wx.navigateBack({
-
-    })
-  }
 })

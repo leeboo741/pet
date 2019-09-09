@@ -83,8 +83,8 @@ Page({
    * 处理
    */
   handleReadyToUpload: function (order) {
-    if (util.isEmpty(order.uploadImages)
-      && util.isEmpty(order.uploadVideos)) {
+    if (util.checkEmpty(order.uploadImages)
+      && util.checkEmpty(order.uploadVideos)) {
       order.readyToUpload = false;
     } else {
       order.readyToUpload = true;
@@ -98,9 +98,9 @@ Page({
    * 是否可以入港
    */
   handleReadyToConfirm: function (order) {
-    if ((!util.isEmpty(order.images) || !util.isEmpty(order.videos))
-      && util.isEmpty(order.uploadImages)
-      && util.isEmpty(order.uploadVideos)) {
+    if ((!util.checkEmpty(order.images) || !util.checkEmpty(order.videos))
+      && util.checkEmpty(order.uploadImages)
+      && util.checkEmpty(order.uploadVideos)) {
       order.readyToConfirm = true;
     } else {
       order.readyToConfirm = false;
@@ -136,10 +136,10 @@ Page({
   tapConfirmUpload: function (e) {
     let tempOrder = this.data.orderList[e.currentTarget.dataset.tapindex];
     let uploadList = [];
-    if (!util.isEmpty(tempOrder.uploadImages)) {
+    if (!util.checkEmpty(tempOrder.uploadImages)) {
       uploadList = uploadList.concat(tempOrder.uploadImages);
     }
-    if (!util.isEmpty(tempOrder.uploadVideos)) {
+    if (!util.checkEmpty(tempOrder.uploadVideos)) {
       uploadList = uploadList.concat(tempOrder.uploadVideos)
     }
     let uploadIndex = 0;
@@ -307,8 +307,8 @@ Page({
           content: '请先登录后使用该功能',
           success(res) {
             if (res.confirm) {
-              wx.switchTab({
-                url: '/pages/me/me',
+              wx.navigateTo({
+                url: '/pages/login/login',
               })
             }
           }
@@ -323,10 +323,10 @@ Page({
   requestRecieve: function (orderNo, orderIndex) {
     let tempOrder = this.data.orderList[orderIndex];
     let fileList = [];
-    if (!util.isEmpty(tempOrder.images)) {
+    if (!util.checkEmpty(tempOrder.images)) {
       fileList = fileList.concat(tempOrder.images);
     }
-    if (!util.isEmpty(tempOrder.videos)) {
+    if (!util.checkEmpty(tempOrder.videos)) {
       fileList = fileList.concat(tempOrder.videos);
     }
     let that = this;
@@ -413,7 +413,7 @@ Page({
             },
           })
         } else {
-          if (!util.isEmpty(tempOrder.videos)) {
+          if (!util.checkEmpty(tempOrder.videos)) {
             wx.showToast({
               title: '已经上传视频，请勿重复上传！',
               icon: 'none'
@@ -426,7 +426,7 @@ Page({
               if (tempOrder.uploadVideos == null) {
                 tempOrder.uploadVideos = [];
               }
-              if (!util.isEmpty(res.tempFilePath)) {
+              if (!util.checkEmpty(res.tempFilePath)) {
                 tempOrder.uploadVideos.push(res.tempFilePath)
                 that.handleReadyToUpload(tempOrder);
                 that.handleReadyToConfirm(tempOrder);

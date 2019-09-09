@@ -91,8 +91,8 @@
     <view class='clause'>
       <label class='equity' style='margin-left:25rpx;'>下单后会有专人联系您以确定发运航班，如未发运，全额退款</label>
       <view >
-        <icon bindtap='tapClause' class="iconfont icongouhao  {{confirmClause?'choose-color':'normal-color'}}" style='margin-left:25rpx;'></icon>
-        <label bindtap='checkClauseDetail' class="{{confirmClause?'choose-color':'normal-color'}}" style='margin-left:10rpx;font-size:32rpx;'>本人同意并接受《宠物托运交易条款》</label>
+        <icon bindtap='checkClauseDetail' class="iconfont icongouhao  {{confirmClause?'choose-color':'normal-color'}}" style='margin-left:25rpx;'></icon>
+        <label bindtap='checkClauseDetail' class="{{confirmClause?'choose-color':'normal-color'}}" style='margin-left:10rpx;font-size:32rpx;'>已阅读并同意《宠物托运交易条款》</label>
       </view>
     </view>
   </view>

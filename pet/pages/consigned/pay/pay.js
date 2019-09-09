@@ -232,8 +232,8 @@ Page({
           content: '请先登录后下单',
           success(res) {
             if (res.confirm) {
-              wx.switchTab({
-                url: '/pages/me/me',
+              wx.navigateTo({
+                url: '/pages/login/login',
               })
             }
           }
@@ -254,11 +254,11 @@ Page({
   /**
    * 确认条款
    */
-  tapClause: function() {
-    this.setData({
-      confirmClause: !this.data.confirmClause
-    })
-  },
+  // tapClause: function() {
+  //   this.setData({
+  //     confirmClause: !this.data.confirmClause
+  //   })
+  // },
 
   /**
    * 查看条款
@@ -383,15 +383,15 @@ Page({
                 console.log('用户点击立即付款')
                 loginUtil.checkLogin(function alreadyLoginCallback(state) {
                   if (state) {
-                    that.requestOrder();
+                    that.requestPay(res.data.root);
                   } else {
                     wx.showModal({
                       title: '暂未登录',
                       content: '请先登录后付款',
                       success(res) {
                         if (res.confirm) {
-                          wx.switchTab({
-                            url: '/pages/me/me',
+                          wx.navigateTo({
+                            url: '/pages/login/login',
                           })
                         }
                       }
@@ -616,8 +616,8 @@ Page({
           content: '请先登录后才能获取预估价格',
           success(res) {
             if (res.confirm) {
-              wx.switchTab({
-                url: '/pages/me/me',
+              wx.navigateTo({
+                url: '/pages/login/login',
               })
             }
           }

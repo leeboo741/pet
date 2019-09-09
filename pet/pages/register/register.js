@@ -18,12 +18,16 @@ Page({
    */
   data: {
     phoneNumber: "", // 输入的电话号码
+    backType: 0, // 回退方式 0 回退一层 1 回退两层
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    this.setData({
+      backType : options.backtype
+    })
   },
 
   /**
@@ -140,10 +144,15 @@ Page({
      * 获取用户信息
      */
   getUserInfo: function () {
+    let that = this;
     loginUtil.login(function loginCallback(state, msg){
       if (state == loginUtil.Login_Success) {
+        let backCount = 1;
+        if (that.data.backType != 0) {
+          backCount = 2;
+        }
         wx.navigateBack({
-          delta: 1
+          delta: backCount
         })
       } else if (state == loginUtil.Login_Fail) {
         wx.showToast({

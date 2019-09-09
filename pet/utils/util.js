@@ -41,7 +41,7 @@ const formatNumber = n => {
   return n[1] ? n : '0' + n
 }
 
-function isEmpty(obj) {
+function checkEmpty(obj) {
   if (obj == null || obj.length <= 0) {
     return true;
   }
@@ -63,10 +63,20 @@ function isVideo(fileAddress) {
   return false;
 }
 
+function isPhoneAvailable(phone) {
+  var myreg = /^[1][3,4,5,6,7,8][0-9]{9}$/;
+  if (!myreg.test(phone)) {
+    return false;
+  } else {
+    return true;
+  }
+}
+
 module.exports = {
   formatTime: formatTime,
   dateLater: dateLater,
   formatYMD: formatYMD,
-  isEmpty: isEmpty,
+  checkEmpty: checkEmpty,
   isVideo: isVideo,
+  isPhoneAvailable: isPhoneAvailable,
 }

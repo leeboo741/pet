@@ -102,8 +102,8 @@ Page({
           content: '请先登录后使用该功能',
           success(res) {
             if (res.confirm) {
-              wx.switchTab({
-                url: '/pages/me/me',
+              wx.navigateTo({
+                url: '/pages/login/login',
               })
             }
           }

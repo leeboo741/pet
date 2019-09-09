@@ -90,8 +90,8 @@ Page({
    * 处理
    */
   handleReadyToUpload: function (order) {
-    if (util.isEmpty(order.uploadImages)
-      && util.isEmpty(order.uploadVideos)) {
+    if (util.checkEmpty(order.uploadImages)
+      && util.checkEmpty(order.uploadVideos)) {
       order.readyToUpload = false;
     } else {
       order.readyToUpload = true;
@@ -105,9 +105,9 @@ Page({
    * 是否可以入港
    */
   handleReadyToInHarbour: function (order) {
-    if ((!util.isEmpty(order.images) || !util.isEmpty(order.videos))
-      && util.isEmpty(order.uploadImages)
-      && util.isEmpty(order.uploadVideos)) {
+    if ((!util.checkEmpty(order.images) || !util.checkEmpty(order.videos))
+      && util.checkEmpty(order.uploadImages)
+      && util.checkEmpty(order.uploadVideos)) {
       order.readyToInHarbour = true;
     } else {
       order.readyToInHarbour = false;
@@ -143,10 +143,10 @@ Page({
   tapConfirmUpload: function (e) {
     let tempOrder = this.data.orderList[e.currentTarget.dataset.tapindex];
     let uploadList = [];
-    if (!util.isEmpty(tempOrder.uploadImages)) {
+    if (!util.checkEmpty(tempOrder.uploadImages)) {
       uploadList = uploadList.concat(tempOrder.uploadImages);
     }
-    if (!util.isEmpty(tempOrder.uploadVideos)) {
+    if (!util.checkEmpty(tempOrder.uploadVideos)) {
       uploadList = uploadList.concat(tempOrder.uploadVideos)
     }
     let uploadIndex = 0;
@@ -330,10 +330,10 @@ Page({
       title: '请稍等...',
     })
     let fileList = [];
-    if (!util.isEmpty(order.images)) {
+    if (!util.checkEmpty(order.images)) {
       fileList = fileList.concat(order.images);
     }
-    if (!util.isEmpty(order.videos)) {
+    if (!util.checkEmpty(order.videos)) {
       fileList = fileList.concat(order.videos);
     }
     let that = this;
@@ -430,7 +430,7 @@ Page({
             },
           })
         } else {
-          if (!util.isEmpty(tempOrder.videos)) {
+          if (!util.checkEmpty(tempOrder.videos)) {
             wx.showToast({
               title: '已经上传视频，请勿重复上传！',
               icon: 'none'
@@ -443,7 +443,7 @@ Page({
               if (tempOrder.uploadVideos == null) {
                 tempOrder.uploadVideos = [];
               }
-              if (!util.isEmpty(res.tempFilePath)) {
+              if (!util.checkEmpty(res.tempFilePath)) {
                 tempOrder.uploadVideos.push(res.tempFilePath)
                 that.handleReadyToUpload(tempOrder);
                 that.handleReadyToInHarbour(tempOrder);

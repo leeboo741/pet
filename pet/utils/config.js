@@ -4,7 +4,7 @@
  */
 /** =================================================== */
 const Service_Phone = "0793-322132153"; // 客服电话
-const Version_Name = "1.1.2"; // 版本名称
+const Version_Name = "1.2.0"; // 版本名称
 const Version_Code = 3; // 版本编号
 
 /** =================================================== */
@@ -12,9 +12,9 @@ const Version_Code = 3; // 版本编号
  *                      网络请求
  */
 /** =================================================== */
-const URL_Service = "https://pet.tyferp.com"; // 路径 
+// const URL_Service = "https://pet.tyferp.com"; // 路径 
 // const URL_Service = "http://huji820.oicp.net"; // 路径
-// const URL_Service = "http://192.168.3.111:5050"; // 路径
+const URL_Service = "http://192.168.3.111:5050"; // 路径
 // const URL_Service = "http://192.168.3.123:5050"; // 路径
 
 const URL_Register = "/api/customer/"; // 注册
@@ -22,6 +22,7 @@ const URL_Login = "/api/oAuth"; // 登陆
 const URL_UpdateCustomer = "/api/customer/updateCustomer"; // 更新用户
 const URL_CheckBalance = "/api/balance"; // 查询余额
 const URL_Withdraw ="/api/withdraw/staff"; // 提现
+const URL_GetCode = "/business/VerificationCode/"; // 获取短信验证码
 
 const URL_GetBusinessByPosition = "/api/business/listByPosition"; // 根据坐标获取周边商家
 
@@ -80,8 +81,9 @@ module.exports = {
   URL_UpdateCustomer, // 更新用户
   URL_CheckBalance, // 查询余额
   URL_Withdraw, // 提现
+  URL_GetCode, // 获取短信验证码
 
-  URL_GetBusinessByPosition,
+  URL_GetBusinessByPosition, // 根据坐标获取周边商家
 
   URL_PetType, // 宠物类型
   URL_PetClassify, // 宠物品种

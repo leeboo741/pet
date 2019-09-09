@@ -112,7 +112,7 @@ Page({
         })
       } else {
         wx.navigateTo({
-          url: '/pages/register/register',
+          url: '/pages/register/register?backtype=0',
         })
       }
     })
@@ -172,10 +172,10 @@ Page({
         wx.showModal({
           title: '暂未登录',
           content: '请先登录后使用该功能',
-          success(res){
+          success(res) {
             if (res.confirm) {
-              wx.switchTab({
-                url: '/pages/me/me',
+              wx.navigateTo({
+                url: '/pages/login/login',
               })
             }
           }
@@ -205,8 +205,8 @@ Page({
           content: '请先登录后使用该功能',
           success(res) {
             if (res.confirm) {
-              wx.switchTab({
-                url: '/pages/me/me',
+              wx.navigateTo({
+                url: '/pages/login/login',
               })
             }
           }
@@ -229,8 +229,8 @@ Page({
           content: '请先登录后使用该功能',
           success(res) {
             if (res.confirm) {
-              wx.switchTab({
-                url: '/pages/me/me',
+              wx.navigateTo({
+                url: '/pages/login/login',
               })
             }
           }
@@ -262,10 +262,10 @@ Page({
         wx.showModal({
           title: '暂未登录',
           content: '请先登录后使用该功能',
-          success(res){
+          success(res) {
             if (res.confirm) {
-              wx.switchTab({
-                url: '/pages/me/me',
+              wx.navigateTo({
+                url: '/pages/login/login',
               })
             }
           }
@@ -287,10 +287,10 @@ Page({
         wx.showModal({
           title: '暂未登录',
           content: '请先登录后使用该功能',
-          success(res){
+          success(res) {
             if (res.confirm) {
-              wx.switchTab({
-                url: '/pages/me/me',
+              wx.navigateTo({
+                url: '/pages/login/login',
               })
             }
           }
@@ -395,6 +395,15 @@ Page({
   receiveOrder: function () {
     wx.navigateTo({
       url: '../unConfirmOrder/unConfirmOrder',
+    })
+  },
+
+  /**
+   * 申请入驻驿站
+   */
+  applyStation: function () {
+    wx.navigateTo({
+      url: '/pages/registerStation/registerStation',
     })
   },
 
