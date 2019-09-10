@@ -1,0 +1,16 @@
+<!--pages/message/message.wxml-->
+<view wx:for='{{messageList}}'
+      wx:for-item='messageItem'
+      wx:for-index='messageIndex'
+      wx:key='{{messageIndex}}'
+      class="message-item">
+  <view class="message-item-title">
+  {{messageItem.messageTitle}}
+  </view>
+  <text class="message-item-content">
+  {{messageItem.messageContent}}
+  </text>
+  <view class="message-item-time">
+  {{messageItem.sendTime}}
+  </view>
+</view>

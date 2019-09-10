@@ -21,7 +21,8 @@
     "pages/consigned/text/text",
     "pages/goAboard/goAboard",
     "pages/login/login",
-    "pages/registerStation/registerStation"
+    "pages/registerStation/registerStation",
+    "pages/message/message"
   ],
   "window": {
     "backgroundTextStyle": "light",

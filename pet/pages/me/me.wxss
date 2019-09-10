@@ -14,15 +14,22 @@ page {
 }
 
 .btn {
-  width: 80rpx;
+  width: 140rpx;
   display: flex;
   flex-direction: row-reverse;
+  flex-wrap: wrap;
 }
 
-.btn icon {
+.btn-icon{
+  width: 60rpx;
+  height: 60rpx;
+  margin-right: 30rpx;
+}
+
+/* .btn icon {
   margin-right: 50rpx;
   font-size: 32rpx;
-}
+} */
 
 .info {
   display: flex;

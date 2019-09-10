@@ -56,6 +56,8 @@ const URL_ConfirmInOutHarbour = "/api/consign/orderState/inOrOutPort"; // 确认
 
 const URL_UploadFile = "/api/consign/orderState/uploadFile"; // 上传文件
 
+const URL_Get_Message = "/api/message/customer/"; // 获取站内信
+
 /** =================================================== */
 /** 
  *                      Enum
@@ -115,6 +117,8 @@ module.exports = {
   URL_ConfirmInOutHarbour, // 确认出入港
 
   URL_UploadFile, // 上传文件
+
+  URL_Get_Message, // 获取站内信
 
   Prompt_Success, // 成功标识
   Prompt_Error, // 错误标识

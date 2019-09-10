@@ -320,6 +320,16 @@ Page({
   },
 
   /**
+   * 点击站内信
+   */
+  tapMessage: function () {
+    console.log("点击站内信")
+    wx.navigateTo({
+      url: '/pages/message/message',
+    })
+  },
+
+  /**
    * 单据类型选择
    */
   tapButtonTypeAction: function(e) {

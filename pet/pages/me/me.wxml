@@ -29,14 +29,32 @@
       </view>
       <!--按钮-->
       <view class='btn'>
-        <!--设置按钮-->
-        <icon class='iconfont iconshezhi-' 
-              bindtap='tapSetting'
-              hidden="{{true}}"></icon>
         <!--联系客服按钮-->
-        <icon class='iconfont iconkefu' 
+        <view class="btn-icon"
               bindtap='tapCall'
-              hidden="{{true}}"></icon>
+              hidden="{{true}}">
+          <i-icon type="customerservice"
+                  color="#778899"
+                  size="25">
+          </i-icon>
+        </view>
+        <!-- 站内信 -->
+        <view class="btn-icon"
+              bindtap="tapMessage">
+          <i-icon type="mail"
+                  color="#778899"
+                  size="25">
+          </i-icon>
+        </view>
+        <!--设置按钮-->
+        <view class="btn-icon"
+              bindtap='tapSetting'
+              hidden="{{true}}">
+          <i-icon type="setup"
+                  color="#778899"
+                  size="25">
+          </i-icon>
+        </view>
       </view>
     </view>
   </view>
