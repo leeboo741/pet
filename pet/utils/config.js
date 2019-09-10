@@ -23,6 +23,7 @@ const URL_UpdateCustomer = "/api/customer/updateCustomer"; // 更新用户
 const URL_CheckBalance = "/api/balance"; // 查询余额
 const URL_Withdraw ="/api/withdraw/staff"; // 提现
 const URL_GetCode = "/business/VerificationCode/"; // 获取短信验证码
+const URL_Register_Business = "/business/insetBusiness"; // 注册商家
 
 const URL_GetBusinessByPosition = "/api/business/listByPosition"; // 根据坐标获取周边商家
 
@@ -82,6 +83,7 @@ module.exports = {
   URL_CheckBalance, // 查询余额
   URL_Withdraw, // 提现
   URL_GetCode, // 获取短信验证码
+  URL_Register_Business, // 注册商家
 
   URL_GetBusinessByPosition, // 根据坐标获取周边商家
 

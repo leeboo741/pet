@@ -28,6 +28,8 @@ Page({
     ableGetCode: true, // 是否允许获得验证码
     intervalID: null, // 获取验证码定时器Id
     intervalCount: intervalDuration, // 重新获取验证码倒计时
+    cookie: null, // 获取验证码的cookie 包含有sessionId 提交申请的时候 服务器需要 通过sessionId 获取短信验证码 微信每次请求会清空sessionId
+    timeOutID: null, // 
   },
 
   /**
@@ -64,6 +66,8 @@ Page({
   onUnload: function () {
     clearInterval(this.data.intervalID);
     this.data.intervalID = null;
+    clearTimeout(this.data.timeOutID);
+    this.data.timeOutID = null;
   },
 
   /**
@@ -217,6 +221,7 @@ Page({
    */
   tapApply: function () {
     console.log("提交申请：\n" + JSON.stringify(this.data));
+    this.requestApply();
   },
 
 
@@ -224,6 +229,7 @@ Page({
    * 请求短信验证码
    */
   requestCode: function (phone) {
+    let that = this;
     wx.request({
       url: config.URL_Service + config.URL_GetCode,
       data: {
@@ -231,6 +237,10 @@ Page({
       },
       success(res){
         console.log("获取验证码 success: \n" + JSON.stringify(res))
+        let tempCookie = res.header["Set-Cookie"];
+        that.setData({
+          cookie: tempCookie
+        })
       },
       fail(res) {
         console.log("获取验证码 fail: \n" + JSON.stringify(res))
@@ -242,7 +252,57 @@ Page({
    * 请求申请
    */
   requestApply: function () {
-
+    wx.showLoading({
+      title: '提交申请中...',
+    })
+    let tempData = {
+      businessName: this.data.name,
+      phoneNumber: this.data.phone,
+      startBusinessHours: this.data.startTime,
+      endBusinessHours: this.data.endTime,
+      describes: this.data.describe,
+      province: this.data.province,
+      city: this.data.city,
+      detailAddress: this.data.district + this.data.detail,
+      verificationCode: this.data.code,
+    };
+    let that = this;
+    wx.request({
+      url: config.URL_Service + config.URL_Register_Business,
+      data: tempData,
+      header: {
+        // 'content-type': 'application/x-www-form-urlencoded',
+        'coutent-type': 'application/json',
+        "cookie": that.data.cookie
+      },
+      method: "POST", // 请求方式
+      success(res){
+        console.log("注册商家 success:\n" + JSON.stringify(res));
+        if (res.data.code == 200) {
+          wx.showToast({
+            title: '注册成功',
+            duration: 2000,
+          })
+          that.data.timeOutID = setTimeout(function(){
+            wx.navigateBack({
+              
+            })
+          },2000)
+        } else {
+          wx.showToast({
+            title: res.data.message,
+            icon: 'none'
+          })
+        }
+      },
+      fail(res) {
+        console.log("注册商家 fail:\n" + JSON.stringify(res));
+      },
+      complete(res) {
+        console.log("注册商家 complete:\n" + JSON.stringify(res));
+        wx.hideLoading();
+      }
+    })
   },
 
 })
