@@ -4,17 +4,17 @@
  */
 /** =================================================== */
 const Service_Phone = "0793-322132153"; // 客服电话
-const Version_Name = "1.2.1"; // 版本名称
-const Version_Code = 3; // 版本编号
+const Version_Name = "1.2.3"; // 版本名称
+const Version_Code = 6; // 版本编号
 
 /** =================================================== */
 /** 
  *                      网络请求
  */
 /** =================================================== */
-// const URL_Service = "https://pet.tyferp.com"; // 路径 
+const URL_Service = "https://pet.tyferp.com"; // 路径 
 // const URL_Service = "http://huji820.oicp.net"; // 路径
-const URL_Service = "http://192.168.3.111:5050"; // 路径
+// const URL_Service = "http://192.168.3.111:5050"; // 路径
 // const URL_Service = "http://192.168.3.233:5050"; // 路径
 
 const URL_Register = "/api/customer/"; // 注册
