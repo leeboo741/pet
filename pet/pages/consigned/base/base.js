@@ -34,6 +34,7 @@ Page({
     week: null, // 发货星期
     petCount: 0, // 发货数量
     petWeight: 0, // 宠物重量
+    petMaxWeight: null, // 宠物最大重量限制
     petType: null, // 选中宠物类别
     petClassify: null, // 选中宠物类型
     petTypes: [], // 宠物类别列表
@@ -72,10 +73,10 @@ Page({
     ], // 运输方式
     selectedTransportObj: null, // 选中运输方式Index
     addServerAirBox: {
-      name: "购买航空箱", // 增值服务名称
+      name: "购买宠物箱", // 增值服务名称
       selected: false, // 是否选中
-      alert: "自备航空箱需符合航空公司要求的适用规则", // 提示
-      haveAbleStation: false, // 是否有可用站点
+      alert: "自备宠物箱需符合运输公司要求的适用规则", // 提示
+      ableUse: false, // 是否可用
     },
     addServerReceivePet: {
       name: "上门接宠",
@@ -160,7 +161,6 @@ Page({
       // 查询保价费率
       this.requestStroePhoneByCityName(app.globalData.trainBeginCity);
       this.requestInsurePriceRate(app.globalData.trainBeginCity);
-      this.checkAbleAirbox(app.globalData.trainBeginCity)
       app.globalData.trainBeginCity = null;
     }
     if (app.globalData.trainEndCity != null) {
@@ -329,6 +329,7 @@ Page({
         selectedTransportObj: tempObj
       })
       this.predictPrice();
+      this.checkPetCage();
     }
   },
 
@@ -442,6 +443,8 @@ Page({
     this.setData({
       petWeight: tempInput
     })
+
+    this.checkPetWeight();
   },
 
   /**
@@ -815,9 +818,9 @@ Page({
         tempData.receiptAddress = this.data.beginCity + this.data.addServerReceivePet.receiveDistrict + this.data.addServerReceivePet.address;
       }
     }
-    tempData.buyAirBox = "0";
+    tempData.buyPetCage = "0";
     if (this.data.addServerAirBox.selected) {
-      tempData.buyAirBox = "1"
+      tempData.buyPetCage = "1"
     }
     tempData.giveFood = "0";
     if (this.data.addServerPetCan.selected) {
@@ -868,6 +871,10 @@ Page({
       },
     })
   },
+
+  /**
+   * 查询最大重量
+   */
 
   /**
    * 查询可用的运输方式
@@ -954,38 +961,40 @@ Page({
   },
 
   /**
-   * 查询航空箱可用站点
+   * 查询宠物箱
    */
-  checkAbleAirbox: function (cityName) {
-    let urlStr = config.URL_Service + config.URL_AbleAirBox;
+  checkPetCage: function () {
     let that = this;
     wx.request({
-      url: urlStr,
+      url: config.URL_Service + config.URL_AblePetCage,
       data: {
-        "startCity": cityName
+        startCity: this.data.beginCity,
+        endCity: this.data.endCity,
+        transportType: this.data.selectedTransportObj.transportId,
       },
       success(res) {
-        console.log("获取航空箱可用站点 success => \n" + JSON.stringify(res));
-        if (res.data.data == null || res.data.data.length <= 0) {
-          that.data.addServerAirBox.haveAbleStation = false;
+        console.log("查询宠物箱 success:\n" + JSON.stringify(res));
+        if (res.data.data == null) {
+          that.data.addServerAirBox.ableUse = false;
           that.data.addServerAirBox.selected = false;
-          that
+          that.setData({
+            addServerAirBox: that.data.addServerAirBox,
+          })
         } else {
-          that.data.addServerAirBox.haveAbleStation = true;
+          that.data.addServerAirBox.ableUse = true;
+          that.data.petMaxWeight = res.data.data;
+          that.setData({
+            addServerAirBox: that.data.addServerAirBox,
+            petMaxWeight: that.data.petMaxWeight,
+          })
+          that.checkPetWeight();
         }
-        that.setData({
-          addServerAirBox: that.data.addServerAirBox
-        })
       },
       fail(res) {
-        console.log("获取航空箱可用站点 fail => \n" + JSON.stringify(res));
-        wx.showToast({
-          title: '查询航空箱可用站点失败',
-          icon: 'none'
-        })
+        console.log("查询宠物箱 fail:\n" + JSON.stringify(res));
       },
       complete(res) {
-        console.log("获取航空箱可用站点 complete => \n" + JSON.stringify(res));
+        console.log("查询宠物箱 complete:\n" + JSON.stringify(res));
       }
     })
   },
@@ -1109,11 +1118,28 @@ Page({
   /**
    * 请求Banner数据
    */
-  requestBanner: function () {
-
-  },
+  requestBanner: function () {},
 
   /* ============================= 网络请求 End ============================== */
+
+  /**
+   * 检查重点
+   */
+  checkPetWeight: function(){
+    if (this.data.petWeight > this.data.petMaxWeight) {
+      wx.showToast({
+        title: '超出'+ this.data.selectedTransportObj.transportName +'托运重量限制',
+        icon: 'none'
+      })
+      this.data.addServerAirBox.selected = false;
+      this.data.selectedTransportObj = null;
+      this.setData({
+        addServerAirBox: this.data.addServerAirBox,
+        selectedTransportObj: this.data.selectedTransportObj
+      })
+      this.predictPrice();
+    }
+  },
 });
 
 // 区县

@@ -24,6 +24,19 @@ page {
   width: 60rpx;
   height: 60rpx;
   margin-right: 30rpx;
+  position: relative;
+}
+
+.spot{
+  position: absolute;
+  top: 0rpx;
+  right: 0rpx;
+  width: 30rpx;
+  height: 30rpx;
+  border-radius: 15rpx;
+  line-height: 30rpx;
+  text-align: center;
+  background: #ee2c2c;
 }
 
 /* .btn icon {

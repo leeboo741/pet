@@ -115,7 +115,7 @@
          增值服务
       </label>
       <view class='addedServer'>
-        <view class='addedServer-item' hidden="{{!addServerAirBox.haveAbleStation}}">
+        <view class='addedServer-item' hidden="{{!parse.showAirbox(addServerAirBox.ableUse, selectedTransportObj)}}">
           <view class='addServer-info' 
                 bindtap='tapAddServerAirBox'>
             <icon class="iconfont icongouhao gou {{addServerAirBox.selected?'choose':''}}">
@@ -251,3 +251,14 @@
         </button>
    </view>
 </view>
+
+<wxs module='parse'>
+  module.exports={
+    showAirbox: function(ableUse, selectedTransportObj){
+      if(selectedTransportObj != null && selectedTransportObj.transportId != 1 && ableUse){
+        return true;
+      }
+      return false;
+    }
+  }
+</wxs>

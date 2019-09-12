@@ -42,9 +42,12 @@
         <view class="btn-icon"
               bindtap="tapMessage">
           <i-icon type="mail"
-                  color="#778899"
+                  color="{{(newMessageList==null||newMessageList.length<=0?'#778899':'#ee2c2c')}}"
                   size="25">
           </i-icon>
+          <view class="spot"
+                hidden="{{newMessageList==null||newMessageList.length<=0}}">
+          </view>
         </view>
         <!--设置按钮-->
         <view class="btn-icon"

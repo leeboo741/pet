@@ -337,9 +337,9 @@ Page({
       "remarks": this.data.remark,
     }
 
-    tempOrderObj.buyAirBox = "0";
+    tempOrderObj.buyPetCage = "0";
     if (this.data.airbox != null) {
-      tempOrderObj.buyAirBox = this.data.airbox;
+      tempOrderObj.buyPetCage = this.data.airbox;
     }
 
     tempOrderObj.giveFood = "0";
@@ -505,7 +505,7 @@ Page({
     }
 
     if (this.data.airbox != null) {
-      tempData.buyAirBox = this.data.airbox
+      tempData.buyPetCage = this.data.airbox
     }
 
     if (this.data.insuredPrice != null) {

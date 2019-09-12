@@ -19,6 +19,9 @@ const bill_type_complete = "已完成";
 
 const config = require("../../utils/config.js");
 const loginUtil = require("../../utils/loginUtils.js");
+const util = require("../../utils/util.js");
+
+const NEW_MESSAGE_LOOP_TIME = 10000;
 
 Page({
 
@@ -34,6 +37,8 @@ Page({
     unsendList: [], // 待发货
     unreceiveList: [], // 待收货
     completeList: [], // 已完成
+    newMessageList:[], // 新消息列表
+    getNewMessageIntervalID: null,
   },
 
   /** ================================= 生命周期 Start ==================================== */
@@ -64,6 +69,7 @@ Page({
       if (state) {
         that.requestBillList(that.data.selectedBillType);
         that.requestBalance();
+        that.startGetNewMessageInterval();
       }
     })
   },
@@ -72,7 +78,7 @@ Page({
    * 生命周期函数--监听页面隐藏
    */
   onHide: function () {
-
+    this.closeGetNewMessageInterval();
   },
 
   /**
@@ -99,6 +105,8 @@ Page({
         that.setData({
           userInfo: loginUtil.getUserInfo()
         })
+        that.requestBillList(that.data.selectedBillType);
+        that.startGetNewMessageInterval();
       } else if (state == loginUtil.Login_Fail) {
         wx.showModal({
           title: '登陆失败',
@@ -324,6 +332,9 @@ Page({
    */
   tapMessage: function () {
     console.log("点击站内信")
+    this.setData({
+      newMessageList: []
+    })
     wx.navigateTo({
       url: '/pages/message/message',
     })
@@ -717,9 +728,81 @@ Page({
     })
   },
 
+  /**
+   * 查询 更新站内信
+   */
+  requestNewMessage: function () {
+    let lastGetMessageTime = this.getLastGetMessageTime();
+    let that = this;
+    wx.request({
+      url: config.URL_Service + config.URL_Get_New_Message,
+      data: {
+        openId: loginUtil.getOpenID(),
+        lastModifyTime: lastGetMessageTime
+      },
+      success(res) {
+        console.log("获取最新站内信 success:\n" + JSON.stringify(res));
+        if (res.data.code == 200) {
+          let tempList = that.data.newMessageList.concat(res.data.data);
+          that.setData({
+            newMessageList: tempList
+          })
+        }
+        that.setLastGetMessageTime(util.formatTime(new Date()));
+      },
+      fail(res) {
+        console.log("获取最新站内信 fail:\n" + JSON.stringify(res));
+      },
+      complete(res) {
+        console.log("获取最新站内信 complete:\n" + JSON.stringify(res));
+      }
+    })
+  },
+
   /** ================================= 网络请求 Start ==================================== */
 
   /** ================================= 数据 Start ==================================== */
+
+  /**
+   * 获取最后更新时间
+   */
+  getLastGetMessageTime: function() {
+    try{
+      let lastTime = wx.getStorageSync(config.Key_LastGetMessageTime);
+      return lastTime;
+    }catch (e){
+      return config.Value_Default_LastGetMessageTime;
+    }
+  },
+
+  /**
+   * 存储最后更新时间
+   */
+  setLastGetMessageTime: function(time) {
+    try {
+      wx.setStorageSync(config.Key_LastGetMessageTime, time);
+    } catch (e) {
+
+    }
+  },
+
+  /**
+   * 开启新信息定时器
+   */
+  startGetNewMessageInterval: function () {
+    let that = this;
+    this.data.getNewMessageIntervalID = setInterval(function(){
+      that.requestNewMessage();
+    }, NEW_MESSAGE_LOOP_TIME);
+  },
+
+  /**
+   * 关闭新信息定时器
+   */
+  closeGetNewMessageInterval: function() {
+    clearInterval(this.data.getNewMessageIntervalID);
+    this.data.getNewMessageIntervalID = null;
+  },
 
   /**
    * 设置订单类型

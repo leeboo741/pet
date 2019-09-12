@@ -4,7 +4,7 @@
  */
 /** =================================================== */
 const Service_Phone = "0793-322132153"; // 客服电话
-const Version_Name = "1.2.0"; // 版本名称
+const Version_Name = "1.2.1"; // 版本名称
 const Version_Code = 3; // 版本编号
 
 /** =================================================== */
@@ -12,10 +12,10 @@ const Version_Code = 3; // 版本编号
  *                      网络请求
  */
 /** =================================================== */
-// const URL_Service = "https://pet.tyferp.com"; // 路径 
+const URL_Service = "https://pet.tyferp.com"; // 路径 
 // const URL_Service = "http://huji820.oicp.net"; // 路径
-const URL_Service = "http://192.168.3.111:5050"; // 路径
-// const URL_Service = "http://192.168.3.123:5050"; // 路径
+// const URL_Service = "http://192.168.3.111:5050"; // 路径
+// const URL_Service = "http://192.168.3.233:5050"; // 路径
 
 const URL_Register = "/api/customer/"; // 注册
 const URL_Login = "/api/oAuth"; // 登陆
@@ -33,7 +33,8 @@ const URL_StartCity = "/api/transport/listStartCity"; // 始发城市
 const URL_EndCity = "/api/transport/listEndCity"; // 目标城市
 const URL_AbleTransportType = "/api/transport/listTransportType"; // 可用运输方式
 const URL_AbleStation = "/api/consign/onDoorService/getEndCityStation"; // 是否有可用站点
-const URL_AbleAirBox = "/aip/consign/airBox/listStationAixBox"; // 航空箱是否可用
+const URL_AblePetCage = "/api/pet/cage"; // 查询箱子
+// const URL_AbleAirBox = "/aip/consign/airBox/listStationAixBox"; // 航空箱是否可用
 const URL_InsureRate = "/api/consign/insure"; // 查询保价费率
 const URL_PredictPrice = "/api/order/getOrderPrice"; // 获取预估价格
 const URL_GetStorePhoneByCityName = "/api/business/getPhoneByCityName"; // 通过城市获取商家电话
@@ -57,6 +58,7 @@ const URL_ConfirmInOutHarbour = "/api/consign/orderState/inOrOutPort"; // 确认
 const URL_UploadFile = "/api/consign/orderState/uploadFile"; // 上传文件
 
 const URL_Get_Message = "/api/message/customer/"; // 获取站内信
+const URL_Get_New_Message = "/api/message/push/"; // 获取最新站内信
 
 /** =================================================== */
 /** 
@@ -71,6 +73,21 @@ const Prompt_NotExist = "NotExist"; // 不存在标识
 const Role_Customer = 0; // 用户角色
 const Role_Staff = 1; // 员工角色
 
+/** =================================================== */
+/** 
+ *                      Key
+ */
+/** =================================================== */
+
+const Key_LastGetMessageTime = "LastGetMessageTime"; // 最后获取站内信时间
+
+/** =================================================== */
+/** 
+ *                      Key
+ */
+/** =================================================== */
+
+const Value_Default_LastGetMessageTime = "1990-01-01 00:00:00"; 
 
 module.exports = {
   Service_Phone, // 客服电话
@@ -95,7 +112,8 @@ module.exports = {
   URL_EndCity, // 目标城市
   URL_AbleTransportType, // 可用运输方式
   URL_AbleStation, // 是否有可用站点
-  URL_AbleAirBox, // 航空箱是否可用
+  URL_AblePetCage, // 查询宠物箱
+  // URL_AbleAirBox, // 航空箱是否可用
   URL_InsureRate, // 查询保价费率
   URL_PredictPrice, // 获取预估价格
   URL_GetStorePhoneByCityName, // 通过城市名称 获取商家电话
@@ -119,6 +137,7 @@ module.exports = {
   URL_UploadFile, // 上传文件
 
   URL_Get_Message, // 获取站内信
+  URL_Get_New_Message, // 获取最新站内信
 
   Prompt_Success, // 成功标识
   Prompt_Error, // 错误标识
@@ -126,4 +145,8 @@ module.exports = {
 
   Role_Customer, // 用户角色
   Role_Staff, // 员工角色
+
+  Key_LastGetMessageTime, // 最后获取站内信时间
+
+  Value_Default_LastGetMessageTime,
 }

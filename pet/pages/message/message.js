@@ -2,6 +2,9 @@
 
 const config = require("../../utils/config.js");
 const loginUtil = require("../../utils/loginUtils.js");
+const util = require("../../utils/util.js");
+
+const NEW_MESSAGE_LOOP_TIME = 10000;
 
 Page({
 
@@ -9,7 +12,8 @@ Page({
    * 页面的初始数据
    */
   data: {
-    messageList:[],
+    messageList: [],
+    getNewMessageIntervalID: null,
   },
 
   /**
@@ -49,7 +53,7 @@ Page({
    * 生命周期函数--监听页面卸载
    */
   onUnload: function () {
-
+    this.closeGetNewMessageInterval();
   },
 
   /**
@@ -86,6 +90,8 @@ Page({
           that.setData({
             messageList: res.data.data
           })
+          that.setLastGetMessageTime(util.formatTime(new Date()));
+          that.startGetNewMessageInterval();
         }
       },
       fail(res) {
@@ -95,5 +101,80 @@ Page({
         console.log("获取站内信 complete:\n" + JSON.stringify(res));
       }
     })
+  },
+
+  /**
+   * 查询 更新站内信
+   */
+  requestNewMessage: function () {
+    let lastGetMessageTime = this.getLastGetMessageTime();
+    let that = this;
+    wx.request({
+      url: config.URL_Service + config.URL_Get_New_Message,
+      data: {
+        openId: loginUtil.getOpenID(),
+        lastModifyTime: lastGetMessageTime
+      },
+      success(res) {
+        console.log("获取最新站内信 success:\n" + JSON.stringify(res));
+        if (res.data.code == 200) {
+          let tempList = res.data.data.concat(that.data.messageList);
+          that.setData({
+            messageList: tempList
+          })
+        }
+        that.setLastGetMessageTime(util.formatTime(new Date()));
+      },
+      fail(res) {
+        console.log("获取最新站内信 fail:\n" + JSON.stringify(res));
+      },
+      complete(res) {
+        console.log("获取最新站内信 complete:\n" + JSON.stringify(res));
+      }
+    })
+  },
+
+
+  /**
+   * 开启新信息定时器
+   */
+  startGetNewMessageInterval: function () {
+    let that = this;
+    this.data.getNewMessageIntervalID = setInterval(function () {
+      that.requestNewMessage();
+    }, NEW_MESSAGE_LOOP_TIME);
+  },
+
+
+  /**
+   * 关闭新信息定时器
+   */
+  closeGetNewMessageInterval: function () {
+    clearInterval(this.data.getNewMessageIntervalID);
+    this.data.getNewMessageIntervalID = null;
+  },
+
+
+  /**
+   * 获取最后更新时间
+   */
+  getLastGetMessageTime: function () {
+    try {
+      let lastTime = wx.getStorageSync(config.Key_LastGetMessageTime);
+      return lastTime;
+    } catch (e) {
+      return config.Value_Default_LastGetMessageTime;
+    }
+  },
+
+  /**
+   * 存储最后更新时间
+   */
+  setLastGetMessageTime: function (time) {
+    try {
+      wx.setStorageSync(config.Key_LastGetMessageTime, time);
+    } catch (e) {
+
+    }
   },
 })
