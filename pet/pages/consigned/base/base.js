@@ -156,6 +156,7 @@ Page({
         endCity: null, // 清空目的城市
         addServerSendPet: this.data.addServerSendPet, // 重置 送宠到家
         selectedTransportObj: null, // 清空 选中的 运输方式
+        petMaxWeight: null,
         transportTypes: this.data.transportTypes, // 重置 运输方式列表 
       })
       // 查询保价费率
@@ -171,6 +172,7 @@ Page({
         addServerSendPet: this.data.addServerSendPet, // 重置 送宠到家
         endCity: app.globalData.trainEndCity, // 设置 目的城市
         selectedTransportObj: null, // 清空 选中的 运输方式
+        petMaxWeight: null,
       })
       // 查询可用的运输方式列表
       this.checkAbleTransportType();
@@ -1123,21 +1125,30 @@ Page({
   /* ============================= 网络请求 End ============================== */
 
   /**
-   * 检查重点
+   * 检查重量
    */
   checkPetWeight: function(){
-    if (this.data.petWeight > this.data.petMaxWeight) {
-      wx.showToast({
-        title: '超出'+ this.data.selectedTransportObj.transportName +'托运重量限制',
-        icon: 'none'
-      })
-      this.data.addServerAirBox.selected = false;
-      this.data.selectedTransportObj = null;
-      this.setData({
-        addServerAirBox: this.data.addServerAirBox,
-        selectedTransportObj: this.data.selectedTransportObj
-      })
-      this.predictPrice();
+    if (this.data.petMaxWeight != null) {
+      if (this.data.petWeight > this.data.petMaxWeight) {
+        let that = this;
+        wx.showModal({
+          title: '超出' + this.data.selectedTransportObj.transportName + '托运重量限制',
+          content: this.data.beginCity + '——' +this.data.endCity + this.data.selectedTransportObj.transportName + '最大托运重量为' + this.data.petMaxWeight + 'kg',
+          showCancel: false,
+          success(res) {
+            if (res.confirm) {
+              that.data.addServerAirBox.selected = false;
+              that.data.selectedTransportObj = null;
+              that.setData({
+                addServerAirBox: that.data.addServerAirBox,
+                selectedTransportObj: that.data.selectedTransportObj,
+                petMaxWeight: null,
+              })
+              that.predictPrice();
+            }
+          }
+        })
+      }
     }
   },
 });

@@ -747,8 +747,8 @@ Page({
           that.setData({
             newMessageList: tempList
           })
+          that.setLastGetMessageTime(util.formatTime(new Date()));
         }
-        that.setLastGetMessageTime(util.formatTime(new Date()));
       },
       fail(res) {
         console.log("获取最新站内信 fail:\n" + JSON.stringify(res));
