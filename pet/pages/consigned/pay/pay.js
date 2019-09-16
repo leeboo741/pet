@@ -456,6 +456,17 @@ Page({
           package: res.data.data.package,
           signType: res.data.data.signType,
           paySign: res.data.data.paySign,
+          success(res){
+            wx.switchTab({
+              url: '/pages/me/me',
+            })
+          },
+          fail(res){
+            wx.showToast({
+              title: '支付失败,请稍后重试',
+              icon: 'none'
+            })
+          }
         })
       },
       fail(res) {

@@ -100,21 +100,12 @@ Page({
   },
 
   /**
-   * 领券
+   * 用券
    */
-  receiveCoupon: function(e){
-    console.log("领取优惠券 :\n" + "优惠券id => " + e.currentTarget.dataset.couponid + "\nindex => " + e.currentTarget.dataset.couponindex);
-    wx.scanCode({
-      onlyFromCamera: true,
-      success(res){
-        console.log("扫码结果 success => \n" + JSON.stringify(res));
-      },
-      fail(res) {
-        console.log("扫码结果 fail => \n" + JSON.stringify(res));
-      },
-      complete(res) {
-        console.log("扫码结果 complete => \n" + JSON.stringify(res));
-      }
+  tapUseCoupon: function (e) {
+    let tempIndex = e.currentTarget.dataset.index;
+    wx.navigateTo({
+      url: '/pages/consigned/coupon/couponQRCode/couponQRCode?couponcode=' + this.data.couponList[tempIndex].couponNo,
     })
-  },
+  }
 })

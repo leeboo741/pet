@@ -11,6 +11,10 @@
 const app = getApp();
 const config = require("../../utils/config.js");
 const loginUtil = require("../../utils/loginUtils.js");
+const util = require("../../utils/util.js");
+
+const intervalDuration = 60;
+
 Page({
 
   /**
@@ -19,6 +23,12 @@ Page({
   data: {
     phoneNumber: "", // 输入的电话号码
     backType: 0, // 回退方式 0 回退一层 1 回退两层
+    code: null, // 验证码
+    getCodeTitle: "获取验证码", // 获取验证码按钮标题
+    ableGetCode: true, // 是否允许获得验证码
+    intervalID: null, // 获取验证码定时器Id
+    intervalCount: intervalDuration, // 重新获取验证码倒计时
+    cookie: null, // 获取验证码的cookie 包含有sessionId 提交申请的时候 服务器需要 通过sessionId 获取短信验证码 微信每次请求会清空sessionId
   },
 
   /**
@@ -56,6 +66,8 @@ Page({
    */
   onUnload: function () {
     console.log("/register/register 销毁")
+    clearInterval(this.data.intervalID);
+    this.data.intervalID = null;
   },
 
   /**
@@ -92,6 +104,29 @@ Page({
   },
 
   /**
+   * 请求短信验证码
+   */
+  requestCode: function (phone) {
+    let that = this;
+    wx.request({
+      url: config.URL_Service + config.URL_GetCode,
+      data: {
+        phoneNumber: phone,
+      },
+      success(res) {
+        console.log("获取验证码 success: \n" + JSON.stringify(res))
+        let tempCookie = res.header["Set-Cookie"];
+        that.setData({
+          cookie: tempCookie
+        })
+      },
+      fail(res) {
+        console.log("获取验证码 fail: \n" + JSON.stringify(res))
+      }
+    })
+  },
+
+  /**
    * 注册账号 
    */
   registerAccount: function () {
@@ -102,6 +137,13 @@ Page({
       wx.showToast({
         title: '请输入正确手机号码！',
         icon: 'none',
+      })
+      return;
+    }
+    if (this.data.code == null || this.data.code.length <= 0) {
+      wx.showToast({
+        title: '请输入验证码',
+        icon: 'none'
       })
       return;
     }
@@ -117,13 +159,15 @@ Page({
       "headerImage": app.globalData.avatarUrl,
       "sex": app.globalData.gender,
       "phone": this.data.phoneNumber,
+      "verificationCode": this.data.code
     }
     console.log("绑定数据 => " + JSON.stringify(tempData));
     wx.request({
       url: config.URL_Service + config.URL_Register,
       data: tempData, // 参数
       header: {
-        'content-type': 'application/x-www-form-urlencoded'
+        'content-type': 'application/x-www-form-urlencoded',
+        "cookie": this.data.cookie
       },
       method: "POST", // 请求方式
       success: res => {
@@ -183,8 +227,12 @@ Page({
         }
       })
     } else {
+      let msg = '绑定失败！';
+      if (res.data.root != null && res.data.root.length > 0) {
+        msg = res.data.root;
+      }
       wx.showToast({
-        title: '绑定失败！',
+        title: msg,
         icon: 'none',
         image: '../../resource/request_fail.png',
         duration: 2000,
@@ -208,9 +256,68 @@ Page({
   /**
    * 输入框输入
    */
-  phoneNumberInput: function (e) {
+  inputPhone: function (e) {
     this.setData({
       phoneNumber: e.detail.value
     })
   },
+
+  /**
+   * 输入验证码
+   */
+  inputCode: function (e) {
+    this.setData({
+      code: e.detail.value
+    })
+  },
+
+  /**
+     * 获取验证码
+     */
+  getCode: function (e) {
+    if (this.data.ableGetCode) {
+      if (util.checkEmpty(this.data.phoneNumber) || !util.isPhoneAvailable(this.data.phoneNumber)) {
+        wx.showToast({
+          title: '请输入正确手机号码！',
+          icon: 'none',
+        })
+        return;
+      }
+      console.log("开始倒计时");
+      this.interval();
+      this.requestCode(this.data.phoneNumber)
+    }
+    console.log("正在倒计时");
+  },
+
+  /**
+   * 开始倒计时
+   */
+  interval: function (e) {
+    let that = this;
+    clearInterval(this.data.intervalID);
+    this.data.intervalID = setInterval(function () {
+      let tempCount = that.data.intervalCount;
+      tempCount--;
+      if (tempCount > 0) {
+        that.setData({
+          getCodeTitle: tempCount + '秒后获取',
+          intervalCount: tempCount,
+          ableGetCode: false
+        })
+        console.log("倒计时===> " + tempCount);
+        that.interval();
+      } else {
+        that.setData({
+          getCodeTitle: "获取验证码",
+          intervalCount: intervalDuration,
+          ableGetCode: true
+        })
+        console.log("倒计时结束");
+        clearInterval(that.data.intervalID);
+        that.data.intervalID = null;
+      }
+    }, 1000);
+  },
+
 })

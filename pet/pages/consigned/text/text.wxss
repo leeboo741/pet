@@ -14,8 +14,6 @@
 
 .button-box{
   position: relative;
-  /* bottom: 0rpx;
-  left: 0rpx; */
   height: 100rpx;
   display: flex;
   flex-direction: row;

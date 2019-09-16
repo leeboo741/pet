@@ -4,61 +4,23 @@
   margin: 20rpx 30rpx;
 }
 
-.verification-code-area{
-  margin: 20rpx 30rpx;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
+.get-code-button{
+  padding: 10rpx 15rpx;
+  border-radius: 8rpx;
 }
-.verification-code-input{
-  margin: 0rpx;
-  width: 55%;
+
+.non-null-icon{
+  color: #ee2c2c;
+  font-size: 32rpx;
+  font-weight: bold;
 }
-.button-verification-code{
-  width: 28%;
-  font-size: 24rpx;
-  height: 100%;
+
+.get-able{
+  background: white;
+  border: 1rpx solid #778899;
 }
-.privace-area{
-  /* 水平居中 */
-  justify-content: center; 
-  /* 垂直居中 */
-  align-items: center;
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  margin-top: 20rpx;
-  margin-bottom: 30rpx;
-}
-.check-box{
-  height: 40rpx;
-  width: 40rpx;
-  margin-right: 20rpx;
-}
-.privace-text{
-  font-size: 26rpx;
-  text-decoration: underline;
-  color: rgb(100, 149, 237);
-}
-.login-area{
-  justify-content: flex-end;
-  align-items: center;
-  display: flex;
-  flex-direction: row;
-  margin-right: 30rpx;
-}
-.login-area-title{
-  font-size: 24rpx;
-  color: black;
-}
-.login-area-value{
-  font-size: 26rpx;
-  color: rgb(100, 149, 237);
-}
-.popview-content-content-privace-box{
-  margin: 20rpx;
-}
-.popview-content-content-privace{
-  color: gray;
-  font-size: 30rpx;
+
+.get-disable{
+  background: rgb(236, 236, 236);
+  border: 1rpx solid #778899;
 }

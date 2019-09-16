@@ -22,7 +22,8 @@
     "pages/goAboard/goAboard",
     "pages/login/login",
     "pages/registerStation/registerStation",
-    "pages/message/message"
+    "pages/message/message",
+    "pages/consigned/coupon/couponQRCode/couponQRCode"
   ],
   "window": {
     "backgroundTextStyle": "light",

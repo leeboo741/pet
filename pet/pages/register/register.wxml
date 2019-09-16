@@ -1,6 +1,33 @@
 <!--pages/register/register.wxml-->
 <!-- 手机号输入 -->
-<input class='input-normal' type='number' placeholder="联系电话" placeholder-class="input-normal-placeholder" bindinput='phoneNumberInput'>
-</input>
+<i-cell-group>
+  <i-cell title='手机号'>
+    <view slot="icon"
+          class="non-null-icon">
+    *
+    </view>
+    <input slot="footer" 
+           placeholder="输入手机号"
+           bindinput="inputPhone"
+           type="number">
+    </input>
+  </i-cell>
+  <i-cell>
+    <view slot="icon"
+          class="non-null-icon">
+    *
+    </view>
+    <input slot="header"
+           placeholder="输入验证码"
+           bindinput="inputCode"
+           type="number">
+    </input>
+    <view class="get-code-button {{ableGetCode?'get-able':'get-disable'}}"
+          slot="footer"
+          bindtap="getCode">
+    {{getCodeTitle}}
+    </view>
+  </i-cell>
+</i-cell-group>
 <!-- 注册按钮 -->
 <button class='button-confirm button-blue' bindtap='registerAccount'>注册用户</button>

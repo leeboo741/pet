@@ -1,0 +1,11 @@
+<!--pages/consigned/coupon/couponQRCode/couponQRCode.wxml-->
+<view class="page-box-full">
+  <view class="qrcode-box">
+    <canvas canvas-id='canvas' 
+            style="width: {{qrcode_w}}px; height: {{qrcode_w}}px;">
+    </canvas>
+  </view>
+  <view class="code-title">
+  {{code}}
+  </view>
+</view>
