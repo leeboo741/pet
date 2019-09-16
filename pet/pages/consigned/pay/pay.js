@@ -373,6 +373,7 @@ Page({
           that.setData({
             orderNo: res.data.root
           })
+          let tempOrderNo = res.data.root;
           wx.showModal({
             title: '订单:' + res.data.root + '提交成功',
             content: '是否立即支付',
@@ -383,7 +384,7 @@ Page({
                 console.log('用户点击立即付款')
                 loginUtil.checkLogin(function alreadyLoginCallback(state) {
                   if (state) {
-                    that.requestPay(res.data.root);
+                    that.requestPay(tempOrderNo);
                   } else {
                     wx.showModal({
                       title: '暂未登录',
