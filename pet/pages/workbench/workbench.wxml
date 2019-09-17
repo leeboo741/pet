@@ -46,7 +46,7 @@
         </view>
         <view class='bill-info-pay'>
           <view class='bill-info-pay-label'>状态:</view>
-          <view class='bill-info-pay-info'>{{orderItem.state}}</view>
+          <view class='bill-info-pay-info'>{{orderItem.orderStates[0].orderType}}</view>
           <view class='bill-info-pay-money'>￥{{orderItem.paymentAmount}}</view>
         </view>
       </view>

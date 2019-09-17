@@ -135,6 +135,7 @@ Page({
     wx.showLoading({
       title: '请稍等...',
     })
+    let that = this;
     wx.request({
       url: config.URL_Service + config.URL_AlloctionOrder,
       data: {
@@ -148,9 +149,30 @@ Page({
       method: "POST", // 请求方式
       success(res){
         console.log("分配订单 success:\n" + JSON.stringify(res));
+        if(res.data.code == 200 && res.data.data > 0) {
+          wx.showModal({
+            title: '分配成功',
+            content: '订单：'+ that.data.orderNo + '成功分配给'+ res.data.data + '人',
+            showCancel: false,
+            success(res){
+              if(res.confirm) {
+                wx.navigateBack({})
+              }
+            }
+          })
+        } else {
+          wx.showToast({
+            title: res.data.message,
+            icon: 'none'
+          })
+        }
       },
       fail(res) {
         console.log("分配订单 fail:\n" + JSON.stringify(res));
+        wx.showToast({
+          title: '请求失败，请稍后再试',
+          icon:'none'
+        })
       },
       complete(res){
         wx.hideLoading();

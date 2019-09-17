@@ -329,7 +329,7 @@ Page({
    */
   requestConfirmInHarbour: function (orderIndex) {
     const tempIndex = orderIndex;
-    let order = this.data.orderList[tempIndex];
+    const order = this.data.orderList[tempIndex];
     wx.showLoading({
       title: '请稍等...',
     })
@@ -356,17 +356,26 @@ Page({
       success(res) {
         console.log("确定入港 success: \n" + JSON.stringify(res));
         if (res.data.prompt != null && res.data.prompt == "Error") {
-          let msg = "系统异常，入港失败";
+
+          let tempMsg = '系统异常，入港失败'
+          if (order.orderStates[0].orderType == '待出港') {
+            tempMsg = '系统异常，出港失败'
+          }
+
           if (res.data.root) {
-            msg = res.data.root
+            tempMsg = res.data.root
           }
           wx.showToast({
-            title: msg,
+            title: tempMsg,
             icon: 'none'
           })
         } else {
+          let tempMsg = '入港成功'
+          if (order.orderStates[0].orderType == '待出港') {
+            tempMsg = '出港成功'
+          }
           wx.showToast({
-            title: '入港成功',
+            title: tempMsg,
           })
           that.data.orderList.splice(tempIndex, 1);
           that.setData({
@@ -376,8 +385,12 @@ Page({
       },
       fail(res) {
         console.log("确定入港 fail: \n" + JSON.stringify(res));
+        let tempMsg = '网络异常，入港失败'
+        if (order.orderStates[0].orderType == '待出港') {
+          tempMsg = '网络异常，出港失败'
+        }
         wx.showToast({
-          title: "网络异常，入港失败",
+          title: tempMsg,
           icon: 'none'
         })
       },
