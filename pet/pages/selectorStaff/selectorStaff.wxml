@@ -1,0 +1,29 @@
+<!--pages/selectorStaff/selectorStaff.wxml-->
+<i-panel title="员工列表">
+  <view wx:for="{{staffList}}" 
+        wx:for-item='staffItem'
+        wx:for-index='staffIndex'
+        wx:key="{{staffIndex}}" 
+        class="staff-item"
+        bindtap="tapStaff"
+        data-index="{{staffIndex}}">
+    <view class="staff-item-name">
+    {{staffItem.staffName}}  
+    </view> 
+    <i-icon type="success_fill"
+            size="32"
+            color="#2d8cf0"
+            wx:if="{{staffItem.selected}}">
+    </i-icon>
+    <i-icon type="success_fill"
+            size="32"
+            color="#e9eaec"
+            wx:else>
+    </i-icon>
+  </view>
+</i-panel>
+
+<view class="confirm-button"
+      bindtap="confirmAlloction">
+分配
+</view>

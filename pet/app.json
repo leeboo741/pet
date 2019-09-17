@@ -23,7 +23,9 @@
     "pages/login/login",
     "pages/registerStation/registerStation",
     "pages/message/message",
-    "pages/consigned/coupon/couponQRCode/couponQRCode"
+    "pages/consigned/coupon/couponQRCode/couponQRCode",
+    "pages/workbench/workbench",
+    "pages/selectorStaff/selectorStaff"
   ],
   "window": {
     "backgroundTextStyle": "light",

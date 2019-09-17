@@ -115,7 +115,7 @@ function login(loginCallback) {
                       }
                     } else {
                       if (loginCallback) {
-                        loginCallback(Login_Fail, "登陆失败，请稍后失败");
+                        loginCallback(Login_Fail, "登陆失败，请稍后再试");
                       }
                     }
                   }, // 请求成功回调 登陆成功 保存 用户信息。登陆失败，跳转注册页面

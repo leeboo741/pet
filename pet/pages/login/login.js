@@ -82,7 +82,6 @@ Page({
         wx.showModal({
           title: '登陆失败',
           content: msg,
-          showCancel: false,
           success(res) {
             if (res.confirm) {
               that.tapLoginOrRegister();

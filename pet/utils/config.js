@@ -12,9 +12,9 @@ const Version_Code = 8; // 版本编号
  *                      网络请求
  */
 /** =================================================== */
-const URL_Service = "https://pet.tyferp.com"; // 路径 
+// const URL_Service = "https://pet.tyferp.com"; // 路径 
 // const URL_Service = "http://huji820.oicp.net"; // 路径
-// const URL_Service = "http://192.168.3.111:5050"; // 路径
+const URL_Service = "http://192.168.3.111:5050"; // 路径
 // const URL_Service = "http://192.168.3.233:5050"; // 路径
 
 const URL_Register = "/api/customer/"; // 注册
@@ -26,6 +26,8 @@ const URL_GetCode = "/business/VerificationCode/"; // 获取短信验证码
 const URL_Register_Business = "/business/insetBusiness"; // 注册商家
 
 const URL_GetBusinessByPosition = "/api/business/listByPosition"; // 根据坐标获取周边商家
+
+const URL_GetSubStaff = "/api/staff/"; // 获取下属员工
 
 const URL_PetType = "/api/petType"; // 宠物类型
 const URL_PetClassify = "/api/petClassify"; // 宠物品种
@@ -46,6 +48,7 @@ const URL_OrderDetail = "/api/order/orderDetail"; // 查询订单详情
 const URL_GetOrderNoByOrderNo = "/api/order/getOrderNoByOrderNo"; // 通过单号模糊查询单号
 const URL_ConfirmOrder = "/api/order/confirmOrder"; // 确认收货
 const URL_GetUnConfirmOrderList = "/api/order/listUncertainty"; // 获取未确认收货订单
+const URL_AlloctionOrder = '/api/order/assignment/'; // 订单分配
 
 const URL_GetCouponList = '/aip/coupon/listByOpenId'; // 获取优惠券列表
 
@@ -71,7 +74,8 @@ const Prompt_Error = "Error"; // 错误标识
 const Prompt_NotExist = "NotExist"; // 不存在标识
 
 const Role_Customer = 0; // 用户角色
-const Role_Staff = 1; // 员工角色
+const Role_Staff_Nomal = 1; // 普通员工角色
+const Role_Staff_Manager = 2; // 管理员
 
 /** =================================================== */
 /** 
@@ -106,6 +110,8 @@ module.exports = {
 
   URL_GetBusinessByPosition, // 根据坐标获取周边商家
 
+  URL_GetSubStaff, // 获取下属员工
+
   URL_PetType, // 宠物类型
   URL_PetClassify, // 宠物品种
   URL_StartCity, // 始发城市
@@ -125,6 +131,7 @@ module.exports = {
   URL_GetOrderNoByOrderNo, // 通过单号模糊查询单号
   URL_ConfirmOrder, // 确认收货
   URL_GetUnConfirmOrderList, // 获取未确认收货订单列表
+  URL_AlloctionOrder,
 
   URL_GetCouponList, // 获取优惠券列表
 
@@ -144,7 +151,8 @@ module.exports = {
   Prompt_NotExist, // 不存在标识
 
   Role_Customer, // 用户角色
-  Role_Staff, // 员工角色
+  Role_Staff_Nomal, // 员工角色
+  Role_Staff_Manager, // 管理员
 
   Key_LastGetMessageTime, // 最后获取站内信时间
 

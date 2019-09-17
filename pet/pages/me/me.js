@@ -61,12 +61,12 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    this.setData({
-      userInfo: loginUtil.getUserInfo()
-    })
     let that = this;
     loginUtil.checkLogin(function alreadyLoginCallback(state) {
       if (state) {
+        that.setData({
+          userInfo: loginUtil.getUserInfo()
+        })
         that.requestBillList(that.data.selectedBillType);
         that.requestBalance();
         that.startGetNewMessageInterval();
@@ -111,7 +111,6 @@ Page({
         wx.showModal({
           title: '登陆失败',
           content: msg,
-          showCancel: false,
           success(res) {
             if (res.confirm) {
               that.tapLoginOrRegister();
@@ -398,6 +397,15 @@ Page({
   gotoInHarbour: function () {
     wx.navigateTo({
       url: '../consigned/inHarbour/inHarbour'
+    })
+  },
+
+  /**
+   * 前往工单
+   */
+  gotoWorkbench: function () {
+    wx.navigateTo({
+      url: '../workbench/workbench',
     })
   },
 
