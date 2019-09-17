@@ -134,7 +134,7 @@
               bindtap='tapInHarbour' 
               data-tapindex="{{orderIndex}}"
               wx:if='{{orderItem.readyToInHarbour}}'>
-        {{orderItem.orderStates[0].orderType == "待入港"?'入港':'出港'}}
+        {{orderItem.orderStates[0].orderType == "待入港"?'确认入港':'确认出港'}}
         </view>
         <view class='bill-operate-button' 
               bindtap='tapConfirmUpload' 
