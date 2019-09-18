@@ -387,24 +387,6 @@ Page({
   },
 
   /**
-   * 出港
-   */
-  gotoOutHarbour: function() {
-    wx.navigateTo({
-      url: '../consigned/outHarbour/outHarbour'
-    })
-  },
-
-  /**
-   * 入港
-   */
-  gotoInHarbour: function () {
-    wx.navigateTo({
-      url: '../consigned/inHarbour/inHarbour'
-    })
-  },
-
-  /**
    * 前往工单
    */
   gotoWorkbench: function () {
@@ -436,7 +418,16 @@ Page({
    */
   applyStation: function () {
     wx.navigateTo({
-      url: '/pages/registerStation/registerStation',
+      url: '/pages/applyJoin/applyJoin'
+    })
+  },
+
+  /**
+   * 点击审批
+   */
+  gotoApproval: function () {
+    wx.navigateTo({
+      url: '/pages/approval/approval',
     })
   },
 

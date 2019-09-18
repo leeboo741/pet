@@ -1,0 +1,21 @@
+<!--pages/applyJoin/applyJoin.wxml-->
+<view class="content-box">
+  <view class="button-box"
+        bindtap="tapRegisterStation">
+    <image class="button-image"
+           src="../../resource/station.png">
+    </image>
+    <view class="button-title">
+    商家入驻
+    </view>
+  </view>
+  <view class="button-box"
+        bindtap="tapRegisterStaff">
+    <image class="button-image"
+           src="../../resource/staff.png">
+    </image>
+    <view class="button-title">
+    员工加入
+    </view>
+  </view>
+</view>

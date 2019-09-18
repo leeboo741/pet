@@ -1,0 +1,33 @@
+/* pages/registerStaff/registerStaff.wxss */
+.get-code-button{
+  padding: 10rpx 15rpx;
+  border-radius: 8rpx;
+}
+
+.get-able{
+  background: white;
+  border: 1rpx solid #778899;
+}
+
+.get-disable{
+  background: rgb(236, 236, 236);
+  border: 1rpx solid #778899;
+}
+
+.non-null-icon{
+  color: #ee2c2c;
+  font-size: 32rpx;
+  font-weight: bold;
+}
+
+.apply-button{
+  width: 90%;
+  margin: 30rpx auto;
+  background: #ee2c2c;
+  color: white;
+  height: 80rpx;
+  line-height: 80rpx;
+  text-align: center;
+  font-size: 36rpx;
+  border-radius: 10rpx;
+}

@@ -1,0 +1,105 @@
+<!--pages/registerStaff/registerStaff.wxml-->
+<i-cell-group>
+  <i-cell title='员工姓名'>
+    <view slot="icon"
+          class="non-null-icon">
+    *
+    </view>
+    <input slot="footer" 
+           placeholder="姓名"
+           bindinput="inputName">
+    </input>
+  </i-cell>
+  <i-cell title='员工手机'>
+    <view slot="icon"
+          class="non-null-icon">
+    *
+    </view>
+    <input slot="footer" 
+           placeholder="请先登录获取手机号"
+           bindinput="inputPhone"
+           type="number"
+           value="{{phone}}"
+           disabled="{{true}}">
+    </input>
+  </i-cell>
+  <i-cell>
+    <view slot="icon"
+          class="non-null-icon">
+    *
+    </view>
+    <input slot="header"
+           placeholder="验证码"
+           bindinput="inputCode"
+           type="number">
+    </input>
+    <view class="get-code-button {{ableGetCode?'get-able':'get-disable'}}"
+          slot="footer"
+          bindtap="getCode">
+    {{getCodeTitle}}
+    </view>
+  </i-cell>
+  <i-cell title='省/市/区'>
+    <view slot="icon"
+          class="non-null-icon">
+    *
+    </view>
+    <picker mode='region'
+            slot='footer'
+            bindchange='selectRegion'>
+      <view>
+      {{parse.getRegionStr(region)}}
+      </view>
+    </picker>
+  </i-cell>
+  <i-cell title='站点'>
+    <view slot="icon"
+          class="non-null-icon">
+    *
+    </view>
+    <picker slot='footer'
+            range="{{stationList}}"
+            value="{{selectStaionIndex}}"
+            bindchange='selectStation'>
+      <view>
+      {{parse.getStationStr(stationList,selectStaionIndex)}}
+      </view>
+    </picker>
+  </i-cell>
+  <i-cell title='描述'>
+    <textarea slot="footer" 
+              auto-height
+              placeholder="描述内容"
+              bindinput="inputDescribe">
+    </textarea>
+  </i-cell>
+</i-cell-group>
+<view class="apply-button"
+      bindtap="tapApply">
+申请加入
+</view>
+<wxs module='parse'>
+  module.exports={
+    getRegionStr: function(region){
+      if (region == null || region.length <= 0) {
+        return "选择省/市/区";
+      } else {
+        return region;
+      }
+    },
+    getStationStr: function(stationList, selectStationIndex) {
+      if (stationList == null || stationList.length <= 0 || selectStationIndex < 0) {
+        return "选择站点";
+      } else {
+        return stationList[selectStationIndex];
+      }
+    },
+    getTimeStr: function(time) {
+      if (time == null || time.length <= 0) {
+        return "时间";
+      } else {
+        return time;
+      }
+    },
+  }
+</wxs>

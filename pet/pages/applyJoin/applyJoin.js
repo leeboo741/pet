@@ -1,4 +1,4 @@
-// pages/logistics/logistics.js
+// pages/applyJoin/applyJoin.js
 Page({
 
   /**
@@ -40,7 +40,7 @@ Page({
    * 生命周期函数--监听页面卸载
    */
   onUnload: function () {
-    console.log("/logistics/logistics 销毁")
+
   },
 
   /**
@@ -62,5 +62,23 @@ Page({
    */
   onShareAppMessage: function () {
 
-  }
+  },
+
+  /**
+   * 点击商家入驻
+   */
+  tapRegisterStation: function () {
+    wx.navigateTo({
+      url: '/pages/registerStation/registerStation',
+    })
+  },
+
+  /**
+   * 点击员工加入
+   */
+  tapRegisterStaff: function () {
+    wx.navigateTo({
+      url: '/pages/registerStaff/registerStaff',
+    })
+  },
 })

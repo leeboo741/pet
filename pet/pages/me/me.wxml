@@ -77,18 +77,15 @@
         </i-icon>
         <label>工单</label>
       </view>
-      <!-- <view class="btnOper"
-            hidden="{{userInfo.role == 0}}"  
-            bindtap='gotoInHarbour'>
-        <icon class='iconfont iconruku'></icon>
-        <label>入港</label>
-      </view>
       <view class="btnOper"
-            hidden="{{userInfo.role == 0}}" 
-            bindtap='gotoOutHarbour'>
-        <icon class='iconfont iconchuku'></icon>
-        <label>出港</label>
-      </view> -->
+            hidden="{{userInfo.role != 2}}"
+            bindtap='gotoApproval'>
+        <i-icon type="task"
+                color="#F1B000"
+                size="32">
+        </i-icon>
+        <label>审批</label>
+      </view>
       <view class="btnOper"
             hidden="{{userInfo.role == 0}}" 
             bindtap='gotoCheckBill'>
@@ -107,7 +104,7 @@
         <label>提现</label>
       </view>
       <view class="btnOper"
-            hidden="{{userInfo.role == 1}}"
+            hidden="{{userInfo.role != 0}}"
             bindtap="getCoupon">
         <i-icon type="coupons"
                 color="#F1B000"
@@ -125,13 +122,12 @@
         <label>收货</label>
       </view>
       <view class="btnOper"
-            hidden="{{userInfo.role == 0}}"
             bindtap="applyStation">
         <i-icon type="businesscard"
                 color="#F1B000"
                 size="32">
         </i-icon>
-        <label>入驻</label>
+        <label>申请</label>
       </view>
     </view>
   </view>

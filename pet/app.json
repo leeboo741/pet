@@ -1,31 +1,35 @@
 {
   "pages": [
-    "pages/index/index2",
-    "pages/consigned/base/base",
-    "pages/consigned/city/city",
-    "pages/consigned/pay/pay",
-    "pages/consigned/paysuccess/paysuccess",
-    "pages/consigned/outHarbour/outHarbour",
-    "pages/me/me",
-    "pages/setting/setting",
-    "pages/recharge/recharge",
-    "pages/withdrawal/withdrawal",
-    "pages/index/index",
-    "pages/logistics/logistics",
-    "pages/register/register",
+    "pages/index/index2",  
+    "pages/index/index", 
+
+    "pages/login/login", 
+    "pages/register/register", 
+
+    "pages/consigned/base/base", 
+    "pages/consigned/city/city", 
+    "pages/consigned/pay/pay", 
+    "pages/consigned/coupon/coupon", 
+    "pages/consigned/text/text", 
+    "pages/consigned/coupon/couponQRCode/couponQRCode", 
+    
+    "pages/station/station", 
+     
+    "pages/goAboard/goAboard", 
+    
+    "pages/me/me", 
+    "pages/recharge/recharge", 
+    "pages/withdrawal/withdrawal", 
     "pages/orderDetail/orderDetail",
-    "pages/consigned/inHarbour/inHarbour",
-    "pages/station/station",
-    "pages/consigned/coupon/coupon",
+    "pages/setting/setting",
     "pages/unConfirmOrder/unConfirmOrder",
-    "pages/consigned/text/text",
-    "pages/goAboard/goAboard",
-    "pages/login/login",
-    "pages/registerStation/registerStation",
     "pages/message/message",
-    "pages/consigned/coupon/couponQRCode/couponQRCode",
     "pages/workbench/workbench",
-    "pages/selectorStaff/selectorStaff"
+    "pages/selectorStaff/selectorStaff",
+    "pages/approval/approval",
+    "pages/applyJoin/applyJoin",
+    "pages/registerStation/registerStation",
+    "pages/registerStaff/registerStaff"
   ],
   "window": {
     "backgroundTextStyle": "light",
