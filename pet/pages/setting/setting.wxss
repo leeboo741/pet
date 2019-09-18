@@ -15,10 +15,10 @@
 .section-title {
     padding-left: 20rpx;
     border-bottom: solid #E0E0E0 1rpx;
-    height: 40px;
+    height: 50px;
     display: flex;
     align-items: center;
-    line-height: 40px;
+    line-height: 50px;
 }
 
 .section-title icon {

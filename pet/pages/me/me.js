@@ -70,6 +70,10 @@ Page({
         that.requestBillList(that.data.selectedBillType);
         that.requestBalance();
         that.startGetNewMessageInterval();
+      } else {
+        that.setData({
+          userInfo: null
+        })
       }
     })
   },

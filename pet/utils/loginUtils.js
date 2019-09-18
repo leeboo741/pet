@@ -21,6 +21,27 @@ function saveUserInfo(userInfo){
 }
 
 /**
+ * 删除用户
+ */
+function deleteUserInfo(deleteCallback){
+  wx.removeStorage({
+    key: Key_UserInfo,
+    success(res) {
+      console.log("删除用户 success: \n" + JSON.stringify(res));
+      if (deleteCallback && typeof deleteCallback == "function") {
+        deleteCallback(true)
+      }
+    },
+    fail(res) {
+      console.log("删除用户 fail: \n" + JSON.stringify(res));
+      if (deleteCallback && typeof deleteCallback == "function") {
+        deleteCallback(false)
+      }
+    }
+  })
+}
+
+/**
  * 获取保存用户信息
  */
 function getUserInfo() {
@@ -57,7 +78,7 @@ function isLogin() {
 
 function login(loginCallback) {
   wx.showLoading({
-    title: '登陆中...',
+    title: '请稍等...',
   })
   console.log("微信登陆")
   // 登录
@@ -232,6 +253,7 @@ module.exports = {
   login: login,
   saveUserInfo: saveUserInfo,
   getUserInfo: getUserInfo,
+  deleteUserInfo: deleteUserInfo,
   isLogin: isLogin,
   getOpenID: getOpenID,
   checkLogin: checkLogin

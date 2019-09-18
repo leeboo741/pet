@@ -7,6 +7,7 @@
  */
 
 const app = getApp();
+const loginUtil = require("../../utils/loginUtils.js");
 
 Page({
 
@@ -70,5 +71,70 @@ Page({
    */
   onShareAppMessage: function () {
 
-  }
+  },
+
+  /**
+   * 点击更新用户信息
+   */
+  tapUpdateUserInfo: function () {
+    loginUtil.checkLogin(function alreadyLoginCallback(islogin){
+      if (islogin) {
+        loginUtil.login(function loginCallback(state, msg) {
+          if (state == loginUtil.Login_Success) {
+            wx.showToast({
+              title: '更新成功',
+            })
+          } else if (state == loginUtil.Login_Fail) {
+            wx.showToast({
+              title: '更新失败',
+              icon: 'none'
+            })
+          } else {
+            wx.showToast({
+              title: msg,
+              icon: 'none'
+            })
+          }
+        })
+      } else {
+        wx.showModal({
+          title: '您尚未登录',
+          content: '请前往登录',
+          confirmText: '前往登录',
+          success(res){
+            if (res.confirm) {
+              wx.navigateTo({
+                url: '/pages/login/login',
+              })
+            }
+          }
+        })
+      }
+    })
+  },
+
+  /**
+   * 点击退出登陆
+   */
+  tapLogout: function () {
+    loginUtil.deleteUserInfo(function callback(state){
+      if (state) {
+        wx.switchTab({
+          url: '/pages/index/index2',
+        })
+      } else {
+        wx.showToast({
+          title: '退出登陆失败！',
+          icon:'none'
+        })
+      }
+    })
+  },
+
+  /**
+   * 点击注销
+   */
+  tapLogoff: function () {
+    
+  },
 })

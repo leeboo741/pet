@@ -51,8 +51,7 @@
         </view>
         <!--设置按钮-->
         <view class="btn-icon"
-              bindtap='tapSetting'
-              hidden="{{true}}">
+              bindtap='tapSetting'>
           <i-icon type="setup"
                   color="#778899"
                   size="25">

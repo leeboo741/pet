@@ -1,12 +1,17 @@
 <!--pages/editUser/editUser.wxml-->
 
-<view class='block-fillet'>
+<!-- <view class='block-fillet'>
   <view class='section-title'>个人信息<icon class='iconfont iconmore'></icon></view>
   <view class='section-title'>常用地址<icon class='iconfont iconmore'></icon></view>
 </view>
 
 <view class='block-fillet abount' style='margin-top:50rpx;'>
   <view class='section-title'>关于<icon class='iconfont iconmore'></icon></view>
+</view> -->
+
+<view class='block-fillet abount'>
+  <view class='section-title' bindtap="tapUpdateUserInfo">更新用户信息<icon class='iconfont iconmore'></icon></view>
 </view>
 
-<button style='width: 100%'>退出登录</button>
+<button style='width: 100%' bindtap="tapLogout">退出登录</button>
+<button style='width: 100%;color: red' bindtap="tapLogoff" wx:if='{{false}}'>注销</button>
