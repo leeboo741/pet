@@ -1,0 +1,47 @@
+<!--pages/approval/approval.wxml-->
+<view class="page-full-box">
+  <view class="page-tabs-box">
+    <i-tabs current="{{ currentTabIndex }}" 
+            bindchange="handleTabChange">
+      <i-tab wx:for='{{tabList}}'
+            wx:for-item='tabItem'
+            wx:for-index='tabIndex'
+            wx:key='{{tabIndex}}'
+            key='{{tabIndex}}'
+            title='{{tabItem}}'>
+      </i-tab>
+    </i-tabs>
+  </view>
+  
+  <scroll-view class="content-scroll"
+               scroll-y
+               hidden="{{currentTabIndex != 0}}">
+    <view class="apply-item"
+          wx:for='{{stationApplyList}}'
+          wx:for-item='applyItem'
+          wx:for-index='applyIndex'
+          wx:key='{{applyIndex}}'>
+      <i-card title="{{applyItem}}{{applyIndex}}" 
+              extra="额外内容">
+        <view slot="content">内容不错</view>
+        <view slot="footer">尾部内容</view>
+      </i-card>    
+    </view>
+  </scroll-view>
+  <scroll-view class="content-scroll"
+               scroll-y
+               hidden="{{currentTabIndex != 1}}">
+    <view class="apply-item"
+          wx:for='{{staffApplyList}}'
+          wx:for-item='applyItem'
+          wx:for-index='applyIndex'
+          wx:key='{{applyIndex}}'>
+      <i-card title="{{applyItem}}{{applyIndex}}" 
+              extra="额外内容">
+        <view slot="content">内容不错</view>
+        <view slot="footer">尾部内容</view>
+      </i-card>    
+    </view>   
+  </scroll-view>
+</view>
+
