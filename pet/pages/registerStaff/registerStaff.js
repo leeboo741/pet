@@ -177,13 +177,14 @@ Page({
       city: tempRegion[1],
       district: tempRegion[2]
     })
+    this.requestStationList(this.data.province, this.data.city);
   },
 
   /**
    * 选择站点
    */
   selectStation: function (e) {
-    if (util.isEmpty(this.data.region)) {
+    if (util.checkEmpty(this.data.region)) {
       wx.showToast({
         title: '请先选择省/市/区',
         icon: 'none'
@@ -191,7 +192,7 @@ Page({
       return;
     }
     this.setData({
-      selectStaionIndex: e.detail.value
+      selectStaionIndex: parseInt(e.detail.value) 
     })
   },
 
@@ -245,38 +246,68 @@ Page({
   },
 
   /**
+   * 请求站点列表
+   * @param province 省
+   * @param city 市
+   */
+  requestStationList: function (province, city) {
+    wx.showLoading({
+      title: '查询站点中...',
+    })
+    let that = this;
+    wx.request({
+      url: config.URL_Service + config.URL_GetStationListByLocation,
+      data: {
+        province : province,
+        city: city
+      },
+      success(res) {
+        console.log("获取站点列表 success: \n" + JSON.stringify(res));
+        that.setData({
+          stationList: res.data.data
+        })
+      },
+      fail(res) {
+        console.log("获取站点列表 fail: \n" + JSON.stringify(res));
+      },
+      complete(res) {
+        wx.hideLoading();
+      }
+    })
+  },
+
+  /**
    * 请求申请
    */
   requestApply: function () {
     wx.showLoading({
       title: '提交申请中...',
     })
-    let tempData = {
-      businessName: this.data.name,
-      phoneNumber: this.data.phone,
-      startBusinessHours: this.data.startTime,
-      endBusinessHours: this.data.endTime,
-      describes: this.data.describe,
-      province: this.data.province,
-      city: this.data.city,
-      detailAddress: this.data.district + this.data.detail,
+    let tempStaffObj = {
+      openId: loginUtil.getOpenID(),
+      phone: this.data.phone,
+      staffName: this.data.name,
+      station: this.data.stationList[this.data.selectStaionIndex],
       verificationCode: this.data.code,
+    };
+
+    let tempData = {
+      staff: JSON.stringify(tempStaffObj)
     };
     let that = this;
     wx.request({
-      url: config.URL_Service + config.URL_Register_Business,
-      data: tempData,
+      url: config.URL_Service + config.URL_Register_Staff,
+      data: tempStaffObj,
       header: {
-        // 'content-type': 'application/x-www-form-urlencoded',
-        'coutent-type': 'application/json',
+        // 'coutent-type': 'application/json',
         "cookie": that.data.cookie
       },
       method: "POST", // 请求方式
       success(res) {
-        console.log("注册商家 success:\n" + JSON.stringify(res));
+        console.log("注册员工 success:\n" + JSON.stringify(res));
         if (res.data.code == 200) {
           wx.showToast({
-            title: '注册成功',
+            title: '申请成功，请等待',
             duration: 2000,
           })
           that.data.timeOutID = setTimeout(function () {
@@ -292,10 +323,10 @@ Page({
         }
       },
       fail(res) {
-        console.log("注册商家 fail:\n" + JSON.stringify(res));
+        console.log("注册员工 fail:\n" + JSON.stringify(res));
       },
       complete(res) {
-        console.log("注册商家 complete:\n" + JSON.stringify(res));
+        console.log("注册员工 complete:\n" + JSON.stringify(res));
         wx.hideLoading();
       }
     })

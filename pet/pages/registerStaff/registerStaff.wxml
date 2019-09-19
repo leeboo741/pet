@@ -39,7 +39,7 @@
     {{getCodeTitle}}
     </view>
   </i-cell>
-  <i-cell title='省/市/区'>
+  <i-cell title='区域'>
     <view slot="icon"
           class="non-null-icon">
     *
@@ -59,19 +59,14 @@
     </view>
     <picker slot='footer'
             range="{{stationList}}"
+            range-key="stationName"
             value="{{selectStaionIndex}}"
-            bindchange='selectStation'>
+            bindchange='selectStation'
+            disabled="{{region==null||region.length<=0}}">
       <view>
       {{parse.getStationStr(stationList,selectStaionIndex)}}
       </view>
     </picker>
-  </i-cell>
-  <i-cell title='描述'>
-    <textarea slot="footer" 
-              auto-height
-              placeholder="描述内容"
-              bindinput="inputDescribe">
-    </textarea>
   </i-cell>
 </i-cell-group>
 <view class="apply-button"
@@ -82,16 +77,16 @@
   module.exports={
     getRegionStr: function(region){
       if (region == null || region.length <= 0) {
-        return "选择省/市/区";
+        return "省/市/区";
       } else {
         return region;
       }
     },
     getStationStr: function(stationList, selectStationIndex) {
       if (stationList == null || stationList.length <= 0 || selectStationIndex < 0) {
-        return "选择站点";
+        return "选择站点(请先选择区域)";
       } else {
-        return stationList[selectStationIndex];
+        return stationList[selectStationIndex].stationName;
       }
     },
     getTimeStr: function(time) {
