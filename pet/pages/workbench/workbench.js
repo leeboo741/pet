@@ -278,7 +278,7 @@ Page({
     wx.request({
       url: config.URL_Service + config.URL_GetInOrOutHarbourList,
       data: {
-        openId: loginUtil.getOpenID(),
+        openId: loginUtil.getOpenId(),
         orderNo: tempSearchKey,
         orderType: orderTypes,
       },

@@ -125,7 +125,7 @@ Page({
     wx.request({
       url: config.URL_Service + config.URL_Withdraw,
       data: {
-        openId: loginUtil.getOpenID(),
+        openId: loginUtil.getOpenId(),
         amount: this.data.withdrawalAmount
       },
       header: {

@@ -82,7 +82,7 @@ Page({
     wx.request({
       url: config.URL_Service + config.URL_GetCouponList,
       data: {
-        openId: loginUtil.getOpenID()
+        openId: loginUtil.getOpenId()
       },
       success(res){
         console.log("获取优惠券 success => \n" + JSON.stringify(res));

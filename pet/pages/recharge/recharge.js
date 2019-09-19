@@ -122,7 +122,7 @@ Page({
     wx.request({
       url: config.URL_Service + config.URL_Recharge,
       data: {
-        openId: loginUtil.getOpenID(),
+        openId: loginUtil.getOpenId(),
         rechargeAmount: this.data.rechargeAmount
       },
       success(res) {

@@ -15,7 +15,7 @@ App({
   },
   globalData: {
 
-    openID: null,
+    openId: null,
 
     /** =========== 用户数据 =========== */
     userInfo: {
@@ -23,7 +23,7 @@ App({
       nickName: null, // 昵称
       avatarUrl: null, // 头像
       gender: null, // 性别
-      openid: null, // openId
+      openId: null, // openId
       phone: null, // 手机号
       role: null, // 角色
     }, // 用户信息

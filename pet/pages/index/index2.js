@@ -161,11 +161,11 @@ Page({
       title: '请稍等...',
     })
     let that = this;
-    let openID = loginUtil.getOpenID();
+    let openId = loginUtil.getOpenId();
     wx.request({
       url: config.URL_Service + config.URL_GetOrderNoByOrderNo,
       data: {
-        openId: openID,
+        openId: openId,
         orderNo: inputOrderNo
       },
       success(res) {

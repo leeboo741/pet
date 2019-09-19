@@ -83,7 +83,7 @@ Page({
   requestMessageData: function () {
     let that = this;
     wx.request({
-      url: config.URL_Service + config.URL_Get_Message + loginUtil.getOpenID(),
+      url: config.URL_Service + config.URL_Get_Message + loginUtil.getOpenId(),
       success(res){
         console.log("获取站内信 success:\n" + JSON.stringify(res));
         if (res.data.code == 200) {
@@ -112,7 +112,7 @@ Page({
     wx.request({
       url: config.URL_Service + config.URL_Get_New_Message,
       data: {
-        openId: loginUtil.getOpenID(),
+        openId: loginUtil.getOpenId(),
         lastModifyTime: lastGetMessageTime
       },
       success(res) {

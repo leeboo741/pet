@@ -204,6 +204,41 @@ Page({
     let that = this;
     loginUtil.checkLogin(function alreadyLoginCallback(state) {
       if (state) {
+        if (util.checkEmpty(that.data.name)) {
+          wx.showToast({
+            title: '请填写名称',
+            icon: 'none'
+          })
+          return;
+        }
+        if (util.checkEmpty(that.data.phone)) {
+          wx.showToast({
+            title: '请输入手机号码',
+            icon: 'none'
+          })
+          return;
+        }
+        if (util.checkEmpty(that.data.code)) {
+          wx.showToast({
+            title: '请输入验证码',
+            icon: 'none'
+          })
+          return;
+        }
+        if (util.checkEmpty(that.data.region)) {
+          wx.showToast({
+            title: '请选择区域',
+            icon:'none'
+          })
+          return;
+        }
+        if (!util.checkEmpty(that.data.stationList) && util.checkEmpty(that.data.stationList[that.data.selectStaionIndex])) {
+          wx.showToast({
+            title: '请选择站点',
+            icon: 'none'
+          })
+          return;
+        }
         that.requestApply();
       } else {
         wx.showModal({
@@ -284,7 +319,7 @@ Page({
       title: '提交申请中...',
     })
     let tempStaffObj = {
-      openId: loginUtil.getOpenID(),
+      openId: loginUtil.getOpenId(),
       phone: this.data.phone,
       staffName: this.data.name,
       station: this.data.stationList[this.data.selectStaionIndex],

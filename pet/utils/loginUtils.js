@@ -55,7 +55,7 @@ function getUserInfo() {
 
 function getPhone(){
   let userInfo = getUserInfo();
-  if (userInfo == null || userInfo.openID == null || userInfo.openID.length <= 0) {
+  if (userInfo == null || userInfo.openId == null || userInfo.openId.length <= 0) {
     return null;
   }
   return userInfo.phone;
@@ -64,20 +64,20 @@ function getPhone(){
 /**
  * 获取openId
  */
-function getOpenID() {
+function getOpenId() {
   let userInfo = getUserInfo();
-  if (userInfo == null || userInfo.openID == null || userInfo.openID.length <= 0) {
+  if (userInfo == null || userInfo.openId == null || userInfo.openId.length <= 0) {
     return null;
   }
-  return userInfo.openID;
+  return userInfo.openId;
 }
 
 /**
  * 是否登陆
  */
 function isLogin() {
-  let openID = getOpenID();
-  if (openID == null) {
+  let openId = getOpenId();
+  if (openId == null) {
     return false;
   }
   return true;
@@ -123,7 +123,7 @@ function login(loginCallback) {
                     if (res.data.prompt == config.Prompt_Success) {
                       let tempUserInfo = JSON.parse(res.data.root)
                       userInfo.customerNo = tempUserInfo.customerNo
-                      userInfo.openID = tempUserInfo.openid
+                      userInfo.openId = tempUserInfo.openId
                       userInfo.phone = tempUserInfo.phone
                       userInfo.nickName = tempUserInfo.customerName
                       userInfo.avatarUrl = tempUserInfo.headerImage
@@ -138,7 +138,7 @@ function login(loginCallback) {
                       app.globalData.nickName = userInfo.nickName;
                       app.globalData.avatarUrl = userInfo.avatarUrl;
                       app.globalData.gender = userInfo.gender;
-                      app.globalData.openID = res.data.root;
+                      app.globalData.openId = res.data.root;
                       if (loginCallback) {
                         loginCallback(Login_NotExist, "未注册");
                       }
@@ -214,6 +214,6 @@ module.exports = {
   deleteUserInfo: deleteUserInfo,
   isLogin: isLogin,
   getPhone: getPhone,
-  getOpenID: getOpenID,
+  getOpenId: getOpenId,
   checkLogin: checkLogin
 }

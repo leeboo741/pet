@@ -154,7 +154,7 @@ Page({
     let tempData = null;
     let userInfo = loginUtil.getUserInfo();
     tempData = {
-      "openid": app.globalData.openID,
+      "openId": app.globalData.openId,
       "customerName": app.globalData.nickName,
       "headerImage": app.globalData.avatarUrl,
       "sex": app.globalData.gender,

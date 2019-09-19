@@ -249,7 +249,7 @@ Page({
       url: config.URL_Service + config.URL_GetUnConfirmOrderList,
       data: {
 
-        openId: loginUtil.getOpenID()
+        openId: loginUtil.getOpenId()
       },
       success: function (res) {
         console.log("获取未收货订单 success: \n" + JSON.stringify(res));
@@ -344,7 +344,7 @@ Page({
       data: {
         fileList: fileList,
         orderNo: orderNo,
-        openId: loginUtil.getOpenID()
+        openId: loginUtil.getOpenId()
       },
       success(res) {
         console.log("确认收货 success: \n" + JSON.stringify(res));

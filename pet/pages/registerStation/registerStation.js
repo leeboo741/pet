@@ -221,6 +221,50 @@ Page({
    */
   tapApply: function () {
     console.log("提交申请：\n" + JSON.stringify(this.data));
+    if (util.checkEmpty(this.data.name)) {
+      wx.showToast({
+        title: '请输入名称',
+        icon: 'none'
+      })
+      return;
+    }
+    if (util.checkEmpty(this.data.phone) || !util.isPhoneAvailable(this.data.phone)) {
+      wx.showToast({
+        title: '请输入正确手机号',
+        icon: 'none'
+      })
+      return;
+    }
+    if (util.checkEmpty(this.data.code)) {
+      wx.showToast({
+        title: '请输入验证码',
+        icon: 'none'
+      })
+      return;
+    }
+    if (util.checkEmpty(this.data.startTime) || util.checkEmpty(this.data.endTime)) {
+      wx.showToast({
+        title: '请选择营业时间',
+        icon: 'none'
+      })
+      return;
+    }
+
+    if (util.checkEmpty(this.data.region)) {
+      wx.showToast({
+        title: '请选择区域',
+        icon: 'none'
+      })
+      return;
+    }
+
+    if (util.checkEmpty(this.data.detail)) {
+      wx.showToast({
+        title: '请填写详细地址',
+        icon: 'none'
+      })
+      return;
+    }
     this.requestApply();
   },
 

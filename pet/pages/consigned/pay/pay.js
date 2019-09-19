@@ -318,7 +318,7 @@ Page({
       title: '提交订单中...',
     })
     let tempOrderObj = {
-      "openId": loginUtil.getOpenID(),
+      "openId": loginUtil.getOpenId(),
 
       "startCity": this.data.startCity,
       "endCity": this.data.endCity,
@@ -446,7 +446,7 @@ Page({
       url: config.URL_Service + config.URL_Payment,
       data: {
         orderNo: orderNo,
-        openId: loginUtil.getOpenID(),
+        openId: loginUtil.getOpenId(),
       },
       success(res) {
         console.log("支付 success：\n" + JSON.stringify(res));
@@ -491,7 +491,7 @@ Page({
       title: '请稍等...',
     })
     let tempData = {
-      "openId": loginUtil.getOpenID(),
+      "openId": loginUtil.getOpenId(),
       "startCity": this.data.startCity,
       "endCity": this.data.endCity,
       "transportType": this.data.transport,

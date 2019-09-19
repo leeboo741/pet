@@ -779,7 +779,7 @@ Page({
       icon: 'none'
     })
     let tempData = {
-      "openId": loginUtil.getOpenID(),
+      "openId": loginUtil.getOpenId(),
       "startCity": this.data.beginCity,
       "endCity": this.data.endCity,
       "transportType": this.data.selectedTransportObj.transportId,

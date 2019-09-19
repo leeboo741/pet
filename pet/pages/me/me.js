@@ -472,7 +472,7 @@ Page({
       method: "POST", // 请求方式
       data: {
         orderNo: orderNo,
-        openId: loginUtil.getOpenID()
+        openId: loginUtil.getOpenId()
       },
       success(res) {
         console.log ("确认收货 success: \n" + JSON.stringify(res));
@@ -505,7 +505,7 @@ Page({
     wx.request({
       url: config.URL_Service + config.URL_CheckBalance,
       data: {
-        openId: loginUtil.getOpenID()
+        openId: loginUtil.getOpenId()
       },
       success(res){
         console.log("查询余额 success => \n" + JSON.stringify(res));
@@ -539,7 +539,7 @@ Page({
       url: config.URL_Service + config.URL_Payment,
       data: {
         orderNo: orderNo,
-        openId: loginUtil.getOpenID()
+        openId: loginUtil.getOpenId()
       },
       success(res) {
         console.log("支付 success：\n" + JSON.stringify(res));
@@ -576,7 +576,7 @@ Page({
     wx.request({
       url: config.URL_Service + config.URL_GetOrderNoByOrderNo,
       data: {
-        openId: loginUtil.getOpenID(),
+        openId: loginUtil.getOpenId(),
         orderNo: inputOrderNo
       },
       success(res) {
@@ -624,7 +624,7 @@ Page({
     wx.request({
       url: config.URL_Service + config.URL_CancelOrder,
       data: {
-        openId: loginUtil.getOpenID(),
+        openId: loginUtil.getOpenId(),
         orderNo: orderNo
       },
       method: "PUT",
@@ -699,7 +699,7 @@ Page({
       url: config.URL_Service + config.URL_GetOrderListByOrderStatus,
       data: {
         "orderStatus": this.getSendBillType(tempType),
-        "openId": loginUtil.getOpenID()
+        "openId": loginUtil.getOpenId()
       },
       success(res){
         console.log("请求单据列表 success => \n" + JSON.stringify(res))
@@ -740,7 +740,7 @@ Page({
     wx.request({
       url: config.URL_Service + config.URL_Get_New_Message,
       data: {
-        openId: loginUtil.getOpenID(),
+        openId: loginUtil.getOpenId(),
         lastModifyTime: lastGetMessageTime
       },
       success(res) {

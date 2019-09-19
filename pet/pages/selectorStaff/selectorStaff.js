@@ -83,7 +83,7 @@ Page({
     })
     let that = this;
     wx.request({
-      url: config.URL_Service + config.URL_GetSubStaff + loginUtil.getOpenID(),
+      url: config.URL_Service + config.URL_GetSubStaff + loginUtil.getOpenId(),
       success(res){
         console.log("请求下属员工 success: \n" + JSON.stringify(res));
         that.setData({
@@ -139,7 +139,7 @@ Page({
     wx.request({
       url: config.URL_Service + config.URL_AlloctionOrder,
       data: {
-        openId: loginUtil.getOpenID(),
+        openId: loginUtil.getOpenId(),
         orderNo: this.data.orderNo,
         staffNo: tempStaffNoList
       },
