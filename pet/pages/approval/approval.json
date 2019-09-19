@@ -1,8 +1,9 @@
 {
   "usingComponents": {
     "i-card": "/dist/card/index",
-    "i-tabs": "../../dist/tabs/index",
-    "i-tab": "../../dist/tab/index"
+    "i-tabs": "/dist/tabs/index",
+    "i-tab": "/dist/tab/index",
+    "i-icon": "/dist/icon/index"
     },
   "navigationBarTitleText": "审批"
 }

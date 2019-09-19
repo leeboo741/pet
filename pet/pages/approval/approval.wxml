@@ -21,13 +21,55 @@
           wx:for-item='applyItem'
           wx:for-index='applyIndex'
           wx:key='{{applyIndex}}'>
-      <i-card title="{{applyItem}}{{applyIndex}}" 
-              extra="额外内容">
-        <view slot="content">内容不错</view>
-        <view slot="footer">尾部内容</view>
+      <i-card title="商家入驻申请" 
+              extra="{{applyItem.registerTime}}">
+        <view slot="content">
+          <view class="station-name">
+          名称：{{applyItem.businessName}}
+          </view>
+          <view class="station-phone">
+          电话：{{applyItem.phoneNumber}}
+          </view>
+          <view class="station-time">
+          营业时间：{{applyItem.startBusinessHours}} - {{applyItem.endBusinessHours}}
+          </view>
+          <view class="station-phone">
+          地址：{{applyItem.province}}{{applyItem.city}}{{applyItem.detailAddress}}
+          </view>
+          <view class="station-describes">
+          描述：{{applyItem.describes}}
+          </view>
+        </view>
+        <view slot="footer"
+              class="button-box">
+          <view class="button-opt button-reject"
+                bindtap="tapRejectStationApply"
+                data-index='{{applyIndex}}'
+                hidden>
+          驳回
+          </view>
+          <view class="button-opt button-approval"
+                bindtap="tapApprovalStationApply"
+                data-index='{{applyIndex}}'>
+          批准
+          </view>
+        </view>
       </i-card>    
     </view>
+    <view class="empty-area"
+          hidden="{{!parse.showEmpty(stationApplyList)||currentTabIndex != 0}}">
+      <view class="empty-content">
+        <i-icon type="service"
+                size="30"
+                color="#778899">
+        </i-icon>
+        <view class="empty-title">
+        暂无待审批商家
+        </view>
+      </view>
+    </view>
   </scroll-view>
+
   <scroll-view class="content-scroll"
                scroll-y
                hidden="{{currentTabIndex != 1}}">
@@ -36,12 +78,55 @@
           wx:for-item='applyItem'
           wx:for-index='applyIndex'
           wx:key='{{applyIndex}}'>
-      <i-card title="{{applyItem}}{{applyIndex}}" 
-              extra="额外内容">
-        <view slot="content">内容不错</view>
-        <view slot="footer">尾部内容</view>
+      <i-card title="员工入职申请" 
+              extra="{{applyItem.station.stationName}}">
+        <view slot="content"
+              class="content-box">
+          <view class="staff-name">
+          姓名：{{applyItem.staffName}}
+          </view>
+          <view class="staff-phone">
+          电话：{{applyItem.phone}}
+          </view>
+        </view>
+        <view slot="footer"
+              class="button-box">
+          <view class="button-opt button-reject"
+                bindtap="tapRejectStaffApply"
+                data-index='{{applyIndex}}'
+                hidden>
+          驳回
+          </view>
+          <view class="button-opt button-approval"
+                bindtap="tapApprovalStaffApply"
+                data-index='{{applyIndex}}'>
+          批准
+          </view>
+        </view>
       </i-card>    
     </view>   
+    <view class="empty-area"
+          hidden="{{!parse.showEmpty(staffApplyList)||currentTabIndex != 1}}">
+      <view class="empty-content">
+        <i-icon type="service"
+                size="30"
+                color="#778899">
+        </i-icon>
+        <view class="empty-title">
+        暂无待审批员工
+        </view>
+      </view>
+    </view>
   </scroll-view>
 </view>
+<wxs module='parse'>
+  module.exports={
+    showEmpty: function(datasource){
+      if (datasource == null || datasource.length <= 0) {
+        return true;
+      }
+      return false;
+    }
+  }
+</wxs>
 

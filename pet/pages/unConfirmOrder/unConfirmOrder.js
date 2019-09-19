@@ -254,10 +254,12 @@ Page({
       success: function (res) {
         console.log("获取未收货订单 success: \n" + JSON.stringify(res));
         if (res.data.prompt = config.Prompt_Success) {
-          that.data.orderList = that.data.orderList.concat(res.data.root)
-          that.setData({
-            orderList: that.data.orderList
-          })
+          if (res.data.root != null) {
+            that.data.orderList = that.data.orderList.concat(res.data.root)
+            that.setData({
+              orderList: that.data.orderList
+            })
+          }
         }
       },
       fail: function (res) {

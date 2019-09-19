@@ -280,7 +280,7 @@ Page({
         console.log("注册商家 success:\n" + JSON.stringify(res));
         if (res.data.code == 200) {
           wx.showToast({
-            title: '注册成功',
+            title: '申请提交成功',
             duration: 2000,
           })
           that.data.timeOutID = setTimeout(function(){

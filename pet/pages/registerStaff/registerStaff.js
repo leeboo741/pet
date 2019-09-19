@@ -299,7 +299,6 @@ Page({
       url: config.URL_Service + config.URL_Register_Staff,
       data: tempStaffObj,
       header: {
-        // 'coutent-type': 'application/json',
         "cookie": that.data.cookie
       },
       method: "POST", // 请求方式
@@ -307,7 +306,7 @@ Page({
         console.log("注册员工 success:\n" + JSON.stringify(res));
         if (res.data.code == 200) {
           wx.showToast({
-            title: '申请成功，请等待',
+            title: '申请提交成功',
             duration: 2000,
           })
           that.data.timeOutID = setTimeout(function () {

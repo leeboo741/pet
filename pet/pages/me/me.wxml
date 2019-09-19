@@ -87,7 +87,6 @@
         <label>审批</label>
       </view>
       <view class="btnOper"
-            hidden="{{userInfo.role == 0}}" 
             bindtap='gotoCheckBill'>
         <i-icon type="scan"
                 color="#F1B000"

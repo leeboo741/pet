@@ -28,3 +28,58 @@
   width: 100%;
   margin: 30rpx auto;
 }
+
+.content-box{
+  display: flex;
+  flex-direction: column;
+}
+
+.staff-name{
+
+}
+
+.staff-phone{
+
+}
+
+.button-box{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.button-opt{
+  padding: 8rpx 25rpx;
+  border-radius: 8rpx;
+  font-size: 32rpx;
+  color: white;
+  margin-left: 20rpx;
+}
+
+.button-reject{
+  background: #ee2c2c;
+}
+
+.button-approval{
+  background: #2f93f1;
+}
+
+.empty-area{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 160rpx 40rpx;
+  background: #00000000;
+}
+
+.empty-content{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.empty-title{
+  font-size: 30rpx;
+  color: #778899;
+}

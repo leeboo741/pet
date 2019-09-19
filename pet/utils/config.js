@@ -4,8 +4,8 @@
  */
 /** =================================================== */
 const Service_Phone = "0793-322132153"; // 客服电话
-const Version_Name = "1.2.6"; // 版本名称
-const Version_Code = 9; // 版本编号
+const Version_Name = "1.2.10"; // 版本名称
+const Version_Code = 11; // 版本编号
 
 /** =================================================== */
 /** 
@@ -23,9 +23,18 @@ const URL_UpdateCustomer = "/api/customer/updateCustomer"; // 更新用户
 const URL_CheckBalance = "/api/balance"; // 查询余额
 const URL_Withdraw ="/api/withdraw/staff"; // 提现
 const URL_GetCode = "/business/VerificationCode/"; // 获取短信验证码
-const URL_Register_Business = "/business/insetBusiness"; // 注册商家
 
 const URL_GetBusinessByPosition = "/api/business/listByPosition"; // 根据坐标获取周边商家
+
+const URL_Register_Business = "/business/insetBusiness"; // 注册商家
+const URL_Register_Staff = "/api/staff/applyForStaff"; // 注册员工
+const URL_GetStationListByLocation = "/api/staff/listByProvinceAndCity"; // 根据省市区获取站点列表
+const URL_GetUnauditedStaff = "/api/staff/listUnauditedStaff"; // 查询待审核员工列表
+const URL_ApprovalStaffApply = "/api/staff/review"; // 审批员工申请
+const URL_RejectStaffApply = "/api/staff/reject"; // 驳回员工申请
+const URL_GetUnauditedStation = "/api/business/listAllUnauditedBusiness"; // 查询待审核商户列表
+const URL_ApprovalStationApply = "/api/business/review"; // 审批商户申请
+const URL_RejectStationApply = "/api/business/reject"; // 驳回商户申请
 
 const URL_GetSubStaff = "/api/staff/"; // 获取下属员工
 
@@ -106,9 +115,18 @@ module.exports = {
   URL_CheckBalance, // 查询余额
   URL_Withdraw, // 提现
   URL_GetCode, // 获取短信验证码
-  URL_Register_Business, // 注册商家
 
   URL_GetBusinessByPosition, // 根据坐标获取周边商家
+
+  URL_Register_Business, // 注册商家
+  URL_Register_Staff, // 注册员工
+  URL_GetStationListByLocation, // 根据位置获取站点列表
+  URL_GetUnauditedStaff, // 查询待审核员工列表
+  URL_ApprovalStaffApply, // 审批员工申请
+  URL_RejectStaffApply, // 驳回员工申请
+  URL_GetUnauditedStation, // 查询待审核商户列表
+  URL_ApprovalStationApply, // 审批商户申请
+  URL_RejectStationApply, // 驳回商户申请
 
   URL_GetSubStaff, // 获取下属员工
 
