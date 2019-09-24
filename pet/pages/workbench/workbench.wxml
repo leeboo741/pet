@@ -1,5 +1,4 @@
 <!--pages/workbench/workbench.wxml-->
-<!--pages/consigned/inHarbour/inHarbour.wxml-->
 <view class='container'>
   <view class='block-fillet' 
         style="width:100%">
@@ -72,6 +71,16 @@
           {{assignmentsItem.staff.staffName}}
           </view>
         </view>
+        <!-- 备注信息 -->
+        <view class="bill-info-remark"
+              wx:if='{{userInfo.role != 0 && orderItem.orderRemarksList!=null && orderItem.orderRemarksList.length >0}}'>
+          <view class="bill-info-remark-title">
+          最新备注：
+          </view>
+          <view class="bill-info-remark-content">
+          {{orderItem.orderRemarksList[orderItem.orderRemarksList.length-1].remarks}}
+          </view>
+        </view>
       </view>
       <!-- 等待入港 -->
       <view class="bill-image-area"
@@ -107,7 +116,7 @@
           </video>
         </view>
       </view>
-      
+      <view style='border-bottom: 1rpx solid red; margin: 15rpx; width: 100%;'></view>
       <!-- 照片 -->
       <view class="bill-image-area"
             wx:if='{{parse.showImageArea(orderItem)}}'>
@@ -182,6 +191,48 @@
           </image> 
         </view>
       </view>
+      
+      <view style='border-bottom: 1rpx solid lightgray; margin: 15rpx; width: 100%;'></view>
+
+      <view class="in-out-port-info-area"
+            wx:if='{{orderItem.orderStates[0].orderType != "待出港"}}'>
+        <view class="in-out-port-info-item">
+          <input class="in-out-port-info-input"
+                 placeholder="请输入备注"
+                 bindinput="inputOrderRemark"
+                 data-index='{{orderIndex}}'
+                 value="{{orderItem.remarkInput}}">
+          
+          </input>
+          <view class="in-out-port-info-button"
+                bindtap="tapRemark"
+                data-index='{{orderIndex}}'>
+          备注
+          </view>
+        </view>
+      </view>
+
+      <view class="in-out-port-info-area"
+            wx:if='{{orderItem.orderStates[0].orderType == "待出港" && orderItem.readyToInHarbour}}'>
+        <view class="in-out-port-info-item">
+          <input class="in-out-port-info-input"
+                 placeholder="请输入航班号/车次号"
+                 bindinput="inputOrderTransportNum"
+                 data-index='{{orderIndex}}'
+                 value="{{orderItem.outTransportInfo.transportNum}}">
+          </input>
+        </view>
+        <view class="in-out-port-info-item">
+          <input class="in-out-port-info-input"
+                 placeholder="请输入快递单号"
+                 bindinput="inputOrderExpressNum"
+                 data-index='{{orderIndex}}'
+                 value="{{orderItem.outTransportInfo.expressNum}}">
+          </input>
+        </view>
+      </view>
+
+
       <!-- 按钮区域 -->
       <view class='bill-operate-box'>
         <view class="bill-operate-button-complain"
@@ -211,7 +262,7 @@
               bindtap='tapInHarbour' 
               data-tapindex="{{orderIndex}}"
               hidden="{{!orderItem.readyToInHarbour}}">
-        {{orderItem.orderStates[0].orderType == "待入港"?'入港':'出港'}}
+        {{parse.getOperateButtonTitle(orderItem)}}
         </view>
       </view>
     </view>
@@ -234,8 +285,19 @@
 
 <wxs module='parse'>
   module.exports={
+    getOperateButtonTitle: function (orderItem) {
+      if (orderItem.orderStates[0].orderType == "待入港") {
+        return '入港';
+      } else if (orderItem.orderStates[0].orderType == "待出港") {
+        return '出港';
+      } else if (orderItem.orderStates[0].orderType == "待揽件") {
+        return '揽件';
+      } else {
+        return '未知';
+      }
+    },
     showAlloctionBtn: function(order, user) {
-      if (user.role == 2 && order.orderStates[0].orderType == "待入港") {
+      if (user.role == 2 && (order.orderStates[0].orderType == "待入港" || order.orderStates[0].orderType == "待揽件")) {
         return true;
       }
       return false;

@@ -1,169 +1,244 @@
 <!--pages/unConfirmOrder/unConfirmOrder.wxml-->
-<view wx:for="{{orderList}}" 
-      wx:for-item="orderItem" 
-      wx:for-index="orderIndex" 
-      wx:key="{{orderIndex}}"
-      class="bill-item">
+<view class='container'>
+  <view class='block-fillet' 
+        style="width:100%">
+    <input class='input-under' 
+           placeholder='请输入单据号'
+           confirm-type="search"
+           bindconfirm='searchOrder'>
+    </input>
+  </view>
   <!-- 单据信息 -->
-  <view class='bill-info-box'>
-    <view class='bill-info-icon'>
-      <icon class='iconfont iconfeiji1'>
-      </icon>
-    </view>
-    <view class='bill-info-billNo'>
-    {{orderItem.orderNo}}
-    </view>
-    <view class='bill-info-time'>
-    {{orderItem.express}}
-    </view>
-  </view>
-  <view class='bill-info-split-line'></view>
-  <view class='bill-info-content'>
-    <view class='bill-info-way'>
-      <view class='bill-info-way-date'>{{orderItem.orderDate}} {{orderItem.orderTime}}</view>
-      <view class='bill-info-way-start'>{{orderItem.transport.startCity}}</view>
-      <view class='bill-info-way-split'>-</view>
-      <view class='bill-info-way-end'>{{orderItem.transport.endCity}}</view>
-    </view>
-    <view class='bill-info-pet'>
-      <view class='bill-info-pet-type'>{{orderItem.petClassify.petClassifyName}}</view>
-      <view class='bill-info-pet-info'>{{orderItem.petType.petTypeName}}</view>
-      <view class='bill-info-pet-mode'>{{parse.getTransportType(orderItem.transport.transportType)}}</view>
-    </view>
-    <view class="bill-info-person">
-      <view class="bill-info-person-label">寄件人：</view>
-      <view class="bill-info-person-name">{{orderItem.senderName}}</view>
-      <view class="bill-info-person-label">电话：</view>
-      <view class="bill-info-person-phone">{{orderItem.senderPhone}}</view>
-    </view>
-    <view class="bill-info-person">
-      <view class="bill-info-person-label">收件人：</view>
-      <view class="bill-info-person-name">{{orderItem.receiverName}}</view>
-      <view class="bill-info-person-label">电话：</view>
-      <view class="bill-info-person-phone">{{orderItem.receiverPhone}}</view>
-    </view>
-    <view class='bill-info-pay'>
-      <view class='bill-info-pay-label'>支付状态:</view>
-      <view class='bill-info-pay-info'>{{orderItem.state}}</view>
-      <view class='bill-info-pay-money'>￥{{orderItem.paymentAmount}}</view>
-    </view>
-  </view>
-  <!-- 照片 -->
-  <view class="bill-image-area"
-        wx:if='{{parse.showImageArea(orderItem)}}'>
-    <!-- 单据内已经上传的图片 -->
-    <view class="bill-image-box"
-          wx:for='{{orderItem.images}}'
-          wx:for-item='orderImageItem'
-          wx:for-index='orderImageIndex'
-          wx:key='{{orderImageIndex}}'>
-      <image class="bill-image"
-              src="{{orderImageItem}}"
-              lazy-load="{{true}}"
-              mode="scaleToFit"
-              bindtap="tapImage"
-              data-orderindex='{{orderIndex}}'
-              data-imageurl='{{orderImageItem}}'>
-      </image>      
-    </view>
-    <!-- 单据内将要上传的图片 -->
-    <view class="bill-image-box"
-          wx:for='{{orderItem.uploadImages}}'
-          wx:for-item='orderImageItem'
-          wx:for-index='orderImageIndex'
-          wx:key='{{orderImageIndex}}'>
-      <image class="bill-image"
-              src="{{orderImageItem}}"
-              lazy-load="{{true}}"
-              mode="scaleToFit"
-              bindtap="tapImage"
-              data-orderindex='{{orderIndex}}'
-              data-imageurl='{{orderImageItem}}'>
-      </image>
-      <image class="bill-image-delete"
-              src="/resource/delete.png"
-              bindtap="deleteUploadImage"
+  <view class="bill-item"
+        wx:for='{{orderList}}'
+        wx:for-item='orderItem'
+        wx:for-index='orderIndex'
+        wx:key='{{orderIndex}}'>
+    <view class='block-fillet bill-info-box'>
+      <view class='bill-info-icon'><icon class='iconfont iconfeiji1'></icon></view>
+      <view class='bill-info-billNo'>{{orderItem.orderNo}}</view>
+      <view class='bill-info-time'>{{orderItem.express}}</view>
+      <view class='block-fillet bill-info-split-line'></view>
+      <view class='block-fillet bill-info-content'>
+        <view class='bill-info-way'>
+          <view class='bill-info-way-date'>{{orderItem.orderDate}} {{orderItem.orderTime}}</view>
+          <view class='bill-info-way-start'>{{orderItem.transport.startCity}}</view>
+          <view class='bill-info-way-split'>-</view>
+          <view class='bill-info-way-end'>{{orderItem.transport.endCity}}</view>
+        </view>
+        <view class='bill-info-pet'>
+          <view class='bill-info-pet-type'>{{orderItem.petClassify.petClassifyName}}</view>
+          <view class='bill-info-pet-info'>{{orderItem.petType.petTypeName}}</view>
+          <view class='bill-info-pet-mode'>{{parse.getTransportType(orderData.transport.transportType)}}</view>
+        </view>
+        <view class="bill-info-person"
+              wx:if='{{orderItem.senderName!= null || orderItem.senderPhone!=null}}'>
+          <view class="bill-info-person-label">寄件人：</view>
+          <view class="bill-info-person-name">{{orderItem.senderName}}</view>
+          <view class="bill-info-person-label">电话：</view>
+          <view class="bill-info-person-phone"
+                bindtap="callPhone"
+                data-phone="{{orderItem.senderPhone}}">{{orderItem.senderPhone}}</view>
+        </view>
+        <view class="bill-info-person"
+              wx:if='{{orderItem.receiverName!= null || orderItem.receiverPhone!=null}}'>
+          <view class="bill-info-person-label">收件人：</view>
+          <view class="bill-info-person-name">{{orderItem.receiverName}}</view>
+          <view class="bill-info-person-label">电话：</view>
+          <view class="bill-info-person-phone"
+                bindtap="callPhone"
+                data-phone="{{orderItem.receiverPhone}}">{{orderItem.receiverPhone}}</view>
+        </view>
+        <view class='bill-info-pay'>
+          <view class='bill-info-pay-label'
+                wx:if='{{orderItem.orderStates[0].orderType!= null}}'>状态：</view>
+          <view class='bill-info-pay-info'
+                wx:if='{{orderItem.orderStates[0].orderType!= null}}'>{{orderItem.orderStates[0].orderType}}</view>
+          <view class='bill-info-pay-money'
+                wx:if='{{orderItem.paymentAmount!= null}}'>￥{{orderItem.paymentAmount}}</view>
+        </view>
+        <!-- 分配人员 -->
+        <view class="bill-info-staff"
+              wx:if='{{userInfo.role == 2}}'>
+          <view class="bill-info-staff-title {{orderItem.orderAssignments==null||orderItem.orderAssignments.length<=0?'color-red':'color-normal'}}">
+          {{orderItem.orderAssignments==null||orderItem.orderAssignments.length<=0?'暂未分配人员':'已分配人员：'}}
+          </view>
+          <view wx:for='{{orderItem.orderAssignments}}'
+                wx:for-item='assignmentsItem'
+                wx:for-index='assignmentsIndex'
+                wx:key='{{assignmentsIndex}}'
+                class="bill-info-staff-name">
+          {{assignmentsItem.staff.staffName}}
+          </view>
+        </view>
+      </view>
+      <!-- 等待入港 -->
+      <view class="bill-image-area"
+            wx:if='{{parse.showWaitImageArea(orderItem)}}'>
+        <!-- 单据内已经上传的图片 -->
+        <view class="bill-image-box"
+              wx:for='{{orderItem.orderStates[0].pictureList}}'
+              wx:for-item='orderImageItem'
+              wx:for-index='orderImageIndex'
+              wx:key='{{orderImageIndex}}'>
+          <image class="bill-image"
+                 src="{{orderImageItem.viewAddress}}"
+                 lazy-load="{{true}}"
+                 mode="scaleToFit"
+                 bindtap="tapImage"
+                 data-orderindex='{{orderIndex}}'
+                 data-imageurl='{{orderImageItem.viewAddress}}'>
+          </image>      
+        </view>
+      </view>
+      <view class="bill-video-area"
+            wx:if='{{parse.showWaitVideoArea(orderItem)}}'>
+        <!-- 单据内已经上传的视频 -->
+        <view class="bill-video-box"
+              wx:for='{{orderItem.orderStates[0].videoList}}'
+              wx:for-item='orderVideoItem'
+              wx:for-index='orderVideoIndex'
+              wx:key='{{orderVideoIndex}}'>
+          <video src="{{orderVideoItem.viewAddress}}"
+                 class='video'
+                 objectFit='contain'
+                 controls>
+          </video>
+        </view>
+      </view>
+      
+      <!-- 照片 -->
+      <view class="bill-image-area"
+            wx:if='{{parse.showImageArea(orderItem)}}'>
+        <!-- 单据内本次上传的图片 -->
+        <view class="bill-image-box"
+              wx:for='{{orderItem.currentUploadImages}}'
+              wx:for-item='orderImageItem'
+              wx:for-index='orderImageIndex'
+              wx:key='{{orderImageIndex}}'>
+          <image class="bill-image"
+                 src="{{orderImageItem.viewAddress}}"
+                 lazy-load="{{true}}"
+                 mode="scaleToFit"
+                 bindtap="tapImage"
+                 data-orderindex='{{orderIndex}}'
+                 data-imageurl='{{orderImageItem.viewAddress}}'>
+          </image>      
+        </view>
+        <!-- 单据内将要上传的图片 -->
+        <view class="bill-image-box"
+              wx:for='{{orderItem.uploadImages}}'
+              wx:for-item='orderImageItem'
+              wx:for-index='orderImageIndex'
+              wx:key='{{orderImageIndex}}'>
+          <image class="bill-image"
+                 src="{{orderImageItem}}"
+                 lazy-load="{{true}}"
+                 mode="scaleToFit"
+                 bindtap="tapImage"
+                 data-orderindex='{{orderIndex}}'
+                 data-imageurl='{{orderImageItem}}'>
+          </image>
+          <image class="bill-image-delete"
+                 src="/resource/delete.png"
+                 bindtap="deleteUploadImage"
+                 data-tapindex="{{orderIndex}}"
+                 data-imageindex="{{orderImageIndex}}">
+          </image>    
+        </view>
+      </view>
+      <!-- 视频 -->
+      <view class="bill-video-area"
+            wx:if='{{parse.showVideoArea(orderItem)}}'>
+        <!-- 单据内本次上传的视频 -->
+        <view class="bill-video-box"
+              wx:for='{{orderItem.currentUploadVideos}}'
+              wx:for-item='orderVideoItem'
+              wx:for-index='orderVideoIndex'
+              wx:key='{{orderVideoIndex}}'>
+          <video src="{{orderVideoItem.viewAddress}}"
+                 class='video'
+                 objectFit='contain'
+                 controls>
+          </video>
+        </view>
+        <!-- 单据内将要上传的视频 -->
+        <view class="bill-video-box"
+              wx:for='{{orderItem.uploadVideos}}'
+              wx:for-item='orderVideoItem'
+              wx:for-index='orderVideoIndex'
+              wx:key='{{orderVideoIndex}}'>
+          <video src="{{orderVideoItem}}"
+                 class='video'
+                 objectFit='contain'
+                 controls>
+          </video>
+          <image class="bill-image-delete"
+                 src="/resource/delete.png"
+                 bindtap="deleteUploadVideo"
+                 data-tapindex="{{orderIndex}}"
+                 data-videoindex='{{orderVideoIndex}}'>
+          </image> 
+        </view>
+      </view>
+      <!-- 按钮区域 -->
+      <view class='bill-operate-box'>
+        <view class="bill-operate-button-complain"
+              bindtap="tapAllocation"
+              data-tapindex='{{orderIndex}}'
+              wx:if='{{parse.showAlloctionBtn(orderItem, userInfo)}}'>
+        分配
+        </view>
+        <view class='bill-operate-button'
+              bindtap='tapOrderDetail' 
               data-tapindex="{{orderIndex}}"
-              data-imageindex="{{orderImageIndex}}">
-      </image>    
-    </view>
-  </view>
-  <!-- 视频 -->
-  <view class="bill-video-area"
-        wx:if='{{parse.showVideoArea(orderItem)}}'>
-    <view class="bill-video-box"
-          wx:for='{{orderItem.videos}}'
-          wx:for-item='orderVideoItem'
-          wx:for-index='orderVideoIndex'
-          wx:key='{{orderVideoIndex}}'>
-      <video src="{{orderVideoItem}}"
-              class='video'
-              objectFit='contain'
-              controls>
-      </video>
-    </view>
-    <view class="bill-video-box"
-          wx:for='{{orderItem.uploadVideos}}'
-          wx:for-item='orderVideoItem'
-          wx:for-index='orderVideoIndex'
-          wx:key='{{orderVideoIndex}}'>
-      <video src="{{orderVideoItem}}"
-              class='video'
-              objectFit='contain'
-              controls>
-      </video>
-      <image class="bill-image-delete"
-              src="/resource/delete.png"
-              bindtap="deleteUploadVideo"
+              data-orderno='{{orderItem.orderNo}}'>
+        详情
+        </view>
+        <view class='bill-operate-button' 
+              bindtap='tapConfirmUpload' 
               data-tapindex="{{orderIndex}}"
-              data-videoindex='{{orderVideoIndex}}'>
-      </image> 
+              wx:if='{{orderItem.readyToUpload}}'>
+        上传
+        </view>
+        <view class='bill-operate-button' 
+              bindtap='tapUpload' 
+              data-tapindex="{{orderIndex}}">
+        拍摄
+        </view>
+        <view class='bill-operate-button-complain' 
+              bindtap='tapInHarbour' 
+              data-tapindex="{{orderIndex}}"
+              hidden="{{!orderItem.readyToInHarbour}}">
+        {{orderItem.orderStates[0].orderType == "待入港"?'入港':'出港'}}
+        </view>
+      </view>
     </view>
   </view>
-  <!-- 按钮区域 -->
-  <view class='bill-operate-box'>
-    <view class='bill-operate-button'
-          bindtap='tapOrderDetail' 
-          data-tapindex="{{orderIndex}}"
-          data-orderno='{{orderItem.orderNo}}'>
-    订单详情
-    </view>
-    <view class='bill-operate-button' 
-          bindtap='tapConfirmUpload' 
-          data-tapindex="{{orderIndex}}"
-          wx:if='{{orderItem.readyToUpload}}'>
-    确定上传
-    </view>
-    <view class='bill-operate-button' 
-          bindtap='tapUpload' 
-          data-tapindex="{{orderIndex}}">
-    上传
-    </view>
-    <view class='bill-operate-button-complain' 
-          bindtap='tapReceive' 
-          data-tapindex="{{orderIndex}}"
-          data-orderno='{{orderItem.orderNo}}'
-          wx:if='{{orderItem.readyToConfirm}}'>
-    确认收货
+  
+  <view class="empty-area"
+        wx:if="{{parse.showEmpty(orderList)}}">
+    <view class="empty-content">
+      <i-icon type="service"
+              size="30"
+              color="#778899">
+      </i-icon>
+      <view class="empty-title">
+      暂无收货单数据
+      </view>
     </view>
   </view>
-</view>
 
-<view class="empty-area"
-      wx:if="{{parse.showEmpty(orderList)}}">
-  <view class="empty-content">
-    <i-icon type="service"
-            size="30"
-            color="#778899">
-    </i-icon>
-    <view class="empty-title">
-    暂无收货单据
-    </view>
-  </view>
 </view>
 
 <wxs module='parse'>
   module.exports={
+    showAlloctionBtn: function(order, user) {
+      if (user.role == 2 && order.orderStates[0].orderType == "待入港") {
+        return true;
+      }
+      return false;
+    },
     getTransportType: function(type){
       if (type == 0) {
         return "专车";
@@ -177,33 +252,31 @@
         return "大巴";
       }
     },
+    showWaitImageArea: function (orderItem) {
+      if (orderItem.orderStates[0].pictureList != null && orderItem.orderStates[0].pictureList.length > 0) {
+        return true;
+      } 
+      return false;
+    },
     showImageArea: function(orderItem){
       if ((orderItem.uploadImages != null && orderItem.uploadImages.length > 0)
-          || (orderItem.images != null && orderItem.images.length > 0)) {
+          || (orderItem.currentUploadImages != null && orderItem.currentUploadImages.length > 0)) {
+        return true;
+      } 
+      return false;
+    },
+    showWaitVideoArea: function (orderItem) {
+      if (orderItem.orderStates[0].videoList != null && orderItem.orderStates[0].videoList.length > 0) {
         return true;
       } 
       return false;
     },
     showVideoArea: function(orderItem) {
       if ((orderItem.uploadVideos != null && orderItem.uploadVideos.length > 0) 
-          || (orderItem.videos != null && orderItem.videos.length > 0)) {
+          || (orderItem.currentUploadVideos != null && orderItem.currentUploadVideos.length > 0)) {
         return true;
       }
       return false;
-    },
-    getVideoSrc: function(orderItem) {
-      if (orderItem.videos != null && orderItem.videos.length > 0) {
-        return orderItem.video;
-      } else if (orderItem.uploadVideo != null && orderItem.uploadVideo.length > 0) {
-        return orderItem.uploadVideo;
-      }
-      return "";
-    },
-    showVideoDelete: function (orderItem) {
-      if (orderItem.video != null && orderItem.video.length > 0) {
-        return false;
-      }
-      return true;
     },
     showEmpty: function(datasource){
       if (datasource == null || datasource.length <= 0) {
@@ -212,5 +285,4 @@
       return false;
     }
   }
-
 </wxs>

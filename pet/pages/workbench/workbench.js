@@ -275,7 +275,7 @@ Page({
     if (searchKey != null) {
       tempSearchKey = searchKey
     }
-    let orderTypes = "待入港,待出港";
+    let orderTypes = config.Order_State_ToInPort + ',' + config.Order_State_ToOutPort + ',' + config.Order_State_ToPack;
     wx.request({
       url: config.URL_Service + config.URL_GetInOrOutHarbourList,
       data: {
@@ -329,7 +329,72 @@ Page({
    * 入港
    */
   tapInHarbour: function (e) {
-    this.requestConfirmInHarbour(e.currentTarget.dataset.tapindex);
+    let tempOrder = this.data.orderList[e.currentTarget.dataset.tapindex];
+    if (tempOrder.orderStates[0].orderType == "待出港") {
+      this.requestPostTransportInfo(e.currentTarget.dataset.tapindex);
+    } else {
+      this.requestConfirmInHarbour(e.currentTarget.dataset.tapindex);
+    }
+  },
+
+  /**
+   * 添加运输信息
+   */
+  requestPostTransportInfo: function (orderIndex) {
+    const tempIndex = orderIndex;
+    const order = this.data.orderList[tempIndex];
+    if (util.checkEmpty(order.outTransportInfo)
+      || util.checkEmpty(order.outTransportInfo.expressNum)) {
+      wx.showToast({
+        title: '航班号/车次号以及快递单号不能为空！',
+        icon: 'none'
+      })
+      return;
+    }
+    let that = this;
+    wx.showLoading({
+      title: '请稍等...',
+    })
+    wx.request({
+      url: config.URL_Service + config.URL_PostTransportInfo,
+      data: {
+        order: {
+          orderNo: order.orderNo
+        },
+        staff: {
+          openId: loginUtil.getOpenId()
+        },
+        transportType: order.transport.transportType,
+        transportNum: order.outTransportInfo.transportNum,
+        startCity: order.transport.startCity,
+        endCity: order.transport.endCity,
+        expressNum: order.outTransportInfo.expressNum
+      },
+      method: "POST",
+      success(res) {
+        console.log("添加运输信息 success: \n" + JSON.stringify(res));
+        wx.hideLoading();
+        if (res.data.code == 200 && res.data.data > 0) {
+          that.requestConfirmInHarbour(tempIndex)
+        } else {
+          wx.showToast({
+            title: '添加运输信息失败！',
+            icon: 'none'
+          })
+        }
+      },
+      fail(res) {
+        console.log("添加运输信息 fail: \n" + JSON.stringify(res));
+        wx.showToast({
+          title: '网络波动，稍后再试',
+          icon: 'none'
+        })
+        wx.hideLoading();
+      },
+      complete(res){
+
+      }
+    })
   },
 
   /**
@@ -526,5 +591,103 @@ Page({
     wx.makePhoneCall({
       phoneNumber: phoneNumber,
     })
-  }
+  },
+
+  /**
+   * 输入航班号/车次号
+   */
+  inputOrderTransportNum: function (e) {
+    let tempOrder = this.data.orderList[e.currentTarget.dataset.index];
+    if (tempOrder.outTransportInfo==null) {
+      tempOrder.outTransportInfo = {};
+    }
+    tempOrder.outTransportInfo.transportNum = e.detail.value;
+  },
+
+  /**
+   * 输入快递单号
+   */
+  inputOrderExpressNum: function (e) {
+    let tempOrder = this.data.orderList[e.currentTarget.dataset.index];
+    if (tempOrder.outTransportInfo == null) {
+      tempOrder.outTransportInfo = {};
+    }
+    tempOrder.outTransportInfo.expressNum = e.detail.value;
+  },
+
+  /**
+   * 输入备注
+   */
+  inputOrderRemark: function (e) {
+    console.log("输入备注" + JSON.stringify(e));
+    let tempOrder = this.data.orderList[e.currentTarget.dataset.index];
+    tempOrder.remarkInput = e.detail.value;
+  },
+
+  /**
+   * 提交备注
+   */
+  tapRemark: function (e) {
+    let tempOrder = this.data.orderList[e.currentTarget.dataset.index];
+    if (util.checkEmpty(tempOrder.remarkInput)) {
+      return;
+    } 
+    this.requestPostOrderRemark(tempOrder);
+  },
+
+  /**
+   * 请求提交备注
+   */
+  /**
+   * 提交备注输入
+   */
+  requestPostOrderRemark: function (orderItem) {
+    let that = this;
+    wx.showLoading({
+      title: '请稍等',
+    })
+    wx.request({
+      url: config.URL_Service + config.URL_PostOrderRemark,
+      data: {
+        order: {
+          orderNo: orderItem.orderNo
+        },
+        staff: loginUtil.getUserInfo(),
+        remarks: orderItem.remarkInput
+      },
+      method: 'POST',
+      success(res) {
+        console.log("新增备注 success:\n" + JSON.stringify(res));
+        if (res.data.code == 200 && res.data.data > 0) {
+          wx.showToast({
+            title: '备注成功',
+          })
+          if (orderItem.orderRemarksList == null) {
+            orderItem.orderRemarksList = [];
+          }
+          orderItem.orderRemarksList.push({ remarks: orderItem.remarkInput })
+          orderItem.remarkInput = null;
+          that.setData({
+            orderList: that.data.orderList
+          })
+        } else {
+          wx.showToast({
+            title: '备注失败',
+            icon: 'none'
+          })
+        }
+      },
+      fail(res) {
+        console.log("新增备注 fail:\n" + JSON.stringify(res));
+        wx.showToast({
+          title: '网络波动，新增备注失败',
+          icon: 'none'
+        })
+      },
+      complete(res) {
+        wx.hideLoading();
+      }
+    })
+  },
+
 })

@@ -1,17 +1,23 @@
 <!--pages/bluetooth/search.wxml-->
-<view class="search-button">
-搜索设备
-</view>
-
-<view wx:for='{{deviceList}}'
-      wx:for-item='deviceItem'
-      wx:for-index='deviceIndex'
-      wx:key='{{deviceIndex}}'
-      class="device-item">
-  <view class="device-item-name">
-  {{deviceItem.name}}
-  </view>
-  <view class="device-item-id">
-  {{deviceItem.id}}
-  </view>      
-</view>
+<button class="btn" 
+        type="primary" 
+        bindtap="startSearch" 
+        loading='{{isScanning}}'>
+开始搜索
+</button>
+<view wx:for="{{list}}" 
+      wx:for-item="item" 
+      data-title="{{item.deviceId}}" 
+      data-name="{{item.name}}" 
+      data-advertisData="{{item.advertisServiceUUIDs}}" 
+      wx:key="{{item.deviceId}}"
+      bindtap="bindViewTap">
+  <view class="item">
+    <div class="deviceId block">
+    {{item.deviceId}}
+    </div>
+    <div class="name block">
+    {{item.name}}
+    </div>
+  </view>    
+</view>  

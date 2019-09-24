@@ -61,16 +61,28 @@
   <i-cell-group>
     <i-cell wx:if='{{orderData.senderName!=null || orderData.senderPhone!=null}}'
             title='寄件人' 
-            value='{{orderData.senderPhone!=null?orderData.senderPhone:""}}'
+            value=''
             label='{{orderData.senderName!=null?orderData.senderName:""}}'
             bindtap='callPhone'
-            data-phone='{{orderData.senderPhone}}'></i-cell>
+            data-phone='{{orderData.senderPhone}}'
+            is-link>
+      <view slot='footer'
+            bindtap='callPhone'
+            data-phone='{{orderData.senderPhone}}'>
+      {{orderData.senderPhone!=null?orderData.senderPhone:""}}
+      </view> 
+    </i-cell>
     <i-cell wx:if='{{orderData.receiverPhone!=null || orderData.receiverName!=null}}'
             title='收件人' 
-            value='{{orderData.receiverPhone!=null?orderData.receiverPhone:""}}' 
+            value='' 
             label='{{orderData.receiverName!=null?orderData.receiverName:""}}'
+            is-link>
+      <view slot='footer'
             bindtap='callPhone'
-            data-phone='{{orderData.receiverPhone}}'></i-cell>
+            data-phone='{{orderData.receiverPhone}}'>
+      {{orderData.receiverPhone!=null?orderData.receiverPhone:""}}
+      </view>       
+    </i-cell>
   </i-cell-group>
 </i-panel>
 <i-panel i-class="panel" 
@@ -83,7 +95,7 @@
           wx:for-item='remarkItem'
           wx:for-index='remarkIndex'
           wx:key='{{remarkIndex}}'
-          title='{{remarkItem}}'>
+          title='{{remarkItem.remarks}}'>
   </i-cell>
   <i-cell wx:if='{{userInfo.role != 0 && type != 0}}'>
     <view slot='header'

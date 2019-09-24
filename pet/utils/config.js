@@ -50,6 +50,7 @@ const URL_InsureRate = "/api/consign/insure"; // 查询保价费率
 const URL_PredictPrice = "/api/order/getOrderPrice"; // 获取预估价格
 const URL_GetStorePhoneByCityName = "/api/business/getPhoneByCityName"; // 通过城市获取商家电话
 
+const URL_PostTransportInfo = "/api/order/transport"; // 添加运输信息
 const URL_Order = "/api/order/insertOrder"; // 下单
 const URL_CancelOrder = "/api/order/cancelOrder"; // 取消订单
 const URL_GetOrderListByOrderStatus = "/api/order/listOrderList"; // 根据订单类型查询订单列表
@@ -87,6 +88,16 @@ const Role_Customer = 0; // 用户角色
 const Role_Staff_Nomal = 1; // 普通员工角色
 const Role_Staff_Manager = 2; // 管理员
 
+const Order_State_ToPack = "待揽件";
+const Order_State_ToInPort = "待入港";
+const Order_State_InPort = "已入港";
+const Order_State_ToOutPort = "待出港";
+const Order_State_OutPort = "已出港";
+const Order_State_ToArrived = "待到达";
+const Order_State_Arrived = "已到达";
+const Order_State_Delivering = "派送中";
+const Order_State_ToSign = "待签收";
+const Order_State_Completed = "已完成";
 /** =================================================== */
 /** 
  *                      Key
@@ -143,6 +154,7 @@ module.exports = {
   URL_PredictPrice, // 获取预估价格
   URL_GetStorePhoneByCityName, // 通过城市名称 获取商家电话
 
+  URL_PostTransportInfo, // 添加运输信息
   URL_Order, // 下单
   URL_CancelOrder, // 取消订单
   URL_GetOrderListByOrderStatus, // 根据订单类型查询订单列表
@@ -173,6 +185,17 @@ module.exports = {
   Role_Customer, // 用户角色
   Role_Staff_Nomal, // 员工角色
   Role_Staff_Manager, // 管理员
+
+  Order_State_ToPack, // 待揽件
+  Order_State_ToInPort, // 待入港
+  Order_State_InPort, // 已入港
+  Order_State_ToOutPort, // 待出港
+  Order_State_OutPort, // 已出港
+  Order_State_ToArrived, // 待到达
+  Order_State_Arrived, // 已到达
+  Order_State_Delivering, // 派送中
+  Order_State_ToSign, // 待签收
+  Order_State_Completed, // 已完成
 
   Key_LastGetMessageTime, // 最后获取站内信时间
 

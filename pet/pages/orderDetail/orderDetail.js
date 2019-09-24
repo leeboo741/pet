@@ -103,7 +103,8 @@ Page({
     wx.request({
       url: config.URL_Service + config.URL_OrderDetail,
       data: {
-        "orderNo": orderNo
+        "orderNo": orderNo,
+        "openId": loginUtil.getOpenId()
       },
       success (res) {
         console.log("获取订单详情 success：\n" + JSON.stringify(res));
@@ -153,7 +154,7 @@ Page({
           if (that.data.orderData.orderRemarksList == null) {
             that.data.orderData.orderRemarksList = [];
           }
-          that.data.orderData.orderRemarksList.push(remark)
+          that.data.orderData.orderRemarksList.push({remarks: remark})
           that.setData({
             orderData: that.data.orderData,
             remarksInput: null
