@@ -1,6 +1,8 @@
 // pages/orderDetail/orderDetail.js
 const app = getApp();
 const config = require("../../utils/config.js");
+const loginUtil = require("../../utils/loginUtils.js");
+const util = require("../../utils/util.js");
 Page({
 
   /**
@@ -8,12 +10,19 @@ Page({
    */
   data: {
     orderData: null,
+    userInfo: null,
+    remarksInput: null,
+    type: 0,  // 0 自有单据 1 工作单据
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    this.setData({
+      type: options.type,
+      userInfo: loginUtil.getUserInfo()
+    })
     this.requestOrderDetail(options.orderno)
   },
 
@@ -116,4 +125,87 @@ Page({
 
     })
   },
+
+  /**
+   * 提交备注输入
+   */
+  requestPostOrderRemark: function (remark) {
+    let that = this;
+    wx.showLoading({
+      title: '请稍等',
+    })
+    wx.request({
+      url: config.URL_Service + config.URL_PostOrderRemark,
+      data: {
+        order: {
+          orderNo: this.data.orderData.orderNo
+        },
+        staff: loginUtil.getUserInfo(),
+        remarks: remark
+      },
+      method: 'POST',
+      success(res){
+        console.log("新增备注 success:\n" + JSON.stringify(res));
+        if (res.data.code == 200 && res.data.data > 0) {
+          wx.showToast({
+            title: '新增成功',
+          })
+          if (that.data.orderData.orderRemarksList == null) {
+            that.data.orderData.orderRemarksList = [];
+          }
+          that.data.orderData.orderRemarksList.push(remark)
+          that.setData({
+            orderData: that.data.orderData,
+            remarksInput: null
+          })
+        } else {
+
+          wx.showToast({
+            title: '新增备注失败',
+            icon: 'none'
+          })
+        }
+      }, 
+      fail(res) {
+        console.log("新增备注 fail:\n" + JSON.stringify(res));
+        wx.showToast({
+          title: '网络波动，新增备注失败',
+          icon:'none'
+        })
+      },
+      complete(res){
+        wx.hideLoading();
+      }
+    })
+  },
+
+  /**
+   * 确认输入
+   */
+  confirmRemarkInput: function(){
+    if (util.checkEmpty(this.data.remarksInput)) {
+      return;
+    }
+    this.requestPostOrderRemark(this.data.remarksInput);
+  },
+
+  /**
+   * 获取输入
+   */
+  inputRemark: function(e){
+    this.data.remarksInput = e.detail.value
+  },
+
+  /**
+   * 拨打电话
+   */
+  callPhone: function(e) {
+    let phoneNumber = e.currentTarget.dataset.phone;
+    if (util.checkEmpty(phoneNumber)) {
+      return;
+    }
+    wx.makePhoneCall({
+      phoneNumber: phoneNumber,
+    })
+  }
 })

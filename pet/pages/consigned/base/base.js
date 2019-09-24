@@ -516,22 +516,12 @@ Page({
    * 点击拨打客服电话
    */
   tapServicePhoneAction: function(){
-    if (this.data.beginCity == null) {
-      wx.showToast({
-        title: '请先选择始发城市',
-        icon:'none'
-      })
-      return;
-    }
-    if (this.data.storePhone == null) {
-      wx.showToast({
-        title: '尚未找到对应商家客服电话，请稍后',
-        icon: 'none'
-      })
-      return;
+    let tempPhone = config.Service_Phone;
+    if (this.data.beginCity != null && this.data.storePhone != null) {
+      tempPhone = this.data.storePhone;
     }
     wx.makePhoneCall({
-      phoneNumber: this.data.storePhone,
+      phoneNumber: tempPhone,
     })
   },
 

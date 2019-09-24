@@ -1,0 +1,17 @@
+<!--pages/bluetooth/search.wxml-->
+<view class="search-button">
+搜索设备
+</view>
+
+<view wx:for='{{deviceList}}'
+      wx:for-item='deviceItem'
+      wx:for-index='deviceIndex'
+      wx:key='{{deviceIndex}}'
+      class="device-item">
+  <view class="device-item-name">
+  {{deviceItem.name}}
+  </view>
+  <view class="device-item-id">
+  {{deviceItem.id}}
+  </view>      
+</view>

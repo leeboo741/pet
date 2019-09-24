@@ -6,9 +6,7 @@ const config = require("../../utils/config.js");
 const loginUtil = require("../../utils/loginUtils.js");
 
 const app = getApp();
-const maxImageCount = 8; // 最大图片数量限制
-const maxVideoCount = 8; // 最大视频数量限制
-const maxVideoLength = 30; // 最大视频长度限制
+const maxVideoLength = 10; // 最大视频长度限制
 
 Page({
 
@@ -105,7 +103,7 @@ Page({
    * 是否可以入港
    */
   handleReadyToInHarbour: function (order) {
-    if ((!util.checkEmpty(order.images) || !util.checkEmpty(order.videos))
+    if ((!util.checkEmpty(order.currentUploadVideos) || !util.checkEmpty(order.currentUploadImages))
       && util.checkEmpty(order.uploadImages)
       && util.checkEmpty(order.uploadVideos)) {
       order.readyToInHarbour = true;
@@ -187,22 +185,25 @@ Page({
           })
         } else {
           let mediaAddress = tempObj.data[0].viewAddress;
-
+          let tempVideoObj = {
+            viewAddress: mediaAddress
+          }
           if (util.isVideo(mediaAddress)) {
-            if (order.videos == null) {
-              order.videos = [];
+            if (order.currentUploadVideos == null) {
+              order.currentUploadVideos = [];
             }
             let tempFile = fileList[uploadIndex];
             let tempIndex = that.getIndexOf(tempFile, order.uploadVideos);
-            order.videos.push(mediaAddress);
+            
+            order.currentUploadVideos.push(tempVideoObj);
             order.uploadVideos.splice(tempIndex, 1);
           } else {
-            if (order.images == null) {
-              order.images = [];
+            if (order.currentUploadImages == null) {
+              order.currentUploadImages = [];
             }
             let tempFile = fileList[uploadIndex];
-            let tempIndex = that.getIndexOf(tempFile, order.uploadImages);
-            order.images.push(tempObj.data[0].viewAddress);
+            let tempIndex = that.getIndexOf(tempFile, order.uploadImages); 
+            order.currentUploadImages.push(tempVideoObj);
             order.uploadImages.splice(tempIndex, 1);
           }
           that.setData({
@@ -304,8 +305,15 @@ Page({
   tapImage: function (e) {
     let tempOrder = this.data.orderList[e.currentTarget.dataset.orderindex];
     let tempImageList = [];
-    if (tempOrder.images != null && tempOrder.images.length > 0) {
-      tempImageList = tempImageList.concat(tempOrder.images);
+    if (tempOrder.orderStates[0].pictureList != null && tempOrder.orderStates[0].pictureList.length > 0) {
+      for (let i = 0; i < tempOrder.orderStates[0].pictureList.length; i++) {
+        tempImageList.push(tempOrder.orderStates[0].pictureList[i].viewAddress);
+      }
+    }
+    if (tempOrder.currentUploadImages != null && tempOrder.currentUploadImages.length > 0) {
+      for (let i = 0; i < tempOrder.currentUploadImages.length; i++) {
+        tempImageList.push(tempOrder.currentUploadImages[i].viewAddress);
+      }
     }
     if (tempOrder.uploadImages != null && tempOrder.uploadImages.length > 0) {
       tempImageList = tempImageList.concat(tempOrder.uploadImages);
@@ -334,11 +342,17 @@ Page({
       title: '请稍等...',
     })
     let fileList = [];
-    if (!util.checkEmpty(order.images)) {
-      fileList = fileList.concat(order.images);
+    if (!util.checkEmpty(order.currentUploadImages)) {
+      for (let i = 0; i < order.currentUploadImages.length ; i++) {
+        let tempImageObj = order.currentUploadImages[i];
+        fileList.push(tempImageObj.viewAddress);
+      }
     }
-    if (!util.checkEmpty(order.videos)) {
-      fileList = fileList.concat(order.videos);
+    if (!util.checkEmpty(order.currentUploadVideos)) {
+      for (let i = 0; i < order.currentUploadVideos.length; i++) {
+        let tempVideoObj = order.currentUploadVideos[i];
+        fileList.push(tempVideoObj.viewAddress);
+      }
     }
     let that = this;
     wx.request({
@@ -406,35 +420,45 @@ Page({
    */
   tapUpload: function (e) {
     let tempOrder = this.data.orderList[e.currentTarget.dataset.tapindex];
-    let tempImageCount = maxImageCount;
-    if (tempOrder.images != null) {
-      tempImageCount = tempImageCount - tempOrder.images.length;
-    }
-    if (tempOrder.uploadImages != null) {
-      tempImageCount = tempImageCount - tempOrder.uploadImages.length;
-    }
     let that = this;
     wx.showActionSheet({
-      itemList: ["上传照片", "上传视频"],
+      itemList: ["拍摄照片","拍摄视频","选择照片", "选择视频"],
       success(res) {
         console.log(res.tapIndex)
         if (res.tapIndex == 0) {
-          if (tempOrder.image != null && tempOrder.images.length >= maxImageCount) {
-            wx.showToast({
-              title: '已经上传全部' + maxImageCount + '张图片',
-              icon: 'none'
-            })
-            return;
-          }
-          if (tempImageCount <= 0) {
-            wx.showToast({
-              title: '可上传图片达到最大数量，请先取消部分图片',
-              icon: "none",
-            })
-            return;
-          }
           wx.chooseImage({
-            count: tempImageCount,
+            sourceType: ['album'],
+            count: 20,
+            success: function (res) {
+              if (tempOrder.uploadImages == null) {
+                tempOrder.uploadImages = [];
+              }
+              if (res.tempFilePaths != null && res.tempFilePaths.length > 0) {
+                tempOrder.uploadImages = tempOrder.uploadImages.concat(res.tempFilePaths);
+                that.handleReadyToUpload(tempOrder);
+                that.handleReadyToInHarbour(tempOrder);
+              }
+            },
+          })
+        } else if (res.tapIndex == 1) {
+          wx.chooseVideo({
+            sourceType: ['album'],
+            maxDuration: maxVideoLength,
+            success(res) {
+              if (tempOrder.uploadVideos == null) {
+                tempOrder.uploadVideos = [];
+              }
+              if (!util.checkEmpty(res.tempFilePath)) {
+                tempOrder.uploadVideos = tempOrder.uploadVideos.concat(res.tempFilePath);
+                that.handleReadyToUpload(tempOrder);
+                that.handleReadyToInHarbour(tempOrder);
+              }
+            }
+          })
+        } else if (res.tapIndex == 2) {
+          wx.chooseImage({
+            sourceType: ['camera'],
+            count: 20,
             success: function (res) {
               if (tempOrder.uploadImages == null) {
                 tempOrder.uploadImages = [];
@@ -447,21 +471,15 @@ Page({
             },
           })
         } else {
-          if (!util.checkEmpty(tempOrder.videos)) {
-            wx.showToast({
-              title: '已经上传视频，请勿重复上传！',
-              icon: 'none'
-            })
-            return;
-          }
           wx.chooseVideo({
+            sourceType: ['camera'],
             maxDuration: maxVideoLength,
             success(res) {
               if (tempOrder.uploadVideos == null) {
                 tempOrder.uploadVideos = [];
               }
               if (!util.checkEmpty(res.tempFilePath)) {
-                tempOrder.uploadVideos.push(res.tempFilePath)
+                tempOrder.uploadVideos = tempOrder.uploadVideos.concat(res.tempFilePath);
                 that.handleReadyToUpload(tempOrder);
                 that.handleReadyToInHarbour(tempOrder);
               }
@@ -476,8 +494,37 @@ Page({
    * 点击分配
    */
   tapAllocation: function (e) {
+    let allocationStaffList = this.data.orderList[e.currentTarget.dataset.tapindex].orderAssignments;
+    if (util.checkEmpty(allocationStaffList)) {
+      allocationStaffList = "";
+    } else {
+      allocationStaffList = JSON.stringify(allocationStaffList);
+    }
     wx.navigateTo({
-      url: '/pages/selectorStaff/selectorStaff?orderno=' + this.data.orderList[e.currentTarget.dataset.tapindex].orderNo,
+      url: '/pages/selectorStaff/selectorStaff?orderno=' + this.data.orderList[e.currentTarget.dataset.tapindex].orderNo + '&stafflist=' + allocationStaffList,
     })
   },
+
+  /**
+   * 订单详情
+   */
+  tapOrderDetail: function (e) {
+    console.log("详情：\n" + e.currentTarget.dataset.orderno)
+    wx.navigateTo({
+      url: '../orderDetail/orderDetail?orderno=' + e.currentTarget.dataset.orderno + '&type=1',
+    })
+  },
+
+  /**
+   * 拨打电话
+   */
+  callPhone: function (e) {
+    let phoneNumber = e.currentTarget.dataset.phone;
+    if (util.checkEmpty(phoneNumber)) {
+      return;
+    }
+    wx.makePhoneCall({
+      phoneNumber: phoneNumber,
+    })
+  }
 })

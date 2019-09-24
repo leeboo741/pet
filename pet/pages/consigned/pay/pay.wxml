@@ -103,7 +103,7 @@
    <!-- 底部客服 -->
    <view class="customerService" bindtap='tapServicePhoneAction'>
       <view style='float:left;width:80rpx;padding-left:20rpx;'>
-          <view style='font-family: sans-serif;font-size:12px'>舒宠</view>
+          <view style='font-family: sans-serif;font-size:12px'>斑马</view>
           <view style='font-family: sans-serif;font-size:12px'>客服</view>
       </view>
       <icon class="iconfont icondianhua tel"></icon>

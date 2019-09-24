@@ -12,6 +12,7 @@ Page({
   onLoad: function (options) {
     this.setData({
       cityType: options.cityType,
+      servicePhone: config.Service_Phone
     })
     if (options.start != null) {
       this.setData({
@@ -102,7 +103,7 @@ Page({
         res.forEach(function (re) {
           if (currentCityName == re.dataset.cityname) {
             wx.pageScrollTo({
-              scrollTop: re.top + that.data.scrollNow - 55.5,
+              scrollTop: re.top + that.data.scrollNow - 105.5,
               duration: 0
             })
           }
@@ -112,18 +113,25 @@ Page({
       this.data.scrollAZ.forEach(function (re) {
         if (currentCityName == re.dataset.cityname) {
           wx.pageScrollTo({
-            scrollTop: re.top + that.data.scrollNow - 55.5,
+            scrollTop: re.top + that.data.scrollNow - 105.5,
             duration: 0
           })
         }
       })
     }
-
-
   },
   onPageScroll: function (e) { // 获取滚动条当前位置
     this.setData({
       scrollNow: e.scrollTop
+    })
+  },
+
+  /**
+   * 点击电话
+   */
+  calPhone: function () {
+    wx.makePhoneCall({
+      phoneNumber: this.data.servicePhone,
     })
   },
 
@@ -234,6 +242,7 @@ Page({
    * 页面的初始数据
    */
   data: {
+    servicePhone: null,
     startCity: null,
     transport: null,
     scrollAZ: null,

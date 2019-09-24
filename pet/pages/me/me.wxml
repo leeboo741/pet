@@ -31,8 +31,7 @@
       <view class='btn'>
         <!--联系客服按钮-->
         <view class="btn-icon"
-              bindtap='tapCall'
-              hidden="{{true}}">
+              bindtap='tapCall'>
           <i-icon type="customerservice"
                   color="#778899"
                   size="25">
@@ -51,7 +50,8 @@
         </view>
         <!--设置按钮-->
         <view class="btn-icon"
-              bindtap='tapSetting'>
+              bindtap='tapSetting'
+              hidden>
           <i-icon type="setup"
                   color="#778899"
                   size="25">

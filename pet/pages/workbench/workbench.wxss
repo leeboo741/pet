@@ -125,6 +125,10 @@ page {
   font-family: sans-serif;
   font-size: 32rpx;
   flex-shrink: 0;
+  word-wrap: break-word;
+  word-break: break-all;
+
+  max-width: 50%;
 }
 
 .bill-info-person-name{
@@ -139,6 +143,8 @@ page {
   margin-left: 20rpx;
   font-family: sans-serif;
   font-size: 32rpx;
+  color: #2d8cf0;
+  text-decoration: underline;
 }
 
 .bill-info-pay {
@@ -253,7 +259,7 @@ page {
 }
 
 .bill-operate-button{
-  margin: 15rpx;
+  margin: 8rpx;
   font-size: 30rpx;
   color: white;
   background: rgb(100, 149, 237);
@@ -265,7 +271,7 @@ page {
 
 
 .bill-operate-button-complain{
-  margin: 15rpx;
+  margin: 8rpx;
   font-size: 30rpx;
   color: white;
   background: rgb(216, 55, 55);
@@ -280,6 +286,32 @@ page {
   width: 700rpx;
   height: 2rpx;
   margin-bottom: 20rpx;
+}
+
+.bill-info-staff{
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.bill-info-staff-title{
+  font-size: 32rpx;
+  margin: 10rpx ;
+}
+
+.color-red{
+  color: #ee2c2c;
+}
+
+.color-normal{
+  color: black;
+}
+
+.bill-info-staff-name{
+  margin: 10rpx ;
+  font-size: 32rpx;
 }
 
 .bill-image-area{

@@ -60,7 +60,11 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
+    loginUtil.checkLogin(function alreadyLoginCallback(state){
+      if (state) {
+        loginUtil.login()
+      }
+    })
   },
 
   /**
@@ -172,7 +176,7 @@ Page({
         console.log("查单 success：\n" + JSON.stringify(res));
         if (res.data.root != null && res.data.prompt == "Success") {
           wx.navigateTo({
-            url: '../orderDetail/orderDetail?orderno=' + res.data.root,
+            url: '../orderDetail/orderDetail?orderno=' + res.data.root + '&type=0',
           })
 
         } else {

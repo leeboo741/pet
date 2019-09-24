@@ -256,7 +256,7 @@ Page({
   tapOrderDetail: function (e) {
     console.log("详情：\n" + e.currentTarget.dataset.orderno)
     wx.navigateTo({
-      url: '../orderDetail/orderDetail?orderno='+e.currentTarget.dataset.orderno,
+      url: '../orderDetail/orderDetail?orderno=' + e.currentTarget.dataset.orderno + '&type=0',
     })
   },
 
@@ -584,7 +584,7 @@ Page({
         if (res.data.root != null && res.data.prompt == "Success") {
           that.hiddenPopMask();
           wx.navigateTo({
-            url: '../orderDetail/orderDetail?orderno=' + res.data.root,
+            url: '../orderDetail/orderDetail?orderno=' + res.data.root + '&type=0',
           })
 
         } else {

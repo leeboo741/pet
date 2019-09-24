@@ -2,27 +2,38 @@
 <i-panel i-class="panel" 
          title='订单内容'>
   <i-cell-group>
-    <i-cell title='订单编号' 
+    <i-cell wx:if='{{orderData.orderNo!=null}}'
+            title='订单号' 
             value='{{orderData.orderNo}}'></i-cell>
-    <i-cell title='订单时间' 
+    <i-cell wx:if='{{orderData.orderDate!=null || orderData.orderTime!=null}}'
+            title='下单时间'
             value='{{orderData.orderDate}} {{orderData.orderTime}}'></i-cell>
-    <i-cell title='订单状态' 
+    <i-cell wx:if='{{orderData.state!=null}}'
+            title='订单状态' 
             value='{{orderData.state}}'></i-cell>
-    <i-cell title='订单价格' 
+    <i-cell wx:if='{{orderData.paymentAmount!=null}}'
+            title='订单金额' 
             value='￥{{orderData.paymentAmount}}'></i-cell>
-    <i-cell title='物流公司' 
-            value='{{orderData.express}}'></i-cell>
-    <i-cell title='物流区间' 
+    <i-cell wx:if='{{orderData.transport.station.stationName!=null}}'
+            title='物流：' 
+            value='{{orderData.transport.station.stationName}}'></i-cell>
+    <i-cell wx:if='{{orderData.transport.startCity!=null && orderData.transport.endCity!=null }}'
+            title='物流区间' 
             value='{{orderData.transport.startCity}}-{{orderData.transport.endCity}}'></i-cell>
-    <i-cell title='运输方式' 
+    <i-cell wx:if='{{orderData.transport.transportType!=null}}'
+            title='运输方式'
             value='{{parse.getTransportType(orderData.transport.transportType)}}'></i-cell>
-    <i-cell title='宠物数量' 
+    <i-cell wx:if='{{orderData.num!=null}}'
+            title='宠物数量'
             value='{{orderData.num}}'></i-cell>
-    <i-cell title='宠物重量' 
+    <i-cell wx:if='{{orderData.weight!=null}}'
+            title='宠物重量' 
             value='{{orderData.weight}}kg'></i-cell>
-    <i-cell title='宠物种类' 
+    <i-cell wx:if='{{orderData.petType.petTypeName!=null}}'
+            title='宠物种类' 
             value='{{orderData.petType.petTypeName}}'></i-cell>
-    <i-cell title='宠物品种' 
+    <i-cell wx:if='{{orderData.petClassify.petClassifyName!=null}}'
+            title='宠物品种' 
             value='{{orderData.petClassify.petClassifyName}}'></i-cell>
   </i-cell-group>
 </i-panel>
@@ -44,23 +55,52 @@
             value='{{(orderData.giveFood==null||orderData.giveFood=="否")?"否":"是"}}'></i-cell>
   </i-cell-group>
 </i-panel>
-<i-panel i-class="panel" 
+<i-panel wx:if='{{orderData.senderName!=null || orderData.senderPhone!=null || orderData.receiverPhone!=null || orderData.receiverName!=null}}'
+         i-class="panel" 
          title='收寄人信息'>
   <i-cell-group>
-    <i-cell title='寄件人' 
-            value='{{orderData.senderPhone}}'
-            label='{{orderData.senderName}}'></i-cell>
-    <i-cell title='收件人' 
-            value='{{orderData.receiverPhone}}' 
-            label="{{orderData.receiverName}}"></i-cell>
+    <i-cell wx:if='{{orderData.senderName!=null || orderData.senderPhone!=null}}'
+            title='寄件人' 
+            value='{{orderData.senderPhone!=null?orderData.senderPhone:""}}'
+            label='{{orderData.senderName!=null?orderData.senderName:""}}'
+            bindtap='callPhone'
+            data-phone='{{orderData.senderPhone}}'></i-cell>
+    <i-cell wx:if='{{orderData.receiverPhone!=null || orderData.receiverName!=null}}'
+            title='收件人' 
+            value='{{orderData.receiverPhone!=null?orderData.receiverPhone:""}}' 
+            label='{{orderData.receiverName!=null?orderData.receiverName:""}}'
+            bindtap='callPhone'
+            data-phone='{{orderData.receiverPhone}}'></i-cell>
   </i-cell-group>
 </i-panel>
 <i-panel i-class="panel" 
          title='备注'
          wx:if="{{orderData.remarks!=null && orderData.remarks.length > 0}}">
-  <view class="remark">
-  {{orderData.remarks}}
-  </view>
+  <i-cell title='{{orderData.remarks}}'>
+  </i-cell>
+  <i-cell wx:if='{{userInfo.role != 0 && type != 0}}'
+          wx:for='{{orderData.orderRemarksList}}'
+          wx:for-item='remarkItem'
+          wx:for-index='remarkIndex'
+          wx:key='{{remarkIndex}}'
+          title='{{remarkItem}}'>
+  </i-cell>
+  <i-cell wx:if='{{userInfo.role != 0 && type != 0}}'>
+    <view slot='header'
+          class="input-remark-box">
+      <textarea class="input-remark-input"
+                value="{{remarksInput}}"
+                bindconfirm="confirmRemarkInput"
+                bindinput="inputRemark"
+                placeholder="请输入"
+                auto-height="{{true}}">
+      </textarea> 
+      <view class="input-remark-confirm"
+            bindtap="confirmRemarkInput">
+      确定
+      </view>     
+    </view>
+  </i-cell>
 </i-panel>
 <i-panel i-class="panel"
          title='订单进度'>

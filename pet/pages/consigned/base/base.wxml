@@ -232,7 +232,7 @@
    <!-- 底部客服 -->
    <view class="customerService" bindtap='tapServicePhoneAction'>
       <view class='customerService-title'>
-          <view class='customerService-title-item'>宠珍</view>
+          <view class='customerService-title-item'>斑马</view>
           <view class='customerService-title-item'>客服</view>
       </view>
       <icon class="iconfont icondianhua tel" style=''></icon>

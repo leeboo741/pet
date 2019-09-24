@@ -6,7 +6,7 @@ const loginUtil = require("../../utils/loginUtils.js");
 
 const maxImageCount = 8; // 最大图片数量限制
 const maxVideoCount = 8; // 最大视频数量限制
-const maxVideoLength = 30; // 最大视频长度限制
+const maxVideoLength = 10; // 最大视频长度限制
 Page({
 
   /**
@@ -402,6 +402,7 @@ Page({
             return;
           }
           wx.chooseImage({
+            sourceType: ['camera'],
             count: tempImageCount,
             success: function (res) {
               if (tempOrder.uploadImages == null) {
@@ -423,6 +424,7 @@ Page({
             return;
           }
           wx.chooseVideo({
+            sourceType: ['camera'],
             maxDuration: maxVideoLength,
             success(res) {
               if (tempOrder.uploadVideos == null) {

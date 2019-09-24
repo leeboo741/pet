@@ -3,7 +3,7 @@
  *                      全局数据
  */
 /** =================================================== */
-const Service_Phone = "0793-322132153"; // 客服电话
+const Service_Phone = "4007778889"; // 客服电话
 const Version_Name = "1.2.10"; // 版本名称
 const Version_Code = 11; // 版本编号
 
@@ -12,9 +12,9 @@ const Version_Code = 11; // 版本编号
  *                      网络请求
  */
 /** =================================================== */
-const URL_Service = "https://pet.tyferp.com"; // 路径 
+// const URL_Service = "https://pet.tyferp.com"; // 路径 
 // const URL_Service = "http://huji820.oicp.net"; // 路径
-// const URL_Service = "http://192.168.3.111:5050"; // 路径
+const URL_Service = "http://192.168.3.111:5050"; // 路径
 // const URL_Service = "http://192.168.3.233:5050"; // 路径
 
 const URL_Register = "/api/customer/"; // 注册
@@ -58,6 +58,7 @@ const URL_GetOrderNoByOrderNo = "/api/order/getOrderNoByOrderNo"; // 通过单�
 const URL_ConfirmOrder = "/api/order/confirmOrder"; // 确认收货
 const URL_GetUnConfirmOrderList = "/api/order/listUncertainty"; // 获取未确认收货订单
 const URL_AlloctionOrder = '/api/order/assignment/'; // 订单分配
+const URL_PostOrderRemark = '/api/order/remarks'; // 新增一条订单备注
 
 const URL_GetCouponList = '/aip/coupon/listByOpenId'; // 获取优惠券列表
 
@@ -67,7 +68,7 @@ const URL_Recharge = "/api/weChat/pay/getRechargeParam"; // 获取充值参数
 const URL_GetInOrOutHarbourList = "/api/consign/port/listByLikeOrderNo"; // 获取出入港单据列表
 const URL_ConfirmInOutHarbour = "/api/consign/orderState/inOrOutPort"; // 确认出入港
 
-const URL_UploadFile = "/api/consign/orderState/uploadFile"; // 上传文件
+const URL_UploadFile = "/api/consign/orderState/uploadMediaFiles"; // 上传文件
 
 const URL_Get_Message = "/api/message/customer/"; // 获取站内信
 const URL_Get_New_Message = "/api/message/push/"; // 获取最新站内信
@@ -149,7 +150,8 @@ module.exports = {
   URL_GetOrderNoByOrderNo, // 通过单号模糊查询单号
   URL_ConfirmOrder, // 确认收货
   URL_GetUnConfirmOrderList, // 获取未确认收货订单列表
-  URL_AlloctionOrder,
+  URL_AlloctionOrder, // 订单分配
+  URL_PostOrderRemark, // 新增一条订单备注
 
   URL_GetCouponList, // 获取优惠券列表
 

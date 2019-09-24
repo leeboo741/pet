@@ -273,15 +273,12 @@ Page({
    * 拨打电话
    */
   tapServicePhoneAction: function () {
-    if (this.data.storePhone == null) {
-      wx.showToast({
-        title: '尚未找到对应商家客服电话，请稍后',
-        icon: 'none'
-      })
-      return;
+    let tempPhone = config.Service_Phone;
+    if (this.data.storePhone != null) {
+      tempPhone = this.data.storePhone;
     }
     wx.makePhoneCall({
-      phoneNumber: this.data.storePhone,
+      phoneNumber: tempPhone,
     })
   },
 

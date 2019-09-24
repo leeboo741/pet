@@ -1,25 +1,20 @@
 {
   "pages": [
-    "pages/index/index2",  
-    "pages/index/index", 
-
-    "pages/login/login", 
-    "pages/register/register", 
-
-    "pages/consigned/base/base", 
-    "pages/consigned/city/city", 
-    "pages/consigned/pay/pay", 
-    "pages/consigned/coupon/coupon", 
-    "pages/consigned/text/text", 
-    "pages/consigned/coupon/couponQRCode/couponQRCode", 
-    
-    "pages/station/station", 
-     
-    "pages/goAboard/goAboard", 
-    
-    "pages/me/me", 
-    "pages/recharge/recharge", 
-    "pages/withdrawal/withdrawal", 
+    "pages/index/index2",
+    "pages/index/index",
+    "pages/login/login",
+    "pages/register/register",
+    "pages/consigned/base/base",
+    "pages/consigned/city/city",
+    "pages/consigned/pay/pay",
+    "pages/consigned/coupon/coupon",
+    "pages/consigned/text/text",
+    "pages/consigned/coupon/couponQRCode/couponQRCode",
+    "pages/station/station",
+    "pages/goAboard/goAboard",
+    "pages/me/me",
+    "pages/recharge/recharge",
+    "pages/withdrawal/withdrawal",
     "pages/orderDetail/orderDetail",
     "pages/setting/setting",
     "pages/unConfirmOrder/unConfirmOrder",
@@ -29,7 +24,8 @@
     "pages/approval/approval",
     "pages/applyJoin/applyJoin",
     "pages/registerStation/registerStation",
-    "pages/registerStaff/registerStaff"
+    "pages/registerStaff/registerStaff",
+    "pages/bluetooth/search"
   ],
   "window": {
     "backgroundTextStyle": "light",

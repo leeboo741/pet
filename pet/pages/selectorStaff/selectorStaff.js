@@ -3,6 +3,7 @@
 const config = require("../../utils/config.js");
 const loginUtil = require("../../utils/loginUtils.js");
 const app = getApp();
+const util = require("../../utils/util.js");
 
 Page({
 
@@ -11,6 +12,7 @@ Page({
    */
   data: {
     staffList: [],
+    allocationStaffList: null, // 已分配 员工
     orderNo: null,
     selected: [],
   },
@@ -19,8 +21,15 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    let tempAllocationStaffList = options.stafflist;
+    if (util.checkEmpty(tempAllocationStaffList)) {
+      tempAllocationStaffList = null;
+    } else {
+      tempAllocationStaffList = JSON.parse(tempAllocationStaffList);
+    }
     this.setData({
-      orderNo: options.orderno
+      orderNo: options.orderno,
+      allocationStaffList: tempAllocationStaffList,
     })
     this.requestStaffList();
   },
@@ -89,6 +98,7 @@ Page({
         that.setData({
           staffList: res.data.data
         })
+        that.initStaffSelected();
       },
       fail(res) {
         console.log("请求下属员工 fail: \n" + JSON.stringify(res));
@@ -96,6 +106,27 @@ Page({
       complete(res){
         wx.hideLoading();
       }
+    })
+  },
+
+  /**
+   * 初始化员工选中信息
+   */
+  initStaffSelected: function () {
+    if (util.checkEmpty(this.data.allocationStaffList) || util.checkEmpty(this.data.staffList)) {
+      return;
+    }
+    for (let i = 0; i < this.data.staffList.length ; i++) {
+      let tempStaff = this.data.staffList[i];
+      for (let j = 0; j < this.data.allocationStaffList.length; j++) {
+        let tempAllocationStaff = this.data.allocationStaffList[j].staff;
+        if (tempStaff.staffNo == tempAllocationStaff.staffNo) {
+          tempStaff.selected = true;
+        }
+      }
+    }
+    this.setData({
+      staffList: this.data.staffList
     })
   },
 

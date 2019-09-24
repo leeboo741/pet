@@ -1,3 +1,8 @@
+<view class="alert-box">
+  <view class="alert-title">如无对应站点，请联系客服</view>
+  <view class="alert-phone" bindtap="calPhone">{{servicePhone}}</view>
+  <view class="alert-title">处理</view>
+</view>
 <view class="search-box">
   <input placeholder="中文/拼音/首字母" class='search-input' bindinput='bindSarchInput' placeholder-class='search-input-placeholder'/>
 </view>

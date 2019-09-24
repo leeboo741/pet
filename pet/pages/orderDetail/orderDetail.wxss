@@ -61,3 +61,39 @@
 .video{
 
 }
+
+.view-box{
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.view-content{
+  flex-wrap: wrap;
+}
+
+.input-remark-box{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.input-remark-input{
+  border: 1rpx solid lightgray; 
+  min-height: 80rpx;
+  border-radius: 8rpx;
+  font-size: 32rpx;
+}
+
+.input-remark-confirm{
+  border-radius: 8rpx;
+  background: #2d8cf0;
+  color: white;
+  padding: 10rpx 20rpx;
+  text-align: center;
+  flex-shrink: 0;
+  height: 50rpx;
+  line-height: 50rpx;
+  margin-left: 20rpx;
+}
