@@ -71,6 +71,16 @@
           {{assignmentsItem.staff.staffName}}
           </view>
         </view>
+        <!-- 备注信息 -->
+        <view class="bill-info-remark"
+              wx:if='{{userInfo.role != 0 && orderItem.orderRemarksList!=null && orderItem.orderRemarksList.length >0}}'>
+          <view class="bill-info-remark-title">
+          最新备注：
+          </view>
+          <view class="bill-info-remark-content">
+          {{orderItem.orderRemarksList[orderItem.orderRemarksList.length-1].remarks}}
+          </view>
+        </view>
       </view>
       <!-- 等待入港 -->
       <view class="bill-image-area"
@@ -106,7 +116,7 @@
           </video>
         </view>
       </view>
-      
+      <view style='border-bottom: 1rpx solid red; margin: 15rpx; width: 100%;'></view>
       <!-- 照片 -->
       <view class="bill-image-area"
             wx:if='{{parse.showImageArea(orderItem)}}'>
@@ -181,6 +191,62 @@
           </image> 
         </view>
       </view>
+      
+      <view style='border-bottom: 1rpx solid lightgray; margin: 15rpx; width: 100%;'></view>
+
+      <view class="in-out-port-info-area"
+            wx:if='{{orderItem.orderStates[0].orderType == "待到达"}}'>
+        <view class="in-out-port-info-item">
+          <input class="in-out-port-info-input"
+                 placeholder="请输入备注"
+                 bindinput="inputOrderRemark"
+                 data-index='{{orderIndex}}'
+                 value="{{orderItem.remarkInput}}">
+          
+          </input>
+          <view class="in-out-port-info-button"
+                bindtap="tapRemark"
+                data-index='{{orderIndex}}'>
+          备注
+          </view>
+        </view>
+      </view>
+
+      <view class="in-out-port-info-area"
+            wx:if='{{orderItem.orderStates[0].orderType == "待签收" && orderItem.showChangeDeliver}}'>
+        <view class="in-out-port-info-item">
+          <input class="in-out-port-info-input"
+                 placeholder="收件人名称"
+                 bindinput="inputDeliverName"
+                 data-index='{{orderIndex}}'
+                 value="{{orderItem.deliverName}}">
+          
+          </input>
+          <input class="in-out-port-info-input"
+                 placeholder="收件人电话"
+                 bindinput="inputDeliverPhone"
+                 data-index='{{orderIndex}}'
+                 value="{{orderItem.deliverPhone}}">
+          
+          </input>
+        </view>
+        <view class="in-out-port-info-item">
+          <textarea class="in-out-port-info-input"
+                    placeholder="收件地址"
+                    bindinput="inputDeliverAddress"
+                    data-index='{{orderIndex}}'
+                    value="{{orderItem.deliverAddress}}"
+                    auto-height="{{true}}">
+          </textarea>
+          <view class="in-out-port-info-button"
+                bindtap="tapRemark"
+                data-index='{{orderIndex}}'>
+          确定
+          </view>
+        </view>
+      </view>
+
+
       <!-- 按钮区域 -->
       <view class='bill-operate-box'>
         <view class="bill-operate-button-complain"
@@ -194,6 +260,13 @@
               data-tapindex="{{orderIndex}}"
               data-orderno='{{orderItem.orderNo}}'>
         详情
+        </view>
+        <view class='bill-operate-button'
+              bindtap='tapChangeDeliver' 
+              data-tapindex="{{orderIndex}}"
+              data-orderno='{{orderItem.orderNo}}'
+              wx:if='{{parse.showChangeDeliver(orderItem)}}'>
+        临派
         </view>
         <view class='bill-operate-button' 
               bindtap='tapConfirmUpload' 
@@ -210,7 +283,7 @@
               bindtap='tapInHarbour' 
               data-tapindex="{{orderIndex}}"
               hidden="{{!orderItem.readyToInHarbour}}">
-        {{orderItem.orderStates[0].orderType == "待入港"?'入港':'出港'}}
+        {{parse.getOperateButtonTitle(orderItem)}}
         </view>
       </view>
     </view>
@@ -233,8 +306,23 @@
 
 <wxs module='parse'>
   module.exports={
+    showChangeDeliver: function(orderItem) {
+      if (orderItem.orderStates[0].orderType == "待签收") {
+        return true;
+      }
+      return false;
+    },
+    getOperateButtonTitle: function (orderItem) {
+      if (orderItem.orderStates[0].orderType == "待到达") {
+        return '到达';
+      } else if (orderItem.orderStates[0].orderType == "派送中" || orderItem.orderStates[0].orderType == "待签收") {
+        return '签收';
+      } else {
+        return '未知';
+      }
+    },
     showAlloctionBtn: function(order, user) {
-      if (user.role == 2 && order.orderStates[0].orderType == "待入港") {
+      if (user.role == 2) {
         return true;
       }
       return false;

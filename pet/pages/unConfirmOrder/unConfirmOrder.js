@@ -1,9 +1,9 @@
 // pages/unConfirmOrder/unConfirmOrder.js
-const app = getApp();
-const config = require("../../utils/config.js");
 const util = require("../../utils/util.js");
+const config = require("../../utils/config.js");
 const loginUtil = require("../../utils/loginUtils.js");
 
+const app = getApp();
 const maxVideoLength = 10; // 最大视频长度限制
 
 Page({
@@ -261,7 +261,6 @@ Page({
     })
   },
 
-
   /**
    * 请求入港单
    */
@@ -274,7 +273,7 @@ Page({
     if (searchKey != null) {
       tempSearchKey = searchKey
     }
-    let orderTypes = "待入港,待出港";
+    let orderTypes = config.Order_State_ToArrived + ',' + config.Order_State_Arrived + ',' + config.Order_State_Delivering + ',' + config.Order_State_ToSign;
     wx.request({
       url: config.URL_Service + config.URL_GetInOrOutHarbourList,
       data: {
@@ -328,13 +327,13 @@ Page({
    * 入港
    */
   tapInHarbour: function (e) {
-    this.requestConfirmInHarbour(e.currentTarget.dataset.tapindex);
+    this.requestReceiveOrder(e.currentTarget.dataset.tapindex);
   },
 
   /**
    * 确认入港
    */
-  requestConfirmInHarbour: function (orderIndex) {
+  requestReceiveOrder: function (orderIndex) {
     const tempIndex = orderIndex;
     const order = this.data.orderList[tempIndex];
     wx.showLoading({
@@ -524,6 +523,93 @@ Page({
     }
     wx.makePhoneCall({
       phoneNumber: phoneNumber,
+    })
+  },
+
+  /**
+   * 输入备注
+   */
+  inputOrderRemark: function (e) {
+    console.log("输入备注" + JSON.stringify(e));
+    let tempOrder = this.data.orderList[e.currentTarget.dataset.index];
+    tempOrder.remarkInput = e.detail.value;
+  },
+
+  /**
+   * 提交备注
+   */
+  tapRemark: function (e) {
+    let tempOrder = this.data.orderList[e.currentTarget.dataset.index];
+    if (util.checkEmpty(tempOrder.remarkInput)) {
+      return;
+    }
+    this.requestPostOrderRemark(tempOrder);
+  },
+
+  /**
+   * 提交备注输入
+   */
+  requestPostOrderRemark: function (orderItem) {
+    let that = this;
+    wx.showLoading({
+      title: '请稍等',
+    })
+    wx.request({
+      url: config.URL_Service + config.URL_PostOrderRemark,
+      data: {
+        order: {
+          orderNo: orderItem.orderNo
+        },
+        staff: loginUtil.getUserInfo(),
+        remarks: orderItem.remarkInput
+      },
+      method: 'POST',
+      success(res) {
+        console.log("新增备注 success:\n" + JSON.stringify(res));
+        if (res.data.code == 200 && res.data.data > 0) {
+          wx.showToast({
+            title: '备注成功',
+          })
+          if (orderItem.orderRemarksList == null) {
+            orderItem.orderRemarksList = [];
+          }
+          orderItem.orderRemarksList.push({ remarks: orderItem.remarkInput })
+          orderItem.remarkInput = null;
+          that.setData({
+            orderList: that.data.orderList
+          })
+        } else {
+          wx.showToast({
+            title: '备注失败',
+            icon: 'none'
+          })
+        }
+      },
+      fail(res) {
+        console.log("新增备注 fail:\n" + JSON.stringify(res));
+        wx.showToast({
+          title: '网络波动，新增备注失败',
+          icon: 'none'
+        })
+      },
+      complete(res) {
+        wx.hideLoading();
+      }
+    })
+  },
+
+  /**
+   * 点击临时派送
+   */
+  tapChangeDeliver: function (e) {
+    let tempOrder = this.data.orderList[e.currentTarget.dataset.tapindex];
+    if (tempOrder.showChangeDeliver == null) {
+      tempOrder.showChangeDeliver = true;
+    } else {
+      tempOrder.showChangeDeliver = !tempOrder.showChangeDeliver
+    }
+    this.setData({
+      orderList: this.data.orderList
     })
   }
 })
