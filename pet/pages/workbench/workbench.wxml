@@ -297,7 +297,7 @@
       }
     },
     showAlloctionBtn: function(order, user) {
-      if (user.role == 2 && (order.orderStates[0].orderType == "待入港" || order.orderStates[0].orderType == "待揽件")) {
+      if (user.role == 2) {
         return true;
       }
       return false;

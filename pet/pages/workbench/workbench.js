@@ -1,6 +1,5 @@
 // pages/workbench/workbench.js
 
-
 const util = require("../../utils/util.js");
 const config = require("../../utils/config.js");
 const loginUtil = require("../../utils/loginUtils.js");
@@ -59,7 +58,7 @@ Page({
    * 生命周期函数--监听页面卸载
    */
   onUnload: function () {
-    console.log("/inharbour/inharbour 销毁")
+    console.log("/workbench/workbench 销毁")
     this.data.finishPage = true;
   },
 
@@ -346,7 +345,7 @@ Page({
     if (util.checkEmpty(order.outTransportInfo)
       || util.checkEmpty(order.outTransportInfo.expressNum)) {
       wx.showToast({
-        title: '航班号/车次号以及快递单号不能为空！',
+        title: '快递单号不能为空！',
         icon: 'none'
       })
       return;
@@ -689,5 +688,4 @@ Page({
       }
     })
   },
-
 })
