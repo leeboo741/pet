@@ -50,6 +50,7 @@ const URL_InsureRate = "/api/consign/insure"; // 查询保价费率
 const URL_PredictPrice = "/api/order/getOrderPrice"; // 获取预估价格
 const URL_GetStorePhoneByCityName = "/api/business/getPhoneByCityName"; // 通过城市获取商家电话
 
+const URL_ChangeToDeliver = "/api/order/deliver"; // 修改待签收状态为派送
 const URL_PostTransportInfo = "/api/order/transport"; // 添加运输信息
 const URL_Order = "/api/order/insertOrder"; // 下单
 const URL_CancelOrder = "/api/order/cancelOrder"; // 取消订单
@@ -154,6 +155,7 @@ module.exports = {
   URL_PredictPrice, // 获取预估价格
   URL_GetStorePhoneByCityName, // 通过城市名称 获取商家电话
 
+  URL_ChangeToDeliver, // 修改代签收状态为派送
   URL_PostTransportInfo, // 添加运输信息
   URL_Order, // 下单
   URL_CancelOrder, // 取消订单

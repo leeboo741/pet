@@ -55,6 +55,27 @@
             value='{{(orderData.giveFood==null||orderData.giveFood=="否")?"否":"是"}}'></i-cell>
   </i-cell-group>
 </i-panel>
+<i-panel i-class='panel'
+         title='临时派送信息'
+         wx:if='{{parse.showTempDeliver(orderData)}}'>
+  <i-cell-group>
+    <i-cell title='收件人' 
+            value='{{parse.getTempDeliverName(orderData)}}'></i-cell>
+    <i-cell title='手机号' 
+            value=''
+            bindtap='callPhone'
+            data-phone='{{parse.getTempDeliverPhone(orderData)}}'
+            is-link>
+      <view slot='footer'
+            bindtap='callPhone'
+            data-phone='{{parse.getTempDeliverPhone(orderData)}}'>
+      {{parse.getTempDeliverPhone(orderData)}}
+      </view>         
+    </i-cell>
+    <i-cell title='地址' 
+            label="{{parse.getTempDeliverAddress(orderData)}}"></i-cell>
+  </i-cell-group>
+</i-panel>
 <i-panel wx:if='{{orderData.senderName!=null || orderData.senderPhone!=null || orderData.receiverPhone!=null || orderData.receiverName!=null}}'
          i-class="panel" 
          title='收寄人信息'>
@@ -62,25 +83,27 @@
     <i-cell wx:if='{{orderData.senderName!=null || orderData.senderPhone!=null}}'
             title='寄件人' 
             value=''
-            label='{{orderData.senderName!=null?orderData.senderName:""}}'
+            label='{{orderData.senderPhone!=null?orderData.senderPhone:""}}'
             bindtap='callPhone'
             data-phone='{{orderData.senderPhone}}'
             is-link>
       <view slot='footer'
             bindtap='callPhone'
             data-phone='{{orderData.senderPhone}}'>
-      {{orderData.senderPhone!=null?orderData.senderPhone:""}}
+      {{orderData.senderName!=null?orderData.senderName:""}}
       </view> 
     </i-cell>
     <i-cell wx:if='{{orderData.receiverPhone!=null || orderData.receiverName!=null}}'
             title='收件人' 
             value='' 
-            label='{{orderData.receiverName!=null?orderData.receiverName:""}}'
+            label='{{orderData.receiverPhone!=null?orderData.receiverPhone:""}}'
+            bindtap='callPhone'
+            data-phone='{{orderData.receiverPhone}}'
             is-link>
       <view slot='footer'
             bindtap='callPhone'
             data-phone='{{orderData.receiverPhone}}'>
-      {{orderData.receiverPhone!=null?orderData.receiverPhone:""}}
+      {{orderData.receiverName!=null?orderData.receiverName:""}}
       </view>       
     </i-cell>
   </i-cell-group>
@@ -171,6 +194,30 @@
 
 <wxs module='parse'>
   module.exports={
+    getTempDeliverName: function(order){
+      if (order.orderTempDelivers != null && order.orderTempDelivers.length > 0) {
+        return order.orderTempDelivers[order.orderTempDelivers.length-1].recipientName;
+      }
+      return "";
+    },
+    getTempDeliverPhone: function(order){
+      if (order.orderTempDelivers != null && order.orderTempDelivers.length > 0) {
+        return order.orderTempDelivers[order.orderTempDelivers.length-1].recipientPhone;
+      }
+      return "";
+    },
+    getTempDeliverAddress: function(order){
+      if (order.orderTempDelivers != null && order.orderTempDelivers.length > 0) {
+        return order.orderTempDelivers[order.orderTempDelivers.length-1].address;
+      }
+      return "";
+    },
+    showTempDeliver: function(order){
+      if (order.orderTempDelivers != null && order.orderTempDelivers.length > 0 ){
+        return true;
+      }
+      return false;
+    },
     getStepStatus: function(state){
       if (state == '已完成') {
         return "finish";

@@ -223,6 +223,7 @@
           
           </input>
           <input class="in-out-port-info-input"
+                 style="margin-left: 15rpx;"
                  placeholder="收件人电话"
                  bindinput="inputDeliverPhone"
                  data-index='{{orderIndex}}'
@@ -239,7 +240,7 @@
                     auto-height="{{true}}">
           </textarea>
           <view class="in-out-port-info-button"
-                bindtap="tapRemark"
+                bindtap="tapChangeToDeliver"
                 data-index='{{orderIndex}}'>
           确定
           </view>

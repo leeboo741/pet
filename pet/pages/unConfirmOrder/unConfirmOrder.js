@@ -327,13 +327,18 @@ Page({
    * 入港
    */
   tapInHarbour: function (e) {
-    this.requestReceiveOrder(e.currentTarget.dataset.tapindex);
+    let tempOrder = this.data.orderList[e.currentTarget.dataset.tapindex];
+    if (tempOrder.orderStates[0].orderType == config.Order_State_ToArrived) {
+      this.requestConfirmInHarbour(e.currentTarget.dataset.tapindex)
+    } else {
+      this.requestReceiveOrder(e.currentTarget.dataset.tapindex);
+    }
   },
 
   /**
    * 确认入港
    */
-  requestReceiveOrder: function (orderIndex) {
+  requestConfirmInHarbour: function (orderIndex) {
     const tempIndex = orderIndex;
     const order = this.data.orderList[tempIndex];
     wx.showLoading({
@@ -410,6 +415,72 @@ Page({
         console.log("确定入港 complete: \n" + JSON.stringify(res));
         wx.hideLoading();
       }
+    })
+  },
+
+  /**
+   * 确认收货
+   */
+  requestReceiveOrder: function (orderIndex) {
+
+    const tempIndex = orderIndex;
+    const order = this.data.orderList[tempIndex];
+    wx.showLoading({
+      title: '请稍等...',
+    })
+    let fileList = [];
+    if (!util.checkEmpty(order.currentUploadImages)) {
+      for (let i = 0; i < order.currentUploadImages.length; i++) {
+        let tempImageObj = order.currentUploadImages[i];
+        fileList.push(tempImageObj.viewAddress);
+      }
+    }
+    if (!util.checkEmpty(order.currentUploadVideos)) {
+      for (let i = 0; i < order.currentUploadVideos.length; i++) {
+        let tempVideoObj = order.currentUploadVideos[i];
+        fileList.push(tempVideoObj.viewAddress);
+      }
+    }
+    let that = this;
+    wx.request({
+      url: config.URL_Service + config.URL_ConfirmOrder,
+      header: {
+        'content-type': 'application/x-www-form-urlencoded'
+      },
+      method: "POST", // 请求方式
+      data: {
+        fileList: fileList,
+        orderNo: order.orderNo,
+        openId: loginUtil.getOpenId()
+      },
+      success(res) {
+        console.log("确认收货 success: \n" + JSON.stringify(res));
+        if (res.data.prompt == config.Prompt_Success) {
+          wx.showToast({
+            title: '收货成功',
+          })
+          that.data.orderList.splice(orderIndex, 1);
+          that.setData({
+            orderList: that.data.orderList
+          })
+        } else {
+          wx.showToast({
+            title: '收货失败',
+            icon: 'none'
+          })
+        }
+      },
+      fail(res) {
+        console.log("确认收货 fail: \n" + JSON.stringify(res));
+        wx.showToast({
+          title: '失败,网络波动',
+          icon:'none'
+        })
+      },
+      complete(res) {
+        console.log("确认收货 complete: \n" + JSON.stringify(res));
+        wx.hideLoading();
+      },
     })
   },
 
@@ -530,7 +601,6 @@ Page({
    * 输入备注
    */
   inputOrderRemark: function (e) {
-    console.log("输入备注" + JSON.stringify(e));
     let tempOrder = this.data.orderList[e.currentTarget.dataset.index];
     tempOrder.remarkInput = e.detail.value;
   },
@@ -611,5 +681,109 @@ Page({
     this.setData({
       orderList: this.data.orderList
     })
-  }
+  },
+
+  /**
+   * 输入临派名称
+   */
+  inputDeliverName: function (e) {
+    let tempOrder = this.data.orderList[e.currentTarget.dataset.index];
+    tempOrder.deliverName = e.detail.value;
+  },
+
+  /**
+   * 输入临派电话
+   */
+  inputDeliverPhone: function (e) {
+    let tempOrder = this.data.orderList[e.currentTarget.dataset.index];
+    tempOrder.deliverPhone = e.detail.value;
+  },
+
+  /**
+   * 输入临派地址
+   */
+  inputDeliverAddress: function (e) {
+    let tempOrder = this.data.orderList[e.currentTarget.dataset.index];
+    tempOrder.deliverAddress = e.detail.value;
+  },
+
+  /**
+   * 点击确定修改为派送中状态
+   */
+  tapChangeToDeliver: function (e) {
+    let tempOrder = this.data.orderList[e.currentTarget.dataset.index];
+    if (util.checkEmpty(tempOrder.deliverName)) {
+      wx.showToast({
+        title: '姓名不能为空',
+        icon: 'none'
+      })
+      return;
+    } 
+    if (util.checkEmpty(tempOrder.deliverPhone)) {
+      wx.showToast({
+        title: '电话不能为空',
+        icon: 'none'
+      })
+      return;
+    } 
+    if (util.checkEmpty(tempOrder.deliverAddress)) {
+      wx.showToast({
+        title: '地址不能为空',
+        icon: 'none'
+      })
+      return;
+    } 
+    this.requestChangeToDeliver(tempOrder);
+  },
+
+  /**
+   * 修改待签收状态为派送中
+   */
+  requestChangeToDeliver: function (orderItem) {
+    let that = this;
+    wx.showLoading({
+      title: '请稍等...',
+    })
+    wx.request({
+      url: config.URL_Service + config.URL_ChangeToDeliver,
+      data: {
+        order:{
+          orderNo: orderItem.orderNo
+        },
+        recipientName: orderItem.deliverName,
+        recipientPhone: orderItem.deliverPhone,
+        address: orderItem.deliverAddress,
+      },
+      method: 'POST',
+      success(res){
+        console.log("修改待签收状态 success: \n" + JSON.stringify(res));
+        if (res.data.code == 200 && res.data.data > 0) {
+          orderItem.orderStates[0].orderType = "派送中";
+          orderItem.deliverName = null;
+          orderItem.deliverPhone = null;
+          orderItem.deliverAddress = null;
+          orderItem.showChangeDeliver = false;
+          that.setData({
+            orderList: that.data.orderList
+          })
+        } else {
+          wx.showToast({
+            title: res.data.errorMsg,
+            icon: 'none'
+          })
+        }
+      },
+      fail(res) {
+        console.log("修改待签收状态 fail: \n" + JSON.stringify(res));
+
+        wx.showToast({
+          title: '失败！网络波动',
+          icon: 'none'
+        })
+      },
+      complete(res){
+        wx.hideLoading();
+      }
+    })
+  },
 })

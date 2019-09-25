@@ -29,6 +29,7 @@
   ],
   "window": {
     "backgroundTextStyle": "light",
+    "backgroundColor": "#CCCCCC",
     "navigationBarBackgroundColor": "#fff",
     "navigationBarTitleText": "宠物托运",
     "navigationBarTextStyle": "black"
