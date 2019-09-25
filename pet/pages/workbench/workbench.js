@@ -16,21 +16,14 @@ Page({
     orderList: [], // 订单列表
     finishPage: false, // 页面是否终结
     userInfo: null,
+    searchKey: null, // 搜索关键字 
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    let that = this;
-    loginUtil.checkLogin(function alreadyLoginCallback(state) {
-      if (state) {
-        that.setData({
-          userInfo: loginUtil.getUserInfo()
-        })
-        that.requestInHarbour();
-      }
-    })
+    wx.startPullDownRefresh();
   },
 
   /**
@@ -66,7 +59,7 @@ Page({
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
-
+    this.getOrderData(this.data.serachKey);
   },
 
   /**
@@ -99,7 +92,7 @@ Page({
   },
 
   /**
-   * 是否可以入港
+   * 是否可以操作 揽件 入港 出港
    */
   handleReadyToInHarbour: function (order) {
     if ((!util.checkEmpty(order.currentUploadVideos) || !util.checkEmpty(order.currentUploadImages))
@@ -251,19 +244,35 @@ Page({
    * 搜索单据
    */
   searchOrder: function (e) {
+    wx.startPullDownRefresh();
+  },
+
+  /**
+   * 关键字输入 
+   */
+  searchInput: function (e) {
+    this.data.serachKey = e.detail.value;
+  },
+
+  /**
+   * 获取数据
+   */
+  getOrderData: function (searchKey) {
     let that = this;
     loginUtil.checkLogin(function alreadyLoginCallback(state) {
       if (state) {
-        that.setData({
-          userInfo: loginUtil.getUserInfo()
-        })
-        that.requestInHarbour(e.detail.value);
+        if (util.checkEmpty(that.data.userInfo)) {
+          that.setData({
+            userInfo: loginUtil.getUserInfo()
+          })
+        }
+        that.requestInHarbour(searchKey);
       }
     })
   },
 
   /**
-   * 请求入港单
+   * 请求工作单
    */
   requestInHarbour: function (searchKey) {
     wx.showLoading({
@@ -283,17 +292,18 @@ Page({
         orderType: orderTypes,
       },
       success(res) {
-        console.log("请求入港单 success：\n" + JSON.stringify(res));
+        console.log("请求工作单 success：\n" + JSON.stringify(res));
         that.setData({
           orderList: res.data.data
         })
       },
       fail(res) {
-        console.log("请求入港单 fail：\n" + JSON.stringify(res));
+        console.log("请求工作单 fail：\n" + JSON.stringify(res));
       },
       complete(res) {
-        console.log("请求入港单 complete：\n" + JSON.stringify(res));
+        console.log("请求工作单 complete：\n" + JSON.stringify(res));
         wx.hideLoading();
+        wx.stopPullDownRefresh();
       },
     })
   },
@@ -325,7 +335,7 @@ Page({
   },
 
   /**
-   * 入港
+   * 点击 揽件 入港 出港 按钮
    */
   tapInHarbour: function (e) {
     let tempOrder = this.data.orderList[e.currentTarget.dataset.tapindex];
@@ -397,7 +407,7 @@ Page({
   },
 
   /**
-   * 确认入港
+   * 确认揽件 入港 出港
    */
   requestConfirmInHarbour: function (orderIndex) {
     const tempIndex = orderIndex;

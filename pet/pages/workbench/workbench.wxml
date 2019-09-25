@@ -5,7 +5,8 @@
     <input class='input-under' 
            placeholder='请输入单据号'
            confirm-type="search"
-           bindconfirm='searchOrder'>
+           bindconfirm='searchOrder'
+           bindinput="searchInput">
     </input>
   </view>
   <!-- 单据信息 -->

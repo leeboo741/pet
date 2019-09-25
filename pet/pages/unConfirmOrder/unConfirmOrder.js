@@ -15,21 +15,14 @@ Page({
     orderList: [], // 订单列表
     finishPage: false, // 页面是否终结
     userInfo: null,
+    searchKey: null, // 搜索关键字
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    let that = this;
-    loginUtil.checkLogin(function alreadyLoginCallback(state) {
-      if (state) {
-        that.setData({
-          userInfo: loginUtil.getUserInfo()
-        })
-        that.requestInHarbour();
-      }
-    })
+    wx.startPullDownRefresh();
   },
 
   /**
@@ -65,7 +58,7 @@ Page({
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
-
+    this.getOrderData(this.data.serachKey);
   },
 
   /**
@@ -98,7 +91,7 @@ Page({
   },
 
   /**
-   * 是否可以入港
+   * 是否可以展示操作按钮 签收 到达
    */
   handleReadyToInHarbour: function (order) {
     if ((!util.checkEmpty(order.currentUploadVideos) || !util.checkEmpty(order.currentUploadImages))
@@ -250,19 +243,35 @@ Page({
    * 搜索单据
    */
   searchOrder: function (e) {
+    wx.startPullDownRefresh();
+  },
+
+  /**
+   * 搜索关键字输入
+   */
+  searchInput: function(e) {
+    this.data.serachKey = e.detail.value;
+  },
+
+  /**
+   * 获取数据
+   */
+  getOrderData: function (searchKey) {
     let that = this;
     loginUtil.checkLogin(function alreadyLoginCallback(state) {
       if (state) {
-        that.setData({
-          userInfo: loginUtil.getUserInfo()
-        })
-        that.requestInHarbour(e.detail.value);
+        if (util.checkEmpty(that.data.userInfo)) {
+          that.setData({
+            userInfo: loginUtil.getUserInfo()
+          })
+        }
+        that.requestInHarbour(searchKey);
       }
     })
   },
 
   /**
-   * 请求入港单
+   * 请求收货单
    */
   requestInHarbour: function (searchKey) {
     wx.showLoading({
@@ -282,17 +291,18 @@ Page({
         orderType: orderTypes,
       },
       success(res) {
-        console.log("请求入港单 success：\n" + JSON.stringify(res));
+        console.log("请求收货单 success：\n" + JSON.stringify(res));
         that.setData({
           orderList: res.data.data
         })
       },
       fail(res) {
-        console.log("请求入港单 fail：\n" + JSON.stringify(res));
+        console.log("请求收货单 fail：\n" + JSON.stringify(res));
       },
       complete(res) {
-        console.log("请求入港单 complete：\n" + JSON.stringify(res));
+        console.log("请求收货单 complete：\n" + JSON.stringify(res));
         wx.hideLoading();
+        wx.stopPullDownRefresh();
       },
     })
   },
@@ -324,7 +334,7 @@ Page({
   },
 
   /**
-   * 入港
+   * 点击签收|到达按钮
    */
   tapInHarbour: function (e) {
     let tempOrder = this.data.orderList[e.currentTarget.dataset.tapindex];
@@ -336,7 +346,7 @@ Page({
   },
 
   /**
-   * 确认入港
+   * 确认到达
    */
   requestConfirmInHarbour: function (orderIndex) {
     const tempIndex = orderIndex;
@@ -371,10 +381,10 @@ Page({
         orderType: order.orderStates[0].orderType,
       },
       success(res) {
-        console.log("确定入港 success: \n" + JSON.stringify(res));
+        console.log("确定到达 success: \n" + JSON.stringify(res));
         if (res.data.prompt != null && res.data.prompt == "Error") {
 
-          let tempMsg = '系统异常，入港失败'
+          let tempMsg = '系统异常，到达失败'
           if (order.orderStates[0].orderType == '待出港') {
             tempMsg = '系统异常，出港失败'
           }
@@ -387,7 +397,7 @@ Page({
             icon: 'none'
           })
         } else {
-          let tempMsg = '入港成功'
+          let tempMsg = '成功到达'
           if (order.orderStates[0].orderType == '待出港') {
             tempMsg = '出港成功'
           }
@@ -401,8 +411,8 @@ Page({
         }
       },
       fail(res) {
-        console.log("确定入港 fail: \n" + JSON.stringify(res));
-        let tempMsg = '网络异常，入港失败'
+        console.log("确定到达 fail: \n" + JSON.stringify(res));
+        let tempMsg = '网络异常，到达失败'
         if (order.orderStates[0].orderType == '待出港') {
           tempMsg = '网络异常，出港失败'
         }
@@ -412,7 +422,7 @@ Page({
         })
       },
       complete(res) {
-        console.log("确定入港 complete: \n" + JSON.stringify(res));
+        console.log("确定到达 complete: \n" + JSON.stringify(res));
         wx.hideLoading();
       }
     })

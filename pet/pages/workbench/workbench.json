@@ -2,5 +2,6 @@
   "usingComponents": {
     "i-icon": "/dist/icon/index"
   },
-  "navigationBarTitleText": "工作单"
+  "navigationBarTitleText": "工作单",
+  "enablePullDownRefresh": true
 }

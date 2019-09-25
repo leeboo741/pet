@@ -2,5 +2,6 @@
   "usingComponents": {
     "i-icon":"/dist/icon/index"
   },
-  "navigationBarTitleText": "驿站"
+  "navigationBarTitleText": "驿站",
+  "enablePullDownRefresh": true
 }

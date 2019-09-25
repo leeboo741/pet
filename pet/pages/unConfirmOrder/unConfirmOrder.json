@@ -2,5 +2,6 @@
   "usingComponents": {
     "i-icon": "/dist/icon/index"
   },
-  "navigationBarTitleText": "确认收货"
+  "navigationBarTitleText": "确认收货",
+  "enablePullDownRefresh": true
 }

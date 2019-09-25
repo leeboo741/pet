@@ -20,12 +20,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    let that = this;
-    loginUtil.checkLogin(function alreadyLoginCallback(state) {
-      if (state) {
-        that.requestMessageData();
-      }
-    })
+    wx.startPullDownRefresh();
   },
 
   /**
@@ -60,7 +55,7 @@ Page({
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
-
+    this.getMessageData();
   },
 
   /**
@@ -78,9 +73,22 @@ Page({
   },
 
   /**
+   * 获取数据
+   */
+  getMessageData: function () {
+    let that = this;
+    loginUtil.checkLogin(function alreadyLoginCallback(state) {
+      if (state) {
+        that.requestMessageData();
+      }
+    })
+  },
+
+  /**
    * 请求数据
    */
   requestMessageData: function () {
+    this.closeGetNewMessageInterval();
     let that = this;
     wx.request({
       url: config.URL_Service + config.URL_Get_Message + loginUtil.getOpenId(),
@@ -99,6 +107,7 @@ Page({
       },
       complete(res) {
         console.log("获取站内信 complete:\n" + JSON.stringify(res));
+        wx.stopPullDownRefresh();
       }
     })
   },
