@@ -399,7 +399,7 @@ Page({
               } else if (res.cancel) {
                 console.log('用户点击稍后支付')
                 wx.switchTab({
-                  url: '/pages/index/index2',
+                  url: '/pages/index/index',
                 })
               }
             }

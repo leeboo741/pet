@@ -120,7 +120,7 @@ Page({
     loginUtil.deleteUserInfo(function callback(state){
       if (state) {
         wx.switchTab({
-          url: '/pages/index/index2',
+          url: '/pages/index/index',
         })
       } else {
         wx.showToast({
