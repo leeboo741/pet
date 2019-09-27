@@ -6,6 +6,10 @@
  * ==============================================================================================
  */
 
+const app = getApp();
+const config = require("../../utils/config.js");
+const loginUtil = require("../../utils/loginUtils.js");
+
 Page({
 
   /**
@@ -103,7 +107,11 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
+    loginUtil.checkLogin(function alreadyLoginCallback(state) {
+      if (state) {
+        loginUtil.login()
+      }
+    })
   },
 
   /**
