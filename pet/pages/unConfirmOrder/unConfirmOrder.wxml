@@ -18,7 +18,7 @@
     <view class='block-fillet bill-info-box'>
       <view class='bill-info-icon'><icon class='iconfont iconfeiji1'></icon></view>
       <view class='bill-info-billNo'>{{orderItem.orderNo}}</view>
-      <view class='bill-info-time'>{{orderItem.express}}</view>
+      <view class='bill-info-time'>{{orderItem.transport.station.stationName}}</view>
       <view class='block-fillet bill-info-split-line'></view>
       <view class='block-fillet bill-info-content'>
         <view class='bill-info-way'>
@@ -33,7 +33,7 @@
           <view class='bill-info-pet-mode'>{{parse.getTransportType(orderData.transport.transportType)}}</view>
         </view>
         <view class="bill-info-person"
-              wx:if='{{orderItem.senderName!= null || orderItem.senderPhone!=null}}'>
+              wx:if='{{parse.showSender(orderItem, userInfo)}}'>
           <view class="bill-info-person-label">寄件人：</view>
           <view class="bill-info-person-name">{{orderItem.senderName}}</view>
           <view class="bill-info-person-label">电话：</view>
@@ -42,7 +42,7 @@
                 data-phone="{{orderItem.senderPhone}}">{{orderItem.senderPhone}}</view>
         </view>
         <view class="bill-info-person"
-              wx:if='{{orderItem.receiverName!= null || orderItem.receiverPhone!=null}}'>
+              wx:if='{{parse.showReceiver(orderItem, userInfo)}}'>
           <view class="bill-info-person-label">收件人：</view>
           <view class="bill-info-person-name">{{orderItem.receiverName}}</view>
           <view class="bill-info-person-label">电话：</view>
@@ -56,11 +56,11 @@
           <view class='bill-info-pay-info'
                 wx:if='{{orderItem.orderStates[0].orderType!= null}}'>{{orderItem.orderStates[0].orderType}}</view>
           <view class='bill-info-pay-money'
-                wx:if='{{orderItem.paymentAmount!= null}}'>￥{{orderItem.paymentAmount}}</view>
+                wx:if='{{orderItem.paymentAmount!= null && userInfo.role != 3}}'>￥{{orderItem.paymentAmount}}</view>
         </view>
         <!-- 分配人员 -->
         <view class="bill-info-staff"
-              wx:if='{{userInfo.role == 2}}'>
+              wx:if='{{userInfo.role == 1}}'>
           <view class="bill-info-staff-title {{orderItem.orderAssignments==null||orderItem.orderAssignments.length<=0?'color-red':'color-normal'}}">
           {{orderItem.orderAssignments==null||orderItem.orderAssignments.length<=0?'暂未分配人员':'已分配人员：'}}
           </view>
@@ -251,7 +251,13 @@
 
       <!-- 按钮区域 -->
       <view class='bill-operate-box'>
-        <view class="bill-operate-button-complain"
+        <view class='bill-operate-button'
+              bindtap='tapMoreOperate' 
+              data-tapindex="{{orderIndex}}"
+              data-orderno='{{orderItem.orderNo}}'>
+        更多
+        </view>
+        <!-- <view class="bill-operate-button-complain"
               bindtap="tapAllocation"
               data-tapindex='{{orderIndex}}'
               wx:if='{{parse.showAlloctionBtn(orderItem, userInfo)}}'>
@@ -262,7 +268,7 @@
               data-tapindex="{{orderIndex}}"
               data-orderno='{{orderItem.orderNo}}'>
         详情
-        </view>
+        </view> -->
         <view class='bill-operate-button'
               bindtap='tapChangeDeliver' 
               data-tapindex="{{orderIndex}}"
@@ -308,6 +314,22 @@
 
 <wxs module='parse'>
   module.exports={
+    showSender: function(orderItem, userInfo) {
+      if (userInfo.role != 3) {
+        return true;
+      } else if (orderItem.orderStates[0].orderType == "待取件") {
+        return true;
+      }
+      return false;
+    },
+    showReceiver: function(orderItem, userInfo) {
+      if (userInfo.role != 3) {
+        return true;
+      } else if (orderItem.orderStates[0].orderType != "待取件") {
+        return true;
+      }
+      return false;
+    },
     showChangeDeliver: function(orderItem) {
       if (orderItem.orderStates[0].orderType == "待签收") {
         return true;
@@ -324,7 +346,7 @@
       }
     },
     showAlloctionBtn: function(order, user) {
-      if (user.role == 2) {
+      if (user.role == 1) {
         return true;
       }
       return false;

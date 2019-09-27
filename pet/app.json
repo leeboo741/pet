@@ -25,7 +25,8 @@
     "pages/applyJoin/applyJoin",
     "pages/registerStation/registerStation",
     "pages/registerStaff/registerStaff",
-    "pages/bluetooth/search"
+    "pages/bluetooth/search",
+    "pages/bluetooth/print"
   ],
   "window": {
     "backgroundTextStyle": "light",

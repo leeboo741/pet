@@ -3,6 +3,11 @@ const app = getApp();
 const config = require("../../utils/config.js");
 const loginUtil = require("../../utils/loginUtils.js");
 const util = require("../../utils/util.js");
+
+
+var QQMapWX = require('../../libs/qqmap-wx-jssdk.min.js');
+var qqmapsdk;
+
 Page({
 
   /**
@@ -19,6 +24,11 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+
+    qqmapsdk = new QQMapWX({
+      key: config.Key_QQ_Map
+    });
+
     this.setData({
       type: options.type,
       userInfo: loginUtil.getUserInfo()
@@ -208,5 +218,42 @@ Page({
     wx.makePhoneCall({
       phoneNumber: phoneNumber,
     })
+  },
+
+  /**
+   * 导航
+   */
+  tapToNavigation: function (e) {
+    let targetAddress = e.currentTarget.dataset.address;
+    if (util.checkEmpty(targetAddress)) {
+      return;
+    }
+    let that = this;
+    wx.showLoading({
+      title: '请稍等...',
+    })
+    qqmapsdk.geocoder({
+      //获取表单传入地址
+      address: targetAddress, //地址参数，例：固定地址，address: '北京市海淀区彩和坊路海淀西大街74号'
+      success: function (res) {//成功后的回调
+        console.log(res);
+        var res = res.result;
+        var latitude = res.location.lat;
+        var longitude = res.location.lng;
+        //根据地址解析在地图上标记解析地址位置
+        wx.openLocation({
+          latitude: latitude,
+          longitude: longitude,
+        })
+      },
+      fail: function (error) {
+        console.error(error);
+      },
+      complete: function (res) {
+        console.log(res);
+        wx.hideLoading();
+      }
+    })
+    
   }
 })

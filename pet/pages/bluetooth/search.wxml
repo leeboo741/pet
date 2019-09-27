@@ -1,10 +1,10 @@
 <!--pages/bluetooth/search.wxml-->
-<button class="btn" 
+<!-- <button class="btn" 
         type="primary" 
         bindtap="startSearch" 
         loading='{{isScanning}}'>
 开始搜索
-</button>
+</button> -->
 <view wx:for="{{list}}" 
       wx:for-item="item" 
       data-title="{{item.deviceId}}" 
@@ -14,10 +14,10 @@
       bindtap="bindViewTap">
   <view class="item">
     <div class="deviceId block">
-    {{item.deviceId}}
+    设备ID：{{item.deviceId}}
     </div>
     <div class="name block">
-    {{item.name}}
+    设备名称：{{item.name}}
     </div>
   </view>    
 </view>  

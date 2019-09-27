@@ -11,7 +11,7 @@
     <i-cell wx:if='{{orderData.state!=null}}'
             title='订单状态' 
             value='{{orderData.state}}'></i-cell>
-    <i-cell wx:if='{{orderData.paymentAmount!=null}}'
+    <i-cell wx:if='{{orderData.paymentAmount!=null && userInfo.role != 3}}'
             title='订单金额' 
             value='￥{{orderData.paymentAmount}}'></i-cell>
     <i-cell wx:if='{{orderData.transport.station.stationName!=null}}'
@@ -44,10 +44,16 @@
             value='{{(orderData.addedAirBox==null||orderData.addedAirBox==0)?"否":"是"}}'></i-cell>
     <i-cell title='上门接宠' 
             value='{{(orderData.receiptAddress==null||orderData.receiptAddress.length<=0)?"否":"是"}}' 
-            label="{{orderData.receiptAddress}}"></i-cell>
+            label="{{orderData.receiptAddress}}"
+            bindtap='tapToNavigation'
+            data-address='{{orderData.receiptAddress}}'
+            wx:if='{{parse.showReceipt(orderData, userInfo)}}'></i-cell>
     <i-cell title='送宠到家' 
             value='{{(orderData.sendAddress==null||orderData.sendAddress.length<=0)?"否":"是"}}' 
-            label="{{orderData.sendAddress}}"></i-cell>
+            label="{{orderData.sendAddress}}"
+            bindtap='tapToNavigation'
+            data-address='{{orderData.sendAddress}}'
+            wx:if='{{parse.showSend(orderData, userInfo)}}'></i-cell>
     <i-cell title='保价' 
             value='{{(orderData.petAmount==null||orderData.petAmount==0)?"否":"是"}}' 
             label="{{(orderData.petAmount==null||orderData.petAmount==0)?'':'￥'+order.petAmount}}"></i-cell>
@@ -73,14 +79,16 @@
       </view>         
     </i-cell>
     <i-cell title='地址' 
-            label="{{parse.getTempDeliverAddress(orderData)}}"></i-cell>
+            label="{{parse.getTempDeliverAddress(orderData)}}"
+            bindtap='tapToNavigation'
+            data-address='{{parse.getTempDeliverAddress(orderData)}}'></i-cell>
   </i-cell-group>
 </i-panel>
 <i-panel wx:if='{{orderData.senderName!=null || orderData.senderPhone!=null || orderData.receiverPhone!=null || orderData.receiverName!=null}}'
          i-class="panel" 
          title='收寄人信息'>
   <i-cell-group>
-    <i-cell wx:if='{{orderData.senderName!=null || orderData.senderPhone!=null}}'
+    <i-cell wx:if='{{parse.showReceipt(orderData, userInfo)}}'
             title='寄件人' 
             value=''
             label='{{orderData.senderPhone!=null?orderData.senderPhone:""}}'
@@ -93,7 +101,7 @@
       {{orderData.senderName!=null?orderData.senderName:""}}
       </view> 
     </i-cell>
-    <i-cell wx:if='{{orderData.receiverPhone!=null || orderData.receiverName!=null}}'
+    <i-cell wx:if='{{parse.showSend(orderData, userInfo)}}'
             title='收件人' 
             value='' 
             label='{{orderData.receiverPhone!=null?orderData.receiverPhone:""}}'
@@ -110,7 +118,7 @@
 </i-panel>
 <i-panel i-class="panel" 
          title='备注'
-         wx:if="{{orderData.remarks!=null && orderData.remarks.length > 0}}">
+         wx:if="{{(orderData.remarks!=null && orderData.remarks.length > 0) || (orderData.orderRemarksList!=null && orderData.orderRemarksList.length > 0) }}">
   <i-cell title='{{orderData.remarks}}'>
   </i-cell>
   <i-cell wx:if='{{userInfo.role != 0 && type != 0}}'
@@ -194,6 +202,22 @@
 
 <wxs module='parse'>
   module.exports={
+    showReceipt: function(orderItem, userInfo) {
+      if (userInfo.role != 3) {
+        return true;
+      } else if (orderItem.state == "待取件") {
+        return true;
+      }
+      return false;
+    },
+    showSend: function(orderItem, userInfo) {
+      if (userInfo.role != 3) {
+        return true;
+      } else if (orderItem.state != "待取件") {
+        return true;
+      }
+      return false;
+    },
     getTempDeliverName: function(order){
       if (order.orderTempDelivers != null && order.orderTempDelivers.length > 0) {
         return order.orderTempDelivers[order.orderTempDelivers.length-1].recipientName;

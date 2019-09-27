@@ -16,13 +16,18 @@ Page({
     finishPage: false, // 页面是否终结
     userInfo: null,
     searchKey: null, // 搜索关键字
+
+    services: [], // 链接的 蓝牙设备 服务列表
+    serviceId: 0, // 可用 服务 id
+    writeCharacter: false, // 是否查到 写入 服务
+    readCharacter: false, // 是否查到 读取 服务
+    notifyCharacter: false, // 是否查到 通知 服务
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    wx.startPullDownRefresh();
   },
 
   /**
@@ -36,7 +41,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    wx.startPullDownRefresh();
   },
 
   /**
@@ -404,10 +409,11 @@ Page({
           wx.showToast({
             title: tempMsg,
           })
-          that.data.orderList.splice(tempIndex, 1);
-          that.setData({
-            orderList: that.data.orderList
-          })
+          // that.data.orderList.splice(tempIndex, 1);
+          // that.setData({
+          //   orderList: that.data.orderList
+          // })
+          wx.startPullDownRefresh();
         }
       },
       fail(res) {
@@ -469,10 +475,11 @@ Page({
           wx.showToast({
             title: '收货成功',
           })
-          that.data.orderList.splice(orderIndex, 1);
-          that.setData({
-            orderList: that.data.orderList
-          })
+          // that.data.orderList.splice(orderIndex, 1);
+          // that.setData({
+          //   orderList: that.data.orderList
+          // })
+          wx.startPullDownRefresh();
         } else {
           wx.showToast({
             title: '收货失败',
@@ -570,29 +577,228 @@ Page({
   },
 
   /**
-   * 点击分配
+   * 点击更多
    */
-  tapAllocation: function (e) {
-    let allocationStaffList = this.data.orderList[e.currentTarget.dataset.tapindex].orderAssignments;
-    if (util.checkEmpty(allocationStaffList)) {
-      allocationStaffList = "";
-    } else {
-      allocationStaffList = JSON.stringify(allocationStaffList);
+  tapMoreOperate: function (e) {
+    let itemList = ["打印标签", "订单详情"];
+    if (this.data.userInfo.role == 1) {
+      itemList.push("分配订单")
     }
-    wx.navigateTo({
-      url: '/pages/selectorStaff/selectorStaff?orderno=' + this.data.orderList[e.currentTarget.dataset.tapindex].orderNo + '&stafflist=' + allocationStaffList,
+    let index = e.currentTarget.dataset.tapindex;
+    let orderNo = e.currentTarget.dataset.orderno;
+    let that = this;
+    wx.showActionSheet({
+      itemList: itemList,
+      success(res) {
+        if (res.tapIndex == 0) {
+          app.globalData.printOrder = that.data.orderList[index];
+          if (util.checkEmpty(app.BLEInformation.deviceName)) {
+            wx.navigateTo({
+              url: '/pages/bluetooth/search',
+            })
+          } else {
+            // 重置状态
+            that.setData({
+              serviceId: 0,
+              writeCharacter: false,
+              readCharacter: false,
+              notifyCharacter: false
+            })
+            console.log(app.BLEInformation.deviceId)
+            wx.showLoading({
+              title: '正在连接',
+            })
+            // 链接蓝牙设备
+            wx.createBLEConnection({
+              deviceId: app.BLEInformation.deviceId,
+              // 链接成功
+              success: function (res) {
+                console.log(res)
+                // 获取蓝牙设备 服务 service id
+                that.getSeviceId()
+              },
+              // 链接失败
+              fail: function (e) {
+                wx.showModal({
+                  title: '提示',
+                  content: '连接失败',
+                  confirmText: "重选打印机",
+                  success(res) {
+                    if (res.confirm) {
+                      wx.navigateTo({
+                        url: '/pages/bluetooth/search',
+                      })
+                    }
+                  }
+                })
+                console.log(e)
+                wx.hideLoading()
+              },
+              // 链接完成
+              complete: function (e) {
+                console.log(e)
+              }
+            })
+          }
+        } else if (res.tapIndex == 1) {
+          wx.navigateTo({
+            url: '../orderDetail/orderDetail?orderno=' + orderNo + '&type=1',
+          })
+        } else {
+          let allocationStaffList = that.data.orderList[index].orderAssignments;
+          if (util.checkEmpty(allocationStaffList)) {
+            allocationStaffList = "";
+          } else {
+            allocationStaffList = JSON.stringify(allocationStaffList);
+          }
+          wx.navigateTo({
+            url: '/pages/selectorStaff/selectorStaff?orderno=' + orderNo + '&stafflist=' + allocationStaffList,
+          })
+        }
+      },
     })
   },
 
   /**
-   * 订单详情
+   * 获取 蓝牙设备 service 服务 id
    */
-  tapOrderDetail: function (e) {
-    console.log("详情：\n" + e.currentTarget.dataset.orderno)
-    wx.navigateTo({
-      url: '../orderDetail/orderDetail?orderno=' + e.currentTarget.dataset.orderno + '&type=1',
+  getSeviceId: function () {
+    var that = this
+    var platform = app.BLEInformation.platform
+    console.log(app.BLEInformation.deviceId)
+    // 获取蓝牙设备所有service(服务)
+    wx.getBLEDeviceServices({
+      deviceId: app.BLEInformation.deviceId,
+      success: function (res) {
+        console.log(res)
+        that.setData({
+          services: res.services
+        })
+        // 获取蓝牙设备 特征值 信息
+        that.getCharacteristics()
+      }, fail: function (e) {
+        console.log(e)
+      }, complete: function (e) {
+        console.log(e)
+      }
     })
   },
+
+  /**
+   * 获取蓝牙设备 特征值 信息
+   */
+  getCharacteristics: function () {
+    var that = this
+    var list = that.data.services // 服务
+    var num = that.data.serviceId // 服务id(index) 0
+    var write = that.data.writeCharacter // 写入服务以获取 false
+    var read = that.data.readCharacter // 读取服务以获取 false
+    var notify = that.data.notifyCharacter // 通知服务以获取 false
+    // 获取蓝牙设备 特征值 信息
+    wx.getBLEDeviceCharacteristics({
+      deviceId: app.BLEInformation.deviceId,
+      serviceId: list[num].uuid,
+      success: function (res) {
+        console.log(res)
+        // 循环 服务 service 特征值
+        for (var i = 0; i < res.characteristics.length; ++i) {
+          // 服务 特征值 属性列表
+          var properties = res.characteristics[i].properties
+          // 服务 特征值 uuid
+          var item = res.characteristics[i].uuid
+          // 如果通知服务未获取 判断 特征值 是否 可通知
+          if (!notify) {
+            // 如果可通知 记录下来
+            if (properties.notify) {
+              app.BLEInformation.notifyCharaterId = item // 特征值 id
+              app.BLEInformation.notifyServiceId = list[num].uuid // 服务id
+              notify = true // 通知服务已获取
+            }
+          }
+          // 如果写入服务未获取 判断 特征值 是否 可写入
+          if (!write) {
+            // 如果可写入 记录下来
+            if (properties.write) {
+              app.BLEInformation.writeCharaterId = item // 特征值 id
+              app.BLEInformation.writeServiceId = list[num].uuid // 服务id
+              write = true // 写入服务已获取
+            }
+          }
+          // 如果读取服务未获取 判断 特征值 是否 可读取
+          if (!read) {
+            // 如果可读取 记录下来
+            if (properties.read) {
+              app.BLEInformation.readCharaterId = item // 特征值 id
+              app.BLEInformation.readServiceId = list[num].uuid // 服务id
+              read = true // 读取服务已获取
+            }
+          }
+        } // 结束循环
+        // 是否 写入 读取 通知 同时通过
+        // 如果通过 进入打印页面
+        // 如果没通过 查下一个服务
+        // 如果没通过 并且没有下一服务 弹窗提示
+        if (!write || !notify || !read) {
+          // 要查询的 服务index + 1
+          num++
+          that.setData({
+            writeCharacter: write,
+            readCharacter: read,
+            notifyCharacter: notify,
+            serviceId: num
+          })
+          // 如果 已经全部服务 都已经查过了 还是没法 成立 通知外部
+          // 如果 没有查询完成全部 服务 ，继续查询
+          if (num == list.length) {
+            wx.showModal({
+              title: '提示',
+              content: '找不到该读写的特征值',
+            })
+          } else {
+            that.getCharacteristics()
+          }
+        } else {
+          that.openControl()
+        }
+      }, fail: function (e) {
+        console.log(e)
+      }, complete: function (e) {
+        console.log("write:" + app.BLEInformation.writeCharaterId)
+        console.log("read:" + app.BLEInformation.readCharaterId)
+        console.log("notify:" + app.BLEInformation.notifyCharaterId)
+      }
+    })
+  },
+  openControl: function () {
+    wx.navigateTo({
+      url: '/pages/bluetooth/print',
+    })
+  },
+
+  /**
+   * 点击分配
+   */
+  // tapAllocation: function (e) {
+  //   let allocationStaffList = this.data.orderList[e.currentTarget.dataset.tapindex].orderAssignments;
+  //   if (util.checkEmpty(allocationStaffList)) {
+  //     allocationStaffList = "";
+  //   } else {
+  //     allocationStaffList = JSON.stringify(allocationStaffList);
+  //   }
+  //   wx.navigateTo({
+  //     url: '/pages/selectorStaff/selectorStaff?orderno=' + this.data.orderList[e.currentTarget.dataset.tapindex].orderNo + '&stafflist=' + allocationStaffList,
+  //   })
+  // },
+
+  /**
+   * 订单详情
+   */
+  // tapOrderDetail: function (e) {
+  //   console.log("详情：\n" + e.currentTarget.dataset.orderno)
+  //   wx.navigateTo({
+  //     url: '../orderDetail/orderDetail?orderno=' + e.currentTarget.dataset.orderno + '&type=1',
+  //   })
+  // },
 
   /**
    * 拨打电话

@@ -78,7 +78,7 @@
         <label>工单</label>
       </view>
       <view class="btnOper"
-            hidden="{{userInfo.role != 2}}"
+            hidden="{{userInfo.role != 1}}"
             bindtap='gotoApproval'>
         <i-icon type="task"
                 color="#F1B000"

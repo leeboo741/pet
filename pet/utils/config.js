@@ -4,17 +4,17 @@
  */
 /** =================================================== */
 const Service_Phone = "4007778889"; // 客服电话
-const Version_Name = "1.2.10"; // 版本名称
-const Version_Code = 11; // 版本编号
+const Version_Name = "1.3.1"; // 版本名称
+const Version_Code = 12; // 版本编号
 
 /** =================================================== */
 /** 
  *                      网络请求
  */
 /** =================================================== */
-// const URL_Service = "https://pet.tyferp.com"; // 路径 
+const URL_Service = "https://pet.tyferp.com"; // 路径 
 // const URL_Service = "http://huji820.oicp.net"; // 路径
-const URL_Service = "http://192.168.3.111:5050"; // 路径
+// const URL_Service = "http://192.168.3.111:5050"; // 路径
 // const URL_Service = "http://192.168.3.233:5050"; // 路径
 
 const URL_Register = "/api/customer/"; // 注册
@@ -86,8 +86,9 @@ const Prompt_Error = "Error"; // 错误标识
 const Prompt_NotExist = "NotExist"; // 不存在标识
 
 const Role_Customer = 0; // 用户角色
-const Role_Staff_Nomal = 1; // 普通员工角色
-const Role_Staff_Manager = 2; // 管理员
+const Role_Staff_Manager = 1; // 管理员
+const Role_Staff_Service = 2; // 客服
+const Role_Staff_Diver = 3; // 司机
 
 const Order_State_ToPack = "待揽件";
 const Order_State_ToInPort = "待入港";
@@ -106,6 +107,8 @@ const Order_State_Completed = "已完成";
 /** =================================================== */
 
 const Key_LastGetMessageTime = "LastGetMessageTime"; // 最后获取站内信时间
+
+const Key_QQ_Map = "K5JBZ-QM7KP-Z54D5-LIMBQ-AFFNS-7ABT6"; // 腾讯地图 app_key
 
 /** =================================================== */
 /** 
@@ -185,8 +188,9 @@ module.exports = {
   Prompt_NotExist, // 不存在标识
 
   Role_Customer, // 用户角色
-  Role_Staff_Nomal, // 员工角色
   Role_Staff_Manager, // 管理员
+  Role_Staff_Service, // 客服
+  Role_Staff_Diver, // 司机
 
   Order_State_ToPack, // 待揽件
   Order_State_ToInPort, // 待入港
@@ -200,6 +204,7 @@ module.exports = {
   Order_State_Completed, // 已完成
 
   Key_LastGetMessageTime, // 最后获取站内信时间
+  Key_QQ_Map, // 腾讯地图appkey
 
   Value_Default_LastGetMessageTime,
 }
