@@ -9,6 +9,7 @@
 const app = getApp();
 const config = require("../../utils/config.js");
 const loginUtil = require("../../utils/loginUtils.js");
+const util = require("../../utils/util.js");
 
 Page({
 
@@ -150,8 +151,16 @@ Page({
    * 点击
    */
   tapGrid: function (e) {
+    let targetUrl = this.data.gridList[e.currentTarget.dataset.index].targetUrl
+    if (util.checkEmpty(targetUrl)) {
+      wx.showToast({
+        title: '功能即将开放，敬请期待',
+        icon: 'none'
+      })
+      return;
+    }
     wx.navigateTo({
-      url: this.data.gridList[e.currentTarget.dataset.index].targetUrl,
+      url: targetUrl,
     })
   },
 

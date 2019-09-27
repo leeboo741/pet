@@ -44,6 +44,7 @@ Page({
     sendAddress: null, // 送宠地址
     insuredPrice: null, // 保价金额
     petCan: null, // 免费营养罐头
+    guarantee: null, // 中介担保
 
     orderNo: null, // 订单编号
   },
@@ -67,6 +68,11 @@ Page({
     if (options.petcan != null) {
       this.setData({
         petCan: options.petcan
+      })
+    }
+    if (options.guarantee != null) {
+      this.setData({
+        guarantee: options.guarantee
       })
     }
     if (options.airbox != null) {
@@ -344,6 +350,11 @@ Page({
       tempOrderObj.giveFood = this.data.petCan;
     }
 
+    tempOrderObj.guarantee = "0";
+    if (this.data.guarantee != null) {
+      tempOrderObj.guarantee = this.data.guarantee;
+    }
+
     tempOrderObj.receiptAddress = "";
     if (this.data.receiveAddress != null) {
       tempOrderObj.receiptAddress = this.data.receiveAddress;
@@ -454,6 +465,7 @@ Page({
           signType: res.data.data.signType,
           paySign: res.data.data.paySign,
           success(res){
+            app.globalData.showToBeShip = true;
             wx.switchTab({
               url: '/pages/me/me',
             })

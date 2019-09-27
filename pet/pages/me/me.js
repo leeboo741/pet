@@ -67,6 +67,12 @@ Page({
         that.setData({
           userInfo: loginUtil.getUserInfo()
         })
+        if (app.globalData.showToBeShip) {
+          that.setData({
+            selectedBillType: 1
+          })
+          app.globalData.showToBeShip = false;
+        }
         that.requestBillList(that.data.selectedBillType);
         that.requestBalance();
         that.startGetNewMessageInterval();
@@ -549,6 +555,12 @@ Page({
           package: res.data.data.package,
           signType: res.data.data.signType,
           paySign: res.data.data.paySign,
+          success(res){
+            that.setData({
+              selectedBillType: 1
+            })
+            that.requestBillList(that.data.selectedBillType);
+          }
         })
       },
       fail(res) {

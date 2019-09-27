@@ -50,6 +50,9 @@ App({
     platform: "",
     screenWidth: wx.getSystemInfoSync().screenWidth,
     screenHeight: wx.getSystemInfoSync().screenHeight,
+
+    showToBeShip: false, // 个人中心 是否展示待发货页面
+
   },
 
   BLEInformation: {

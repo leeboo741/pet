@@ -29,7 +29,14 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    wx.startPullDownRefresh();
+  },
 
+  /**
+   * 开始刷新
+   */
+  startRefresh: function () {
+    wx.startPullDownRefresh();
   },
 
   /**
@@ -43,7 +50,6 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    wx.startPullDownRefresh();
   },
 
   /**
@@ -509,7 +515,7 @@ Page({
         console.log(res.tapIndex)
         if (res.tapIndex == 0) {
           wx.chooseImage({
-            sourceType: ['album'],
+            sourceType: ['camera'],
             count: 20,
             success: function (res) {
               if (tempOrder.uploadImages == null) {
@@ -524,7 +530,7 @@ Page({
           })
         } else if (res.tapIndex == 1) {
           wx.chooseVideo({
-            sourceType: ['album'],
+            sourceType: ['camera'],
             maxDuration: maxVideoLength,
             success(res) {
               if (tempOrder.uploadVideos == null) {
@@ -539,7 +545,7 @@ Page({
           })
         } else if (res.tapIndex == 2) {
           wx.chooseImage({
-            sourceType: ['camera'],
+            sourceType: ['album'],
             count: 20,
             success: function (res) {
               if (tempOrder.uploadImages == null) {
@@ -554,7 +560,7 @@ Page({
           })
         } else {
           wx.chooseVideo({
-            sourceType: ['camera'],
+            sourceType: ['album'],
             maxDuration: maxVideoLength,
             success(res) {
               if (tempOrder.uploadVideos == null) {

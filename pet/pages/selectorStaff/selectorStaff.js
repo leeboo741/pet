@@ -187,6 +187,13 @@ Page({
             showCancel: false,
             success(res){
               if(res.confirm) {
+                var pages = getCurrentPages();
+                if (pages.length > 1) { //说明有上一页存在
+                  //上一个页面实例对象
+                  var prePage = pages[pages.length - 2];
+                  //关键在这里，调用上一页的函数
+                  prePage.startRefresh()
+                }
                 wx.navigateBack({})
               }
             }

@@ -59,6 +59,8 @@
             label="{{(orderData.petAmount==null||orderData.petAmount==0)?'':'￥'+order.petAmount}}"></i-cell>
     <i-cell title='免费营养罐头' 
             value='{{(orderData.giveFood==null||orderData.giveFood=="否")?"否":"是"}}'></i-cell>
+    <i-cell title='中介担保' 
+            value='{{(orderData.guarantee==null||orderData.guarantee=="否")?"否":"是"}}'></i-cell>
   </i-cell-group>
 </i-panel>
 <i-panel i-class='panel'

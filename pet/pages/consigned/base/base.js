@@ -100,10 +100,15 @@ Page({
       price: 0, // 保价金额
     },
     addServerPetCan: {
-      name: "免费营养罐头", // 名称
+      name: "免费旅行餐", // 名称
       selected: false, // 是否选中
       alert: "免费提供给宠物在运输途中食用，非强制选用，本公司不承担由此造成的任何后果，选择即视为自愿接受此声明的约束"
-    }
+    },
+    addGuarantee: {
+      name: "中介担保", // 增值服务名称
+      selected: false, // 是否选中
+      alert: "免费", // 提示
+    },
   },
 
   /* ============================= 页面生命周期 Start ============================== */
@@ -229,6 +234,16 @@ Page({
     this.data.addServerPetCan.selected = !this.data.addServerPetCan.selected;
     this.setData({
       addServerPetCan: this.data.addServerPetCan
+    })
+  },
+
+  /**
+   * 点击中介担保
+   */
+  tapAddServerGuarantee: function(){
+    this.data.addGuarantee.selected = !this.data.addGuarantee.selected;
+    this.setData({
+      addGuarantee: this.data.addGuarantee
     })
   },
 
@@ -618,6 +633,9 @@ Page({
     if (this.data.addServerPetCan.selected) {
       tempUrl = tempUrl + "&petcan=1";
     }
+    if (this.data.addGuarantee.selected) {
+      tempUrl = tempUrl + "&guarantee=1";
+    }
     if (this.data.addServerAirBox.selected) {
       tempUrl = tempUrl + "&airbox=1";
     }
@@ -817,6 +835,10 @@ Page({
     tempData.giveFood = "0";
     if (this.data.addServerPetCan.selected) {
       tempData.giveFood = "1";
+    }
+    tempData.guarantee = "0";
+    if (this.data.addGuarantee.selected) {
+      tempData.guarantee = "1";
     }
     tempData.petAmount = 0;
     if (this.data.addServerInsuredPrice.selected) {

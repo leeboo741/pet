@@ -223,6 +223,21 @@
             </view>
           </view>
         </view>
+        <view class='addedServer-item'>
+          <view class='addServer-info' 
+                bindtap='tapAddServerGuarantee'>
+            <icon class="iconfont icongouhao gou {{addGuarantee.selected?'choose':''}}">
+            </icon>
+            <label class="server {{addGuarantee.selected?'choose':''}}">
+            {{addGuarantee.name}}
+            </label>
+          </view>
+          <view class='addServer-append-info'>
+            <view class='air-box-info'>
+            {{addGuarantee.alert}}
+            </view>
+          </view>
+        </view>
       </view>
   </view>
 </view>
