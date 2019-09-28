@@ -126,10 +126,11 @@ Page({
       },
       success(res) {
         console.log("获取最新站内信 success:\n" + JSON.stringify(res));
-        if (res.data.code == 200) {
-          let tempList = res.data.data.concat(that.data.messageList);
-          that.setData({
-            messageList: tempList
+        if (res.data.code == 200 && res.data.data > 0) {
+          wx.showModal({
+            title: '有新消息',
+            content: '您有新的站内信，可以刷新页面查看',
+            showCancel: false
           })
           that.setLastGetMessageTime(util.formatTime(new Date()));
         }

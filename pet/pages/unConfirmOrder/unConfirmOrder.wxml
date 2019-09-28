@@ -30,7 +30,7 @@
         <view class='bill-info-pet'>
           <view class='bill-info-pet-type'>{{orderItem.petClassify.petClassifyName}}</view>
           <view class='bill-info-pet-info'>{{orderItem.petType.petTypeName}}</view>
-          <view class='bill-info-pet-mode'>{{parse.getTransportType(orderData.transport.transportType)}}</view>
+          <view class='bill-info-pet-mode'>{{parse.getTransportType(orderItem.transport.transportType)}}</view>
         </view>
         <view class="bill-info-person"
               wx:if='{{parse.showSender(orderItem, userInfo)}}'>
@@ -317,7 +317,7 @@
     showSender: function(orderItem, userInfo) {
       if (userInfo.role != 3) {
         return true;
-      } else if (orderItem.orderStates[0].orderType == "待取件") {
+      } else if (orderItem.orderStates[0].orderType == "待揽件") {
         return true;
       }
       return false;
@@ -325,7 +325,7 @@
     showReceiver: function(orderItem, userInfo) {
       if (userInfo.role != 3) {
         return true;
-      } else if (orderItem.orderStates[0].orderType != "待取件") {
+      } else if (orderItem.orderStates[0].orderType != "待揽件") {
         return true;
       }
       return false;
@@ -352,13 +352,13 @@
       return false;
     },
     getTransportType: function(type){
-      if (type == 0) {
+      if (type == 1) {
         return "专车";
-      } else if (type == 1) {
-        return "铁路";
       } else if (type == 2) {
-        return "单飞";
+        return "铁路";
       } else if (type == 3) {
+        return "单飞";
+      } else if (type == 4) {
         return "随机";
       } else {
         return "大巴";

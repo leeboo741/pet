@@ -353,7 +353,16 @@ Page({
     if (tempOrder.orderStates[0].orderType == config.Order_State_ToArrived) {
       this.requestConfirmInHarbour(e.currentTarget.dataset.tapindex)
     } else {
-      this.requestReceiveOrder(e.currentTarget.dataset.tapindex);
+      let that = this;
+      wx.showModal({
+        title: '确认签收',
+        content: '是否确认签收'+ tempOrder.orderNo,
+        success(res){
+          if (res.confirm) {
+            that.requestReceiveOrder(e.currentTarget.dataset.tapindex);
+          }
+        }
+      })
     }
   },
 

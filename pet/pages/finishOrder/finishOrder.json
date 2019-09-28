@@ -1,0 +1,5 @@
+{
+  "usingComponents": {},
+  "navigationBarTitleText": "全部单据",
+  "enablePullDownRefresh": true
+}

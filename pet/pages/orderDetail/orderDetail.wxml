@@ -207,7 +207,7 @@
     showReceipt: function(orderItem, userInfo) {
       if (userInfo.role != 3) {
         return true;
-      } else if (orderItem.state == "待取件") {
+      } else if (orderItem.state == "待揽件") {
         return true;
       }
       return false;
@@ -215,7 +215,7 @@
     showSend: function(orderItem, userInfo) {
       if (userInfo.role != 3) {
         return true;
-      } else if (orderItem.state != "待取件") {
+      } else if (orderItem.state != "待揽件") {
         return true;
       }
       return false;
@@ -256,13 +256,13 @@
       }
     },
     getTransportType: function(type){
-      if (type == 0) {
+      if (type == 1) {
         return "专车";
-      } else if (type == 1) {
-        return "铁路";
       } else if (type == 2) {
-        return "单飞";
+        return "铁路";
       } else if (type == 3) {
+        return "单飞";
+      } else if (type == 4) {
         return "随机";
       } else {
         return "大巴";

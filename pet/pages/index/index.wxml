@@ -53,16 +53,18 @@
 <!-- =========================================================================================== -->
 <!-- Big Button -->
 <!-- =========================================================================================== -->
-<view class='big-button-area'>
+<view class='big-button-area'
+      bindtap="tapBigButton">
   <image class='big-button-bg'
-         src='../../resource/transport_btn_bg.png'
+         src='https://petimg.tyferp.com/weapp/business_register.png'
          mode='scaleToFill'>
   </image>
 </view>
 <!-- =========================================================================================== -->
 <!-- 优惠券 -->
 <!-- =========================================================================================== -->
-<view class='coupon-title-area'>
+<view class='coupon-title-area'
+      hidden>
   <view class='coupon-title-left'>
     <view class='coupon-title'>
     优惠券
@@ -82,7 +84,8 @@
       wx:for-item='couponItem'
       wx:for-index='couponIndex'
       wx:key='{{couponIndex}}'
-      class='coupon-item'>
+      class='coupon-item'
+      hidden>
   <view class='coupon-item-info'>
     <view class='coupon-item-info-left'>
       <image class='coupon-item-image'

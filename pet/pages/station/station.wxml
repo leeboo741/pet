@@ -10,7 +10,7 @@
   <view class="station-item-content">
     <view class="station-logo-box">
       <image class="station-logo"
-             src="{{parse.getLogoPath(stationItem.stationLogo)}}"
+             src="{{parse.getLogoPath(stationItem.iconAddress)}}"
              lazy-load="{{true}}"
              mode="scaleToFit">
       </image>

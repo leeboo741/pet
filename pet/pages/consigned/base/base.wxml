@@ -130,7 +130,7 @@
             </view>
           </view>
         </view>
-        <view class='addedServer-item'>
+        <view class='addedServer-item' hidden="{{!addServerReceivePet.haveAbleStation}}">
           <view class='addServer-info' 
                 bindtap='tapAddServerReceivePet'>
             <icon class="iconfont icongouhao gou {{addServerReceivePet.selected?'choose':''}}">

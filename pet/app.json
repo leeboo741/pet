@@ -26,13 +26,14 @@
     "pages/registerStation/registerStation",
     "pages/registerStaff/registerStaff",
     "pages/bluetooth/search",
-    "pages/bluetooth/print"
+    "pages/bluetooth/print",
+    "pages/finishOrder/finishOrder"
   ],
   "window": {
     "backgroundTextStyle": "light",
     "backgroundColor": "#CCCCCC",
     "navigationBarBackgroundColor": "#fff",
-    "navigationBarTitleText": "宠物托运",
+    "navigationBarTitleText": "淘宠惠一站式服务中心",
     "navigationBarTextStyle": "black"
   },
   "tabBar": {

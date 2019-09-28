@@ -10,17 +10,20 @@ var util = require("../../../utils/util.js");
 const config = require("../../../utils/config.js");
 const loginUtil = require("../../../utils/loginUtils.js");
 
+const CheckAbleStation_Type_Receipt = 0;
+const CheckAbleStation_Type_Send = 1;
+
 Page({
   data: {
     bannerData: [
       { 
-        imgPath: 'http://47.99.244.168:6060/static/images/pet1.png'
+        imgPath: 'https://petimg.tyferp.com/weapp/banner01.jpg'
       },
       { 
-        imgPath: 'http://47.99.244.168:6060/static/images/pet2.png'
+        imgPath: 'https://petimg.tyferp.com/weapp/banner02.jpg'
       },
       {
-        imgPath: 'http://47.99.244.168:6060/static/images/pet3.png'
+        imgPath: 'https://petimg.tyferp.com/weapp/banner03.jpg'
       },
     ], // banner 数据
     storePhone:null, // 商家电话
@@ -75,7 +78,7 @@ Page({
     addServerAirBox: {
       name: "购买宠物箱", // 增值服务名称
       selected: false, // 是否选中
-      alert: "自备宠物箱需符合运输公司要求的适用规则", // 提示
+      alert: "", // 提示
       ableUse: false, // 是否可用
     },
     addServerReceivePet: {
@@ -102,12 +105,12 @@ Page({
     addServerPetCan: {
       name: "免费旅行餐", // 名称
       selected: false, // 是否选中
-      alert: "免费提供给宠物在运输途中食用，非强制选用，本公司不承担由此造成的任何后果，选择即视为自愿接受此声明的约束"
+      alert: ""
     },
     addGuarantee: {
       name: "中介担保", // 增值服务名称
       selected: false, // 是否选中
-      alert: "免费", // 提示
+      alert: "", // 提示
     },
   },
 
@@ -167,6 +170,7 @@ Page({
       // 查询保价费率
       this.requestStroePhoneByCityName(app.globalData.trainBeginCity);
       this.requestInsurePriceRate(app.globalData.trainBeginCity);
+      this.checkAbleStation(app.globalData.trainBeginCity, CheckAbleStation_Type_Receipt);
       app.globalData.trainBeginCity = null;
     }
     if (app.globalData.trainEndCity != null) {
@@ -182,7 +186,7 @@ Page({
       // 查询可用的运输方式列表
       this.checkAbleTransportType();
       // 查询是否有可用站点
-      this.checkAbleStation(app.globalData.trainEndCity);
+      this.checkAbleStation(app.globalData.trainEndCity, CheckAbleStation_Type_Send);
       app.globalData.trainEndCity = null;
     }
   },
@@ -1014,39 +1018,67 @@ Page({
   },
 
   /**
-   * 查询送宠可用站点
+   * 查询送宠|接宠可用站点
+   * @param cityName 城市名称
+   * @param type 查询类型 0 接宠 1 送宠
    */
-  checkAbleStation: function (cityName) {
-    let urlStr = config.URL_Service + config.URL_AbleStation;
+  checkAbleStation: function (cityName, type) {
+    let urlStr = config.URL_Service + config.URL_AbleStation_Receipt;
+    if (type == CheckAbleStation_Type_Send) {
+      urlStr = config.URL_Service + config.URL_AbleStation_Send;
+    }
     let that = this;
     wx.request({
       url: urlStr,
       data: {
-        "endCity": cityName 
+        "cityName": cityName 
       },
       success(res) {
-        console.log("查询送宠可用站点 success => \n" + JSON.stringify(res));
+        console.log("查询送宠|接宠可用站点 success => \n" + JSON.stringify(res));
         if (res.data.data == null || res.data.data.length <= 0) {
-          that.data.addServerSendPet.haveAbleStation = false;
-          that.data.addServerSendPet.address = null;
-          that.data.addServerSendPet.selected = false;
-          that
+          if (type == CheckAbleStation_Type_Receipt) {
+            that.data.addServerReceivePet.haveAbleStation = false;
+            that.data.addServerReceivePet.address = null;
+            that.data.addServerReceivePet.selected = false;
+          } else {
+            that.data.addServerSendPet.haveAbleStation = false;
+            that.data.addServerSendPet.address = null;
+            that.data.addServerSendPet.selected = false;
+          }
         } else {
-          that.data.addServerSendPet.haveAbleStation = true;
+          if (type == CheckAbleStation_Type_Receipt) {
+            that.data.addServerReceivePet.haveAbleStation = true;
+          } else {
+            that.data.addServerSendPet.haveAbleStation = true;
+          }
         }
-        that.setData({
-          addServerSendPet: that.data.addServerSendPet
-        })
+        if (type == CheckAbleStation_Type_Receipt) {
+          that.setData({
+            addServerReceivePet: that.data.addServerReceivePet
+          })
+        } else {
+          that.setData({
+            addServerSendPet: that.data.addServerSendPet
+          })
+        }
       },
       fail(res) {
-        console.log("查询送宠可用站点 fail => \n" + JSON.stringify(res));
-        wx.showToast({
-          title: '查询送宠可用站点失败',
-          icon: 'none'
-        })
+        console.log("查询送宠|接宠可用站点 fail => \n" + JSON.stringify(res));
+
+        if (type == CheckAbleStation_Type_Receipt) {
+          wx.showToast({
+            title: '查询接宠可用站点失败',
+            icon: 'none'
+          })
+        } else {
+          wx.showToast({
+            title: '查询送宠可用站点失败',
+            icon: 'none'
+          })
+        }
       },
       complete(res) {
-        console.log("查询送宠可用站点 complete => \n" + JSON.stringify(res));
+
       }
     })
   },

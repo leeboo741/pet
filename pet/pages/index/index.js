@@ -19,67 +19,77 @@ Page({
   data: {
     bannerList: [
       {
-        bannerImageUrl: "http://47.99.244.168:6060/static/images/pet1.png", // 图片地址
-        bannerTargetUrl: "http://huji820.oicp.net:25875/fd1ca163-c267-4e66-a059-669523202cf0.html", // 内容地址
+        bannerImageUrl: "https://petimg.tyferp.com/weapp/banner01.jpg", // 图片地址
+        bannerTargetUrl: "", // 内容地址
       },
       {
-        bannerImageUrl: "http://47.99.244.168:6060/static/images/pet2.png",
-        bannerTargetUrl: "http://huji820.oicp.net:25875/3375f542-11fe-44d3-8900-0d1a94cc6f62.html",
+        bannerImageUrl: "https://petimg.tyferp.com/weapp/banner02.jpg",
+        bannerTargetUrl: "",
       },
       {
-        bannerImageUrl: "http://47.99.244.168:6060/static/images/pet3.png", // 图片地址
-        bannerTargetUrl: "http://huji820.oicp.net:25875/fd1ca163-c267-4e66-a059-669523202cf0.html", // 内容地址
+        bannerImageUrl: "https://petimg.tyferp.com/weapp/banner03.jpg",
+        bannerTargetUrl: "",
       }
     ], // banner数据列表
     gridList:[
       {
-        name:"宠物运输",
-        imagePath:"../../resource/pet_transport.png",
+        name:"运输",
+        imagePath:"../../resource/pet_yunshu.png",
         targetUrl:"../consigned/base/base",
       },
       {
-        name: "宠物寄养",
-        imagePath: "../../resource/pet_foster.png",
+        name: "集市",
+        imagePath: "../../resource/pet_jishi.png",
         targetUrl: "",
       },
       {
-        name: "宠物美容",
-        imagePath: "../../resource/pet_cosmetology.png",
+        name: "用品",
+        imagePath: "../../resource/pet_yongpin.png",
         targetUrl: "",
       },
       {
-        name: "宠物医疗",
-        imagePath: "../../resource/pet_medical.png",
+        name: "商城",
+        imagePath: "../../resource/pet_shangcheng.png",
         targetUrl: "",
       },
       {
-        name: "宠物买卖",
-        imagePath: "../../resource/pet_ trade.png",
+        name: "百科",
+        imagePath: "../../resource/pet_baike.png",
         targetUrl: "",
       },
       {
-        name: "宠物用品",
-        imagePath: "../../resource/pet_articles.png",
+        name: "婚介",
+        imagePath: "../../resource/pet_hunjie.png",
         targetUrl: "",
       },
       {
-        name: "宠物婚介",
-        imagePath: "../../resource/pet_matchmaking.png",
+        name: "训练",
+        imagePath: "../../resource/pet_xunlian.png",
         targetUrl: "",
       },
       {
-        name: "积分商城",
-        imagePath: "../../resource/pet_point.png",
+        name: "美容",
+        imagePath: "../../resource/pet_meirong.png",
         targetUrl: "",
       },
       {
-        name: "宠物领养",
-        imagePath: "../../resource/pet_adopt.png",
+        name: "领养",
+        imagePath: "../../resource/pet_lingyang.png",
         targetUrl: "",
       },
       {
-        name: "宠物殡葬",
-        imagePath: "../../resource/pet_end.png",
+        name: "酒店",
+        imagePath: "../../resource/pet_jiudian.png",
+        targetUrl: "",
+      },
+      {
+        name: "旅游",
+        imagePath: "../../resource/pet_lvyou.png",
+        targetUrl: "",
+      },
+      {
+        name: "殡葬",
+        imagePath: "../../resource/pet_binzang.png",
         targetUrl: "",
       },
     ], // 按钮
@@ -105,7 +115,7 @@ Page({
   /* =========================== 生命周期管理 Start ================================ */
 
   /**
-   * 生命周期函数--监听页面加载
+   * 生命周期函数--监听页面加载d
    */
   onLoad: function (options) {
     loginUtil.checkLogin(function alreadyLoginCallback(state) {
@@ -146,6 +156,15 @@ Page({
   /* =========================== 生命周期管理 End ================================ */
 
   /* =========================== 页面事件 Start ================================ */
+
+  /**
+   * 点击大图
+   */
+  tapBigButton:function () {
+    wx.navigateTo({
+      url: '/pages/registerStation/registerStation',
+    })
+  },
 
   /**
    * 点击

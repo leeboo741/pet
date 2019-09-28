@@ -37,7 +37,7 @@ Page({
     unsendList: [], // 待发货
     unreceiveList: [], // 待收货
     completeList: [], // 已完成
-    newMessageList:[], // 新消息列表
+    haveNewMessage:false, // 新消息列表
     getNewMessageIntervalID: null,
   },
 
@@ -202,6 +202,36 @@ Page({
   },
 
   /**
+   * 扫码
+   */
+  scanBillAction: function () {
+    let that = this;
+    wx.scanCode({
+      onlyFromCamera: true,
+      success(res){
+        that.data.checkBillNo = res.result;
+        loginUtil.checkLogin(function alreadyLoginCallback(state) {
+          if (state) {
+            that.requestCheckOrderNoByOrderNo(that.data.checkBillNo);
+          } else {
+            wx.showModal({
+              title: '暂未登录',
+              content: '请先登录后使用该功能',
+              success(res) {
+                if (res.confirm) {
+                  wx.navigateTo({
+                    url: '/pages/login/login',
+                  })
+                }
+              }
+            })
+          }
+        })
+      },
+    })
+  },
+
+  /**
    * 查单确认按钮
    */
   searchBillAction: function (e) {
@@ -237,21 +267,29 @@ Page({
    */
   tapReceive: function (e) {
     let that = this;
-    loginUtil.checkLogin(function alreadyLoginCallback(state) {
-      if (state) {
-        that.requestRecieve(e.currentTarget.dataset.orderno, e.currentTarget.dataset.tapindex);
-      } else {
-        wx.showModal({
-          title: '暂未登录',
-          content: '请先登录后使用该功能',
-          success(res) {
-            if (res.confirm) {
-              wx.navigateTo({
-                url: '/pages/login/login',
+    wx.showModal({
+      title: '确认收货',
+      content: e.currentTarget.dataset.orderno + '是否确认收货',
+      success(res){
+        if (res.confirm) {
+          loginUtil.checkLogin(function alreadyLoginCallback(state) {
+            if (state) {
+              that.requestRecieve(e.currentTarget.dataset.orderno, e.currentTarget.dataset.tapindex);
+            } else {
+              wx.showModal({
+                title: '暂未登录',
+                content: '请先登录后使用该功能',
+                success(res) {
+                  if (res.confirm) {
+                    wx.navigateTo({
+                      url: '/pages/login/login',
+                    })
+                  }
+                }
               })
             }
-          }
-        })
+          })
+        }
       }
     })
   },
@@ -272,21 +310,29 @@ Page({
   tapCancelOrder: function (e) {
     console.log("取消：\n" + e.currentTarget.dataset.orderno)
     let that = this;
-    loginUtil.checkLogin(function alreadyLoginCallback(state) {
-      if (state) {
-        that.requestCancelOrder(e.currentTarget.dataset.orderno, e.currentTarget.dataset.tapindex);
-      } else {
-        wx.showModal({
-          title: '暂未登录',
-          content: '请先登录后使用该功能',
-          success(res) {
-            if (res.confirm) {
-              wx.navigateTo({
-                url: '/pages/login/login',
+    wx.showModal({
+      title: '取消订单',
+      content: '是否确认取消订单' + e.currentTarget.dataset.orderno,
+      success(res){
+        if(res.confirm){
+          loginUtil.checkLogin(function alreadyLoginCallback(state) {
+            if (state) {
+              that.requestCancelOrder(e.currentTarget.dataset.orderno, e.currentTarget.dataset.tapindex);
+            } else {
+              wx.showModal({
+                title: '暂未登录',
+                content: '请先登录后使用该功能',
+                success(res) {
+                  if (res.confirm) {
+                    wx.navigateTo({
+                      url: '/pages/login/login',
+                    })
+                  }
+                }
               })
             }
-          }
-        })
+          })
+        }
       }
     })
   },
@@ -342,7 +388,7 @@ Page({
   tapMessage: function () {
     console.log("点击站内信")
     this.setData({
-      newMessageList: []
+      haveNewMessage: false
     })
     wx.navigateTo({
       url: '/pages/message/message',
@@ -398,6 +444,15 @@ Page({
   gotoWorkbench: function () {
     wx.navigateTo({
       url: '../workbench/workbench',
+    })
+  },
+
+  /**
+   * 前往完结单据
+   */
+  gotoFinishOrder: function () {
+    wx.navigateTo({
+      url: '/pages/finishOrder/finishOrder',
     })
   },
 
@@ -757,10 +812,9 @@ Page({
       },
       success(res) {
         console.log("获取最新站内信 success:\n" + JSON.stringify(res));
-        if (res.data.code == 200) {
-          let tempList = that.data.newMessageList.concat(res.data.data);
+        if (res.data.code == 200 && res.data.data > 0) {
           that.setData({
-            newMessageList: tempList
+            haveNewMessage: true
           })
           that.setLastGetMessageTime(util.formatTime(new Date()));
         }

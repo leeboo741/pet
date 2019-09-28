@@ -459,8 +459,10 @@ Page({
         if (res.data.prompt != null && res.data.prompt == "Error") {
 
           let tempMsg = '系统异常，入港失败'
-          if (order.orderStates[0].orderType == '待出港') {
+          if (order.orderStates[0].orderType == config.Order_State_ToOutPort) {
             tempMsg = '系统异常，出港失败'
+          } else if (order.orderStates[0].orderType == config.Order_State_ToPack) {
+            tempMsg = '系统异常，揽件失败'
           }
 
           if (res.data.root) {
@@ -472,16 +474,24 @@ Page({
           })
         } else {
           let tempMsg = '入港成功'
-          if (order.orderStates[0].orderType == '待出港') {
+          if (order.orderStates[0].orderType == config.Order_State_ToOutPort) {
             tempMsg = '出港成功'
+          } else if (order.orderStates[0].orderType == config.Order_State_ToPack) {
+            tempMsg = '揽件成功'
+            wx.showModal({
+              title: '是否打印标签',
+              content: '立即打印，也可稍后自行选择单据打印',
+              confirmText: '打印',
+              success(res){
+                if (res.confirm){
+                  that.startPrint(order);
+                }
+              }
+            })
           }
           wx.showToast({
             title: tempMsg,
           })
-          // that.data.orderList.splice(tempIndex, 1);
-          // that.setData({
-          //   orderList: that.data.orderList
-          // })
           wx.startPullDownRefresh();
         }
       },
@@ -593,55 +603,8 @@ Page({
       itemList: itemList,
       success(res) {
         if (res.tapIndex == 0){
-          app.globalData.printOrder = that.data.orderList[index];
-          if (util.checkEmpty(app.BLEInformation.deviceName)) {
-            wx.navigateTo({
-              url: '/pages/bluetooth/search',
-            })
-          } else {
-            // 重置状态
-            that.setData({
-              serviceId: 0,
-              writeCharacter: false,
-              readCharacter: false,
-              notifyCharacter: false
-            })
-            console.log(app.BLEInformation.deviceId)
-            wx.showLoading({
-              title: '正在连接',
-            })
-            // 链接蓝牙设备
-            wx.createBLEConnection({
-              deviceId: app.BLEInformation.deviceId,
-              // 链接成功
-              success: function (res) {
-                console.log(res)
-                // 获取蓝牙设备 服务 service id
-                that.getSeviceId()
-              },
-              // 链接失败
-              fail: function (e) {
-                wx.showModal({
-                  title: '提示',
-                  content: '连接失败',
-                  confirmText: "重选打印机",
-                  success(res){
-                    if (res.confirm) {
-                      wx.navigateTo({
-                        url: '/pages/bluetooth/search',
-                      })
-                    }
-                  }
-                })
-                console.log(e)
-                wx.hideLoading()
-              },
-              // 链接完成
-              complete: function (e) {
-                console.log(e)
-              }
-            })
-          }
+          let tempOrder = that.data.orderList[index];
+          that.startPrint(tempOrder);
         } else if (res.tapIndex == 1) {
           wx.navigateTo({
             url: '../orderDetail/orderDetail?orderno=' + orderNo + '&type=1',
@@ -659,6 +622,62 @@ Page({
         }
       }, 
     })
+  },
+
+  /**
+   * 开始打印
+   */
+  startPrint: function (orderItem) {
+    let that = this;
+    app.globalData.printOrder = orderItem;
+    if (util.checkEmpty(app.BLEInformation.deviceName)) {
+      wx.navigateTo({
+        url: '/pages/bluetooth/search',
+      })
+    } else {
+      // 重置状态
+      that.setData({
+        serviceId: 0,
+        writeCharacter: false,
+        readCharacter: false,
+        notifyCharacter: false
+      })
+      console.log(app.BLEInformation.deviceId)
+      wx.showLoading({
+        title: '正在连接',
+      })
+      // 链接蓝牙设备
+      wx.createBLEConnection({
+        deviceId: app.BLEInformation.deviceId,
+        // 链接成功
+        success: function (res) {
+          console.log(res)
+          // 获取蓝牙设备 服务 service id
+          that.getSeviceId()
+        },
+        // 链接失败
+        fail: function (e) {
+          wx.showModal({
+            title: '提示',
+            content: '连接失败',
+            confirmText: "重选打印机",
+            success(res) {
+              if (res.confirm) {
+                wx.navigateTo({
+                  url: '/pages/bluetooth/search',
+                })
+              }
+            }
+          })
+          console.log(e)
+          wx.hideLoading()
+        },
+        // 链接完成
+        complete: function (e) {
+          console.log(e)
+        }
+      })
+    }
   },
 
   /**

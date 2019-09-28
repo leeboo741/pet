@@ -4,8 +4,8 @@
  */
 /** =================================================== */
 const Service_Phone = "4007778889"; // 客服电话
-const Version_Name = "1.3.4"; // 版本名称
-const Version_Code = 14; // 版本编号
+const Version_Name = "1.3.6"; // 版本名称
+const Version_Code = 16; // 版本编号
 
 /** =================================================== */
 /** 
@@ -43,7 +43,8 @@ const URL_PetClassify = "/api/petClassify"; // 宠物品种
 const URL_StartCity = "/api/transport/listStartCity"; // 始发城市
 const URL_EndCity = "/api/transport/listEndCity"; // 目标城市
 const URL_AbleTransportType = "/api/transport/listTransportType"; // 可用运输方式
-const URL_AbleStation = "/api/consign/onDoorService/getEndCityStation"; // 是否有可用站点
+const URL_AbleStation_Receipt = "/api/consign/onDoorService/get/receipt"; // 上门接宠是否有可用站点
+const URL_AbleStation_Send = "/api/consign/onDoorService/get/send"; // 送宠上门是否有可用站点
 const URL_AblePetCage = "/api/pet/cage"; // 查询箱子
 // const URL_AbleAirBox = "/aip/consign/airBox/listStationAixBox"; // 航空箱是否可用
 const URL_InsureRate = "/api/consign/insure"; // 查询保价费率
@@ -55,6 +56,7 @@ const URL_PostTransportInfo = "/api/order/transport"; // 添加运输信息
 const URL_Order = "/api/order/insertOrder"; // 下单
 const URL_CancelOrder = "/api/order/cancelOrder"; // 取消订单
 const URL_GetOrderListByOrderStatus = "/api/order/listOrderList"; // 根据订单类型查询订单列表
+const URL_GetStationAllOrder = "/api/consign/port/list/Complete"; // 获取当前站点所有订单 包含已完成
 const URL_OrderDetail = "/api/order/orderDetail"; // 查询订单详情
 const URL_GetOrderNoByOrderNo = "/api/order/getOrderNoByOrderNo"; // 通过单号模糊查询单号
 const URL_ConfirmOrder = "/api/order/confirmOrder"; // 确认收货
@@ -151,7 +153,8 @@ module.exports = {
   URL_StartCity, // 始发城市
   URL_EndCity, // 目标城市
   URL_AbleTransportType, // 可用运输方式
-  URL_AbleStation, // 是否有可用站点
+  URL_AbleStation_Receipt, // 上门接宠是否有可用站点
+  URL_AbleStation_Send, // 送宠到家是否有可用站点
   URL_AblePetCage, // 查询宠物箱
   // URL_AbleAirBox, // 航空箱是否可用
   URL_InsureRate, // 查询保价费率
@@ -163,6 +166,7 @@ module.exports = {
   URL_Order, // 下单
   URL_CancelOrder, // 取消订单
   URL_GetOrderListByOrderStatus, // 根据订单类型查询订单列表
+  URL_GetStationAllOrder, // 获取当前站点所有订单 包含已完成
   URL_OrderDetail, // 查询订单详情
   URL_GetOrderNoByOrderNo, // 通过单号模糊查询单号
   URL_ConfirmOrder, // 确认收货
