@@ -10,6 +10,7 @@ const app = getApp();
 const config = require("../../utils/config.js");
 const loginUtil = require("../../utils/loginUtils.js");
 const util = require("../../utils/util.js");
+const pagePath = require("../../utils/pagePath.js");
 
 Page({
 
@@ -35,7 +36,7 @@ Page({
       {
         name:"运输",
         imagePath:"../../resource/pet_yunshu.png",
-        targetUrl:"../consigned/base/base",
+        targetUrl: pagePath.Path_Order_Index,
       },
       {
         name: "集市",
@@ -162,7 +163,7 @@ Page({
    */
   tapBigButton:function () {
     wx.navigateTo({
-      url: '/pages/registerStation/registerStation',
+      url: pagePath.Path_Apply_Register_Station,
     })
   },
 

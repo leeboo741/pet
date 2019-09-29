@@ -8,6 +8,8 @@ var tsc = require("../../libs/tsc.js");
 var esc = require("../../libs/esc.js");
 var encode = require("../../libs/encoding.js");
 
+const pagePath = require("../../utils/pagePath.js");
+
 Page({
 
   /**
@@ -33,6 +35,8 @@ Page({
     isLabelSend: false,
 
     printName: null,
+
+    errorList: []
   },
 
   /**
@@ -88,22 +92,32 @@ Page({
    */
   changePrinter: function () {
     wx.navigateTo({
-      url: '/pages/bluetooth/search',
+      url: pagePath.Path_Print_Search,
+    })
+  },
+
+  addError: function(errorMsg) {
+    this.data.errorList.push(errorMsg);
+    this.setData({
+      errorList: this.data.errorList
     })
   },
 
   labelTest: function () { //标签测试
     var that = this;
+
+    that.setData({
+      isLabelSend: true
+    })
     var canvasWidth = that.data.canvasWidth
     var canvasHeight = that.data.canvasHeight
     var command = tsc.jpPrinter.createNew()
     command.setSize(75, 60)
     command.setGap(0)
     command.setCls()
-
     command.setText(20, 30, "TSS48.BF2", 1, 1, app.globalData.printOrder.transport.startCity + "-" + app.globalData.printOrder.transport.endCity);
-    command.setText(20, 150, "TSS24.BF2", 1, 1, "订单编号："+ app.globalData.printOrder.orderNo);
-    command.setText(20, 210, "TSS24.BF2", 1, 1, "下单时间：" + app.globalData.printOrder.orderDate + " " + app.globalData.printOrder.orderTime); 
+    command.setText(20, 150, "TSS24.BF2", 1, 1, "订单编号：" + app.globalData.printOrder.orderNo);
+    command.setText(20, 210, "TSS24.BF2", 1, 1, "下单时间：" + app.globalData.printOrder.orderDate + " " + app.globalData.printOrder.orderTime);
     command.setText(20, 270, "TSS24.BF2", 1, 1, "出发时间：" + app.globalData.printOrder.leaveDate);
     let transportTypeStr = "";
     let type = app.globalData.printOrder.transport.transportType;
@@ -121,12 +135,9 @@ Page({
     command.setText(20, 330, "TSS24.BF2", 1, 1, "运输方式：" + transportTypeStr);
     command.setText(20, 390, "TSS24.BF2", 1, 1, "宠物：" + app.globalData.printOrder.petType.petTypeName + " -- " + app.globalData.printOrder.petClassify.petClassifyName);
     command.setQR(380, 150, "L", 8, "A", app.globalData.printOrder.orderNo);
-    // command.setText(60, 90, "TSS24.BF2", 1, 1, "佳博智汇")
-    // command.setText(170, 50, "TSS24.BF2", 1, 1, "小程序测试")
-    // command.setText(170, 90, "TSS24.BF2", 1, 1, "测试数字12345678")
-    // command.setText(170, 120, "TSS24.BF2", 1, 1, "测试英文abcdefg")
-    // command.setText(170, 150, "TSS24.BF2", 1, 1, "测试符号/*-+!@#$")
     // command.setBarCode(170, 180, "EAN8", 64, 1, 3, 3, "1234567")
+
+    let printThis = this;
     wx.canvasGetImageData({
       canvasId: 'edit_area_canvas',
       x: 0,
@@ -135,15 +146,23 @@ Page({
       height: canvasHeight,
       success: function (res) {
         command.setBitmap(60, 0, 1, res)
+
       },
-      complete: function () {
-        command.setPagePrint()
+      fail: function (res) {
         that.setData({
-          isLabelSend: true
+          isLabelSend: false
         })
+        wx.showToast({
+          title: 'canvasGetImageData fail',
+        })
+      },
+      complete: function (res) {
+
+        command.setPagePrint()
+
         that.prepareSend(command.getData())
       }
-    })
+    },printThis)
 
   },
 
@@ -253,7 +272,7 @@ Page({
       fail: function (e) {
         console.log(e)
       },
-      complete: function () {
+      complete: function (e) {
         currentTime++
         if (currentTime <= loopTime) {
           that.setData({
@@ -331,7 +350,8 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    var that = this
+    var that = this;
+    
     var width
     var height
     wx.getImageInfo({
@@ -377,19 +397,19 @@ Page({
    * 生命周期函数--监听页面隐藏
    */
   onHide: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
     wx.closeBLEConnection({
       deviceId: app.BLEInformation.deviceId,
       success: function (res) {
         console.log("关闭蓝牙成功")
       },
     })
+  },
+
+  /**
+   * 生命周期函数--监听页面卸载
+   */
+  onUnload: function () {
+
   },
 
   /**

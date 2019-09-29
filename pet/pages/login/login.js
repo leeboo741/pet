@@ -2,6 +2,7 @@
 
 
 const loginUtil = require("../../utils/loginUtils.js");
+const pagePath = require("../../utils/pagePath.js");
 
 Page({
 
@@ -90,7 +91,7 @@ Page({
         })
       } else {
         wx.navigateTo({
-          url: '/pages/register/register?backtype=1',
+          url: pagePath.Path_Register + '?backtype=1',
         })
       }
     })

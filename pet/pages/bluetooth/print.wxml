@@ -26,15 +26,8 @@
   
   </view>
 
-  <!-- <button style='margin-top:4%' type='primary' bindtap='queryStatus'>查询打印机状态</button> -->
-
-  <!-- <view style='margin-top:4%;display: flex;flex-direction: row;'>
-    <canvas hidden='true' canvas-id='edit_area_canvas' style='width:{{canvasWidth}}px;height:{{canvasHeight}}px'></canvas>
-  </view>
-
-
-  <picker style='margin:20px' mode='selector' range='{{buffSize}}' value='{{buffIndex}}' bindchange='buffBindChange'>当前每次发送字节数为(点击可更换)：{{buffSize[buffIndex]}}</picker>
-
-<picker style='margin:20px' mode='selector' range='{{printNum}}' value='{{printNumIndex}}' bindchange='printNumBindChange'>当前打印份数(点击可更换)：{{printNum[printNumIndex]}}</picker> -->
+  <!-- <canvas canvas-id='edit_area_canvas' 
+            style="width: 0.1rpx; height: 0.1rpx;">
+  </canvas> -->
 
 </view>

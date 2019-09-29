@@ -89,3 +89,9 @@ input{
   width: 100%;
   height: 100%;
 }
+
+.error-item{
+  font-size: 33rpx;
+  color: black;
+  width: 100%;
+}

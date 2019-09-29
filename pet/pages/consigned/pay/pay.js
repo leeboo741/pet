@@ -9,6 +9,7 @@
 const app = getApp();
 const config = require("../../../utils/config.js");
 const loginUtil = require("../../../utils/loginUtils.js");
+const pagePath = require("../../../utils/pagePath.js");
 
 Page({
 
@@ -239,7 +240,7 @@ Page({
           success(res) {
             if (res.confirm) {
               wx.navigateTo({
-                url: '/pages/login/login',
+                url: pagePath.Path_Login,
               })
             }
           }
@@ -271,7 +272,7 @@ Page({
    */
   checkClauseDetail: function () {
     wx.navigateTo({
-      url: '../text/text',
+      url: pagePath.Path_Order_Text,
     })
   },
 
@@ -400,7 +401,7 @@ Page({
                       success(res) {
                         if (res.confirm) {
                           wx.navigateTo({
-                            url: '/pages/login/login',
+                            url: pagePath.Path_Login,
                           })
                         }
                       }
@@ -410,7 +411,7 @@ Page({
               } else if (res.cancel) {
                 console.log('用户点击稍后支付')
                 wx.switchTab({
-                  url: '/pages/index/index',
+                  url: pagePath.Path_Home,
                 })
               }
             }
@@ -467,7 +468,7 @@ Page({
           success(res){
             app.globalData.showToBeShip = true;
             wx.switchTab({
-              url: '/pages/me/me',
+              url: pagePath.Path_Me_Index,
             })
           },
           fail(res){
@@ -638,7 +639,7 @@ Page({
           success(res) {
             if (res.confirm) {
               wx.navigateTo({
-                url: '/pages/login/login',
+                url: pagePath.Path_Login,
               })
             }
           }

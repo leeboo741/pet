@@ -1,4 +1,7 @@
 // pages/applyJoin/applyJoin.js
+
+const pagePath = require("../../utils/pagePath.js");
+
 Page({
 
   /**
@@ -69,7 +72,7 @@ Page({
    */
   tapRegisterStation: function () {
     wx.navigateTo({
-      url: '/pages/registerStation/registerStation',
+      url: pagePath.Path_Apply_Register_Station,
     })
   },
 
@@ -78,7 +81,7 @@ Page({
    */
   tapRegisterStaff: function () {
     wx.navigateTo({
-      url: '/pages/registerStaff/registerStaff',
+      url: pagePath.Path_Apply_Register_Staff,
     })
   },
 })

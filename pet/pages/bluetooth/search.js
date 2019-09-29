@@ -1,5 +1,8 @@
 // pages/bluetooth/search.js
 var app = getApp()
+
+const pagePath = require("../../utils/pagePath.js");
+
 Page({
 
   /**
@@ -101,6 +104,9 @@ Page({
             }
           }
         })
+      } else {
+        // 获取蓝牙设备信息
+        that.getBluetoothDevices()
       }
     }
   },
@@ -299,6 +305,7 @@ Page({
             that.getCharacteristics()
           }
         } else {
+          wx.hideLoading();
           that.openControl()
         }
       }, fail: function (e) {
@@ -312,7 +319,7 @@ Page({
   },
   openControl: function () {
     wx.navigateTo({
-      url: '/pages/bluetooth/print',
+      url: pagePath.Path_Print_Print,
     })
   },
 

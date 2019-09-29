@@ -20,6 +20,7 @@ const bill_type_complete = "已完成";
 const config = require("../../utils/config.js");
 const loginUtil = require("../../utils/loginUtils.js");
 const util = require("../../utils/util.js");
+const pagePath = require("../../utils/pagePath.js");
 
 const NEW_MESSAGE_LOOP_TIME = 10000;
 
@@ -129,7 +130,7 @@ Page({
         })
       } else {
         wx.navigateTo({
-          url: '/pages/register/register?backtype=0',
+          url: pagePath.Path_Register + '?backtype=0',
         })
       }
     })
@@ -192,7 +193,7 @@ Page({
           success(res) {
             if (res.confirm) {
               wx.navigateTo({
-                url: '/pages/login/login',
+                url: pagePath.Path_Login,
               })
             }
           }
@@ -220,7 +221,7 @@ Page({
               success(res) {
                 if (res.confirm) {
                   wx.navigateTo({
-                    url: '/pages/login/login',
+                    url: pagePath.Path_Login,
                   })
                 }
               }
@@ -253,7 +254,7 @@ Page({
           success(res) {
             if (res.confirm) {
               wx.navigateTo({
-                url: '/pages/login/login',
+                url: pagePath.Path_Login,
               })
             }
           }
@@ -282,7 +283,7 @@ Page({
                 success(res) {
                   if (res.confirm) {
                     wx.navigateTo({
-                      url: '/pages/login/login',
+                      url: pagePath.Path_Login,
                     })
                   }
                 }
@@ -300,7 +301,7 @@ Page({
   tapOrderDetail: function (e) {
     console.log("详情：\n" + e.currentTarget.dataset.orderno)
     wx.navigateTo({
-      url: '../orderDetail/orderDetail?orderno=' + e.currentTarget.dataset.orderno + '&type=0',
+      url: pagePath.Path_Order_Detail + '?orderno=' + e.currentTarget.dataset.orderno + '&type=0',
     })
   },
 
@@ -325,7 +326,7 @@ Page({
                 success(res) {
                   if (res.confirm) {
                     wx.navigateTo({
-                      url: '/pages/login/login',
+                      url: pagePath.Path_Login,
                     })
                   }
                 }
@@ -353,7 +354,7 @@ Page({
           success(res) {
             if (res.confirm) {
               wx.navigateTo({
-                url: '/pages/login/login',
+                url: pagePath.Path_Login,
               })
             }
           }
@@ -378,7 +379,7 @@ Page({
   tapSetting: function () {
     console.log("点击设置")
     wx.navigateTo({
-      url: '/pages/setting/setting',
+      url: pagePath.Path_Me_Setting,
     })
   },
 
@@ -391,7 +392,7 @@ Page({
       haveNewMessage: false
     })
     wx.navigateTo({
-      url: '/pages/message/message',
+      url: pagePath.Path_Me_Message,
     })
   },
 
@@ -415,7 +416,7 @@ Page({
    */
   gotoRecharge: function() {
     wx.navigateTo({
-      url: '../recharge/recharge'
+      url: pagePath.Path_Me_Recharge
     })
   },
 
@@ -434,7 +435,7 @@ Page({
    */
   gotoWithDrawal: function() {
     wx.navigateTo({
-      url: '../withdrawal/withdrawal'
+      url: pagePath.Path_Me_Withdrawal
     })
   },
 
@@ -443,7 +444,7 @@ Page({
    */
   gotoWorkbench: function () {
     wx.navigateTo({
-      url: '../workbench/workbench',
+      url: pagePath.Path_Order_Workbench,
     })
   },
 
@@ -452,7 +453,7 @@ Page({
    */
   gotoFinishOrder: function () {
     wx.navigateTo({
-      url: '/pages/finishOrder/finishOrder',
+      url: pagePath.Path_Order_All,
     })
   },
 
@@ -461,7 +462,7 @@ Page({
    */
   getCoupon: function() {
     wx.navigateTo({
-      url: '../consigned/coupon/coupon',
+      url: pagePath.Path_Order_Coupon,
     })
   },
 
@@ -470,7 +471,7 @@ Page({
    */
   receiveOrder: function () {
     wx.navigateTo({
-      url: '../unConfirmOrder/unConfirmOrder',
+      url: pagePath.Path_Order_UnConfirmOrder,
     })
   },
 
@@ -479,7 +480,7 @@ Page({
    */
   applyStation: function () {
     wx.navigateTo({
-      url: '/pages/applyJoin/applyJoin'
+      url: pagePath.Path_Apply_Index
     })
   },
 
@@ -488,7 +489,7 @@ Page({
    */
   gotoApproval: function () {
     wx.navigateTo({
-      url: '/pages/approval/approval',
+      url: pagePath.Path_Me_Approval,
     })
   },
 
@@ -651,7 +652,7 @@ Page({
         if (res.data.root != null && res.data.prompt == "Success") {
           that.hiddenPopMask();
           wx.navigateTo({
-            url: '../orderDetail/orderDetail?orderno=' + res.data.root + '&type=0',
+            url: pagePath.Path_Order_Detail + '?orderno=' + res.data.root + '&type=0',
           })
 
         } else {

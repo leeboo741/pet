@@ -3,6 +3,7 @@
 const app = getApp();
 const config = require("../../utils/config.js");
 const loginUtil = require("../../utils/loginUtils.js");
+const pagePath = require("../../utils/pagePath.js");
 
 const BUSINESS_ACTION_TYPE_NAVIGATE = 0;
 const BUSINESS_ACTION_TYPE_SWITCH = 1;
@@ -19,38 +20,38 @@ Page({
       {
         icon: '../../resource/index_business_transport.png',
         name: '查运费',
-        target: '../consigned/base/base',
+        target: pagePath.Path_Order_Index,
         actionType: BUSINESS_ACTION_TYPE_NAVIGATE,
       },
       {
         icon: '../../resource/index_business_send_express.png',
         name: '寄宠物',
-        target: '../consigned/base/base',
+        target: pagePath.Path_Order_Index,
         actionType: BUSINESS_ACTION_TYPE_NAVIGATE,
       },
       {
         icon: '../../resource/index_business_abroad.png',
         name: '宠物出国',
-        // target: '../goAboard/goAboard',
-        target: '../consigned/base/base',
+        // target: pagePath.Path_Aboard,
+        target: pagePath.Path_Order_Index,
         actionType: BUSINESS_ACTION_TYPE_NAVIGATE,
       },
       {
         icon: '../../resource/index_business_order_list.png',
         name: '我的订单',
-        target: '../me/me',
+        target: pagePath.Path_Me_Index,
         actionType: BUSINESS_ACTION_TYPE_SWITCH,
       },
       {
         icon: '../../resource/index_business_station.png',
         name: '附近网点',
-        target: '../station/station',
+        target: pagePath.Path_Station,
         actionType: BUSINESS_ACTION_TYPE_SWITCH,
       },
       {
         icon: '../../resource/index_business_check_order.png',
         name: '订单跟踪',
-        target: '../me/me',
+        target: pagePath.Path_Me_Index,
         actionType: BUSINESS_ACTION_TYPE_SWITCH,
       },
     ]
@@ -148,7 +149,7 @@ Page({
           success (res) {
             if (res.confirm) {
               wx.navigateTo({
-                url: '/pages/login/login',
+                url: pagePath.Path_Login,
               })
             }
           }
@@ -176,7 +177,7 @@ Page({
         console.log("查单 success：\n" + JSON.stringify(res));
         if (res.data.root != null && res.data.prompt == "Success") {
           wx.navigateTo({
-            url: '../orderDetail/orderDetail?orderno=' + res.data.root + '&type=0',
+            url: pagePath.Path_Order_Detail + '?orderno=' + res.data.root + '&type=0',
           })
 
         } else {

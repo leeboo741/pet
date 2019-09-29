@@ -3,6 +3,7 @@
 const app = getApp();
 const config = require("../../../utils/config.js");
 const loginUtil = require("../../../utils/loginUtils.js");
+const pagePath = require("../../../utils/pagePath.js");
 
 Page({
 
@@ -105,7 +106,7 @@ Page({
   tapUseCoupon: function (e) {
     let tempIndex = e.currentTarget.dataset.index;
     wx.navigateTo({
-      url: '/pages/consigned/coupon/couponQRCode/couponQRCode?couponcode=' + this.data.couponList[tempIndex].couponNo,
+      url: pagePath.Path_Order_Coupon_QRCode + '?couponcode=' + this.data.couponList[tempIndex].couponNo,
     })
   }
 })

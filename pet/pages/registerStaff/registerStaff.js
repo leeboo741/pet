@@ -3,6 +3,7 @@
 const config = require("../../utils/config.js");
 const util = require("../../utils/util.js");
 const loginUtil = require("../../utils/loginUtils.js");
+const pagePath = require("../../utils/pagePath.js");
 
 const intervalDuration = 60;
 
@@ -247,7 +248,7 @@ Page({
           success(res) {
             if (res.confirm) {
               wx.navigateTo({
-                url: '/pages/login/login',
+                url: pagePath.Path_Login,
               })
             }
           }

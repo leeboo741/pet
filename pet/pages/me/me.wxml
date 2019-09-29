@@ -22,7 +22,8 @@
           <label>余额：</label>
           <label class="money">{{userInfo.balance}}元</label>
           <view class='recharge' 
-                bindtap='gotoRecharge'>
+                bindtap='gotoRecharge'
+                hidden>
             <label>充值</label>
           </view>
         </view>
@@ -122,7 +123,8 @@
         <label>领券</label>
       </view>
       <view class="btnOper" 
-            bindtap='gotoWithDrawal'>
+            bindtap='gotoWithDrawal'
+            hidden>
         <i-icon type="redpacket"
                 color="#F1B000"
                 size="32">

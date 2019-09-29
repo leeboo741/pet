@@ -8,6 +8,7 @@
 
 const app = getApp();
 const loginUtil = require("../../utils/loginUtils.js");
+const pagePath = require("../../utils/pagePath.js");
 
 Page({
 
@@ -104,7 +105,7 @@ Page({
           success(res){
             if (res.confirm) {
               wx.navigateTo({
-                url: '/pages/login/login',
+                url: pagePath.Path_Login,
               })
             }
           }
@@ -120,7 +121,7 @@ Page({
     loginUtil.deleteUserInfo(function callback(state){
       if (state) {
         wx.switchTab({
-          url: '/pages/index/index',
+          url: pagePath.Path_Home,
         })
       } else {
         wx.showToast({

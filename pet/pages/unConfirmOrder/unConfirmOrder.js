@@ -2,6 +2,7 @@
 const util = require("../../utils/util.js");
 const config = require("../../utils/config.js");
 const loginUtil = require("../../utils/loginUtils.js");
+const pagePath = require("../../utils/pagePath.js");
 
 const app = getApp();
 const maxVideoLength = 10; // 最大视频长度限制
@@ -610,7 +611,7 @@ Page({
           app.globalData.printOrder = that.data.orderList[index];
           if (util.checkEmpty(app.BLEInformation.deviceName)) {
             wx.navigateTo({
-              url: '/pages/bluetooth/search',
+              url: pagePath.Path_Print_Search,
             })
           } else {
             // 重置状态
@@ -642,7 +643,7 @@ Page({
                   success(res) {
                     if (res.confirm) {
                       wx.navigateTo({
-                        url: '/pages/bluetooth/search',
+                        url: pagePath.Path_Print_Search,
                       })
                     }
                   }
@@ -658,7 +659,7 @@ Page({
           }
         } else if (res.tapIndex == 1) {
           wx.navigateTo({
-            url: '../orderDetail/orderDetail?orderno=' + orderNo + '&type=1',
+            url: pagePath.Path_Order_Detail + '?orderno=' + orderNo + '&type=1',
           })
         } else {
           let allocationStaffList = that.data.orderList[index].orderAssignments;
@@ -668,7 +669,7 @@ Page({
             allocationStaffList = JSON.stringify(allocationStaffList);
           }
           wx.navigateTo({
-            url: '/pages/selectorStaff/selectorStaff?orderno=' + orderNo + '&stafflist=' + allocationStaffList,
+            url: pagePath.Path_Order_Allocation_SelectorStaff + '?orderno=' + orderNo + '&stafflist=' + allocationStaffList,
           })
         }
       },
@@ -787,34 +788,9 @@ Page({
   },
   openControl: function () {
     wx.navigateTo({
-      url: '/pages/bluetooth/print',
+      url: pagePath.Path_Print_Print,
     })
   },
-
-  /**
-   * 点击分配
-   */
-  // tapAllocation: function (e) {
-  //   let allocationStaffList = this.data.orderList[e.currentTarget.dataset.tapindex].orderAssignments;
-  //   if (util.checkEmpty(allocationStaffList)) {
-  //     allocationStaffList = "";
-  //   } else {
-  //     allocationStaffList = JSON.stringify(allocationStaffList);
-  //   }
-  //   wx.navigateTo({
-  //     url: '/pages/selectorStaff/selectorStaff?orderno=' + this.data.orderList[e.currentTarget.dataset.tapindex].orderNo + '&stafflist=' + allocationStaffList,
-  //   })
-  // },
-
-  /**
-   * 订单详情
-   */
-  // tapOrderDetail: function (e) {
-  //   console.log("详情：\n" + e.currentTarget.dataset.orderno)
-  //   wx.navigateTo({
-  //     url: '../orderDetail/orderDetail?orderno=' + e.currentTarget.dataset.orderno + '&type=1',
-  //   })
-  // },
 
   /**
    * 拨打电话

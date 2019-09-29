@@ -322,6 +322,7 @@ Page({
       method: "POST", // 请求方式
       success(res){
         console.log("注册商家 success:\n" + JSON.stringify(res));
+        wx.hideLoading();
         if (res.data.code == 200) {
           wx.showToast({
             title: '申请提交成功',
@@ -333,18 +334,27 @@ Page({
             })
           },2000)
         } else {
+          let msg = "注册失败";
+          if (!util.checkEmpty(res.data.message)) {
+            msg = res.data.message;
+          }
           wx.showToast({
-            title: res.data.message,
+            title: msg,
             icon: 'none'
           })
         }
       },
       fail(res) {
+        wx.hideLoading();
         console.log("注册商家 fail:\n" + JSON.stringify(res));
+
+        wx.showToast({
+          title: "注册失败",
+          icon: 'none'
+        })
       },
       complete(res) {
         console.log("注册商家 complete:\n" + JSON.stringify(res));
-        wx.hideLoading();
       }
     })
   },

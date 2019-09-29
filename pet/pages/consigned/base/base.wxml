@@ -65,14 +65,25 @@
       </view>
       <!-- 类型 品种 重量 -->
       <view class='pet-weight'>
-        <view class='pet-type-area {{(petType==null||petType.length<=0)?"city-placeholder":"city-normal"}}'
-              bindtap='bindpetTypeView'>
-        {{(petType==null||petType.length<=0)?"宠物类型":petType}}      
-        </view>
-        <view class='pet-type-area {{petClassify==null?"city-placeholder":"city-normal"}}'
-              bindtap='bindpetClassifyView'>
-        {{petClassify==null?"宠物种类":petClassify.petClassifyName}}      
-        </view>
+        <picker range="{{petTypes}}"
+                value='{{selectPetTypeIndex}}'
+                bindchange="selectPetType"
+                style="flex-grow: 1;"
+                disabled="{{petTypes==null||petTypes.length<=0}}">
+          <view class='pet-type-area {{(petType==null||petType.length<=0)?"city-placeholder":"city-normal"}}'>
+          {{(petType==null||petType.length<=0)?"宠物类型":petType}}      
+          </view>
+        </picker>
+        <picker range='{{petClassifys}}'
+                value="{{selectPetClassifyIndex}}"
+                bindchange="selectPetClassify"
+                style="flex-grow: 1;"
+                disabled="{{petType==null||petType.length<=0}}">
+          <view class='pet-type-area {{petClassify==null?"city-placeholder":"city-normal"}}'
+                bindtap="tapPetClassify">
+          {{petClassify==null||petClassify.length<=0?"宠物种类":petClassify}}      
+          </view> 
+        </picker>
         <input name='petKg'
                type='digit'
                class='input-under petKg input-right'

@@ -8,6 +8,7 @@
 const app = getApp();
 const config = require("../../utils/config.js");
 const loginUtil = require("../../utils/loginUtils.js");
+const pagePath = require("../../utils/pagePath.js");
 
 Page({
 
@@ -103,7 +104,7 @@ Page({
           success(res) {
             if (res.confirm) {
               wx.navigateTo({
-                url: '/pages/login/login',
+                url: pagePath.Path_Login,
               })
             }
           }
