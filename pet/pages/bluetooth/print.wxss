@@ -93,5 +93,7 @@ input{
 .error-item{
   font-size: 33rpx;
   color: black;
-  width: 100%;
+  width: 100vw;
+  word-break: break-all;
+  word-wrap: break-word;
 }

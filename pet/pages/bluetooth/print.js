@@ -36,7 +36,9 @@ Page({
 
     printName: null,
 
-    errorList: []
+    errorList: [],
+
+    timeOutIntervel: null,
   },
 
   /**
@@ -67,39 +69,12 @@ Page({
     })
   },
 
-  inputEvent: function (e) { //获取输入内容
-    this.setData({
-      sendContent: e.detail.value
-    })
-  },
-
-  sendData: function () { //输入框点击发送
-    var data = this.data.sendContent + "\n"
-
-    this.setData({
-      looptime: 0
-    })
-    var content = new encode.TextEncoder(
-      'gb18030', {
-        NONSTANDARD_allowLegacyEncoding: true
-      }).encode(data);
-
-    this.prepareSend(content)
-  },
-
   /**
    * 重选打印机
    */
   changePrinter: function () {
     wx.navigateTo({
       url: pagePath.Path_Print_Search,
-    })
-  },
-
-  addError: function(errorMsg) {
-    this.data.errorList.push(errorMsg);
-    this.setData({
-      errorList: this.data.errorList
     })
   },
 
@@ -137,89 +112,36 @@ Page({
     command.setQR(380, 150, "L", 8, "A", app.globalData.printOrder.orderNo);
     // command.setBarCode(170, 180, "EAN8", 64, 1, 3, 3, "1234567")
 
-    let printThis = this;
-    wx.canvasGetImageData({
-      canvasId: 'edit_area_canvas',
-      x: 0,
-      y: 0,
-      width: canvasWidth,
-      height: canvasHeight,
-      success: function (res) {
-        command.setBitmap(60, 0, 1, res)
+    this.data.timeOutIntervel = setTimeout(function(){
+      var printThis = this;
+      wx.canvasGetImageData({
+        canvasId: 'edit_area_canvas',
+        x: 0,
+        y: 0,
+        width: canvasWidth,
+        height: canvasHeight,
+        success: function (res) {
+          console.log("canvasGetImageData success ")
+          command.setBitmap(60, 0, 1, res)
 
-      },
-      fail: function (res) {
-        that.setData({
-          isLabelSend: false
-        })
-        wx.showToast({
-          title: 'canvasGetImageData fail',
-        })
-      },
-      complete: function (res) {
+        },
+        fail: function (res) {
+          console.log("canvasGetImageData fail " + JSON.stringify(res))
+        },
+        complete: function (res) {
+          command.setPagePrint()
 
-        command.setPagePrint()
+          that.prepareSend(command.getData())
+        }
+      }, printThis)
 
-        that.prepareSend(command.getData())
-      }
-    },printThis)
-
-  },
-
-  receiptTest: function () { //票据测试
-    var that = this;
-    var canvasWidth = that.data.canvasWidth
-    var canvasHeight = that.data.canvasHeight
-    var command = esc.jpPrinter.createNew()
-    command.init()
-    command.setText("票据测试!");
-    command.setPrint()
-    command.setText("This is a receipt test!!!")
-    command.setPrint()
-    command.setText("二维码测试:")
-    command.setPrint()
-    command.setSelectSizeOfModuleForQRCode(5)
-    command.setSelectErrorCorrectionLevelForQRCode(49)
-    command.setStoreQRCodeData("佳博智汇网络")
-    command.setPrintQRCode()
-    command.setPrint()
-    command.setSelectJustification(0)
-    command.setText("向左对齐")
-    command.setPrint()
-    command.setSelectJustification(1)
-    command.setText("居中对齐")
-    command.setPrint()
-    command.setSelectJustification(2)
-    command.setText("向右对齐")
-    command.setPrint()
-    command.setSelectJustification(0)
-    command.setText("图片测试")
-    command.setPrint()
-    wx.canvasGetImageData({
-      canvasId: 'edit_area_canvas',
-      x: 0,
-      y: 0,
-      width: canvasWidth,
-      height: canvasHeight,
-      success: function (res) {
-        command.setBitmap(res)
-      },
-      complete: function (res) {
-        console.log("finish")
-        command.setPrint()
-        that.setData({
-          isReceiptSend: true
-        })
-        that.prepareSend(command.getData())
-      }
-    })
-
-    // this.send(buff)
+    },3000)
+    
   },
 
   prepareSend: function (buff) { //准备发送，根据每次发送字节数来处理分包数量
     console.log(buff)
-    var that = this
+    var that = this;
     var time = that.data.oneTimeData
     var looptime = parseInt(buff.length / time);
     var lastData = parseInt(buff.length % time);
@@ -238,7 +160,8 @@ Page({
   },
 
   Send: function (buff) { //分包发送
-    var that = this
+    var that = this;
+
     var currentTime = that.data.currentTime
     var loopTime = that.data.looptime
     var lastData = that.data.lastData
@@ -267,10 +190,10 @@ Page({
       characteristicId: app.BLEInformation.writeCharaterId,
       value: buf,
       success: function (res) {
-        console.log(res)
+        console.log("writeBLECharacteristicValue success ")
       },
       fail: function (e) {
-        console.log(e)
+        console.log("writeBLECharacteristicValue fail " + JSON.stringify(e))
       },
       complete: function (e) {
         currentTime++
@@ -397,6 +320,7 @@ Page({
    * 生命周期函数--监听页面隐藏
    */
   onHide: function () {
+    clearTimeout(this.data.timeOutIntervel);
     wx.closeBLEConnection({
       deviceId: app.BLEInformation.deviceId,
       success: function (res) {

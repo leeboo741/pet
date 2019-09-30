@@ -26,8 +26,4 @@
   
   </view>
 
-  <!-- <canvas canvas-id='edit_area_canvas' 
-            style="width: 0.1rpx; height: 0.1rpx;">
-  </canvas> -->
-
 </view>
