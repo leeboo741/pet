@@ -56,6 +56,10 @@ App({
 
   },
 
+  ShareData: {
+
+  }, // 分享数据
+
   BLEInformation: {
     platform: "",
     deviceId: "",

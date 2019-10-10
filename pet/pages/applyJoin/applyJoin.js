@@ -1,6 +1,7 @@
 // pages/applyJoin/applyJoin.js
 
 const pagePath = require("../../utils/pagePath.js");
+const ShareUtil = require("../../utils/shareUtils.js");
 
 Page({
 
@@ -64,7 +65,7 @@ Page({
    * 用户点击右上角分享
    */
   onShareAppMessage: function () {
-
+    return ShareUtil.getOnShareAppMessageForShareOpenId();
   },
 
   /**

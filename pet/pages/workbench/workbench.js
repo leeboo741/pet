@@ -4,6 +4,7 @@ const util = require("../../utils/util.js");
 const config = require("../../utils/config.js");
 const loginUtil = require("../../utils/loginUtils.js");
 const pagePath = require("../../utils/pagePath.js");
+const ShareUtil = require("../../utils/shareUtils.js");
 
 const app = getApp();
 const maxVideoLength = 10; // 最大视频长度限制
@@ -86,7 +87,7 @@ Page({
    * 用户点击右上角分享
    */
   onShareAppMessage: function () {
-
+    return ShareUtil.getOnShareAppMessageForShareOpenId();
   },
 
   /**

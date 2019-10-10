@@ -3,6 +3,7 @@
 const app = getApp();
 const config = require("../../utils/config.js");
 const util = require("../../utils/util.js");
+const ShareUtil = require("../../utils/shareUtils.js");
 
 Page({
 
@@ -67,7 +68,7 @@ Page({
    * 用户点击右上角分享
    */
   onShareAppMessage: function () {
-
+    return ShareUtil.getOnShareAppMessageForShareOpenId();
   },
 
   /**

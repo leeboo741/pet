@@ -3,6 +3,8 @@ const app = getApp();
 const config = require("../../utils/config.js");
 const loginUtil = require("../../utils/loginUtils.js");
 const util = require("../../utils/util.js");
+const ShareUtil = require("../../utils/shareUtils.js");
+
 Page({
 
   /**
@@ -76,6 +78,7 @@ Page({
    */
   onShareAppMessage: function () {
 
+    return ShareUtil.getOnShareAppMessageForShareOpenId();
   },
 
   /**

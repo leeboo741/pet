@@ -9,6 +9,7 @@ var esc = require("../../libs/esc.js");
 var encode = require("../../libs/encoding.js");
 
 const pagePath = require("../../utils/pagePath.js");
+const ShareUtil = require("../../utils/shareUtils.js");
 
 Page({
 
@@ -355,5 +356,6 @@ Page({
    */
   onShareAppMessage: function () {
 
+    return ShareUtil.getOnShareAppMessageForShareOpenId();
   }
 })

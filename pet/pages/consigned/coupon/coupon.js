@@ -4,6 +4,7 @@ const app = getApp();
 const config = require("../../../utils/config.js");
 const loginUtil = require("../../../utils/loginUtils.js");
 const pagePath = require("../../../utils/pagePath.js");
+const ShareUtil = require("../../../utils/shareUtils.js");
 
 Page({
 
@@ -72,7 +73,7 @@ Page({
    * 用户点击右上角分享
    */
   onShareAppMessage: function () {
-
+    return ShareUtil.getOnShareAppMessageForShareOpenId();
   },
 
   /**

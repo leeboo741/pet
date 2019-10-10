@@ -5,6 +5,7 @@
  */
 const app = getApp()
 const config = require("../../../utils/config.js")
+const ShareUtil = require("../../../utils/shareUtils.js");
 Page({
   /**
    * 生命周期函数--监听页面加载
@@ -236,7 +237,7 @@ Page({
    * 用户点击右上角分享
    */
   onShareAppMessage: function () {
-
+    return ShareUtil.getOnShareAppMessageForShareOpenId();
   }, 
   /**
    * 页面的初始数据

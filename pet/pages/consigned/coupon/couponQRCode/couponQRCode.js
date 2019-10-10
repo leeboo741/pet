@@ -1,5 +1,6 @@
 // pages/consigned/coupon/couponQRCode/couponQRCode.js
 import drawQrcode from '../../../../libs/weapp.qrcode.esm.js';
+const ShareUtil = require("../../../../utils/shareUtils.js");
 
 const W = wx.getSystemInfoSync().windowWidth;
 const rate = 750.0 / W;
@@ -74,7 +75,7 @@ Page({
    * 用户点击右上角分享
    */
   onShareAppMessage: function () {
-
+    return ShareUtil.getOnShareAppMessageForShareOpenId();
   },
 
   /**

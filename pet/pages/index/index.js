@@ -11,6 +11,7 @@ const config = require("../../utils/config.js");
 const loginUtil = require("../../utils/loginUtils.js");
 const util = require("../../utils/util.js");
 const pagePath = require("../../utils/pagePath.js");
+const ShareUtil = require("../../utils/shareUtils.js");
 
 Page({
 
@@ -119,6 +120,7 @@ Page({
    * 生命周期函数--监听页面加载d
    */
   onLoad: function (options) {
+    ShareUtil.getOpenIdInShareMessage(options);
     loginUtil.checkLogin(function alreadyLoginCallback(state) {
       if (state) {
         loginUtil.login()
@@ -202,7 +204,7 @@ Page({
    * 用户点击右上角分享
    */
   onShareAppMessage: function () {
-
+    return ShareUtil.getOnShareAppMessageForShareOpenId();
   },
 
   /* =========================== 页面事件 End ================================ */

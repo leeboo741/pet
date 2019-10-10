@@ -2,6 +2,7 @@
 
 const config = require("../../utils/config.js");
 const util = require("../../utils/util.js");
+const ShareUtil = require("../../utils/shareUtils.js");
 
 const intervalDuration = 60;
 
@@ -88,7 +89,7 @@ Page({
    * 用户点击右上角分享
    */
   onShareAppMessage: function () {
-
+    return ShareUtil.getOnShareAppMessageForShareOpenId();
   },
 
   /**
