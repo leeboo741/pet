@@ -53,6 +53,20 @@ function getUserInfo() {
   }
 }
 
+/**
+ * 获取员工编号
+ */
+function getStaffNo() {
+  let userInfo = getUserInfo();
+  if (userInfo == null || userInfo.staffNo == null || userInfo.staffNo.length <= 0) {
+    return null;
+  }
+  return userInfo.staffNo;
+}
+
+/**
+ * 获取用户电话
+ */
 function getPhone(){
   let userInfo = getUserInfo();
   if (userInfo == null || userInfo.openId == null || userInfo.openId.length <= 0) {
@@ -130,6 +144,7 @@ function login(loginCallback) {
                       userInfo.gender = tempUserInfo.sex
                       userInfo.role = tempUserInfo.role
                       userInfo.balance = tempUserInfo.balance
+                      userInfo.staffNo = tempUserInfo.staff.staffNo
                       saveUserInfo(userInfo);
                       if (loginCallback) {
                         loginCallback(Login_Success, "登陆成功");
@@ -215,5 +230,6 @@ module.exports = {
   isLogin: isLogin,
   getPhone: getPhone,
   getOpenId: getOpenId,
-  checkLogin: checkLogin
+  checkLogin: checkLogin,
+  getStaffNo: getStaffNo
 }

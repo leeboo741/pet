@@ -38,7 +38,7 @@ Page({
    * 开始刷新
    */
   startRefresh: function () {
-    wx.startPullDownRefresh();
+    this.getOrderData(this.data.serachKey);
   },
 
   /**
@@ -594,7 +594,7 @@ Page({
    * 点击更多
    */
   tapMoreOperate: function(e) {
-    let itemList = ["打印标签","订单详情"];
+    let itemList = ["打印标签", "补价", "订单详情"];
     if (this.data.userInfo.role == 1) {
       itemList.push("分配订单")
     }
@@ -608,6 +608,10 @@ Page({
           let tempOrder = that.data.orderList[index];
           that.startPrint(tempOrder);
         } else if (res.tapIndex == 1) {
+          wx.navigateTo({
+            url: pagePath.Path_Order_Premium + '?orderno=' + orderNo,
+          })
+        } else if (res.tapIndex == 2) {
           wx.navigateTo({
             url: pagePath.Path_Order_Detail + '?orderno=' + orderNo + '&type=1',
           })

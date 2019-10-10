@@ -221,25 +221,18 @@
       <!-- 按钮区域 -->
       <view class='bill-operate-box'>
         <view class='bill-operate-button'
+              bindtap='tapUnpayMore'
+              data-tapindex="{{unpayIndex}}"
+              data-orderno='{{unpayItem.orderNo}}'>
+        更多
+        </view>
+        <view class='bill-operate-button'
               bindtap='tapCallStore'
               data-tapindex="{{unpayIndex}}"
               data-phone="{{unpayItem.transport.station.phone}}"
               data-orderno='{{unpayItem.orderNo}}'
               hidden="{{parse.hiddenMakePhone(unpayItem.transport.station.phone)}}">
         联系商家
-        </view>
-        <view class='bill-operate-button'
-              bindtap='tapCancelOrder'
-              data-tapindex="{{unpayIndex}}"
-              data-orderno='{{unpayItem.orderNo}}'
-              hidden="{{false}}">
-        取消订单
-        </view>
-        <view class='bill-operate-button'
-              bindtap='tapOrderDetail' 
-              data-tapindex="{{unpayIndex}}"
-              data-orderno='{{unpayItem.orderNo}}'>
-        订单详情
         </view>
         <view class='bill-operate-button-complain' 
               bindtap='tapToPay' 
@@ -301,6 +294,13 @@
       </view>
       <!-- 按钮区域 -->
       <view class='bill-operate-box'>
+      
+        <view class='bill-operate-button'
+              bindtap='tapUnsendMore'
+              data-tapindex="{{unsendIndex}}"
+              data-orderno='{{unsendItem.orderNo}}'>
+        更多
+        </view>
         <view class='bill-operate-button'
               bindtap='tapCallStore'
               data-tapindex="{{unsendIndex}}"
@@ -308,19 +308,6 @@
               data-orderno='{{unsendItem.orderNo}}'
               hidden="{{parse.hiddenMakePhone(unsendItem.transport.station.phone)}}">
         联系商家
-        </view>
-        <view class='bill-operate-button'
-              bindtap='tapCancelOrder' 
-              data-tapindex="{{unsendIndex}}"
-              data-orderno='{{unsendItem.orderNo}}'
-              hidden="{{true}}">
-        取消订单
-        </view>
-        <view class='bill-operate-button'
-              bindtap='tapOrderDetail' 
-              data-tapindex="{{unsendIndex}}"
-              data-orderno='{{unsendItem.orderNo}}'>
-        订单详情
         </view>
         <view class='bill-operate-button-complain' 
               bindtap='tapComplain' 

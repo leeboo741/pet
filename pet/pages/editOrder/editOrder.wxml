@@ -1,0 +1,39 @@
+<!--pages/editOrder/editOrder.wxml-->
+<i-panel i-class="panel" 
+         title='收寄人信息'>
+  <i-cell-group>
+    <i-cell title='寄件人名称'>
+      <input slot='footer'
+             placeholder="{{orderData.senderName}}"
+             bindinput="inputSenderName"
+             class="edit-input">
+      </input>        
+    </i-cell>
+    <i-cell title='寄件人电话'>
+      <input slot='footer'
+             placeholder="{{orderData.senderPhone}}"
+             bindinput="inputSenderPhone"
+             class="edit-input">
+      </input>        
+    </i-cell>
+    <i-cell title='收件人名称'>
+      <input slot='footer'
+             placeholder="{{orderData.receiverName}}"
+             bindinput="inputReceiverName"
+             class="edit-input">
+      </input>        
+    </i-cell>
+    <i-cell title='收件人电话'>
+      <input slot='footer'
+             placeholder="{{orderData.receiverPhone}}"
+             bindinput="inputReceiverPhone"
+             class="edit-input">
+      </input>        
+    </i-cell>
+  </i-cell-group>
+</i-panel>
+
+<view class="edit-button"
+      bindtap="tapEdit">
+确定修改
+</view>

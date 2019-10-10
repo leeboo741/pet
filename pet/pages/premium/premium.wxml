@@ -1,0 +1,29 @@
+<!--pages/premium/premium.wxml-->
+<i-panel i-class="panel" 
+         title='新增补价单'>
+  <i-cell-group>
+    <i-cell title='补价金额'>
+      <input slot='footer'
+             placeholder="补价金额"
+             bindinput="inputAmount"
+             type="digit"
+             class="edit-input">
+      </input>        
+    </i-cell>
+    <i-cell wx:if='{{userInfo.role != 0 && type != 0}}'>
+      <view slot='header'
+            class="input-reason-box">
+        <textarea class="input-reason-input"
+                  bindinput="inputReason"
+                  placeholder="请输入补价原因"
+                  auto-height="{{true}}">
+        </textarea>    
+      </view>
+    </i-cell>
+  </i-cell-group>
+</i-panel>
+
+<view class="edit-button"
+      bindtap="tapAddPremium">
+确定
+</view>

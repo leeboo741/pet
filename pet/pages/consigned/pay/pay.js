@@ -11,6 +11,7 @@ const config = require("../../../utils/config.js");
 const loginUtil = require("../../../utils/loginUtils.js");
 const pagePath = require("../../../utils/pagePath.js");
 const ShareUtil = require("../../../utils/shareUtils.js");
+const Util = require("../../../utils/util.js");
 
 Page({
 
@@ -340,6 +341,11 @@ Page({
       "senderPhone": this.data.sendPhone,
 
       "remarks": this.data.remark,
+    }
+
+    tempOrderObj.shareOpenId = "";
+    if (!Util.checkEmpty(app.ShareData.openId)) {
+      tempOrderObj.shareOpenId = app.ShareData.openId;
     }
 
     tempOrderObj.buyPetCage = "0";

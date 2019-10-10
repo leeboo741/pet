@@ -27,7 +27,9 @@
     "pages/registerStaff/registerStaff",
     "pages/bluetooth/search",
     "pages/bluetooth/print",
-    "pages/finishOrder/finishOrder"
+    "pages/finishOrder/finishOrder",
+    "pages/editOrder/editOrder",
+    "pages/premium/premium"
   ],
   "window": {
     "backgroundTextStyle": "light",

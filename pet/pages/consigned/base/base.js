@@ -99,6 +99,7 @@ Page({
       receiveDistrictList: null, // 上门接宠区县列表
       receiveDistrict: null, // 上门接宠区县
       address: null, // 地址
+      haveAbleStation: false, // 是否有可用站点
     },
     addServerSendPet: {
       name: "送宠到家",
@@ -164,13 +165,18 @@ Page({
       // 重置 上门接宠 市区选择器
       this.data.addServerReceivePet.receiveDistrictList = DISTRICT[app.globalData.trainBeginCity];
       this.data.addServerReceivePet.receiveDistrict = this.data.addServerReceivePet.receiveDistrictList[0];
+      // 重置 上门接宠
+      this.data.addServerReceivePet.address = null;
+      this.data.addServerReceivePet.selected = false;
+      this.data.addServerReceivePet.haveAbleStation = true;
       // 重置 送宠到家 市区选择器
       this.data.addServerSendPet.sendDistrictList = null;
       this.data.addServerSendPet.sendDistrict = null;
       // 重置 送宠到家 地址 并且关闭 送宠到家
       this.data.addServerSendPet.address = null;
       this.data.addServerSendPet.selected = false;
-      
+      this.data.addServerSendPet.haveAbleStation = false;
+
       this.setData({
         beginCity: app.globalData.trainBeginCity, // 设置始发城市
         addServerReceivePet: this.data.addServerReceivePet, // 设置 上门接宠
@@ -180,16 +186,21 @@ Page({
         petMaxWeight: null,
         transportTypes: this.data.transportTypes, // 重置 运输方式列表 
       })
-      // 查询保价费率
+      // 查询店铺电话
       this.requestStroePhoneByCityName(app.globalData.trainBeginCity);
+      // 查询保价费率
       this.requestInsurePriceRate(app.globalData.trainBeginCity);
-      this.checkAbleStation(app.globalData.trainBeginCity, CheckAbleStation_Type_Receipt);
+      // this.checkAbleStation(app.globalData.trainBeginCity, CheckAbleStation_Type_Receipt);
       app.globalData.trainBeginCity = null;
     }
     if (app.globalData.trainEndCity != null) {
       // 重置 送宠到家 市区选择器
       this.data.addServerSendPet.sendDistrictList = DISTRICT[app.globalData.trainEndCity];
       this.data.addServerSendPet.sendDistrict = this.data.addServerSendPet.sendDistrictList[0];
+      // 重置 送宠到家
+      this.data.addServerSendPet.address = null;
+      this.data.addServerSendPet.selected = false;
+      this.data.addServerSendPet.haveAbleStation = true;
       this.setData({
         addServerSendPet: this.data.addServerSendPet, // 重置 送宠到家
         endCity: app.globalData.trainEndCity, // 设置 目的城市
@@ -199,7 +210,7 @@ Page({
       // 查询可用的运输方式列表
       this.checkAbleTransportType();
       // 查询是否有可用站点
-      this.checkAbleStation(app.globalData.trainEndCity, CheckAbleStation_Type_Send);
+      // this.checkAbleStation(app.globalData.trainEndCity, CheckAbleStation_Type_Send);
       app.globalData.trainEndCity = null;
     }
   },

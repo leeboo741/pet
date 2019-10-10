@@ -297,6 +297,58 @@ Page({
   },
 
   /**
+   * 点击待付款更多
+   */
+  tapUnpayMore: function (e) {
+    let itemList = ["订单详情", "修改订单", "取消订单"];
+    let index = e.currentTarget.dataset.tapindex;
+    let orderNo = e.currentTarget.dataset.orderno;
+    let that = this;
+    wx.showActionSheet({
+      itemList: itemList,
+      success(res) {
+        if (res.tapIndex == 0) { // 订单详情
+          that.tapOrderDetail(e);
+        } else if (res.tapIndex == 1) { // 修改订单
+          that.tapEditOrder(e);
+        } else if (res.tapIndex == 2) { // 取消订单
+          that.tapCancelOrder(e);
+        }
+      },
+    })
+  },
+
+  /**
+   * 点击待发货更多
+   */
+  tapUnsendMore: function(e) {
+    let itemList = ["订单详情", "修改订单"];
+    let index = e.currentTarget.dataset.tapindex;
+    let orderNo = e.currentTarget.dataset.orderno;
+    let that = this;
+    wx.showActionSheet({
+      itemList: itemList,
+      success(res) {
+        if (res.tapIndex == 0) { // 订单详情
+          that.tapOrderDetail(e);
+        } else if (res.tapIndex == 1) { // 修改订单
+          that.tapEditOrder(e);
+        }
+      },
+    })
+  },
+
+  /**
+   * 修改订单
+   */
+  tapEditOrder: function (e) {
+    console.log("编辑：\n" + e.currentTarget.dataset.orderno)
+    wx.navigateTo({
+      url: pagePath.Path_Order_Edit + '?orderno=' + e.currentTarget.dataset.orderno,
+    })
+  },
+
+  /**
    * 订单详情
    */
   tapOrderDetail: function (e) {

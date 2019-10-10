@@ -57,7 +57,7 @@ App({
   },
 
   ShareData: {
-
+    openId: null
   }, // 分享数据
 
   BLEInformation: {

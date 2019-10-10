@@ -1,6 +1,6 @@
 const LoginUtil = require("../utils/loginUtils.js");
 const PagePath = require("../utils/pagePath.js");
-const app = getApp;
+const app = getApp();
 
 /**
  * 分享 微信小程序
@@ -27,7 +27,7 @@ function getOnShareAppMessageForShareOpenId(){
 function getOpenIdInShareMessage(options) {
   let shareOpenId = options.shareopenid;
   if (shareOpenId != null) {
-    app.ShareData.openId = options.shareopenid;
+    app.ShareData.openId = shareOpenId;
     console.log("ShareOpenId:\n" + app.ShareData.openId);
   }
 }

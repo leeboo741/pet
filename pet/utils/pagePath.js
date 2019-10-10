@@ -15,6 +15,8 @@ const Path_Order_UnConfirmOrder = "/pages/unConfirmOrder/unConfirmOrder"; // 收
 const Path_Order_All = "/pages/finishOrder/finishOrder"; // 所有单据
 const Path_Order_Detail = "/pages/orderDetail/orderDetail"; // 单据详情
 const Path_Order_Allocation_SelectorStaff = "/pages/selectorStaff/selectorStaff"; // 分配--选择员工
+const Path_Order_Edit = "/pages/editOrder/editOrder"; // 编辑订单
+const Path_Order_Premium = "/pages/premium/premium"; // 补差价
 
 const Path_Station = "/pages/station/station";  // 驿站
 
@@ -52,6 +54,8 @@ module.exports = {
   Path_Order_All: Path_Order_All, // 所有单据
   Path_Order_Detail: Path_Order_Detail, // 单据详情
   Path_Order_Allocation_SelectorStaff: Path_Order_Allocation_SelectorStaff, // 分配--选择员工
+  Path_Order_Edit: Path_Order_Edit, // 编辑订单
+  Path_Order_Premium: Path_Order_Premium, // 补差价
 
   Path_Station: Path_Station,  // 驿站
 

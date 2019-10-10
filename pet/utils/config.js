@@ -12,9 +12,9 @@ const Version_Code = 24; // 版本编号
  *                      网络请求
  */
 /** =================================================== */
-const URL_Service = "https://pet.tyferp.com"; // 路径 
+// const URL_Service = "https://pet.tyferp.com"; // 路径 
 // const URL_Service = "http://huji820.oicp.net"; // 路径
-// const URL_Service = "http://192.168.3.111:5050"; // 路径
+const URL_Service = "http://192.168.3.111:5050"; // 路径
 // const URL_Service = "http://192.168.3.233:5050"; // 路径
 
 const URL_Register = "/api/customer/"; // 注册
@@ -63,6 +63,8 @@ const URL_ConfirmOrder = "/api/order/confirmOrder"; // 确认收货
 const URL_GetUnConfirmOrderList = "/api/order/listUncertainty"; // 获取未确认收货订单
 const URL_AlloctionOrder = '/api/order/assignment/'; // 订单分配
 const URL_PostOrderRemark = '/api/order/remarks'; // 新增一条订单备注
+const URL_EditOrderContacts = '/api/order/update/contacts'; // 更新订单联系人信息
+const URL_Premium = '/api/order/premium'; // 新增差价单
 
 const URL_GetCouponList = '/aip/coupon/listByOpenId'; // 获取优惠券列表
 
@@ -173,6 +175,8 @@ module.exports = {
   URL_GetUnConfirmOrderList, // 获取未确认收货订单列表
   URL_AlloctionOrder, // 订单分配
   URL_PostOrderRemark, // 新增一条订单备注
+  URL_EditOrderContacts, // 修改订单联系人
+  URL_Premium, // 新增差价单
 
   URL_GetCouponList, // 获取优惠券列表
 

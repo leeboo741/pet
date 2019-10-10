@@ -1,0 +1,33 @@
+/* pages/premium/premium.wxss */
+.panel{
+  background: rgb(240, 240, 240);
+}
+
+.input-reason-box{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  border: 1rpx solid lightgray; 
+  border-radius: 8rpx;
+  width: 100%;
+}
+
+.input-reason-input{
+  width: 98%;
+  min-height: 80rpx;
+  font-size: 32rpx;
+  margin: 10rpx 0rpx;
+}
+
+.edit-button{
+  width: 90%;
+  margin: 30rpx auto;
+  background: #2d8cf0;
+  color: white;
+  height: 80rpx;
+  line-height: 80rpx;
+  text-align: center;
+  font-size: 36rpx;
+  border-radius: 10rpx;
+}
