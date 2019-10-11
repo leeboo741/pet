@@ -8,14 +8,81 @@ page {
   align-items: center;
   flex-direction: column;
   height: 100vh;
+  width: 100%;
+}
+
+.filter-box{
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  padding: 10rpx;
+  margin: 15rpx;
+  border: 1rpx solid #778899;
+  border-radius: 8rpx;
+}
+
+.filter-item{
+  margin-bottom: 15rpx;
+  display: flex;
+  flex-direction: column;
+}
+
+.filter-item-title{
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #1c2438;
+  margin-bottom: 8rpx;
+}
+
+.filter-item-content{
+  font-size: 26rpx;
+  color: #495060;
+}
+
+.filter-clear-box{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20rpx;
+}
+
+.filter-clear-button{
+  width: 50rpx;
+  height: 50rpx;
+  padding: 15rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ee2c2c;
+  border-radius: 8rpx;
+  border: 1rpx solid #ee2c2c;
 }
 
 .input-under {
-  width: 700rpx;
+  flex-grow: 1;
+  margin: 10rpx 15rpx;
+}
+.filter-button{
+  width: 120rpx;
+  font-size: 24rpx;
+  margin: 10rpx;
+  height: 60rpx; 
+  line-height: 60rpx;
+  background: #2d8cf0;
+  color: white;
+  text-align: center;
+  border-radius: 8rpx;
+}
+
+.bill-item{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
 }
 
 .block-fillet {
-  width: 700rpx;
+  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;

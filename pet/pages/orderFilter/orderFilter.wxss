@@ -1,0 +1,16 @@
+/* pages/orderFilter/orderFilter.wxss */
+.panel{
+  background: rgb(240, 240, 240);
+}
+
+.filter-button{
+  width: 90%;
+  margin: 30rpx auto;
+  background: #2d8cf0;
+  color: white;
+  height: 80rpx;
+  line-height: 80rpx;
+  text-align: center;
+  font-size: 36rpx;
+  border-radius: 10rpx;
+}

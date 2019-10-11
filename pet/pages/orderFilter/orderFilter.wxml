@@ -1,0 +1,88 @@
+<!--pages/orderFilter/orderFilter.wxml-->
+<i-panel i-class="panel" 
+         title='订单信息'>
+  <i-cell-group>
+    <i-cell title='订单类型'>
+      <picker slot='footer'
+              class="picker"
+              range="{{orderTypeRange}}"
+              bindchange="bindTypeChange">
+        <view>
+        {{parse.getPickerTypeStr(orderFilter.orderType)}}
+        </view>      
+      </picker>       
+    </i-cell>
+  </i-cell-group>
+</i-panel>
+<i-panel i-class="panel" 
+         title='下单时间'>
+  <i-cell-group>
+    <i-cell title='起始时间'>
+      <picker slot='footer'
+              class="picker"
+              mode='date'
+              bindchange="bindStartOrderDate">
+        <view>
+        {{parse.getPickerDateStr(orderFilter.startOrderDate)}}
+        </view>      
+      </picker>       
+    </i-cell>
+    <i-cell title='结束时间'>
+      <picker slot='footer'
+              class="picker"
+              mode='date'
+              bindchange="bindEndOrderDate">
+        <view>
+        {{parse.getPickerDateStr(orderFilter.endOrderDate)}}
+        </view>      
+      </picker>       
+    </i-cell>
+  </i-cell-group>
+</i-panel>
+<i-panel i-class="panel" 
+         title='出发时间'>
+  <i-cell-group>
+    <i-cell title='起始时间'>
+      <picker slot='footer'
+              class="picker"
+              mode='date'
+              bindchange="bindStartLeaveDate">
+        <view>
+        {{parse.getPickerDateStr(orderFilter.startLeaveDate)}}
+        </view>     
+      </picker>       
+    </i-cell>
+    <i-cell title='结束时间'>
+      <picker slot='footer'
+              class="picker"
+              mode='date'
+              bindchange="bindEndLeaveDate">
+        <view>
+        {{parse.getPickerDateStr(orderFilter.endLeaveDate)}}
+        </view>      
+      </picker>       
+    </i-cell>
+  </i-cell-group>
+</i-panel>
+
+<view class="filter-button"
+      bindtap="tapFilter">
+确定筛选
+</view>
+
+<wxs module='parse'>
+  module.exports = {
+    getPickerTypeStr: function(type) {
+      if (type != null && type.length > 0) {
+        return type;
+      }
+      return "请选择类型"
+    },
+    getPickerDateStr: function(date) {
+      if (date != null && date.length > 0) {
+        return date;
+      }
+      return "请选择日期"
+    },
+  }
+</wxs>

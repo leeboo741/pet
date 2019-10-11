@@ -30,6 +30,8 @@ Page({
     startIndex: 0, // 开始下标
     pageSize: 20, // 页长
     isEnd: false, // 是否到底
+
+    orderFilter: null, // 更多筛选条件
   },
 
   /**
@@ -108,6 +110,35 @@ Page({
    */
   searchInput: function (e) {
     this.data.serachKey = e.detail.value;
+  },
+
+
+  /**
+   * 点击更多筛选
+   */
+  tapFilterAction: function (e) {
+    wx.navigateTo({
+      url: pagePath.Path_Order_Filter + '?type=2',
+    })
+  },
+
+
+  /**
+   * 开始筛选
+   */
+  startFilter: function (orderFilter) {
+    this.setData({
+      orderFilter: orderFilter
+    })
+  },
+
+  /**
+   * 清除筛选条件
+   */
+  tapClearFilter: function () {
+    this.setData({
+      orderFilter: null
+    })
   },
 
   /**

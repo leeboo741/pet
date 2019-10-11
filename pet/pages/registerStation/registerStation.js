@@ -327,13 +327,13 @@ Page({
         if (res.data.code == 200) {
           wx.showToast({
             title: '申请提交成功',
-            duration: 2000,
+            duration: 1000,
           })
           that.data.timeOutID = setTimeout(function(){
             wx.navigateBack({
               
             })
-          },2000)
+          },1000)
         } else {
           let msg = "注册失败";
           if (!util.checkEmpty(res.data.message)) {

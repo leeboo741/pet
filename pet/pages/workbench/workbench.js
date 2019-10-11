@@ -25,6 +25,8 @@ Page({
     writeCharacter: false, // 是否查到 写入 服务
     readCharacter: false, // 是否查到 读取 服务
     notifyCharacter: false, // 是否查到 通知 服务
+
+    orderFilter: null, // 更多筛选条件
   },
 
   /**
@@ -266,6 +268,34 @@ Page({
    */
   searchInput: function (e) {
     this.data.serachKey = e.detail.value;
+  },
+
+  /**
+   * 点击更多筛选
+   */
+  tapFilterAction: function (e) {
+    wx.navigateTo({
+      url: pagePath.Path_Order_Filter + '?type=0',
+    })
+  },
+
+
+  /**
+   * 开始筛选
+   */
+  startFilter: function (orderFilter) {
+    this.setData({
+      orderFilter: orderFilter
+    })
+  },
+
+  /**
+   * 清除筛选条件
+   */
+  tapClearFilter: function () {
+    this.setData({
+      orderFilter: null
+    })
   },
 
   /**
@@ -911,4 +941,5 @@ Page({
       }
     })
   },
+
 })

@@ -1,14 +1,61 @@
 <!--pages/workbench/workbench.wxml-->
 <view class='container'>
-  <view class='block-fillet' 
-        style="width:100%">
+  <view class='block-fillet'
+        style="flex-direction: row; align-items: center;">
     <input class='input-under' 
            placeholder='请输入单据号'
            confirm-type="search"
            bindconfirm='searchOrder'
            bindinput="searchInput">
     </input>
+    <view class="filter-button"
+          bindtap="tapFilterAction">
+    更多筛选
+    </view>
   </view>
+
+  <view class="block-fillet"
+        style="flex-direction: row; align-items: center;"
+        hidden="{{orderFilter==null}}">
+    <view class="filter-box">
+      <view class="filter-item"
+            hidden="{{!parse.showFilterType(orderFilter)}}">
+        <view class="filter-item-title">
+        订单类型：
+        </view>
+        <view class="filter-item-content">
+        {{orderFilter.orderType}}
+        </view>
+      </view>
+      <view class="filter-item"
+            hidden="{{!parse.showFilterOrderDate(orderFilter)}}">
+        <view class="filter-item-title">
+        下单时间：
+        </view>
+        <view class="filter-item-content">
+        {{orderFilter.startOrderDate}} 至 {{orderFilter.endOrderDate}}
+        </view>
+      </view>
+      <view class="filter-item"
+            hidden="{{!parse.showFilterLeaveDate(orderFilter)}}">
+        <view class="filter-item-title">
+        出发时间：
+        </view>
+        <view class="filter-item-content">
+        {{orderFilter.startLeaveDate}} 至 {{orderFilter.endLeaveDate}}
+        </view>
+      </view>
+    </view>
+    <view class="filter-clear-box">
+      <view class="filter-clear-button"
+            bindtap="tapClearFilter">
+        <i-icon type='trash'
+                size="24">
+        </i-icon>
+      </view>
+    </view>
+  </view>
+
   <!-- 单据信息 -->
   <view class="bill-item"
         wx:for='{{orderList}}'
@@ -369,7 +416,31 @@
         return true;
       }
       return false;
-    }
+    },
+    showFilterType: function(orderFilter) {
+      if (orderFilter.orderType == null || orderFilter.orderType.length <= 0) {
+        return false;
+      }
+      return true;
+    },
+    showFilterOrderDate: function(orderFilter) {
+      if (orderFilter.startOrderDate != null 
+        && orderFilter.startOrderDate.length > 0 
+        && orderFilter.endOrderDate != null 
+        && orderFilter.endOrderDate.length > 0) {
+        return true;  
+      }
+      return false;
+    },
+    showFilterLeaveDate: function(orderFilter) {
+      if (orderFilter.startLeaveDate != null 
+        && orderFilter.startLeaveDate.length > 0 
+        && orderFilter.endLeaveDate != null 
+        && orderFilter.endLeaveDate.length > 0) {
+        return true;  
+      }
+      return false;
+    },
   }
 </wxs>
 

@@ -94,6 +94,7 @@ const Role_Staff_Manager = 1; // 管理员
 const Role_Staff_Service = 2; // 客服
 const Role_Staff_Diver = 3; // 司机
 
+const Order_State_ToPay = "待付款";
 const Order_State_ToPack = "待揽件";
 const Order_State_ToInPort = "待入港";
 const Order_State_InPort = "已入港";
@@ -200,6 +201,7 @@ module.exports = {
   Role_Staff_Service, // 客服
   Role_Staff_Diver, // 司机
 
+  Order_State_ToPay, // 待付款
   Order_State_ToPack, // 待揽件
   Order_State_ToInPort, // 待入港
   Order_State_InPort, // 已入港

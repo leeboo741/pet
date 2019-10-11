@@ -29,7 +29,8 @@
     "pages/bluetooth/print",
     "pages/finishOrder/finishOrder",
     "pages/editOrder/editOrder",
-    "pages/premium/premium"
+    "pages/premium/premium",
+    "pages/orderFilter/orderFilter"
   ],
   "window": {
     "backgroundTextStyle": "light",

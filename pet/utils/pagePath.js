@@ -10,6 +10,7 @@ const Path_Order_Coupon = "/pages/consigned/coupon/coupon"; // 下单--优惠券
 const Path_Order_Coupon_QRCode = "/pages/consigned/coupon/couponQRCode/couponQRCode"; // 下单--优惠券二维码
 const Path_Order_Text = "/pages/consigned/text/text"; // 下单--协议确认
 
+const Path_Order_Filter = "/pages/orderFilter/orderFilter"; // 单据筛选
 const Path_Order_Workbench = "/pages/workbench/workbench"; // 工单
 const Path_Order_UnConfirmOrder = "/pages/unConfirmOrder/unConfirmOrder"; // 收货单
 const Path_Order_All = "/pages/finishOrder/finishOrder"; // 所有单据
@@ -49,6 +50,7 @@ module.exports = {
   Path_Order_Coupon_QRCode: Path_Order_Coupon_QRCode, // 下单--优惠券二维码
   Path_Order_Text: Path_Order_Text, // 下单--协议确认
 
+  Path_Order_Filter: Path_Order_Filter, // 单据筛选
   Path_Order_Workbench: Path_Order_Workbench, // 工单
   Path_Order_UnConfirmOrder: Path_Order_UnConfirmOrder, // 收货单
   Path_Order_All: Path_Order_All, // 所有单据
