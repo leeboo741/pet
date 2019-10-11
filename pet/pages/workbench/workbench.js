@@ -287,6 +287,7 @@ Page({
     this.setData({
       orderFilter: orderFilter
     })
+    this.getOrderData(this.data.searchKey);
   },
 
   /**
@@ -296,6 +297,7 @@ Page({
     this.setData({
       orderFilter: null
     })
+    this.startRefresh();
   },
 
   /**
@@ -323,17 +325,52 @@ Page({
       title: '请稍等...',
     })
     let that = this;
+    let orderFilter = this.data.orderFilter;
     let tempSearchKey = "";
     if (searchKey != null) {
       tempSearchKey = searchKey
     }
-    let orderTypes = config.Order_State_ToInPort + ',' + config.Order_State_ToOutPort + ',' + config.Order_State_ToPack;
+    let orderTypes = [
+      config.Order_State_ToInPort,
+      config.Order_State_ToOutPort,
+      config.Order_State_ToPack,
+    ];
+    let startOrderDate = "";
+    let endOrderDate = "";
+    let startLeaveDate = "";
+    let endLeaveDate = "";
+    if (orderFilter != null && !util.checkEmpty(orderFilter.orderType)) {
+      orderTypes = [
+        orderFilter.orderType
+      ];
+    }
+    if (orderFilter != null && !util.checkEmpty(orderFilter.startOrderDate)) {
+      startOrderDate = orderFilter.startOrderDate;
+    }
+    if (orderFilter != null && !util.checkEmpty(orderFilter.endOrderDate)) {
+      endOrderDate = orderFilter.endOrderDate;
+    }
+    if (orderFilter != null && !util.checkEmpty(orderFilter.startLeaveDate)) {
+      startLeaveDate = orderFilter.startLeaveDate;
+    }
+    if (orderFilter != null && !util.checkEmpty(orderFilter.endLeaveDate)) {
+      endLeaveDate = orderFilter.endLeaveDate;
+    }
+
+    let tempData = {
+      staffNo: loginUtil.getStaffNo(),
+      stationNo: loginUtil.getStationNo(),
+      orderNo: tempSearchKey,
+      orderTypeArray: orderTypes,
+      startOrderTime: startOrderDate,
+      endOrderTime: endOrderDate,
+      startLeaveTime: startLeaveDate,
+      endLeaveTime: endLeaveDate,
+    }
     wx.request({
       url: config.URL_Service + config.URL_GetInOrOutHarbourList,
       data: {
-        openId: loginUtil.getOpenId(),
-        orderNo: tempSearchKey,
-        orderType: orderTypes,
+        queryParamStr: JSON.stringify(tempData)
       },
       success(res) {
         console.log("请求工作单 success：\n" + JSON.stringify(res));

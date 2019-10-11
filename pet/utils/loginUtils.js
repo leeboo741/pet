@@ -54,6 +54,17 @@ function getUserInfo() {
 }
 
 /**
+ * 获取站点编号
+ */
+function getStationNo(){
+  let userInfo = getUserInfo();
+  if (userInfo == null || userInfo.stationNo == null || userInfo.stationNo.length <= 0) {
+    return null;
+  }
+  return userInfo.stationNo;
+}
+
+/**
  * 获取员工编号
  */
 function getStaffNo() {
@@ -145,6 +156,7 @@ function login(loginCallback) {
                       userInfo.role = tempUserInfo.role
                       userInfo.balance = tempUserInfo.balance
                       userInfo.staffNo = tempUserInfo.staff.staffNo
+                      userInfo.stationNo = tempUserInfo.staff.station.stationNo
                       saveUserInfo(userInfo);
                       if (loginCallback) {
                         loginCallback(Login_Success, "登陆成功");
@@ -231,5 +243,6 @@ module.exports = {
   getPhone: getPhone,
   getOpenId: getOpenId,
   checkLogin: checkLogin,
-  getStaffNo: getStaffNo
+  getStaffNo: getStaffNo,
+  getStationNo: getStationNo,
 }

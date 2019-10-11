@@ -287,6 +287,7 @@ Page({
     this.setData({
       orderFilter: orderFilter
     })
+    this.getOrderData(this.data.searchKey);
   },
 
   /**
@@ -296,6 +297,7 @@ Page({
     this.setData({
       orderFilter: null
     })
+    this.startRefresh();
   },
 
   /**
@@ -323,29 +325,65 @@ Page({
       title: '请稍等...',
     })
     let that = this;
+    let orderFilter = this.data.orderFilter;
     let tempSearchKey = "";
     if (searchKey != null) {
       tempSearchKey = searchKey
     }
-    let orderTypes = config.Order_State_ToArrived + ',' + config.Order_State_Arrived + ',' + config.Order_State_Delivering + ',' + config.Order_State_ToSign;
+    let orderTypes = [
+      config.Order_State_ToArrived,
+      config.Order_State_Arrived,
+      config.Order_State_Delivering,
+      config.Order_State_ToSign
+    ];
+    let startOrderDate = "";
+    let endOrderDate = "";
+    let startLeaveDate = "";
+    let endLeaveDate = "";
+    if (orderFilter != null && !util.checkEmpty(orderFilter.orderType)) {
+      orderTypes = [
+        orderFilter.orderType
+      ];
+    }
+    if (orderFilter != null && !util.checkEmpty(orderFilter.startOrderDate)) {
+      startOrderDate = orderFilter.startOrderDate;
+    }
+    if (orderFilter != null && !util.checkEmpty(orderFilter.endOrderDate)) {
+      endOrderDate = orderFilter.endOrderDate;
+    }
+    if (orderFilter != null && !util.checkEmpty(orderFilter.startLeaveDate)) {
+      startLeaveDate = orderFilter.startLeaveDate;
+    }
+    if (orderFilter != null && !util.checkEmpty(orderFilter.endLeaveDate)) {
+      endLeaveDate = orderFilter.endLeaveDate;
+    }
+
+    let tempData = {
+      staffNo: loginUtil.getStaffNo(),
+      stationNo: loginUtil.getStationNo(),
+      orderNo: tempSearchKey,
+      orderTypeArray: orderTypes,
+      startOrderTime: startOrderDate,
+      endOrderTime: endOrderDate,
+      startLeaveTime: startLeaveDate,
+      endLeaveTime: endLeaveDate,
+    }
     wx.request({
       url: config.URL_Service + config.URL_GetInOrOutHarbourList,
       data: {
-        openId: loginUtil.getOpenId(),
-        orderNo: tempSearchKey,
-        orderType: orderTypes,
+        queryParamStr: JSON.stringify(tempData)
       },
       success(res) {
-        console.log("请求收货单 success：\n" + JSON.stringify(res));
+        console.log("请求工作单 success：\n" + JSON.stringify(res));
         that.setData({
           orderList: res.data.data
         })
       },
       fail(res) {
-        console.log("请求收货单 fail：\n" + JSON.stringify(res));
+        console.log("请求工作单 fail：\n" + JSON.stringify(res));
       },
       complete(res) {
-        console.log("请求收货单 complete：\n" + JSON.stringify(res));
+        console.log("请求工作单 complete：\n" + JSON.stringify(res));
         wx.hideLoading();
         wx.stopPullDownRefresh();
       },

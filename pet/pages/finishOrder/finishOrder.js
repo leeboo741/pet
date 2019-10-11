@@ -130,6 +130,8 @@ Page({
     this.setData({
       orderFilter: orderFilter
     })
+    this.data.startIndex = 0;
+    this.getOrderData(this.data.startIndex, this.data.searchKey);
   },
 
   /**
@@ -139,6 +141,7 @@ Page({
     this.setData({
       orderFilter: null
     })
+    this.startRefresh();
   },
 
   /**
@@ -166,19 +169,51 @@ Page({
       title: '请稍等...',
     })
     let that = this;
+    let orderFilter = this.data.orderFilter;
+    let tempSearchKey = "";
+    if (searchKey != null) {
+      tempSearchKey = searchKey
+    }
+    let orderTypes = [];
+    let startOrderDate = "";
+    let endOrderDate = "";
+    let startLeaveDate = "";
+    let endLeaveDate = "";
+    if (orderFilter != null && !util.checkEmpty(orderFilter.orderType)) {
+      orderTypes = [
+        orderFilter.orderType
+      ];
+    }
+    if (orderFilter != null && !util.checkEmpty(orderFilter.startOrderDate)) {
+      startOrderDate = orderFilter.startOrderDate;
+    }
+    if (orderFilter != null && !util.checkEmpty(orderFilter.endOrderDate)) {
+      endOrderDate = orderFilter.endOrderDate;
+    }
+    if (orderFilter != null && !util.checkEmpty(orderFilter.startLeaveDate)) {
+      startLeaveDate = orderFilter.startLeaveDate;
+    }
+    if (orderFilter != null && !util.checkEmpty(orderFilter.endLeaveDate)) {
+      endLeaveDate = orderFilter.endLeaveDate;
+    }
+
     let tempData = {
-      openId: loginUtil.getOpenId(),
+      staffNo: loginUtil.getStaffNo(),
+      stationNo: loginUtil.getStationNo(),
+      orderNo: tempSearchKey,
+      orderTypeArray: orderTypes,
+      startOrderTime: startOrderDate,
+      endOrderTime: endOrderDate,
+      startLeaveTime: startLeaveDate,
+      endLeaveTime: endLeaveDate,
       offset: offset,
       limit: that.data.pageSize,
-    };
-    if (!util.checkEmpty(searchKey)) {
-      tempData.orderNo = searchKey;
-    } else {
-      tempData.orderNo = "";
     }
     wx.request({
       url: config.URL_Service + config.URL_GetStationAllOrder,
-      data: tempData,
+      data: {
+        queryParamStr: JSON.stringify(tempData)
+      },
       success(res) {
         console.log("请求所有单据 success：\n" + JSON.stringify(res));
         if (res.data.prompt == config.Prompt_Error) {

@@ -15,6 +15,10 @@ Page({
   data: {
     messageList: [],
     getNewMessageIntervalID: null,
+
+    startIndex: 0, // 开始下标
+    pageSize: 20, // 页长
+    isEnd: false, // 是否到底
   },
 
   /**
@@ -56,7 +60,9 @@ Page({
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
-    this.getMessageData();
+    this.data.startIndex = 0;
+    this.data.messageList = [];
+    this.getMessageData(this.data.startIndex);
   },
 
   /**
@@ -75,29 +81,49 @@ Page({
 
   /**
    * 获取数据
+   * @param startIndex 开始下标
    */
-  getMessageData: function () {
+  getMessageData: function (startIndex) {
     let that = this;
     loginUtil.checkLogin(function alreadyLoginCallback(state) {
       if (state) {
-        that.requestMessageData();
+        that.requestMessageData(startIndex);
       }
     })
   },
 
   /**
    * 请求数据
+   * @param startIndex 开始下标
    */
-  requestMessageData: function () {
+  requestMessageData: function (startIndex) {
     this.closeGetNewMessageInterval();
     let that = this;
     wx.request({
-      url: config.URL_Service + config.URL_Get_Message + loginUtil.getOpenId(),
+      url: config.URL_Service + config.URL_Get_Message,
+      data: {
+        openId: loginUtil.getOpenId(),
+        offset: startIndex,
+        limit: this.data.pageSize
+      },
       success(res){
         console.log("获取站内信 success:\n" + JSON.stringify(res));
         if (res.data.code == 200) {
+          if (util.checkEmpty(res.data.data)) {
+            that.setData({
+              isEnd: true
+            })
+            return;
+          }
+          that.data.messageList = that.data.messageList.concat(res.data.data);
+          let isEnd = false;
+          if (res.data.data.length < that.data.pageSize) {
+            isEnd = true;
+          }
           that.setData({
-            messageList: res.data.data
+            messageList: that.data.messageList,
+            isEnd: isEnd,
+            startIndex: startIndex + that.data.pageSize
           })
           that.setLastGetMessageTime(util.formatTime(new Date()));
           that.startGetNewMessageInterval();
@@ -188,4 +214,19 @@ Page({
 
     }
   },
+
+  /**
+   * 开始刷新
+   */
+  refresh: function () {
+    wx.startPullDownRefresh();
+  },
+
+  /**
+   * 加载更多
+   */
+  loadMore: function () {
+    console.log("站内信加载更多");
+    this.getMessageData(this.data.startIndex);
+  }
 })

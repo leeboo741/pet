@@ -1,22 +1,38 @@
 <!--pages/message/message.wxml-->
-<view wx:for='{{messageList}}'
-      wx:for-item='messageItem'
-      wx:for-index='messageIndex'
-      wx:key='{{messageIndex}}'
-      class="message-item">
-  <view class="message-item-title">
-  {{messageItem.messageTitle}}
+<scroll-view class="scroll-content"
+             scroll-y
+             bindscrolltolower='loadMore'
+             bindscrolltoupper='refresh'
+             hidden="{{parse.showEmpty(messageList)}}">
+  <view wx:for='{{messageList}}'
+        wx:for-item='messageItem'
+        wx:for-index='messageIndex'
+        wx:key='{{messageIndex}}'
+        class="message-item">
+    <view class="message-item-title">
+    {{messageItem.messageTitle}}
+    </view>
+    <text class="message-item-content">
+    {{messageItem.messageContent}}
+    </text>
+    <view class="message-item-time">
+    {{messageItem.sendTime}}
+    </view>
   </view>
-  <text class="message-item-content">
-  {{messageItem.messageContent}}
-  </text>
-  <view class="message-item-time">
-  {{messageItem.sendTime}}
-  </view>
-</view>
+  <view class="end-item">
+      <view class="end-item-bg">
+        <view class="end-item-bg-line"></view>
+      </view>
+      <view class="end-item-content">
+        <view class="end-item-content-title">
+        {{isEnd?"已经到底了":"上拉加载"}}
+        </view>
+      </view>
+    </view>
+</scroll-view>
 
 <view class="empty-area"
-      wx:if="{{parse.showEmpty(messageList)}}">
+      hidden="{{!parse.showEmpty(messageList)}}">
   <view class="empty-content">
     <i-icon type="service"
             size="30"
