@@ -1,4 +1,40 @@
 <!--pages/orderDetail/orderDetail.wxml-->
+<i-panel i-class='panel'
+         title='补价信息'
+         wx:if='{{parse.showPremiumList(orderData.orderPremiumList)}}'>
+  <i-cell wx:for='{{orderData.orderPremiumList}}'
+          wx:for-item='premiumItem'
+          wx:for-index='premiumIndex'
+          wx:key='{{premiumIndex}}'>
+    <view slot='header'
+          class="premium-item">
+      <view class="premium-item-info-box">
+        <view class="premium-item-info-item-amount">
+        ￥{{premiumItem.amount}}
+        </view>
+        <view class="premium-item-info-item-reason">
+        {{premiumItem.reason}}
+        </view>
+        <view class="premium-item-info-item-time">
+        {{premiumItem.orderDate}} {{premiumItem.orderTime}}
+        </view>
+      </view>
+      <view class="premium-item-pay-button-box">
+        <view class="premium-item-pay-button"
+              wx:if='{{parse.showPremiumPayButton(premiumItem, userInfo)}}'
+              data-billno='{{premiumItem.billNo}}'
+              bindtap="tapPayPremium">
+        支付
+        </view>
+        <view class="premium-item-pay-state"
+              style="color: {{parse.getPremiumStateColor(premiumItem.state)}}"
+              wx:else>
+        {{premiumItem.state}}
+        </view>
+      </view>     
+    </view>
+  </i-cell>
+</i-panel>
 <i-panel i-class="panel" 
          title='订单内容'>
   <i-cell-group>
@@ -273,6 +309,23 @@
         return true;
       }
       return false;
+    },
+    showPremiumList: function(premiumList) {
+      if (premiumList == null || premiumList.length <= 0) {
+        return false;
+      }
+      return true;
+    },
+    showPremiumPayButton: function(premiumItem, userInfo) {
+      if (premiumItem.state == "待付款" && userInfo.role == 0) {
+        return true;
+      }
+      return false;
+    },
+    getPremiumStateColor: function(state) {
+      if (state == "待付款") {
+        return "#ee2c2c";
+      }
     }
   }
 </wxs>

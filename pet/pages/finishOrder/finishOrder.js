@@ -130,6 +130,7 @@ Page({
     this.setData({
       orderFilter: orderFilter
     })
+    this.data.orderList = [];
     this.data.startIndex = 0;
     this.getOrderData(this.data.startIndex, this.data.searchKey);
   },

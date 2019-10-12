@@ -135,7 +135,7 @@ page {
 }
 
 .bill-info-box {
-  padding: 20rpx;
+  padding: 10rpx;
   display: flex;
   border-radius: 20px;
   justify-content: left;

@@ -4,6 +4,7 @@ const config = require("../../utils/config.js");
 const loginUtil = require("../../utils/loginUtils.js");
 const util = require("../../utils/util.js");
 const ShareUtil = require("../../utils/shareUtils.js");
+const PagePath = require("../../utils/pagePath.js");
 
 const NEW_MESSAGE_LOOP_TIME = 10000;
 
@@ -157,7 +158,12 @@ Page({
           wx.showModal({
             title: '有新消息',
             content: '您有新的站内信，可以刷新页面查看',
-            showCancel: false
+            showCancel: false,
+            success(res){
+              if(res.confirm) {
+                wx.startPullDownRefresh();
+              }
+            }
           })
           that.setLastGetMessageTime(util.formatTime(new Date()));
         }
@@ -228,5 +234,20 @@ Page({
   loadMore: function () {
     console.log("站内信加载更多");
     this.getMessageData(this.data.startIndex);
+  },
+
+  /**
+   * 点击站内信
+   */
+  tapMessage: function (e) {
+    let link = e.currentTarget.dataset.link;
+    let path = link.split("?");
+    path = path[0];
+
+    if (path == PagePath.Path_Order_Detail) {
+      wx.navigateTo({
+        url: link,
+      })
+    }
   }
 })

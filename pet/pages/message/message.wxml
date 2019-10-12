@@ -8,7 +8,9 @@
         wx:for-item='messageItem'
         wx:for-index='messageIndex'
         wx:key='{{messageIndex}}'
-        class="message-item">
+        class="message-item"
+        bindtap="tapMessage"
+        data-link='{{messageItem.link}}'>
     <view class="message-item-title">
     {{messageItem.messageTitle}}
     </view>

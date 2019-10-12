@@ -18,13 +18,14 @@ Page({
     userInfo: null,
     remarksInput: null,
     type: 0,  // 0 自有单据 1 工作单据
+    orderNo: null,
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
+    this.data.orderNo = options.orderno;
     qqmapsdk = new QQMapWX({
       key: config.Key_QQ_Map
     });
@@ -33,7 +34,7 @@ Page({
       type: options.type,
       userInfo: loginUtil.getUserInfo()
     })
-    this.requestOrderDetail(options.orderno)
+    this.requestOrderDetail(this.data.orderNo)
   },
 
   /**
@@ -254,6 +255,58 @@ Page({
         wx.hideLoading();
       }
     })
-    
+  },
+
+  /**
+   *  点击 支付 补价 
+   */
+  tapPayPremium: function (e) {
+    let billNo = e.currentTarget.dataset.billno;
+    this.requestPayPremium(billNo);
+  },
+
+  /**
+   * 请求支付
+   */
+  requestPayPremium: function(billNo) {
+    wx.showLoading({
+      title: '支付中...',
+    })
+    let that = this;
+    wx.request({
+      url: config.URL_Service + config.URL_PayPremium,
+      data: {
+        billNo: billNo,
+        openId: loginUtil.getOpenId()
+      },
+      success(res) {
+        wx.hideLoading();
+        console.log("支付补价 success: \n" + JSON.stringify(res));
+        wx.requestPayment({
+          timeStamp: res.data.data.timeStamp,
+          nonceStr: res.data.data.nonceStr,
+          package: res.data.data.package,
+          signType: res.data.data.signType,
+          paySign: res.data.data.paySign,
+          success(res) {
+            that.requestOrderDetail(that.data.orderNo)
+          },
+          fail(res) {
+            wx.showToast({
+              title: '支付失败,请稍后重试',
+              icon: 'none'
+            })
+          }
+        })
+      },
+      fail(res) {
+        wx.hideLoading();
+        console.log("支付补价 fail: \n" + JSON.stringify(res));
+        wx.showToast({
+          title: '网络原因,支付失败',
+          icon: 'none'
+        })
+      },
+    })
   }
 })

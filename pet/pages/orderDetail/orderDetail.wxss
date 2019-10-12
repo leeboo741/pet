@@ -97,3 +97,60 @@
   line-height: 50rpx;
   margin-left: 20rpx;
 }
+
+.premium-item{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border-bottom: 1rpx solid rgb(230, 229, 229);
+}
+
+.premium-item-info-box{
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  padding: 10rpx 15rpx;
+}
+
+.premium-item-info-item-amount{
+  color: #ee2c2c;
+  font-size: 28rpx;
+  font-weight: bold;
+  margin-bottom: 10rpx;
+}
+
+.premium-item-info-item-reason{
+  color: #1c2438;
+  font-size: 28rpx;
+  margin-bottom: 10rpx;
+}
+
+.premium-item-info-item-time{
+  color: lightgrey;
+  font-size: 24rpx;
+  margin-bottom: 10rpx;
+}
+
+.premium-item-pay-button-box{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10rpx 20rpx;
+}
+
+.premium-item-pay-button{
+  width: 100rpx;
+  height: 70rpx;
+  line-height: 70rpx;
+  background: #2d8cf0;
+  color: white;
+  border-radius: 8rpx;
+  text-align: center;
+}
+
+.premium-item-pay-state{
+  color: gray;
+  width: 100rpx;
+  height: 50rpx;
+  line-height: 50rpx;
+}

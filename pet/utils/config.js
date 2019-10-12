@@ -70,6 +70,7 @@ const URL_GetCouponList = '/aip/coupon/listByOpenId'; // 获取优惠券列表
 
 const URL_Payment = "/api/weChat/pay/getOrderPayParam"; // 获取支付参数
 const URL_Recharge = "/api/weChat/pay/getRechargeParam"; // 获取充值参数
+const URL_PayPremium = "/api/weChat/pay/getOrderPremiumParam"; // 获取补价参数
 
 const URL_GetInOrOutHarbourList = "/api/consign/port/listByLikeOrderNo"; // 获取出入港单据列表
 const URL_ConfirmInOutHarbour = "/api/consign/orderState/inOrOutPort"; // 确认出入港
@@ -183,6 +184,7 @@ module.exports = {
 
   URL_Payment, // 获取支付参数
   URL_Recharge, // 获取充值参数
+  URL_PayPremium, // 获取补价参数
 
   URL_GetInOrOutHarbourList, // 获取出入港单据列表
   URL_ConfirmInOutHarbour, // 确认出入港
