@@ -80,6 +80,8 @@ Page({
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
+
+    this.data.orderList = [];
     this.data.startIndex = 0;
     this.getOrderData(this.data.startIndex, this.data.serachKey);
   },
@@ -226,7 +228,8 @@ Page({
         }
         if (util.checkEmpty(res.data.data) || util.checkEmpty(res.data.data.data)) {
           that.setData({
-            isEnd: true
+            isEnd: true,
+            orderList: that.data.orderList
           })
           return;
         }

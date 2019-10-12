@@ -112,7 +112,8 @@ Page({
         if (res.data.code == 200) {
           if (util.checkEmpty(res.data.data)) {
             that.setData({
-              isEnd: true
+              isEnd: true,
+              messageList: that.data.messageList
             })
             return;
           }

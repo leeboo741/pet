@@ -112,9 +112,9 @@
           </view>
           <view class='bill-info-pay'>
             <view class='bill-info-pay-label'
-                  wx:if='{{orderItem.state!= null}}'>状态：</view>
+                  wx:if='{{orderItem.orderStates[0].orderType!= null}}'>状态：</view>
             <view class='bill-info-pay-info'
-                  wx:if='{{orderItem.state!= null}}'>{{orderItem.state}}</view>
+                  wx:if='{{orderItem.orderStates[0].orderType!= null}}'>{{orderItem.orderStates[0].orderType}}</view>
             <view class='bill-info-pay-money'
                   wx:if='{{orderItem.paymentAmount!= null && userInfo.role != 3}}'>￥{{orderItem.paymentAmount}}</view>
           </view>
@@ -309,41 +309,7 @@
                 data-orderno='{{orderItem.orderNo}}'>
           详情
           </view>
-          <!-- <view class='bill-operate-button'
-                bindtap='tapMoreOperate' 
-                data-tapindex="{{orderIndex}}"
-                data-orderno='{{orderItem.orderNo}}'>
-          更多
-          </view>
-          <view class="bill-operate-button-complain"
-                bindtap="tapAllocation"
-                data-tapindex='{{orderIndex}}'
-                wx:if='{{parse.showAlloctionBtn(orderItem, userInfo)}}'>
-          分配
-          </view>
-          <view class='bill-operate-button'
-                bindtap='tapOrderDetail' 
-                data-tapindex="{{orderIndex}}"
-                data-orderno='{{orderItem.orderNo}}'>
-          详情
-          </view>
-          <view class='bill-operate-button' 
-                bindtap='tapConfirmUpload' 
-                data-tapindex="{{orderIndex}}"
-                wx:if='{{orderItem.readyToUpload}}'>
-          上传
-          </view>
-          <view class='bill-operate-button' 
-                bindtap='tapUpload' 
-                data-tapindex="{{orderIndex}}">
-          拍摄
-          </view>
-          <view class='bill-operate-button-complain' 
-                bindtap='tapInHarbour' 
-                data-tapindex="{{orderIndex}}"
-                hidden="{{!orderItem.readyToInHarbour}}">
-          {{parse.getOperateButtonTitle(orderItem)}}
-          </view> -->
+          
         </view>
       </view>
     </view>
@@ -368,7 +334,7 @@
               color="#778899">
       </i-icon>
       <view class="empty-title">
-      暂无工作单数据
+      暂无单据数据
       </view>
     </view>
   </view>
