@@ -12,9 +12,9 @@ const Version_Code = 25; // 版本编号
  *                      网络请求
  */
 /** =================================================== */
-// const URL_Service = "https://pet.tyferp.com"; // 路径 
+const URL_Service = "https://pet.tyferp.com"; // 路径 
 // const URL_Service = "http://huji820.oicp.net"; // 路径
-const URL_Service = "http://192.168.3.111:5050"; // 路径
+// const URL_Service = "http://192.168.3.111:5050"; // 路径
 // const URL_Service = "http://192.168.3.233:5050"; // 路径
 
 const URL_Register = "/api/customer/"; // 注册
