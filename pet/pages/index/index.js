@@ -53,6 +53,7 @@ Page({
         name: "商城",
         imagePath: "../../resource/pet_shangcheng.png",
         targetUrl: "",
+        // targetUrl: "navigateToMiniProgram?wx3a6796d91e05c5bf",
       },
       {
         name: "百科",
@@ -181,9 +182,18 @@ Page({
       })
       return;
     }
-    wx.navigateTo({
-      url: targetUrl,
-    })
+    let path = targetUrl.split("?");
+    let type = path[0];
+    if (type == "navigateToMiniProgram") {
+      wx.navigateToMiniProgram({
+        appId: path[1],
+        envVersion: "develop"
+      })
+    } else {
+      wx.navigateTo({
+        url: targetUrl,
+      })
+    }
   },
 
   /**

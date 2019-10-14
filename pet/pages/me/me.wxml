@@ -220,7 +220,7 @@
           <view class="bill-info-person-phone">{{unpayItem.receiverPhone}}</view>
         </view>
         <view class='bill-info-pay'>
-          <view class='bill-info-pay-label'>支付状态：</view>
+          <view class='bill-info-pay-label'>状态：</view>
           <view class='bill-info-pay-info'>{{unpayItem.state}}</view>
           <view class='bill-info-pay-money'>￥{{unpayItem.paymentAmount}}</view>
         </view>
@@ -301,7 +301,7 @@
           <view class="bill-info-person-phone">{{unsendItem.receiverPhone}}</view>
         </view>
         <view class='bill-info-pay'>
-          <view class='bill-info-pay-label'>支付状态:</view>
+          <view class='bill-info-pay-label'>状态:</view>
           <view class='bill-info-pay-info'>{{unsendItem.state}}</view>
           <view class='bill-info-pay-money'>￥{{unsendItem.paymentAmount}}</view>
         </view>
@@ -384,7 +384,7 @@
           <view class="bill-info-person-phone">{{unreceiveItem.receiverPhone}}</view>
         </view>
         <view class='bill-info-pay'>
-          <view class='bill-info-pay-label'>支付状态:</view>
+          <view class='bill-info-pay-label'>状态:</view>
           <view class='bill-info-pay-info'>{{unreceiveItem.state}}</view>
           <view class='bill-info-pay-money'>￥{{unreceiveItem.paymentAmount}}</view>
         </view>
@@ -392,18 +392,18 @@
       <!-- 按钮区域 -->
       <view class='bill-operate-box'>
         <view class='bill-operate-button'
+              bindtap='tapUnreceiveMore'
+              data-tapindex="{{unreceiveIndex}}"
+              data-orderno='{{unreceiveItem.orderNo}}'>
+        更多
+        </view>
+        <view class='bill-operate-button'
               bindtap='tapCallStore'
               data-tapindex="{{unreceiveIndex}}"
               data-phone="{{unreceiveItem.transport.station.phone}}"
               data-orderno='{{unreceiveItem.orderNo}}'
               hidden="{{parse.hiddenMakePhone(unreceiveItem.transport.station.phone)}}">
         联系商家
-        </view>
-        <view class='bill-operate-button'
-              bindtap='tapOrderDetail' 
-              data-tapindex="{{unreceiveIndex}}"
-              data-orderno='{{unreceiveItem.orderNo}}'>
-        订单详情
         </view>
         <view class='bill-operate-button-complain' 
               bindtap='tapReceive' 
@@ -465,13 +465,20 @@
           <view class="bill-info-person-phone">{{completeItem.receiverPhone}}</view>
         </view>
         <view class='bill-info-pay'>
-          <view class='bill-info-pay-label'>支付状态:</view>
+          <view class='bill-info-pay-label'>状态:</view>
           <view class='bill-info-pay-info'>{{completeItem.state}}</view>
           <view class='bill-info-pay-money'>￥{{completeItem.paymentAmount}}</view>
         </view>
       </view>
       <!-- 按钮区域 -->
       <view class='bill-operate-box'>
+      
+        <view class='bill-operate-button'
+              bindtap='tapCompleteMore'
+              data-tapindex="{{completeIndex}}"
+              data-orderno='{{completeItem.orderNo}}'>
+        更多
+        </view>
         <view class='bill-operate-button'
               bindtap='tapCallStore'
               data-tapindex="{{completeIndex}}"
@@ -479,12 +486,6 @@
               data-orderno='{{completeItem.orderNo}}'
               hidden="{{parse.hiddenMakePhone(completeItem.transport.station.phone)}}">
         联系商家
-        </view>
-        <view class='bill-operate-button'
-              bindtap='tapOrderDetail' 
-              data-tapindex="{{completeIndex}}"
-              data-orderno='{{completeItem.orderNo}}'>
-        订单详情
         </view>
         <view class='bill-operate-button-complain' 
               bindtap='tapComplain' 

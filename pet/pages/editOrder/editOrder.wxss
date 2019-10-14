@@ -14,3 +14,28 @@
   font-size: 36rpx;
   border-radius: 10rpx;
 }
+
+.disable-button{
+  background: rgb(240, 240, 240);
+  color: #778899;
+}
+
+.red-button{
+  background: #ee2c2c;
+  color: white;
+}
+
+.unable-edit-area{
+  width: 90%;
+  margin: 30rpx auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.unable-edit-title{
+  padding: 15rpx 30rpx;
+  background: #ee2c2c;
+  color: white;
+  font-size: 28rpx;
+  border-radius: 8rpx;
+}

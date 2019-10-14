@@ -310,7 +310,7 @@ Page({
         if (res.tapIndex == 0) { // 订单详情
           that.tapOrderDetail(e);
         } else if (res.tapIndex == 1) { // 修改订单
-          that.tapEditOrder(e);
+          that.tapEditOrder(e, true);
         } else if (res.tapIndex == 2) { // 取消订单
           that.tapCancelOrder(e);
         }
@@ -332,7 +332,47 @@ Page({
         if (res.tapIndex == 0) { // 订单详情
           that.tapOrderDetail(e);
         } else if (res.tapIndex == 1) { // 修改订单
-          that.tapEditOrder(e);
+          that.tapEditOrder(e, true);
+        }
+      },
+    })
+  },
+
+  /**
+   * 点击待收货更多
+   */
+  tapUnreceiveMore: function (e) {
+    let itemList = ["订单详情", "修改订单"];
+    let index = e.currentTarget.dataset.tapindex;
+    let orderNo = e.currentTarget.dataset.orderno;
+    let that = this;
+    wx.showActionSheet({
+      itemList: itemList,
+      success(res) {
+        if (res.tapIndex == 0) { // 订单详情
+          that.tapOrderDetail(e);
+        } else if (res.tapIndex == 1) { // 修改订单
+          that.tapEditOrder(e, false);
+        }
+      },
+    })
+  },
+
+  /**
+   * 点击已完成更多
+   */
+  tapCompleteMore: function (e) {
+    let itemList = ["订单详情", "修改订单"];
+    let index = e.currentTarget.dataset.tapindex;
+    let orderNo = e.currentTarget.dataset.orderno;
+    let that = this;
+    wx.showActionSheet({
+      itemList: itemList,
+      success(res) {
+        if (res.tapIndex == 0) { // 订单详情
+          that.tapOrderDetail(e);
+        } else if (res.tapIndex == 1) { // 修改订单
+          that.tapEditOrder(e, false);
         }
       },
     })
@@ -340,11 +380,13 @@ Page({
 
   /**
    * 修改订单
+   * @param e 订单信息
+   * @param ableEdit 是否允许编辑
    */
-  tapEditOrder: function (e) {
+  tapEditOrder: function (e, ableEdit) {
     console.log("编辑：\n" + e.currentTarget.dataset.orderno)
     wx.navigateTo({
-      url: pagePath.Path_Order_Edit + '?orderno=' + e.currentTarget.dataset.orderno,
+      url: pagePath.Path_Order_Edit + '?orderno=' + e.currentTarget.dataset.orderno + '&able=' + ableEdit,
     })
   },
 

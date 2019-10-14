@@ -6,34 +6,61 @@
       <input slot='footer'
              placeholder="{{orderData.senderName}}"
              bindinput="inputSenderName"
-             class="edit-input">
+             class="edit-input"
+             disabled="{{!ableEdit}}">
       </input>        
     </i-cell>
     <i-cell title='寄件人电话'>
       <input slot='footer'
              placeholder="{{orderData.senderPhone}}"
              bindinput="inputSenderPhone"
-             class="edit-input">
+             class="edit-input"
+             disabled="{{!ableEdit}}">
       </input>        
     </i-cell>
     <i-cell title='收件人名称'>
       <input slot='footer'
              placeholder="{{orderData.receiverName}}"
              bindinput="inputReceiverName"
-             class="edit-input">
+             class="edit-input"
+             disabled="{{!ableEdit}}">
       </input>        
     </i-cell>
     <i-cell title='收件人电话'>
       <input slot='footer'
              placeholder="{{orderData.receiverPhone}}"
              bindinput="inputReceiverPhone"
-             class="edit-input">
+             class="edit-input"
+             disabled="{{!ableEdit}}">
       </input>        
     </i-cell>
   </i-cell-group>
 </i-panel>
 
-<view class="edit-button"
+<view class="edit-button {{!ableEdit?'disable-button':''}}"
       bindtap="tapEdit">
 确定修改
 </view>
+
+<view class="unable-edit-area"
+      wx:if="{{!ableEdit}}">
+  <view class="unable-edit-title">
+  当前单据无法在线修改，请联系人工修改。\n 更改单据信息可能会产生部分额外费用，具体请咨询对应站点！！！
+  </view>
+  <view class="edit-button red-button"
+        bindtap="tapCallStation"
+        data-phone='{{parse.getStationPhone(servicePhone, stationPhone)}}'>
+  联系站点
+  </view>
+</view>
+
+<wxs module='parse'>
+  module.exports={
+    getStationPhone: function(servicePhone, stationPhone) {
+      if (stationPhone == null || stationPhone.length <=0) {
+        return servicePhone;
+      }
+      return stationPhone;
+    }
+  }
+</wxs>

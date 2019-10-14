@@ -18,6 +18,11 @@ Page({
     editReceiverName: null,
     editReceiverPhone: null,
     timeOutID: null,
+
+    ableEdit: true,
+
+    stationPhone: null,
+    servicePhone: null,
   },
 
   /**
@@ -25,6 +30,11 @@ Page({
    */
   onLoad: function (options) {
     this.requestOrderDetail(options.orderno)
+
+    this.setData({
+      servicePhone: Config.Service_Phone,
+      ableEdit: options.able == "true" ? true : false
+    })
   },
 
   /**
@@ -92,23 +102,59 @@ Page({
         "openId": LoginUtil.getOpenId()
       },
       success(res) {
+        wx.hideLoading();
         console.log("获取订单详情 success：\n" + JSON.stringify(res));
         if (res.data.root != null && res.data.prompt == "Success") {
           that.setData({
             orderData: res.data.root
           })
+          that.requestStationPhone(that.data.orderData.orderStates[0].station.stationNo)
         } else {
 
         }
       },
       fail(res) {
         console.log("获取订单详情 fail：\n" + JSON.stringify(res));
+        wx.hideLoading();
       },
       complete(res) {
         console.log("获取订单详情 complete：\n" + JSON.stringify(res));
-        wx.hideLoading();
       },
 
+    })
+  },
+
+  /**
+   * 获取站点电话
+   * @param stationNo 站点编号
+   */
+  requestStationPhone: function (stationNo) {
+    if (this.data.ableEdit) {
+      return;
+    }
+    let that = this;
+    wx.showLoading({
+      title: '请稍等...',
+    })
+    wx.request({
+      url: Config.URL_Service + Config.URL_GetStationPhone,
+      data: {
+        stationNo: stationNo
+      },
+      success(res){
+        console.log("获取站点电话 success：\n" + JSON.stringify(res));
+        if (res.data.code == 200) {
+          that.setData({
+            stationPhone: res.data.data
+          })
+        }
+      },
+      fail(res) {
+        console.log("获取站点电话 fail\n" + JSON.stringify(res));
+      },
+      complete(res) {
+        wx.hideLoading();
+      }
     })
   },
 
@@ -226,8 +272,17 @@ Page({
       isEdit = true;
     }
 
-    if (isEdit) {
+    if (isEdit && this.data.ableEdit) {
       this.requestEditContact();
     }
-  }
+  },
+
+  /**
+   * 点击联系站点
+   */
+  tapCallStation: function(e) {
+    wx.makePhoneCall({
+      phoneNumber: e.currentTarget.dataset.phone,
+    })
+  },
 })

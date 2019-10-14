@@ -71,5 +71,8 @@
       "desc": "你的位置信息将用于提供周边商家服务"
     }
   },
+  "navigateToMiniProgramAppIdList": [
+    "wx3a6796d91e05c5bf"
+  ],
   "sitemapLocation": "sitemap.json"
 }
