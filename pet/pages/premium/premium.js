@@ -108,7 +108,7 @@ Page({
     }
 
     let tempData = {
-      order: this.data.orderNo,
+      orderNo: this.data.orderNo,
       reason: this.data.reason,
       staff: { 
         staffNo: LoginUtil.getStaffNo()

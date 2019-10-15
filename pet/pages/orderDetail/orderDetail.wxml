@@ -21,7 +21,7 @@
       </view>
       <view class="premium-item-pay-button-box">
         <view class="premium-item-pay-button"
-              wx:if='{{parse.showPremiumPayButton(premiumItem, userInfo)}}'
+              wx:if='{{parse.showPremiumPayButton(premiumItem, userInfo, ablePremium)}}'
               data-billno='{{premiumItem.billNo}}'
               bindtap="tapPayPremium">
         支付
@@ -316,8 +316,11 @@
       }
       return true;
     },
-    showPremiumPayButton: function(premiumItem, userInfo) {
+    showPremiumPayButton: function(premiumItem, userInfo, ablePremium) {
       if (premiumItem.state == "待付款" && userInfo.role == 0) {
+        return true;
+      }
+      if (premiumItem.state == "待付款" && ablePremium) {
         return true;
       }
       return false;

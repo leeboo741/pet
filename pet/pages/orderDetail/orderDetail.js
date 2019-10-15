@@ -19,6 +19,7 @@ Page({
     remarksInput: null,
     type: 0,  // 0 自有单据 1 工作单据
     orderNo: null,
+    ablePremium: false, // 是否允许补价
   },
 
   /**
@@ -32,7 +33,8 @@ Page({
 
     this.setData({
       type: options.type,
-      userInfo: loginUtil.getUserInfo()
+      userInfo: loginUtil.getUserInfo(),
+      ablePremium: options.ablepremium==1? true: false
     })
     this.requestOrderDetail(this.data.orderNo)
   },

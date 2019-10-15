@@ -49,9 +49,11 @@ Page({
     petType: null, // 选中宠物类别
     petClassify: null, // 选中宠物类型
     selectPetTypeIndex: 0, // 选中的宠物类别 Index
-    selectPetClassifyIndex: 0, // 选中的宠物类型 Index
+    // selectPetClassifyIndex: 0, // 选中的宠物类型 Index
     petTypes: [], // 宠物类别列表
-    petClassifys: [], // 宠物类型列表
+    // petClassifys: [], // 宠物类型列表
+
+    petAge: null, // 宠物年龄
 
     transportTypes: [
       {
@@ -428,42 +430,42 @@ Page({
       selectPetTypeIndex: e.detail.value,
       petType: this.data.petTypes[e.detail.value]
     })
-    this.requestPetClassify(this.data.petType);
+    // this.requestPetClassify(this.data.petType);
   },
 
   /**
    * 选择宠物种类
    */
-  selectPetClassify: function (e) {
-    if (e.detail.value == this.data.selectPetClassifyIndex) {
-      return;
-    }
-    this.setData({
-      selectPetClassifyIndex: e.detail.value,
-      petClassify: this.data.petClassifys[e.detail.value]
-    })
-    this.predictPrice();
-  },
+  // selectPetClassify: function (e) {
+  //   if (e.detail.value == this.data.selectPetClassifyIndex) {
+  //     return;
+  //   }
+  //   this.setData({
+  //     selectPetClassifyIndex: e.detail.value,
+  //     petClassify: this.data.petClassifys[e.detail.value]
+  //   })
+  //   this.predictPrice();
+  // },
 
   /**
    * 点击宠物种类
    */
-  tapPetClassify: function () {
-    if (util.checkEmpty(this.data.petType)) {
-      wx.showToast({
-        title: '请先选择宠物类型',
-        icon: 'none'
-      })
-      return;
-    }
-    if (util.checkEmpty(this.data.petClassifys)) {
-      wx.showToast({
-        title: '暂无宠物种类数据',
-        icon: 'none'
-      })
-      return;
-    }
-  },
+  // tapPetClassify: function () {
+  //   if (util.checkEmpty(this.data.petType)) {
+  //     wx.showToast({
+  //       title: '请先选择宠物类型',
+  //       icon: 'none'
+  //     })
+  //     return;
+  //   }
+  //   if (util.checkEmpty(this.data.petClassifys)) {
+  //     wx.showToast({
+  //       title: '暂无宠物种类数据',
+  //       icon: 'none'
+  //     })
+  //     return;
+  //   }
+  // },
 
   /**
    * 输入数量
@@ -619,7 +621,14 @@ Page({
     }
     if (this.data.petClassify == null) {
       wx.showToast({
-        title: '请选择宠物品种',
+        title: '请输入宠物品种',
+        icon: 'none'
+      })
+      return;
+    }
+    if (this.data.petAge == null) {
+      wx.showToast({
+        title: '请输入宠物年龄',
         icon: 'none'
       })
       return;
@@ -666,6 +675,7 @@ Page({
                   + '&count=' + this.data.petCount
                   + '&type=' + this.data.petType
                   + '&classify=' + this.data.petClassify
+                  + '&age=' + this.data.petAge
                   + '&weight=' + this.data.petWeight
                   + '&transport=' + this.data.selectedTransportObj.transportId
                   + '&leavedate=' + this.data.date;
@@ -840,7 +850,8 @@ Page({
       "weight": this.data.petWeight,
       "num": this.data.petCount,
       "leaveDate": this.data.date,
-      "petClassify": this.data.petClassify.petClassifyName,
+      "petClassify": this.data.petClassify,
+      "petAge": this.data.petAge,
       "petType": this.data.petType,
       "receiverName" : "",
       "receiverPhone": "",
@@ -1003,13 +1014,14 @@ Page({
           }
           that.setData({
             petTypes: res.data.root,
-            petClassifys: null,
+            // petClassifys: null,
             selectPetTypeIndex: 0,
-            selectPetClassifyIndex: 0,
+            // selectPetClassifyIndex: 0,
             petType: res.data.root[0],
             petClassify: null
           })
-          that.requestPetClassify(that.data.petType);
+          // that.requestPetClassify(that.data.petType);
+          wx.hideLoading();
         } else {
           wx.hideLoading();
         }
@@ -1029,53 +1041,79 @@ Page({
   /**
    * 请求宠物种类
    */
-  requestPetClassify: function (currentType) {
-    let that = this;
-    wx.showLoading({
-      title: '请稍等...',
+  // requestPetClassify: function (currentType) {
+  //   let that = this;
+  //   wx.showLoading({
+  //     title: '请稍等...',
+  //   })
+  //   let urlstr = config.URL_Service + config.URL_PetClassify;
+  //   // 向服务器请求登陆，返回 本微信 在服务器状态，注册|未注册，
+  //   wx.request({
+  //     url: urlstr, // 服务器地址
+  //     data: {
+  //       "petTypeName": currentType
+  //     },
+  //     success: res => {
+  //       console.log("success => " + JSON.stringify(res));
+  //       if (res.data.prompt == config.Prompt_Success) {
+  //         if (util.checkEmpty(res.data.root)) {
+  //           wx.showToast({
+  //             title: '没有查到宠物种类数据',
+  //             icon: 'none'
+  //           })
+  //           wx.hideLoading();
+  //           return;
+  //         }
+  //         that.data.petClassifys = res.data.root;
+  //         let tempData = [];
+  //         for (let i = 0; i < res.data.root.length; i++) {
+  //           tempData.push(res.data.root[i].petClassifyName);
+  //         }
+  //         that.setData({
+  //           petClassifys: tempData,
+  //           selectPetClassifyIndex: 0,
+  //           petClassify: tempData[0]
+  //         })
+  //         that.predictPrice();
+  //       } else {
+  //         wx.hideLoading();
+  //       }
+  //     },
+  //     fail(res) {
+  //       wx.showToast({
+  //         title: '查询宠物类型失败',
+  //         icon: 'none',
+  //       })
+  //       wx.hideLoading();
+  //     },
+  //     complete(res) {
+  //     },
+  //   })
+  // },
+
+  /**
+   * 输入宠物品种
+   */
+  petClassifyInput: function (e) {
+    let tempClassify = e.detail.value;
+    if (util.checkEmpty(tempClassify)) {
+      tempClassify = null;
+    }
+    this.setData({
+      petClassify: tempClassify
     })
-    let urlstr = config.URL_Service + config.URL_PetClassify;
-    // 向服务器请求登陆，返回 本微信 在服务器状态，注册|未注册，
-    wx.request({
-      url: urlstr, // 服务器地址
-      data: {
-        "petTypeName": currentType
-      },
-      success: res => {
-        console.log("success => " + JSON.stringify(res));
-        if (res.data.prompt == config.Prompt_Success) {
-          if (util.checkEmpty(res.data.root)) {
-            wx.showToast({
-              title: '没有查到宠物种类数据',
-              icon: 'none'
-            })
-            wx.hideLoading();
-            return;
-          }
-          that.data.petClassifys = res.data.root;
-          let tempData = [];
-          for (let i = 0; i < res.data.root.length; i++) {
-            tempData.push(res.data.root[i].petClassifyName);
-          }
-          that.setData({
-            petClassifys: tempData,
-            selectPetClassifyIndex: 0,
-            petClassify: tempData[0]
-          })
-          that.predictPrice();
-        } else {
-          wx.hideLoading();
-        }
-      },
-      fail(res) {
-        wx.showToast({
-          title: '查询宠物类型失败',
-          icon: 'none',
-        })
-        wx.hideLoading();
-      },
-      complete(res) {
-      },
+  },
+
+  /**
+   * 输入宠物年龄
+   */
+  petAgeInput: function (e) {
+    let tempAge = e.detail.value;
+    if (util.checkEmpty(tempAge)) {
+      tempAge = null;
+    }
+    this.setData({
+      petAge : tempAge
     })
   },
 

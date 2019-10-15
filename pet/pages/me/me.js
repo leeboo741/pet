@@ -396,7 +396,7 @@ Page({
   tapOrderDetail: function (e) {
     console.log("详情：\n" + e.currentTarget.dataset.orderno)
     wx.navigateTo({
-      url: pagePath.Path_Order_Detail + '?orderno=' + e.currentTarget.dataset.orderno + '&type=0',
+      url: pagePath.Path_Order_Detail + '?orderno=' + e.currentTarget.dataset.orderno + '&type=0' + '&ablepremium=1',
     })
   },
 

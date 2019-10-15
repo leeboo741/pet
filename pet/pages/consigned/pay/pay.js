@@ -41,6 +41,7 @@ Page({
     petCount: 0, // 数量
     petType: null, // 宠物类型
     petClassify: null, // 宠物种类
+    petAge: null, // 宠物年龄
 
     airbox: null, // 购买航空箱
     receiveAddress: null, // 接宠地址
@@ -67,6 +68,7 @@ Page({
       petWeight: parseFloat(options.weight),
       transport: options.transport,
       leaveDate: options.leavedate,
+      petAge: options.age,
     })
     if (options.petcan != null) {
       this.setData({
@@ -334,6 +336,7 @@ Page({
       "num": this.data.petCount,
       "petClassify": this.data.petClassify,
       "petType": this.data.petType,
+      "petAge": this.data.petAge,
 
       "receiverName": this.data.receiveName,
       "receiverPhone": this.data.receivePhone,
@@ -517,6 +520,7 @@ Page({
 
       "leaveDate": this.data.leaveDate,
       "petClassify": this.data.petClassify,
+      "petAge": this.data.petAge,
       "petType": this.data.petType,
       "receiverName": "",
       "receiverPhone": "",
