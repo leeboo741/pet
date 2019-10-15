@@ -1,5 +1,7 @@
 /* pages/consigned/text/text.wxss */
 
+@import "../../../libs/wxParse/wxParse.wxss";
+
 .content{
   width: 100%;
   display: flex;
