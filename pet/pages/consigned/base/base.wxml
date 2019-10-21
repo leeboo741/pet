@@ -105,15 +105,22 @@
                disabled='{{true}}'>
         </input>
       </view>
-      <!-- 类型 品种 重量 -->
+      <!-- 宠物年龄 -->
       <view class='pet-weight'>
-        <input class='input-under petKg input-right'
+        <picker range="{{petAgeList}}"
+                bindchange="selectPetAge"
+                style="flex-grow:1;">
+          <view class='pet-type-area {{(petAge==null||petAge.length<=0)?"city-placeholder":"city-normal"}}'>
+          {{(petAge==null||petType.petAge<=0)?"宠物年龄":petAge}}      
+          </view>
+        </picker>
+        <!-- <input class='input-under petKg input-right'
                style="flex-grow: 1;"
                placeholder-class='input-normal-placeholder' 
                placeholder='年龄'  
                value='{{petAge==null||petAge.length<=0?null:petAge}}' 
                bindinput='petAgeInput'>
-        </input>
+        </input> -->
       </view>
       <view class='shippModel'>
         <label class='tip'>运输方式:</label>

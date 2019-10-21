@@ -54,6 +54,9 @@ Page({
     // petClassifys: [], // 宠物类型列表
 
     petAge: null, // 宠物年龄
+    petAgeList: [
+      "2个月 - 6个月",  "半岁 - 1岁",  "1岁 - 3岁", "3岁 - 6岁", "6岁 - 9岁", "9岁以上"
+    ],
 
     transportTypes: [
       {
@@ -1114,6 +1117,15 @@ Page({
     }
     this.setData({
       petAge : tempAge
+    })
+  },
+
+  /**
+   * 选择宠物年龄
+   */
+  selectPetAge: function(e) {
+    this.setData({
+      petAge: this.data.petAgeList[e.detail.value]
     })
   },
 
