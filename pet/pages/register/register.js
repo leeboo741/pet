@@ -162,6 +162,9 @@ Page({
       "phone": this.data.phoneNumber,
       "verificationCode": this.data.code
     }
+    if (app.ShareData.openId != null) {
+      tempData.shareOpenId = app.ShareData.openId
+    }
     console.log("绑定数据 => " + JSON.stringify(tempData));
     wx.request({
       url: config.URL_Service + config.URL_Register,
