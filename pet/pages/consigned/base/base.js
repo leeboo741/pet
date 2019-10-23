@@ -97,6 +97,7 @@ Page({
       selected: false, // 是否选中
       alert: "", // 提示
       ableUse: false, // 是否可用
+      contract: "《航空箱说明》"
     },
     addServerReceivePet: {
       name: "上门接宠",
@@ -105,6 +106,7 @@ Page({
       receiveDistrict: null, // 上门接宠区县
       address: null, // 地址
       haveAbleStation: false, // 是否有可用站点
+      contract: "《接宠说明》"
     },
     addServerSendPet: {
       name: "送宠到家",
@@ -113,22 +115,26 @@ Page({
       sendDistrict: null, // 送宠到家区县
       address: null, // 地址
       haveAbleStation: false, // 是否有可用站点
+      contract: "《送宠说明》"
     },
     addServerInsuredPrice: {
       name: "保价",
       selected: false,
       rate: 0, // 费率
       price: 0, // 保价金额
+      contract: "《投保须知》"
     },
     addServerPetCan: {
       name: "免费旅行餐", // 名称
       selected: false, // 是否选中
-      alert: ""
+      alert: "",
+      contract: "《旅行餐说明》"
     },
     addGuarantee: {
       name: "中介担保", // 增值服务名称
       selected: false, // 是否选中
       alert: "", // 提示
+      contract: "《担保注意事项》"
     },
   },
 
@@ -239,6 +245,48 @@ Page({
   /* ============================= 页面生命周期 End ============================== */
 
   /* ============================= 页面事件 Start ============================== */
+
+  /**
+   * 点击 航空箱 说明
+   */
+  tapAirBoxContract: function () {
+    console.log("点击 航空箱 说明");
+  },
+
+  /**
+   * 点击 接宠 说明
+   */
+  tapReceivePetContract: function () {
+    console.log("点击 接宠 说明");
+  },
+
+  /**
+   * 点击 送宠 说明
+   */
+  tapSendPetContract: function () {
+    console.log("点击 送宠 说明");
+  },
+
+  /**
+   * 点击 保价 说明
+   */
+  tapInsuredContract: function () {
+    console.log("点击 保价 说明");
+  },
+
+  /**
+   * 点击 旅行餐 说明
+   */
+  tapPetCanContract: function () {
+    console.log("点击 旅行餐 说明");
+  },
+
+  /**
+   * 点击 中介 说明
+   */
+  tapGuaranteeContract: function (e) {
+    console.log("点击 中介说明");
+  },
 
   /**
    * 上门接宠区域选择

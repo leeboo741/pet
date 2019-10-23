@@ -158,6 +158,10 @@
             <label class="server {{addServerAirBox.selected?'choose':''}}">
             {{addServerAirBox.name}}
             </label>
+            <view class="contract"
+                  catchtap="tapAirBoxContract">
+            {{addServerAirBox.contract}}
+            </view>
           </view>
           <view class='addServer-append-info' hidden='{{addServerAirBox.selected}}'>
             <view class='air-box-info'>
@@ -173,6 +177,10 @@
             <label class="server {{addServerReceivePet.selected?'choose':''}}">
             {{addServerReceivePet.name}}
             </label>
+            <view class="contract"
+                  catchtap="tapReceivePetContract">
+            {{addServerReceivePet.contract}}
+            </view>
           </view>
           <view class='addServer-append-info' hidden='{{!addServerReceivePet.selected}}'>
             <picker bindchange="bindReceivePickerChange" range="{{addServerReceivePet.receiveDistrictList}}">
@@ -201,6 +209,10 @@
             <label class="server {{addServerSendPet.selected?'choose':''}}">
             {{addServerSendPet.name}}
             </label>
+            <view class="contract"
+                  catchtap="tapSendPetContract">
+            {{addServerSendPet.contract}}
+            </view>
           </view>
           <view class='addServer-append-info' hidden='{{!addServerSendPet.selected}}'>
             <picker bindchange="bindSendPickerChange" value='{{0}}' range="{{addServerSendPet.sendDistrictList}}">
@@ -231,6 +243,10 @@
             <label class='insuredPrice-rate' hidden='{{addServerInsuredPrice.rate==0}}'>
             (费率：{{addServerInsuredPrice.rate}}%)
             </label>
+            <view class="contract"
+                  catchtap="tapInsuredContract">
+            {{addServerInsuredPrice.contract}}
+            </view>
           </view>
           <view class='addServer-append-info' hidden='{{!addServerInsuredPrice.selected}}'>
             <input class='addServer-append-info-input'
@@ -251,6 +267,10 @@
             <label class="server {{addServerPetCan.selected?'choose':''}}">
             {{addServerPetCan.name}}
             </label>
+            <view class="contract"
+                  catchtap="tapPetCanContract">
+            {{addServerPetCan.contract}}
+            </view>
           </view>
           <view class='addServer-append-info'>
             <view class='air-box-info'>
@@ -266,6 +286,10 @@
             <label class="server {{addGuarantee.selected?'choose':''}}">
             {{addGuarantee.name}}
             </label>
+            <view class="contract"
+                  catchtap="tapGuaranteeContract">
+            {{addGuarantee.contract}}
+            </view>
           </view>
           <view class='addServer-append-info'>
             <view class='air-box-info'>
