@@ -162,6 +162,7 @@ Page({
       "phone": this.data.phoneNumber,
       "verificationCode": this.data.code
     }
+    tempData.shareOpenId = "";
     if (app.ShareData.openId != null) {
       tempData.shareOpenId = app.ShareData.openId
     }
