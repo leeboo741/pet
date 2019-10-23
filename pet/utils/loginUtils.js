@@ -155,8 +155,10 @@ function login(loginCallback) {
                       userInfo.gender = tempUserInfo.sex
                       userInfo.role = tempUserInfo.role
                       userInfo.balance = tempUserInfo.balance
-                      userInfo.staffNo = tempUserInfo.staff.staffNo
-                      userInfo.stationNo = tempUserInfo.staff.station.stationNo
+                      if (tempUserInfo.staff != null) {
+                        userInfo.staffNo = tempUserInfo.staff.staffNo
+                        userInfo.stationNo = tempUserInfo.staff.station.stationNo
+                      }
                       saveUserInfo(userInfo);
                       if (loginCallback) {
                         loginCallback(Login_Success, "登陆成功");
