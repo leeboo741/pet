@@ -278,6 +278,10 @@ Page({
       },
       fail(res) {
         console.log("获取验证码 fail: \n" + JSON.stringify(res))
+        wx.showToast({
+          title: '系统异常',
+          icon: "none"
+        })
       }
     })
   },
@@ -306,6 +310,10 @@ Page({
       },
       fail(res) {
         console.log("获取站点列表 fail: \n" + JSON.stringify(res));
+        wx.showToast({
+          title: '系统异常',
+          icon: "none"
+        })
       },
       complete(res) {
         wx.hideLoading();
@@ -360,6 +368,10 @@ Page({
       },
       fail(res) {
         console.log("注册员工 fail:\n" + JSON.stringify(res));
+        wx.showToast({
+          title: '系统异常',
+          icon: "none"
+        })
       },
       complete(res) {
         console.log("注册员工 complete:\n" + JSON.stringify(res));

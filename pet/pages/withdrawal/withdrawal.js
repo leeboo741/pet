@@ -143,6 +143,10 @@ Page({
       },
       fail(res) {
         console.log("提现 fail : \n" + JSON.stringify(res));
+        wx.showToast({
+          title: '系统异常',
+          icon: "none"
+        })
       },
       complete(res) {
         console.log("提现 complete : \n" + JSON.stringify(res));

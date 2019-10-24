@@ -115,6 +115,10 @@ Page({
       },
       fail(res) {
         console.log("获取订单详情 fail：\n" + JSON.stringify(res));
+        wx.showToast({
+          title: '系统异常',
+          icon: "none"
+        })
         wx.hideLoading();
       },
       complete(res) {
@@ -151,6 +155,10 @@ Page({
       },
       fail(res) {
         console.log("获取站点电话 fail\n" + JSON.stringify(res));
+        wx.showToast({
+          title: '系统异常',
+          icon: "none"
+        })
       },
       complete(res) {
         wx.hideLoading();

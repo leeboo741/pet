@@ -131,6 +131,10 @@ Page({
       },
       fail(res) {
         console.log("获取订单详情 fail：\n" + JSON.stringify(res));
+        wx.showToast({
+          title: '系统异常',
+          icon: "none"
+        })
       },
       complete(res) {
         console.log("获取订单详情 complete：\n" + JSON.stringify(res));

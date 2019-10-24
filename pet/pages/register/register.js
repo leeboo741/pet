@@ -123,6 +123,10 @@ Page({
       },
       fail(res) {
         console.log("获取验证码 fail: \n" + JSON.stringify(res))
+        wx.showToast({
+          title: '系统异常',
+          icon: "none"
+        })
       }
     })
   },

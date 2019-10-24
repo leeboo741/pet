@@ -645,6 +645,10 @@ Page({
       },
       fail(res) {
         console.log("确认收货 fail: \n" + JSON.stringify(res));
+        wx.showToast({
+          title: '系统异常',
+          icon: "none"
+        })
       },
       complete(res) {
         console.log("确认收货 complete: \n" + JSON.stringify(res));
@@ -766,6 +770,10 @@ Page({
       },
       fail(res) {
         console.log("查单 fail：\n" + JSON.stringify(res));
+        wx.showToast({
+          title: '系统异常',
+          icon: "none"
+        })
       },
       complete(res) {
         console.log("查单 complete：\n" + JSON.stringify(res));
@@ -886,6 +894,10 @@ Page({
       },
       fail(res) {
         console.log("请求单据列表 fail => \n" + JSON.stringify(res))
+        wx.showToast({
+          title: '系统异常',
+          icon: "none"
+        })
       },
       complete(res) {
         console.log("请求单据列表 complete => \n" + JSON.stringify(res))
@@ -917,6 +929,10 @@ Page({
       },
       fail(res) {
         console.log("获取最新站内信 fail:\n" + JSON.stringify(res));
+        wx.showToast({
+          title: '系统异常',
+          icon: "none"
+        })
       },
       complete(res) {
         console.log("获取最新站内信 complete:\n" + JSON.stringify(res));

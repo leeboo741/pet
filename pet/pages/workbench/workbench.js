@@ -379,7 +379,11 @@ Page({
         })
       },
       fail(res) {
-        console.log("请求工作单 fail：\n" + JSON.stringify(res));
+        console.log("请求工作单 fail：\n" + JSON.stringify(res)); 
+        wx.showToast({
+          title: "系统异常",
+          icon: 'none'
+        })
       },
       complete(res) {
         console.log("请求工作单 complete：\n" + JSON.stringify(res));

@@ -1209,6 +1209,10 @@ Page({
       },
       fail(res) {
         console.log("查询宠物箱 fail:\n" + JSON.stringify(res));
+        wx.showToast({
+          title: '系统异常',
+          icon: "none"
+        })
       },
       complete(res) {
         console.log("查询宠物箱 complete:\n" + JSON.stringify(res));

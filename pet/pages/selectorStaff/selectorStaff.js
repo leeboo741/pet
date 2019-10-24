@@ -103,6 +103,10 @@ Page({
       },
       fail(res) {
         console.log("请求下属员工 fail: \n" + JSON.stringify(res));
+        wx.showToast({
+          title: '系统异常',
+          icon: "none"
+        })
       },
       complete(res){
         wx.hideLoading();
