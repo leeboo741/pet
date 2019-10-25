@@ -180,16 +180,17 @@ Page({
       },
       method: "POST", // 请求方式
       success: res => {
+        wx.hideLoading();
         console.log("registerAccount success => " + JSON.stringify(res));
         this.requestSuccess(res);
       }, // 请求成功回调
       fail: res => {
+        wx.hideLoading();
         console.log("registerAccount fail => " + JSON.stringify(res));
         this.requestFail(res);
       }, // 请求失败回调
       complete: res => {
         console.log("registerAccount complite => " + JSON.stringify(res));
-        wx.hideLoading();
       }, // 请求完成回调
     })
   },
