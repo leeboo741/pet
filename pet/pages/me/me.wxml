@@ -407,7 +407,8 @@
         <view class='bill-operate-button-complain' 
               bindtap='tapReceive' 
               data-tapindex="{{unreceiveIndex}}"
-              data-orderno='{{unreceiveItem.orderNo}}'>
+              data-orderno='{{unreceiveItem.orderNo}}'
+              hidden="{{parse.hiddenReceiveButton(userInfo.phone, unreceiveItem.receiverPhone)}}">
         确认收货
         </view>
       </view>
@@ -580,6 +581,12 @@
         return true;
       }
       return false;
+    },
+    hiddenReceiveButton: function(userPhone, receiverPhone) {
+      if (userPhone == receiverPhone) {
+        return false;
+      }
+      return true;
     }
   }
 
