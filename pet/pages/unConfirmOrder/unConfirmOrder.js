@@ -428,17 +428,64 @@ Page({
     if (tempOrder.orderStates[0].orderType == config.Order_State_ToArrived) {
       this.requestConfirmInHarbour(e.currentTarget.dataset.tapindex)
     } else {
-      let that = this;
-      wx.showModal({
-        title: '确认签收',
-        content: '是否确认签收'+ tempOrder.orderNo,
-        success(res){
-          if (res.confirm) {
-            that.requestReceiveOrder(e.currentTarget.dataset.tapindex);
-          }
-        }
-      })
+      this.requestUnPayPremiumCount(e.currentTarget.dataset.tapindex)
     }
+  },
+
+  /**
+   * 查询未支付补价单
+   */
+  requestUnPayPremiumCount: function (orderIndex) {
+    const tempIndex = orderIndex;
+    const order = this.data.orderList[tempIndex];
+    let that = this;
+    wx.showLoading({
+      title: '请稍等',
+    })
+    wx.request({
+      url: config.URL_Service + config.URL_UnPayPremiumCount,
+      data: {
+        orderNo: order.orderNo
+      },
+      success(res) {
+        console.log("未支付补价单数量 sucess: \n" + JSON.stringify(res));
+        if (res.data.code == 200) {
+          if (res.data.data > 0) {
+            wx.hideLoading();
+            wx.showModal({
+              title: '还有未支付补价单',
+              content: '完成补价后再执行该操作',
+              showCancel: false
+            })
+          } else {
+            wx.showModal({
+              title: '确认签收',
+              content: '是否确认签收' + order.orderNo,
+              success(res) {
+                if (res.confirm) {
+                  that.requestReceiveOrder(tempIndex);
+                }
+              }
+            })
+          }
+        } else {
+          wx.hideLoading();
+          wx.showToast({
+            title: '查询未完成补价单失败',
+            icon: 'none'
+          })
+        }
+      },
+      fail(res) {
+        console.log("未支付补价单数量 fail: \n" + JSON.stringify(res));
+        wx.hideLoading();
+        wx.showToast({
+          title: '系统异常',
+          icon: 'none'
+        })
+      }
+    })
+
   },
 
   /**
@@ -671,7 +718,7 @@ Page({
    * 点击更多
    */
   tapMoreOperate: function (e) {
-    let itemList = ["打印标签", "订单详情"];
+    let itemList = ["打印标签", "补价", "订单详情"];
     if (this.data.userInfo.role == 1) {
       itemList.push("分配订单")
     }
@@ -731,7 +778,11 @@ Page({
               }
             })
           }
-        } else if (res.tapIndex == 1) {
+        }else if (res.tapIndex == 1) {
+          wx.navigateTo({
+            url: pagePath.Path_Order_Premium + '?orderno=' + orderNo,
+          })
+        } else if (res.tapIndex == 2) {
           wx.navigateTo({
             url: pagePath.Path_Order_Detail + '?orderno=' + orderNo + '&type=1',
           })

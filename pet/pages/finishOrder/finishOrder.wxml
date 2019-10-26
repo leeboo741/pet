@@ -112,9 +112,9 @@
           </view>
           <view class='bill-info-pay'>
             <view class='bill-info-pay-label'
-                  wx:if='{{orderItem.orderStates[0].orderType!= null}}'>状态：</view>
+                  wx:if='{{orderItem.orderStates!= null}}'>状态：</view>
             <view class='bill-info-pay-info'
-                  wx:if='{{orderItem.orderStates[0].orderType!= null}}'>{{orderItem.orderStates[0].orderType}}</view>
+                  wx:if='{{orderItem.orderStates!= null}}'>{{orderItem.orderStates[orderItem.orderStates.length-1].orderType}}</view>
             <view class='bill-info-pay-money'
                   wx:if='{{orderItem.paymentAmount!= null && userInfo.role != 3}}'>￥{{orderItem.paymentAmount}}</view>
           </view>

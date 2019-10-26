@@ -4,8 +4,8 @@
  */
 /** =================================================== */
 const Service_Phone = "4007778889"; // 客服电话
-const Version_Name = "1.3.27"; // 版本名称
-const Version_Code = 37; // 版本编号
+const Version_Name = "1.3.28"; // 版本名称
+const Version_Code = 38; // 版本编号
 
 /** =================================================== */
 /** 
@@ -64,6 +64,7 @@ const URL_PostOrderRemark = '/api/order/remarks'; // 新增一条订单备注
 const URL_EditOrderContacts = '/api/order/update/contacts'; // 更新订单联系人信息
 const URL_Premium = '/api/order/premium'; // 新增差价单
 const URL_GetStationPhone = '/station/api/get/phone'; // 获取站点电话
+const URL_UnPayPremiumCount = "/api/order/premium/count/unpaid"; // 未支付差价单数量
 
 const URL_GetCouponList = '/aip/coupon/listByOpenId'; // 获取优惠券列表
 
@@ -179,6 +180,7 @@ module.exports = {
   URL_EditOrderContacts, // 修改订单联系人
   URL_Premium, // 新增差价单
   URL_GetStationPhone, // 获取站点电话
+  URL_UnPayPremiumCount, // 获取未支付差价单数量
 
   URL_GetCouponList, // 获取优惠券列表
 

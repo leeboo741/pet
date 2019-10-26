@@ -425,11 +425,60 @@ Page({
   tapInHarbour: function (e) {
     let tempOrder = this.data.orderList[e.currentTarget.dataset.tapindex];
     if (tempOrder.orderStates[0].orderType == "待出港") {
-      this.requestPostTransportInfo(e.currentTarget.dataset.tapindex);
+      // 
+      this.requestUnPayPremiumCount(e.currentTarget.dataset.tapindex)
     } else {
       
       this.requestConfirmInHarbour(e.currentTarget.dataset.tapindex);
     }
+  },
+
+  /**
+   * 查询未支付补价单
+   */
+  requestUnPayPremiumCount: function (orderIndex) {
+    const tempIndex = orderIndex;
+    const order = this.data.orderList[tempIndex];
+    let that = this;
+    wx.showLoading({
+      title: '请稍等',
+    })
+    wx.request({
+      url: config.URL_Service + config.URL_UnPayPremiumCount,
+      data: {
+        orderNo: order.orderNo
+      },
+      success(res) {
+        console.log("未支付补价单数量 sucess: \n" + JSON.stringify(res));
+        if (res.data.code == 200) {
+          if (res.data.data > 0) {
+            wx.hideLoading();
+            wx.showModal({
+              title: '还有未支付补价单',
+              content: '完成补价后再执行该操作',
+              showCancel: false
+            })
+          } else {
+            that.requestPostTransportInfo(tempIndex);
+          }
+        } else {
+          wx.hideLoading();
+          wx.showToast({
+            title: '查询未完成补价单失败',
+            icon: 'none'
+          })
+        }
+      },
+      fail(res) {
+        console.log("未支付补价单数量 fail: \n" + JSON.stringify(res));
+        wx.hideLoading();
+        wx.showToast({
+          title: '系统异常',
+          icon: 'none'
+        })
+      }
+    })
+
   },
 
   /**
