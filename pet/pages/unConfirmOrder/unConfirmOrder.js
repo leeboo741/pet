@@ -925,7 +925,13 @@ Page({
           if (orderItem.orderRemarksList == null) {
             orderItem.orderRemarksList = [];
           }
-          orderItem.orderRemarksList.push({ remarks: orderItem.remarkInput })
+
+          orderItem.orderRemarksList.push(
+            {
+              remarks: orderItem.remarkInput,
+              dateTime: util.formatTime(new Date())
+            }
+          )
           orderItem.remarkInput = null;
           that.setData({
             orderList: that.data.orderList

@@ -323,7 +323,7 @@ page {
   width: 100%;
   flex-wrap: wrap;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
 }
 
 .bill-info-remark-title{
@@ -332,13 +332,29 @@ page {
   margin: 10rpx ;
 }
 
-.bill-info-remark-content{
+.bill-info-remark-content-box{
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.bill-info-remark-item{
+  display: flex;
+  flex-direction: column;
+  margin: 10rpx ;
+}
+
+.bill-info-remark-item-content{
   font-size: 32rpx;
   flex-wrap: wrap;
   flex-grow: 1;
   word-wrap: break-word;
   word-break: break-all;
-  margin: 10rpx ;
+}
+
+.bill-info-remark-item-time{
+  font-size: 24rpx;
+  color: lightgray;
 }
 
 .in-out-port-info-area{
