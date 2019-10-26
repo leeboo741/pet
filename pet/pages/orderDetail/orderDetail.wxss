@@ -133,6 +133,7 @@
 
 .premium-item-pay-button-box{
   display: flex;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
   padding: 10rpx 20rpx;
@@ -143,6 +144,16 @@
   height: 70rpx;
   line-height: 70rpx;
   background: #2d8cf0;
+  color: white;
+  border-radius: 8rpx;
+  text-align: center;
+}
+
+.premium-item-cancel-button{
+  width: 100rpx;
+  height: 70rpx;
+  line-height: 70rpx;
+  background: #ee2c2c;
   color: white;
   border-radius: 8rpx;
   text-align: center;

@@ -31,6 +31,12 @@
               wx:else>
         {{premiumItem.state}}
         </view>
+        <view class="premium-item-cancel-button"
+              wx:if='{{parse.showPremiumCancelButton(premiumItem, userInfo, ableCancelPremium)}}'
+              data-billno='{{premiumItem.billNo}}'
+              bindtap="tapCancelPremium">
+        取消
+        </view>
       </view>     
     </view>
   </i-cell>
@@ -324,6 +330,15 @@
         return true;
       }
       return false;
+    },
+    showPremiumCancelButton: function(premiumItem, userInfo, ableCancelPremium){
+      if (premiumItem.state != "待付款" || userInfo.role == 0) {
+        return false;
+      }
+      if (!ableCancelPremium) {
+        return false;
+      }
+      return true;
     },
     getPremiumStateColor: function(state) {
       if (state == "待付款") {

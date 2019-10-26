@@ -20,6 +20,7 @@ Page({
     type: 0,  // 0 自有单据 1 工作单据
     orderNo: null,
     ablePremium: false, // 是否允许补价
+    ableCancelPremium: true, // 是否允许取消补价
   },
 
   /**
@@ -34,7 +35,8 @@ Page({
     this.setData({
       type: options.type,
       userInfo: loginUtil.getUserInfo(),
-      ablePremium: options.ablepremium==1? true: false
+      ablePremium: options.ablepremium==1? true: false,
+      ableCancelPremium: options.ablecancelpremium==0? false: true
     })
     this.requestOrderDetail(this.data.orderNo)
   },
@@ -269,6 +271,49 @@ Page({
   tapPayPremium: function (e) {
     let billNo = e.currentTarget.dataset.billno;
     this.requestPayPremium(billNo);
+  },
+
+  /**
+   * 点击 取消 补价
+   */
+  tapCancelPremium: function(e) {
+    let billNo = e.currentTarget.dataset.billno;
+    this.requestCancelPremium(billNo);
+  },
+
+  /**
+   * 请求取消 补价
+   */
+  requestCancelPremium: function(billNo) {
+    wx.showLoading({
+      title: '取消中',
+    })
+    let that = this;
+    wx.request({
+      url: config.URL_Service + config.URL_CancelPremium,
+      data: billNo,
+      method:"PUT",
+      success(res) {
+        wx.hideLoading();
+        console.log("取消补价单 success:\n" + JSON.stringify(res));
+        if (res.data.code != 200){
+          wx.showToast({
+            title: '取消补价单失败',
+            icon: 'none'
+          })
+        } else {
+          that.requestOrderDetail(that.data.orderNo)
+        }
+      },
+      fail(res) {
+        wx.hideLoading();
+        console.log("取消补价单 fail:\n" + JSON.stringify(res));
+        wx.showToast({
+          title: '系统异常',
+          icon: 'none'
+        })
+      }
+    })
   },
 
   /**
