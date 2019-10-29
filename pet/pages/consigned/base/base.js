@@ -95,7 +95,7 @@ Page({
     addServerAirBox: {
       name: "购买宠物箱", // 增值服务名称
       selected: false, // 是否选中
-      alert: "", // 提示
+      alert: "自备航空箱需符合航空公司要求的适用规则！", // 提示
       ableUse: false, // 是否可用
       contract: "《航空箱说明》"
     },
@@ -106,7 +106,7 @@ Page({
       receiveDistrict: null, // 上门接宠区县
       address: null, // 地址
       haveAbleStation: false, // 是否有可用站点
-      contract: "《接宠说明》"
+      contract: "《接宠说明》",
     },
     addServerSendPet: {
       name: "送宠到家",
@@ -127,7 +127,7 @@ Page({
     addServerPetCan: {
       name: "免费旅行餐", // 名称
       selected: false, // 是否选中
-      alert: "",
+      alert: "免费旅行餐由比瑞吉公司赠送。非必要选择。产品质量由比瑞吉公司把关，与斑马速运无关！",
       contract: "《旅行餐说明》"
     },
     addGuarantee: {
@@ -251,6 +251,9 @@ Page({
    */
   tapAirBoxContract: function () {
     console.log("点击 航空箱 说明");
+    wx.navigateTo({
+      url: pagePath.Path_Contract_Airbox,
+    })
   },
 
   /**
@@ -258,6 +261,9 @@ Page({
    */
   tapReceivePetContract: function () {
     console.log("点击 接宠 说明");
+    wx.navigateTo({
+      url: pagePath.Path_Contract_Receive,
+    })
   },
 
   /**
@@ -265,6 +271,9 @@ Page({
    */
   tapSendPetContract: function () {
     console.log("点击 送宠 说明");
+    wx.navigateTo({
+      url: pagePath.Path_Contract_Send,
+    })
   },
 
   /**
@@ -272,6 +281,9 @@ Page({
    */
   tapInsuredContract: function () {
     console.log("点击 保价 说明");
+    wx.navigateTo({
+      url: pagePath.Path_Contract_Insured,
+    })
   },
 
   /**
@@ -279,6 +291,9 @@ Page({
    */
   tapPetCanContract: function () {
     console.log("点击 旅行餐 说明");
+    wx.navigateTo({
+      url: pagePath.Path_Contract_petCan,
+    })
   },
 
   /**
@@ -286,6 +301,9 @@ Page({
    */
   tapGuaranteeContract: function (e) {
     console.log("点击 中介说明");
+    wx.navigateTo({
+      url: pagePath.Path_Contract_Guarantee,
+    })
   },
 
   /**

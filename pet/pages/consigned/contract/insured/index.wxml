@@ -1,0 +1,6 @@
+<!--pages/consigned/contract/insured/index.wxml-->
+<view class="content-box">
+  <text class="content">
+  保价说明
+  </text>
+</view>

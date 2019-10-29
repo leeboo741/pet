@@ -30,7 +30,13 @@
     "pages/finishOrder/finishOrder",
     "pages/editOrder/editOrder",
     "pages/premium/premium",
-    "pages/orderFilter/orderFilter"
+    "pages/orderFilter/orderFilter",
+    "pages/consigned/contract/airbox/index",
+    "pages/consigned/contract/petCan/index",
+    "pages/consigned/contract/receive/index",
+    "pages/consigned/contract/send/index",
+    "pages/consigned/contract/guarantee/index",
+    "pages/consigned/contract/insured/index"
   ],
   "window": {
     "backgroundTextStyle": "light",

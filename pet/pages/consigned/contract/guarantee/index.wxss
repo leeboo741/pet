@@ -1,0 +1,11 @@
+/* pages/consigned/contract/guarantee/index.wxss */
+.content-box{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.content{
+  margin: 20rpx 20rpx;
+  font-size: 32rpx;
+  color: #778899;
+}

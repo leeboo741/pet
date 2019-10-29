@@ -4,16 +4,16 @@
  */
 /** =================================================== */
 const Service_Phone = "4007778889"; // 客服电话
-const Version_Name = "1.3.29"; // 版本名称
-const Version_Code = 39; // 版本编号
+const Version_Name = "1.3.30"; // 版本名称
+const Version_Code = 40; // 版本编号
 
 /** =================================================== */
 /** 
  *                      网络请求
  */
 /** =================================================== */
-// const URL_Service = "https://pet.tyferp.com"; // 路径 
-const URL_Service = "http://192.168.3.111:5050"; // 路径
+const URL_Service = "https://pet.tyferp.com"; // 路径 
+// const URL_Service = "http://192.168.3.111:5050"; // 路径
 
 const URL_Register = "/api/customer/"; // 注册
 const URL_Login = "/api/oAuth"; // 登陆

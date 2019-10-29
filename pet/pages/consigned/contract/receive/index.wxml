@@ -1,0 +1,6 @@
+<!--pages/consigned/contract/receive/index.wxml-->
+<view class="content-box">
+  <text class="content">
+  接宠所在地，距离超出当地网点20公里以上的部分，接宠司机会收取相应路费。具体以当地网点联系结果为准。
+  </text>
+</view>

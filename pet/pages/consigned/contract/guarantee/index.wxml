@@ -1,0 +1,8 @@
+<!--pages/consigned/contract/guarantee/index.wxml-->
+<view class="content-box">
+  <text class="content">
+  1. 斑马速运，不参与买卖双方交易过程！\n
+  2. 可以提供上门拍摄宠物实时视频服务，确保所拍视频真实有效。\n
+  3. 如需上门检测或送当地宠物医院检测，下单时请在备注栏里填写相关需求。检测所需费用，实报实销。
+  </text>
+</view>

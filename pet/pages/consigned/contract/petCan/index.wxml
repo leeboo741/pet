@@ -1,0 +1,7 @@
+<!--pages/consigned/contract/petCan/index.wxml-->
+<view class="image-box">
+  <image class="image"
+         src='https://petimg.tyferp.com/weapp/freeCan.jpg'
+         mode="widthFix">
+  </image>
+</view>

@@ -250,10 +250,26 @@ Page({
    */
   tapMessage: function (e) {
     let link = e.currentTarget.dataset.link;
-    let path = link.split("?");
-    path = path[0];
+    let paths = link.split("?");
+    let pathType = paths[0];
 
-    if (path == PagePath.Path_Order_Detail) {
+    if (pathType == "action") {
+      if (paths[1] == "login") {
+        loginUtil.login(function loginCallback(state, msg) {
+          if (state == loginUtil.Login_Success) {
+            wx.navigateBack({
+              delta: 1,
+            })
+          } else if (state == loginUtil.Login_Fail) {
+            wx.showModal({
+              title: '更新用户信息失败',
+              content: '请稍后再试',
+              showCancel: false,
+            })
+          }
+        })
+      }
+    } else {
       wx.navigateTo({
         url: link,
       })

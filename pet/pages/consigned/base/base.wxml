@@ -81,16 +81,6 @@
                value='{{petClassify==null||petClassify.length<=0?null:petClassify}}' 
                bindinput='petClassifyInput'>
         </input>
-        <!-- <picker range='{{petClassifys}}'
-                value="{{selectPetClassifyIndex}}"
-                bindchange="selectPetClassify"
-                style="flex-grow: 1;"
-                disabled="{{petType==null||petType.length<=0}}">
-          <view class='pet-type-area {{petClassify==null?"city-placeholder":"city-normal"}}'
-                bindtap="tapPetClassify">
-          {{petClassify==null||petClassify.length<=0?"宠物种类":petClassify}}      
-          </view> 
-        </picker> -->
         <input name='petKg'
                type='digit'
                class='input-under petKg input-right'
@@ -114,13 +104,6 @@
           {{(petAge==null||petType.petAge<=0)?"宠物年龄":petAge}}      
           </view>
         </picker>
-        <!-- <input class='input-under petKg input-right'
-               style="flex-grow: 1;"
-               placeholder-class='input-normal-placeholder' 
-               placeholder='年龄'  
-               value='{{petAge==null||petAge.length<=0?null:petAge}}' 
-               bindinput='petAgeInput'>
-        </input> -->
       </view>
       <view class='shippModel'>
         <label class='tip'>运输方式:</label>
@@ -163,7 +146,7 @@
             {{addServerAirBox.contract}}
             </view>
           </view>
-          <view class='addServer-append-info' hidden='{{addServerAirBox.selected}}'>
+          <view class='addServer-append-info'>
             <view class='air-box-info'>
             {{addServerAirBox.alert}}
             </view>

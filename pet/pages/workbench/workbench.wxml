@@ -128,11 +128,19 @@
         </view>
         <!-- 备注信息 -->
         <view class="bill-info-remark"
-              wx:if='{{userInfo.role != 0 && orderItem.orderRemarksList!=null && orderItem.orderRemarksList.length >0}}'>
+              wx:if='{{userInfo.role != 0 && ((orderItem.remarks!=null && orderItem.remarks.length>0) || (orderItem.orderRemarksList!=null && orderItem.orderRemarksList.length>0))}}'>
           <view class="bill-info-remark-title">
           备注：
           </view>
           <view class="bill-info-remark-content-box">
+            <view class="bill-info-remark-item">
+              <view class="bill-info-remark-item-content">
+              {{orderItem.remarks}}
+              </view>
+              <view class="bill-info-remark-item-time">
+              客户备注
+              </view>
+            </view>
             <view class="bill-info-remark-item"
                   wx:for='{{orderItem.orderRemarksList}}'
                   wx:for-item='orderRemarkItem'

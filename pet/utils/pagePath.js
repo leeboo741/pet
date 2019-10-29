@@ -9,6 +9,13 @@ const Path_Order_Pay = "/pages/consigned/pay/pay"; // 下单--支付
 const Path_Order_Coupon = "/pages/consigned/coupon/coupon"; // 下单--优惠券
 const Path_Order_Coupon_QRCode = "/pages/consigned/coupon/couponQRCode/couponQRCode"; // 下单--优惠券二维码
 const Path_Order_Text = "/pages/consigned/text/text"; // 下单--协议确认
+const Path_Contract_Guarantee = "/pages/consigned/contract/guarantee/index"; // 担保协议
+const Path_Contract_Airbox = "/pages/consigned/contract/airbox/index"; // 航空箱协议
+const Path_Contract_Insured = "/pages/consigned/contract/insured/index"; // 投保协议
+const Path_Contract_petCan = "/pages/consigned/contract/petCan/index"; // 免费旅行餐协议
+const Path_Contract_Receive = "/pages/consigned/contract/receive/index"; // 接宠说明
+const Path_Contract_Send = "/pages/consigned/contract/send/index"; // 送宠说明
+
 
 const Path_Order_Filter = "/pages/orderFilter/orderFilter"; // 单据筛选
 const Path_Order_Workbench = "/pages/workbench/workbench"; // 工单
@@ -49,6 +56,12 @@ module.exports = {
   Path_Order_Coupon: Path_Order_Coupon, // 下单--优惠券
   Path_Order_Coupon_QRCode: Path_Order_Coupon_QRCode, // 下单--优惠券二维码
   Path_Order_Text: Path_Order_Text, // 下单--协议确认
+  Path_Contract_Guarantee, // 担保协议
+  Path_Contract_Airbox, // 航空箱协议
+  Path_Contract_Insured, // 投保协议
+  Path_Contract_petCan, // 免费旅行餐协议
+  Path_Contract_Receive, // 接宠说明
+  Path_Contract_Send, // 送宠说明
 
   Path_Order_Filter: Path_Order_Filter, // 单据筛选
   Path_Order_Workbench: Path_Order_Workbench, // 工单

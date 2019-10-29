@@ -134,6 +134,14 @@
           备注：
           </view>
           <view class="bill-info-remark-content-box">
+            <view class="bill-info-remark-item">
+              <view class="bill-info-remark-item-content">
+              {{orderItem.remarks}}
+              </view>
+              <view class="bill-info-remark-item-time">
+              客户备注
+              </view>
+            </view>
             <view class="bill-info-remark-item"
                   wx:for='{{orderItem.orderRemarksList}}'
                   wx:for-item='orderRemarkItem'
