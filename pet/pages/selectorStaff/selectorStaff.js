@@ -185,7 +185,7 @@ Page({
       method: "POST", // 请求方式
       success(res){
         console.log("分配订单 success:\n" + JSON.stringify(res));
-        if(res.data.code == 200 && res.data.data > 0) {
+        if (res.data.code == config.RES_CODE_SUCCESS && res.data.data > 0) {
           wx.showModal({
             title: '分配成功',
             content: '订单：'+ that.data.orderNo + '成功分配给'+ res.data.data + '人',

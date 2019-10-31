@@ -388,13 +388,13 @@ Page({
       data: tempOrderObj,
       success(res) {
         console.log("提交订单 success => \n" + JSON.stringify(res));
-        if (res.data.prompt == config.Prompt_Success) {
+        if (res.data.code == config.RES_CODE_SUCCESS) {
           that.setData({
-            orderNo: res.data.root
+            orderNo: res.data.data
           })
-          let tempOrderNo = res.data.root;
+          let tempOrderNo = res.data.data;
           wx.showModal({
-            title: '订单:' + res.data.root + '提交成功',
+            title: '订单:' + res.data.data + '提交成功',
             content: '是否立即支付',
             cancelText: '稍后支付',
             confirmText: '立即付款',
@@ -427,9 +427,9 @@ Page({
             }
           })
         } else {
-          if (res.data.root != null) {
+          if (res.data.message != null) {
             wx.showToast({
-              title: res.data.root,
+              title: res.data.message,
               icon: 'none'
             })
           } else {
@@ -551,13 +551,13 @@ Page({
       data: tempData,
       success(res) {
         console.log("获取预估价格 success => \n" + JSON.stringify(res));
-        if (res.data.prompt == config.Prompt_Success) {
+        if (res.data.code == config.RES_CODE_SUCCESS) {
           that.setData({
-            predictPrice: res.data.root
+            predictPrice: res.data.data
           })
         } else {
           wx.showToast({
-            title: res.data.root,
+            title: res.data.message,
             icon: 'none'
           })
         }

@@ -123,9 +123,9 @@ Page({
       },
       success (res) {
         console.log("获取订单详情 success：\n" + JSON.stringify(res));
-        if (res.data.root != null && res.data.prompt == "Success") {
+        if (res.data.data != null && res.data.code == config.RES_CODE_SUCCESS) {
           that.setData({
-            orderData: res.data.root
+            orderData: res.data.data
           })
         } else {
 
@@ -166,7 +166,7 @@ Page({
       method: 'POST',
       success(res){
         console.log("新增备注 success:\n" + JSON.stringify(res));
-        if (res.data.code == 200 && res.data.data > 0) {
+        if (res.data.code == config.RES_CODE_SUCCESS && res.data.data > 0) {
           wx.showToast({
             title: '新增成功',
           })
@@ -296,7 +296,7 @@ Page({
       success(res) {
         wx.hideLoading();
         console.log("取消补价单 success:\n" + JSON.stringify(res));
-        if (res.data.code != 200){
+        if (res.data.code != config.RES_CODE_SUCCESS){
           wx.showToast({
             title: '取消补价单失败',
             icon: 'none'

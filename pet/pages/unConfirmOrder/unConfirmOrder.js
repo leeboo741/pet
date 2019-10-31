@@ -185,7 +185,7 @@ Page({
       success(res) {
         console.log("upload success =>" + JSON.stringify(res));
         let tempObj = JSON.parse(res.data);
-        if (res.data.prompt != null && res.data.prompt == config.Prompt_Error) {
+        if (tempObj.code != config.RES_CODE_SUCCESS) {
           wx.showToast({
             title: "文件上传失败",
             icon: 'none'
@@ -449,7 +449,7 @@ Page({
       },
       success(res) {
         console.log("未支付补价单数量 sucess: \n" + JSON.stringify(res));
-        if (res.data.code == 200) {
+        if (res.data.code == config.RES_CODE_SUCCESS) {
           if (res.data.data > 0) {
             wx.hideLoading();
             wx.showModal({
@@ -525,15 +525,15 @@ Page({
       },
       success(res) {
         console.log("确定到达 success: \n" + JSON.stringify(res));
-        if (res.data.prompt != null && res.data.prompt == "Error") {
+        if (res.data.code != config.RES_CODE_SUCCESS) {
 
           let tempMsg = '系统异常，到达失败'
           if (order.orderStates[0].orderType == '待出港') {
             tempMsg = '系统异常，出港失败'
           }
 
-          if (res.data.root) {
-            tempMsg = res.data.root
+          if (res.data.message) {
+            tempMsg = res.data.message
           }
           wx.showToast({
             title: tempMsg,
@@ -609,7 +609,7 @@ Page({
       },
       success(res) {
         console.log("确认收货 success: \n" + JSON.stringify(res));
-        if (res.data.prompt == config.Prompt_Success) {
+        if (res.data.code == config.RES_CODE_SUCCESS) {
           wx.showToast({
             title: '收货成功',
           })
@@ -969,7 +969,7 @@ Page({
       method: 'POST',
       success(res) {
         console.log("新增备注 success:\n" + JSON.stringify(res));
-        if (res.data.code == 200 && res.data.data > 0) {
+        if (res.data.code == config.RES_CODE_SUCCESS && res.data.data > 0) {
           wx.showToast({
             title: '备注成功',
           })
@@ -1096,7 +1096,7 @@ Page({
       method: 'POST',
       success(res){
         console.log("修改待签收状态 success: \n" + JSON.stringify(res));
-        if (res.data.code == 200 && res.data.data > 0) {
+        if (res.data.code == config.RES_CODE_SUCCESS && res.data.data > 0) {
           orderItem.orderStates[0].orderType = "派送中";
           orderItem.deliverName = null;
           orderItem.deliverPhone = null;

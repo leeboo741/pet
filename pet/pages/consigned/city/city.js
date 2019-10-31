@@ -39,8 +39,8 @@ Page({
     wx.request({
       url: config.URL_Service + config.URL_StartCity,
       success (res) {
-        that.data.citys = res.data.root.bodys;
-        that.data.cityAZ = res.data.root.headers;
+        that.data.citys = res.data.data.bodys;
+        that.data.cityAZ = res.data.data.headers;
         that.setData({
           cityAZ: that.data.cityAZ,
           citys : that.data.citys,
@@ -72,8 +72,8 @@ Page({
         "startCity": this.data.startCity
       },
       success(res) {
-        that.data.citys = res.data.root.bodys;
-        that.data.cityAZ = res.data.root.headers;
+        that.data.citys = res.data.data.bodys;
+        that.data.cityAZ = res.data.data.headers;
         that.setData({
           cityAZ: that.data.cityAZ,
           citys: that.data.citys,

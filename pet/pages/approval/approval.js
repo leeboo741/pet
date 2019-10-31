@@ -159,7 +159,7 @@ Page({
       },
       success(res) {
         console.log("获取待审核商户 success: \n" + JSON.stringify(res));
-        if (res.data.code == 200) {
+        if (res.data.code == config.RES_CODE_SUCCESS) {
           that.setData({
             stationApplyList: res.data.data
           })
@@ -198,7 +198,7 @@ Page({
       },
       success(res){
         console.log("获取待审核员工 success: \n" + JSON.stringify(res));
-        if (res.data.code == 200) {
+        if (res.data.code == config.RES_CODE_SUCCESS) {
           that.setData({
             staffApplyList: res.data.data
           })
@@ -238,7 +238,7 @@ Page({
       method: "PUT",
       success(res) {
         console.log("请求驳回商家 success: \n" + JSON.stringify(res));
-        if (res.data.code == 200 && res.data.data > 0) {
+        if (res.data.code == config.RES_CODE_SUCCESS && res.data.data > 0) {
           wx.showToast({
             title: '驳回成功',
           })
@@ -282,7 +282,7 @@ Page({
       method: "PUT",
       success(res) {
         console.log("请求审核商家 success: \n" + JSON.stringify(res));
-        if (res.data.code == 200 && res.data.data > 0) {
+        if (res.data.code == config.RES_CODE_SUCCESS && res.data.data > 0) {
           wx.showToast({
             title: '审核成功',
           })
@@ -326,7 +326,7 @@ Page({
       method: "PUT",
       success(res) {
         console.log("请求驳回员工 success: \n" + JSON.stringify(res));
-        if (res.data.code == 200 && res.data.data > 0) {
+        if (res.data.code == config.RES_CODE_SUCCESS && res.data.data > 0) {
           wx.showToast({
             title: '驳回成功',
           })
@@ -370,7 +370,7 @@ Page({
       method: "PUT",
       success(res){
         console.log("请求审核员工 success: \n" + JSON.stringify(res));
-        if (res.data.code == 200 && res.data.data > 0) {
+        if (res.data.code == config.RES_CODE_SUCCESS && res.data.data > 0) {
           wx.showToast({
             title: '审核成功',
           })

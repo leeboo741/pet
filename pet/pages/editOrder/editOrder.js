@@ -104,9 +104,9 @@ Page({
       success(res) {
         wx.hideLoading();
         console.log("获取订单详情 success：\n" + JSON.stringify(res));
-        if (res.data.root != null && res.data.prompt == "Success") {
+        if (res.data.data != null && res.data.code == Config.RES_CODE_SUCCESS) {
           that.setData({
-            orderData: res.data.root
+            orderData: res.data.data
           })
           that.requestStationPhone(that.data.orderData.orderStates[0].station.stationNo)
         } else {
@@ -147,7 +147,7 @@ Page({
       },
       success(res){
         console.log("获取站点电话 success：\n" + JSON.stringify(res));
-        if (res.data.code == 200) {
+        if (res.data.code == config.RES_CODE_SUCCESS) {
           that.setData({
             stationPhone: res.data.data
           })
@@ -204,7 +204,7 @@ Page({
       method: "PUT",
       success(res) {
         console.log("修改订单联系人 success: \n" + JSON.stringify(res));
-        if (res.data.prompt == Config.Prompt_Success && res.data.root > 0) {
+        if (res.data.code == config.RES_CODE_SUCCESS && res.data.data > 0) {
           wx.showToast({
             title: '更新成功',
             duration: 1000,

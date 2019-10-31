@@ -219,7 +219,7 @@ Page({
       },
       success(res) {
         console.log("请求所有单据 success：\n" + JSON.stringify(res));
-        if (res.data.prompt == config.Prompt_Error) {
+        if (res.data.code != config.RES_CODE_SUCCESS) {
           wx.showToast({
             title: '获取失败,稍后再试',
             icon: "none"
@@ -533,7 +533,7 @@ Page({
       method: 'POST',
       success(res) {
         console.log("新增备注 success:\n" + JSON.stringify(res));
-        if (res.data.code == 200 && res.data.data > 0) {
+        if (res.data.code == config.RES_CODE_SUCCESS && res.data.data > 0) {
           wx.showToast({
             title: '备注成功',
           })

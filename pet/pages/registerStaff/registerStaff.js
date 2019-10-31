@@ -349,7 +349,7 @@ Page({
       method: "POST", // 请求方式
       success(res) {
         console.log("注册员工 success:\n" + JSON.stringify(res));
-        if (res.data.code == 200) {
+        if (res.data.code == config.RES_CODE_SUCCESS) {
           wx.showToast({
             title: '申请提交成功',
             duration: 1000,

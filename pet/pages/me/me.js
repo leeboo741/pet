@@ -633,7 +633,7 @@ Page({
       },
       success(res) {
         console.log ("确认收货 success: \n" + JSON.stringify(res));
-        if (res.data.prompt == config.Prompt_Success) {
+        if (res.data.code == config.RES_CODE_SUCCESS) {
           wx.showToast({
             title: '收货成功',
           })
@@ -748,16 +748,16 @@ Page({
       },
       success(res) {
         console.log("查单 success：\n" + JSON.stringify(res));
-        if (res.data.root != null && res.data.prompt == "Success") {
+        if (res.data.data != null && res.data.code == config.RES_CODE_SUCCESS) {
           that.hiddenPopMask();
           wx.navigateTo({
-            url: pagePath.Path_Order_Detail + '?orderno=' + res.data.root + '&type=0' + "&ablecancelpremium=0",
+            url: pagePath.Path_Order_Detail + '?orderno=' + res.data.data + '&type=0' + "&ablecancelpremium=0",
           })
 
         } else {
-          if (res.data.root != null) {
+          if (res.data.message != null) {
             wx.showToast({
-              title: res.data.root,
+              title: res.data.message,
               icon: 'none'
             })
           } else {
@@ -804,7 +804,7 @@ Page({
       },
       success(res) {
         console.log("取消订单 success：\n" + JSON.stringify(res));
-        if (res.data.root != null && res.data.prompt == "Success") {
+        if (res.data.data != null && res.data.code == config.RES_CODE_SUCCESS) {
           if (tempType == 0) {
             that.data.unpayList.splice(tempIndex, 1);
             that.setData({
@@ -830,9 +830,9 @@ Page({
             title: '取消订单成功！'
           })
         } else {
-          if (res.data.root != null) {
+          if (res.data.message != null) {
             wx.showToast({
-              title: res.data.root,
+              title: res.data.message,
               icon: 'none'
             })
           } else {
@@ -876,19 +876,19 @@ Page({
         console.log("请求单据列表 success => \n" + JSON.stringify(res))
         if (tempType == 0) {
           that.setData({
-            unpayList: res.data.root
+            unpayList: res.data.data
           })
         } else if (tempType == 1) {
           that.setData({
-            unsendList: res.data.root
+            unsendList: res.data.data
           })
         } else if (tempType == 2) {
           that.setData({
-            unreceiveList: res.data.root
+            unreceiveList: res.data.data
           })
         } else {
           that.setData({
-            completeList: res.data.root
+            completeList: res.data.data
           })
         }
       },
@@ -920,7 +920,7 @@ Page({
       },
       success(res) {
         console.log("获取最新站内信 success:\n" + JSON.stringify(res));
-        if (res.data.code == 200 && res.data.data > 0) {
+        if (res.data.code == config.RES_CODE_SUCCESS && res.data.data > 0) {
           that.setData({
             haveNewMessage: true
           })

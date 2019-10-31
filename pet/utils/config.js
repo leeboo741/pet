@@ -4,8 +4,8 @@
  */
 /** =================================================== */
 const Service_Phone = "4007778889"; // 客服电话
-const Version_Name = "1.3.30"; // 版本名称
-const Version_Code = 40; // 版本编号
+const Version_Name = "1.3.31"; // 版本名称
+const Version_Code = 41; // 版本编号
 
 /** =================================================== */
 /** 
@@ -90,6 +90,9 @@ const URL_Get_New_Message = "/api/message/push/"; // 获取最新站内信
 const Prompt_Success = "Success"; // 成功标识
 const Prompt_Error = "Error"; // 错误标识
 const Prompt_NotExist = "NotExist"; // 不存在标识
+
+const RES_CODE_SUCCESS = 200; // 成功code
+const RES_CODE_NOTEXIST = 406; // 用户不存在
 
 const Role_Customer = 0; // 用户角色
 const Role_Staff_Manager = 1; // 管理员
@@ -201,6 +204,9 @@ module.exports = {
   Prompt_Success, // 成功标识
   Prompt_Error, // 错误标识
   Prompt_NotExist, // 不存在标识
+
+  RES_CODE_SUCCESS, // 成功标识
+  RES_CODE_NOTEXIST, // 用户不存在
 
   Role_Customer, // 用户角色
   Role_Staff_Manager, // 管理员

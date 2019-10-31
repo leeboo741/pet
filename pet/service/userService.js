@@ -127,8 +127,8 @@ function login(loginCallback) {
                   }, // 参数
                   success: res => {
                     console.log("success => " + JSON.stringify(res));
-                    if (res.data.prompt == config.Prompt_Success) {
-                      let tempUserInfo = JSON.parse(res.data.root)
+                    if (res.data.code == config.RES_CODE_SUCCESS) {
+                      let tempUserInfo = JSON.parse(res.data.data)
                       userInfo.customerNo = tempUserInfo.customerNo
                       userInfo.openId = tempUserInfo.openId
                       userInfo.phone = tempUserInfo.phone
@@ -141,11 +141,11 @@ function login(loginCallback) {
                       if (loginCallback) {
                         loginCallback(Login_Success, "登陆成功");
                       }
-                    } else if (res.data.prompt == config.Prompt_NotExist) {
+                    } else if (res.data.code == config.RES_CODE_NOTEXIST) {
                       app.globalData.nickName = userInfo.nickName;
                       app.globalData.avatarUrl = userInfo.avatarUrl;
                       app.globalData.gender = userInfo.gender;
-                      app.globalData.openId = res.data.root;
+                      app.globalData.openId = res.data.data;
                       if (loginCallback) {
                         loginCallback(Login_NotExist, "未注册");
                       }

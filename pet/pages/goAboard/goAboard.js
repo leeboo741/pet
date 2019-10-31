@@ -106,9 +106,9 @@ Page({
       url: urlstr, // 服务器地址
       success: res => {
         console.log("success => " + JSON.stringify(res));
-        if (res.data.prompt == config.Prompt_Success) {
+        if (res.data.code == config.RES_CODE_SUCCESS) {
           that.setData({
-            petTypeList: res.data.root
+            petTypeList: res.data.data
           })
         } else {
           wx.showToast({
@@ -146,10 +146,10 @@ Page({
       },
       success: res => {
         console.log("success => " + JSON.stringify(res));
-        if (res.data.prompt == config.Prompt_Success) {
+        if (res.data.code == config.RES_CODE_SUCCESS) {
           let tempList = [];
-          for (let i = 0; i < res.data.root.length; i++) {
-            tempList[i] = res.data.root[i].petClassifyName;
+          for (let i = 0; i < res.data.data.length; i++) {
+            tempList[i] = res.data.data[i].petClassifyName;
           }
           that.setData({
             petClassifyList: tempList

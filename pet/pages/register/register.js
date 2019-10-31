@@ -225,10 +225,10 @@ Page({
    */
   requestSuccess: function (res) {
     let that = this;
-    if (res.data.prompt == config.Prompt_Success) {
+    if (res.data.code == config.RES_CODE_SUCCESS) {
       wx.showModal({
         showCancel: false,
-        title: res.data.root,
+        title: res.data.message,
         message: "确定登陆！",
         success(res) {
           if (res.confirm) {
@@ -238,8 +238,8 @@ Page({
       })
     } else {
       let msg = '绑定失败！';
-      if (res.data.root != null && res.data.root.length > 0) {
-        msg = res.data.root;
+      if (res.data.message != null && res.data.message.length > 0) {
+        msg = res.data.message;
       }
       wx.showToast({
         title: msg,

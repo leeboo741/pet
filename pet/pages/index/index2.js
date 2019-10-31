@@ -177,15 +177,15 @@ Page({
       },
       success(res) {
         console.log("查单 success：\n" + JSON.stringify(res));
-        if (res.data.root != null && res.data.prompt == "Success") {
+        if (res.data.data != null && res.data.code == config.RES_CODE_SUCCESS) {
           wx.navigateTo({
-            url: pagePath.Path_Order_Detail + '?orderno=' + res.data.root + '&type=0',
+            url: pagePath.Path_Order_Detail + '?orderno=' + res.data.data + '&type=0',
           })
 
         } else {
-          if (res.data.root != null) {
+          if (res.data.message != null) {
             wx.showToast({
-              title: res.data.root,
+              title: res.data.message,
               icon: 'none'
             })
           } else {

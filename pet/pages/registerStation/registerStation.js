@@ -328,7 +328,7 @@ Page({
       success(res){
         console.log("注册商家 success:\n" + JSON.stringify(res));
         wx.hideLoading();
-        if (res.data.code == 200) {
+        if (res.data.code == config.RES_CODE_SUCCESS) {
           wx.showToast({
             title: '申请提交成功',
             duration: 1000,

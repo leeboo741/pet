@@ -984,12 +984,12 @@ Page({
       data: tempData,
       success(res) {
         console.log("获取预估价格 success => \n" + JSON.stringify(res));
-        if (res.data.prompt == config.Prompt_Success) {
+        if (res.data.code == config.RES_CODE_SUCCESS) {
           that.setData({
-            totalPrice: res.data.root
+            totalPrice: res.data.data
           })
         } else {
-          let msg = res.data.root;
+          let msg = res.data.message;
           if (msg == null) {
             msg = "系统异常"
           }
@@ -1033,7 +1033,7 @@ Page({
       },
       success(res) {
         console.log("获取可用运输方式 success => \n" + JSON.stringify(res));
-        let ableList = res.data.root;
+        let ableList = res.data.data;
         for (let i = 0; i < that.data.transportTypes.length; i++) {
           that.data.transportTypes[i].disable = true;
         }
@@ -1072,8 +1072,8 @@ Page({
       url: urlstr, // 服务器地址
       success: res => {
         console.log("success => " + JSON.stringify(res));
-        if (res.data.prompt == config.Prompt_Success) {
-          if (util.checkEmpty(res.data.root)) {
+        if (res.data.code == config.RES_CODE_SUCCESS) {
+          if (util.checkEmpty(res.data.data)) {
             wx.showToast({
               title: '没有查到宠物类型数据',
               icon: 'none'
@@ -1082,11 +1082,11 @@ Page({
             return;
           }
           that.setData({
-            petTypes: res.data.root,
+            petTypes: res.data.data,
             // petClassifys: null,
             selectPetTypeIndex: 0,
             // selectPetClassifyIndex: 0,
-            petType: res.data.root[0],
+            petType: res.data.data[0],
             petClassify: null
           })
           // that.requestPetClassify(that.data.petType);
@@ -1124,8 +1124,8 @@ Page({
   //     },
   //     success: res => {
   //       console.log("success => " + JSON.stringify(res));
-  //       if (res.data.prompt == config.Prompt_Success) {
-  //         if (util.checkEmpty(res.data.root)) {
+  //       if (res.data.code == config.RES_CODE_SUCCESS) {
+  //         if (util.checkEmpty(res.data.data)) {
   //           wx.showToast({
   //             title: '没有查到宠物种类数据',
   //             icon: 'none'
@@ -1133,10 +1133,10 @@ Page({
   //           wx.hideLoading();
   //           return;
   //         }
-  //         that.data.petClassifys = res.data.root;
+  //         that.data.petClassifys = res.data.data;
   //         let tempData = [];
-  //         for (let i = 0; i < res.data.root.length; i++) {
-  //           tempData.push(res.data.root[i].petClassifyName);
+  //         for (let i = 0; i < res.data.data.length; i++) {
+  //           tempData.push(res.data.data[i].petClassifyName);
   //         }
   //         that.setData({
   //           petClassifys: tempData,

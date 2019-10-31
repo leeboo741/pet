@@ -131,7 +131,7 @@ Page({
       },
       success(res){
         console.log("获取周边商家列表 success: \n" + JSON.stringify(res));
-        if (res.data.prompt != null && res.data.prompt == config.Error) {
+        if (res.data.code != config.RES_CODE_SUCCESS) {
           wx.showToast({
             title: '获取周边商家列表错误',
             icon: 'none'
