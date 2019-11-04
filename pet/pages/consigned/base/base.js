@@ -619,7 +619,7 @@ Page({
    */
   inputInsuredPrice: function (e) {
     let tempInput = e.detail.value;
-    if (tempInput == null) {
+    if (tempInput == null || tempInput.length <= 0) {
       tempInput = 0;
     }
     tempInput = parseInt(tempInput);
