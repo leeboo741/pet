@@ -89,42 +89,12 @@ Page({
     var canvasHeight = that.data.canvasHeight
     var command = tsc.jpPrinter.createNew()
     
-    // command.setSize(76, 182)
-    // command.setGap(0)
-    // command.setCls()
-
-    // command.setText(0, 0,"TSS24.BF2",1,1,"+");
-    // command.setText(50, 300, "TSS48.BF2", 1, 1, app.globalData.printOrder.transport.startCity);
-    // let transportTypeStr = "";
-    // let type = app.globalData.printOrder.transport.transportType;
-    // if (type == 1) {
-    //   transportTypeStr = "专车";
-    // } else if (type == 2) {
-    //   transportTypeStr = "铁路";
-    // } else if (type == 3) {
-    //   transportTypeStr = "单飞";
-    // } else if (type == 4) {
-    //   transportTypeStr = "随机";
-    // } else {
-    //   transportTypeStr = "大巴";
-    // }
-    // command.setText(280, 300, "TSS24.BF2", 1, 1, transportTypeStr);
-    // command.setText(380, 300, "TSS48.BF2", 1, 1, app.globalData.printOrder.transport.endCity);
-
-    // command.setText(50, 345, "TSS32.BF2", 1, 1, "订单编号：" + app.globalData.printOrder.orderNo);
-    // command.setText(50, 370, "TSS32.BF2", 1, 1, "出发时间：" + app.globalData.printOrder.leaveDate);
-    // command.setText(50, 420, "TSS32.BF2", 1, 1, "宠物：" + app.globalData.printOrder.petType.petTypeName + " -- " + app.globalData.printOrder.petClassify.petClassifyName);
-    // command.setText(50, 1200, "TSS32.BF2", 1, 1, "订单编号：" + app.globalData.printOrder.orderNo);
-
-
-    command.setSize(75, 60)
+    command.setSize(76, 182)
     command.setGap(0)
     command.setCls()
-    command.setText(0, 0, "TSS24.BF2", 1, 1, "+");
-    command.setText(20, 30, "TSS48.BF2", 1, 1, app.globalData.printOrder.transport.startCity + "-" + app.globalData.printOrder.transport.endCity);
-    command.setText(20, 150, "TSS24.BF2", 1, 1, "订单编号：" + app.globalData.printOrder.orderNo);
-    command.setText(20, 210, "TSS24.BF2", 1, 1, "下单时间：" + app.globalData.printOrder.orderDate + " " + app.globalData.printOrder.orderTime);
-    command.setText(20, 270, "TSS24.BF2", 1, 1, "出发时间：" + app.globalData.printOrder.leaveDate);
+
+    // command.setText(0, 0,"TSS24.BF2",1,1,"+++++++++++++");
+    command.setText(50, 280, "TSS48.BF2", 1, 1, app.globalData.printOrder.transport.startCity);
     let transportTypeStr = "";
     let type = app.globalData.printOrder.transport.transportType;
     if (type == 1) {
@@ -138,9 +108,41 @@ Page({
     } else {
       transportTypeStr = "大巴";
     }
-    command.setText(20, 330, "TSS24.BF2", 1, 1, "运输方式：" + transportTypeStr);
-    command.setText(20, 390, "TSS24.BF2", 1, 1, "宠物：" + app.globalData.printOrder.petType.petTypeName + " -- " + app.globalData.printOrder.petClassify.petClassifyName);
-    command.setQR(380, 150, "L", 8, "A", app.globalData.printOrder.orderNo);
+    command.setText(250, 280, "TSS24.BF2", 1, 1, transportTypeStr);
+    command.setText(350, 280, "TSS48.BF2", 1, 1, app.globalData.printOrder.transport.endCity);
+
+    command.setText(50, 400, "TSS32.BF2", 1, 1, "订单编号：" + app.globalData.printOrder.orderNo);
+    command.setText(50, 480, "TSS32.BF2", 1, 1, "出发时间：" + app.globalData.printOrder.leaveDate);
+    command.setText(50, 560, "TSS32.BF2", 1, 1, "宠物：" + app.globalData.printOrder.petType.petTypeName + " -- " + app.globalData.printOrder.petClassify.petClassifyName);
+    command.setText(50, 1400, "TSS32.BF2", 1, 1, "订单编号：" + app.globalData.printOrder.orderNo);
+    command.setQR(350, 645, "L", 8, "A", app.globalData.printOrder.orderNo);
+    command.setQR(350, 1130, "L", 8, "A", "http://www.baidu.com");
+
+
+    // command.setSize(75, 60)
+    // command.setGap(0)
+    // command.setCls()
+    // command.setText(0, 0, "TSS24.BF2", 1, 1, "+");
+    // command.setText(20, 30, "TSS48.BF2", 1, 1, app.globalData.printOrder.transport.startCity + "-" + app.globalData.printOrder.transport.endCity);
+    // command.setText(20, 150, "TSS24.BF2", 1, 1, "订单编号：" + app.globalData.printOrder.orderNo);
+    // command.setText(20, 210, "TSS24.BF2", 1, 1, "下单时间：" + app.globalData.printOrder.orderDate + " " + app.globalData.printOrder.orderTime);
+    // command.setText(20, 270, "TSS24.BF2", 1, 1, "出发时间：" + app.globalData.printOrder.leaveDate);
+    // let transportTypeStr = "";
+    // let type = app.globalData.printOrder.transport.transportType;
+    // if (type == 1) {
+    //   transportTypeStr = "专车";
+    // } else if (type == 2) {
+    //   transportTypeStr = "铁路";
+    // } else if (type == 3) {
+    //   transportTypeStr = "单飞";
+    // } else if (type == 4) {
+    //   transportTypeStr = "随机";
+    // } else {
+    //   transportTypeStr = "大巴";
+    // }
+    // command.setText(20, 330, "TSS24.BF2", 1, 1, "运输方式：" + transportTypeStr);
+    // command.setText(20, 390, "TSS24.BF2", 1, 1, "宠物：" + app.globalData.printOrder.petType.petTypeName + " -- " + app.globalData.printOrder.petClassify.petClassifyName);
+    // command.setQR(380, 150, "L", 8, "A", app.globalData.printOrder.orderNo);
 
     this.data.timeOutIntervel = setTimeout(function(){
       var printThis = this;
