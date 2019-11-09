@@ -49,7 +49,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
+    
   },
 
   /**
@@ -84,6 +84,57 @@ Page({
         })
       }
     })
+    // 如果 扫码订单号不为空
+    if (app.ShareData.scanOrderNo != null) {
+      // 展示待收货页面
+      that.setData({
+        selectedBillType: 2
+      })
+      // 查询是否登陆
+      loginUtil.checkLogin(function alreadyLoginCallback(isLogin) {
+        // 如果已经登录, 向服务器查询本人是否可以签收该单据 , 如果没有登录，提示登录
+        if (isLogin) {
+          that.requestCheckConfirm(app.ShareData.scanOrderNo, loginUtil.getCustomerNo(),
+            function getResultCallback(data) {
+              console.log("是否可以确认签收 :\n" + JSON.stringify(data));
+              if (data == 0) {
+                wx.showModal({
+                  title: '不能签收该订单',
+                  content: '您无权限签收该订单，请咨询工作人员',
+                  showCancel: false
+                })
+                app.globalData.scanOrderNo = null;
+              } else {
+                wx.showModal({
+                  title: '确认签收',
+                  content: '是否确认签收订单：' + app.ShareData.scanOrderNo,
+                  success(res) {
+                    if (res.confirm) {
+                      that.requestRecieve(app.ShareData.scanOrderNo, -1);
+                      app.globalData.scanOrderNo = null;
+                    }
+                  }
+                })
+              }
+            }
+          )
+          // 如果可以签收 弹窗提示是否签收
+          // 如果不能签收 弹窗提示不能签收
+        } else {
+          wx.showModal({
+            title: '需要登陆',
+            content: '请登录后再签收该订单',
+            success(res) {
+              if (res.confirm) {
+                wx.navigateTo({
+                  url: pagePath.Path_Login,
+                })
+              }
+            }
+          })
+        }
+      })
+    }
   },
 
   /**
@@ -637,10 +688,12 @@ Page({
           wx.showToast({
             title: '收货成功',
           })
-          that.data.unreceiveList.splice(orderIndex, 1);
-          that.setData({
-            unreceiveList: that.data.unreceiveList
-          })
+          if (orderIndex >=  0) {
+            that.data.unreceiveList.splice(orderIndex, 1);
+            that.setData({
+              unreceiveList: that.data.unreceiveList
+            })
+          }
         }
       },
       fail(res) {
@@ -936,6 +989,40 @@ Page({
       },
       complete(res) {
         console.log("获取最新站内信 complete:\n" + JSON.stringify(res));
+      }
+    })
+  },
+
+  /**
+   * 查询是否可以收货
+   */
+  requestCheckConfirm: function (orderNo, customerNo, getResultCallback) {
+    wx.request({
+      url: config.URL_Service + config.URL_CheckConfirm,
+      data: {
+        orderNo : orderNo,
+        customerNo: customerNo 
+      },
+      success (res) {
+        if (res.data.code == config.RES_CODE_SUCCESS) {
+          if (getResultCallback != null && typeof getResultCallback == 'function') {
+            getResultCallback(res.data.data)
+          }
+        } else {
+          wx.showToast({
+            title: res.errMsg,
+            icon: 'none'
+          })
+        }
+      },
+      fail (res) {
+        wx.showToast({
+          title: '系统异常',
+          icon: 'none'
+        })
+      },
+      complete(res) {
+      
       }
     })
   },

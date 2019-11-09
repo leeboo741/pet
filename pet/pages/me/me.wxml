@@ -13,6 +13,14 @@
                   open-type="getUserInfo">
           登陆|注册
           </button>
+          <view class="sign-box">
+            <view class="sign-item" style="" hidden="{{userInfo.staffNo==null}}">
+            认证员工
+            </view>
+            <view class="sign-item" style="background:#F1B000" hidden="{{userInfo.businessNo==null}}">
+            认证商家
+            </view>
+          </view>
       </view>
       <!--常规信息-->
       <view class='userInfo'>

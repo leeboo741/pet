@@ -55,6 +55,7 @@ page {
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
 }
 
 .login-button{
@@ -70,6 +71,30 @@ page {
   text-align: center;
   padding: 0rpx;
   margin: 0rpx;
+}
+
+.sign-box{
+  position: absolute;
+  bottom: 0rpx;
+  width: 100%;
+  left: 0rpx;
+  display: flex;
+  flex-direction: column;
+  z-index: 2;
+  color: white;
+  align-items: center;
+}
+
+.sign-item{
+  height: 25rpx;
+  line-height: 25rpx;
+  text-align: center;
+  width: 80%;
+  font-size: 14rpx;
+  margin-top: 5rpx;
+  border-radius: 10rpx;
+  z-index: 2;
+  background:#F1B000;
 }
 
 .bill-info-box {

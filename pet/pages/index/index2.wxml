@@ -1,9 +1,31 @@
 <!--pages/index/index2.wxml-->
 <view class='page'>
-  <image class="banner-image"
-        src="{{bannerImagePath}}">
-
-  </image>
+  <swiper class='banner'
+          circular="{{true}}"
+          indicator-dots="{{true}}"
+          autoplay="{{true}}"
+          interval="5000"
+          duration="300"
+          vertical="{{false}}"
+          indicator-active-color="#7bbfea"
+          indicator-color="#cccccc">
+    <swiper-item wx:for="{{bannerList}}"
+                wx:for-item="bannerItem"
+                wx:for-index="bannerIndex"
+                wx:key="bannerIndex">
+      <view class='banner-item'
+            data-index="{{bannerIndex}}"
+            data-targeturl="{{bannerItem.bannerTargetUrl}}"
+            data-bannerurl="{{bannerItem.bannerImageUrl}}"
+            bindtap='tapBanner'>
+        <image class='banner-item-image'
+            src='{{bannerItem.bannerImageUrl!=null?bannerItem.bannerImageUrl:"../../resource/placeholder_image.png"}}'
+            mode='scaleToFill'
+            lazy-load='{{true}}'>
+        </image>
+      </view>
+    </swiper-item>
+  </swiper>
 
   <view class="business-navigation-area">
     <view class="business-navigation-content">

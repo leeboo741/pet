@@ -1,7 +1,7 @@
 {
   "pages": [
-    "pages/index/index",
     "pages/index/index2",
+    "pages/index/index",
     "pages/login/login",
     "pages/register/register",
     "pages/consigned/base/base",
@@ -53,7 +53,7 @@
     "position": "bottom",
     "list": [
       {
-        "pagePath": "pages/index/index",
+        "pagePath": "pages/index/index2",
         "text": "首页",
         "iconPath": "resource/tabbar_index_unselected.png",
         "selectedIconPath": "resource/tabbar_index_selected.png"

@@ -65,6 +65,17 @@ function getStationNo(){
 }
 
 /**
+ * 获取用户编号
+ */
+function getCustomerNo() {
+  let userInfo = getUserInfo();
+  if (userInfo == null || userInfo.customerNo == null || userInfo.customerNo.length <= 0) {
+    return null;
+  }
+  return userInfo.customerNo;
+}
+
+/**
  * 获取员工编号
  */
 function getStaffNo() {
@@ -73,6 +84,39 @@ function getStaffNo() {
     return null;
   }
   return userInfo.staffNo;
+}
+
+/**
+ * 获取商户编号
+ */
+function getBusinessNo() {
+  let userInfo = getUserInfo();
+  if (userInfo == null || userInfo.businessNo == null || userInfo.businessNo.length <= 0) {
+    return null;
+  }
+  return userInfo.businessNo;
+}
+
+/**
+ * 是否是员工
+ */
+function isStaff() {
+  let staffNo = getStaffNo();
+  if (staffNo != null) {
+    return true;
+  }
+  return false;
+}
+
+/**
+ * 是否是商家
+ */
+function isBusiness() {
+  let businessNo = getBusinessNo();
+  if (businessNo != null) {
+    return true;
+  }
+  return false;
 }
 
 /**
@@ -158,6 +202,9 @@ function login(loginCallback) {
                       if (tempUserInfo.staff != null) {
                         userInfo.staffNo = tempUserInfo.staff.staffNo
                         userInfo.stationNo = tempUserInfo.staff.station.stationNo
+                      }
+                      if (tempUserInfo.business != null) {
+                        userInfo.businessNo = tempUserInfo.business.businessNo;
                       }
                       saveUserInfo(userInfo);
                       if (loginCallback) {
@@ -247,4 +294,8 @@ module.exports = {
   checkLogin: checkLogin,
   getStaffNo: getStaffNo,
   getStationNo: getStationNo,
+  getBusinessNo: getBusinessNo,
+  isStaff: isStaff,
+  isBusiness: isBusiness,
+  getCustomerNo: getCustomerNo,
 }

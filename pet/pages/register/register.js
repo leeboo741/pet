@@ -158,6 +158,7 @@ Page({
     })
     let tempData = null;
     let userInfo = loginUtil.getUserInfo();
+    let that = this;
     tempData = {
       "openId": app.globalData.openId,
       "customerName": app.globalData.nickName,
@@ -182,12 +183,16 @@ Page({
       success: res => {
         wx.hideLoading();
         console.log("registerAccount success => " + JSON.stringify(res));
-        this.requestSuccess(res);
+        if (res.data.code == 200) {
+          that.requestSuccess(res);
+        } else {
+          that.requestFail(res);
+        }
       }, // 请求成功回调
       fail: res => {
         wx.hideLoading();
         console.log("registerAccount fail => " + JSON.stringify(res));
-        this.requestFail(res);
+        that.requestFail(res);
       }, // 请求失败回调
       complete: res => {
         console.log("registerAccount complite => " + JSON.stringify(res));

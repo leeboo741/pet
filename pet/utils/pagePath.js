@@ -1,4 +1,4 @@
-const Path_Home = "/pages/index/index"; // 首页
+const Path_Home = "/pages/index/index2"; // 首页
 
 const Path_Login = "/pages/login/login"; // 登陆页
 const Path_Register = "/pages/register/register"; // 注册页

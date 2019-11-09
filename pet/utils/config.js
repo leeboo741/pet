@@ -4,16 +4,16 @@
  */
 /** =================================================== */
 const Service_Phone = "4007778889"; // 客服电话
-const Version_Name = "1.3.33"; // 版本名称
-const Version_Code = 43; // 版本编号
+const Version_Name = "1.3.34"; // 版本名称
+const Version_Code = 44; // 版本编号
 
 /** =================================================== */
 /** 
  *                      网络请求
  */
 /** =================================================== */
-const URL_Service = "https://pet.tyferp.com"; // 路径 
-// const URL_Service = "http://192.168.3.111:6060"; // 路径
+// const URL_Service = "https://pet.tyferp.com"; // 路径 
+const URL_Service = "http://192.168.3.111:6060"; // 路径
 
 const URL_Register = "/api/customer/"; // 注册
 const URL_Login = "/api/oAuth"; // 登陆
@@ -66,6 +66,7 @@ const URL_Premium = '/api/order/premium'; // 新增差价单
 const URL_GetStationPhone = '/station/api/get/phone'; // 获取站点电话
 const URL_UnPayPremiumCount = "/api/order/premium/count/unpaid"; // 未支付差价单数量
 const URL_CancelPremium = "/api/order/premium/cancel"; // 取消补价单
+const URL_CheckConfirm = "/api/order/check/order"; // 查询是否可以收货
 
 const URL_GetCouponList = '/aip/coupon/listByOpenId'; // 获取优惠券列表
 
@@ -186,6 +187,7 @@ module.exports = {
   URL_GetStationPhone, // 获取站点电话
   URL_UnPayPremiumCount, // 获取未支付差价单数量
   URL_CancelPremium, // 取消补价单
+  URL_CheckConfirm, // 查询是否可以收货
 
   URL_GetCouponList, // 获取优惠券列表
 

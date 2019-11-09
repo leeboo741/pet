@@ -21,7 +21,7 @@
 	},
 	"compileType": "miniprogram",
 	"libVersion": "2.8.1",
-	"appid": "wxdcc6a90283c19b7b",
+	"appid": "wxcbdaa290fc45a263",
 	"projectname": "pet",
 	"debugOptions": {
 		"hidedInDevtools": []
@@ -46,15 +46,26 @@
 			"currentL": -1,
 			"list": []
 		},
+		"gamePlugin": {
+			"current": -1,
+			"list": []
+		},
 		"miniprogram": {
 			"current": 0,
 			"list": [
 				{
 					"id": 0,
 					"name": "单人-shareopenid",
-					"pathName": "pages/index/index",
-					"query": "shareopenid=123123123",
+					"pathName": "pages/index/index2",
+					"query": "shareopenid=123123123&type=share",
 					"scene": 1007
+				},
+				{
+					"id": 1,
+					"name": "扫码签收",
+					"pathName": "pages/index/index2",
+					"query": "orderno=20191026nc001&type=scan",
+					"scene": 1011
 				}
 			]
 		}

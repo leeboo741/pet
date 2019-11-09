@@ -16,7 +16,16 @@ Page({
    * 页面的初始数据
    */
   data: {
-    bannerImagePath: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1566542059794&di=da0f9ed8f0d7b37c0367dd55f1c8f7eb&imgtype=0&src=http%3A%2F%2Fn.sinaimg.cn%2Fsinacn20115%2F10%2Fw510h300%2F20181213%2F405a-hqackac1347548.jpg',
+    bannerList: [
+      {
+        bannerImageUrl: "https://petimg.tyferp.com/weapp/banner01.jpg", // 图片地址
+        bannerTargetUrl: "", // 内容地址
+      },
+      {
+        bannerImageUrl: "https://petimg.tyferp.com/weapp/banner02.jpg",
+        bannerTargetUrl: "",
+      },
+    ], // banner数据列表
     businessList: [
       {
         icon: '../../resource/index_business_transport.png',
@@ -32,9 +41,9 @@ Page({
       },
       {
         icon: '../../resource/index_business_abroad.png',
-        name: '宠物出国',
+        name: '商家入驻',
         // target: pagePath.Path_Aboard,
-        target: pagePath.Path_Order_Index,
+        target: pagePath.Path_Apply_Register_Station,
         actionType: BUSINESS_ACTION_TYPE_NAVIGATE,
       },
       {
@@ -62,12 +71,23 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    ShareUtil.getOpenIdInShareMessage(options);
-    loginUtil.checkLogin(function alreadyLoginCallback(state){
-      if (state) {
-        loginUtil.login()
+    ShareUtil.getAppOpenData(options,
+      function getResultCallback(type, data) {
+        if (type == 'none') {
+          loginUtil.checkLogin(function alreadyLoginCallback(state) {
+            if (state) {
+              loginUtil.login()
+            }
+          })
+        } else if (type == 'share') {
+
+        } else if (type == 'scan') {
+          wx.switchTab({
+            url: pagePath.Path_Me_Index,
+          })
+        }
       }
-    })
+    )
   },
 
   /**

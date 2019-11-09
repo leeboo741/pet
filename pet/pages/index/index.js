@@ -121,12 +121,23 @@ Page({
    * 生命周期函数--监听页面加载d
    */
   onLoad: function (options) {
-    ShareUtil.getOpenIdInShareMessage(options);
-    loginUtil.checkLogin(function alreadyLoginCallback(state) {
-      if (state) {
-        loginUtil.login()
+    ShareUtil.getAppOpenData(options,
+      function getResultCallback(type, data) {
+        if (type == 'none') {
+          loginUtil.checkLogin(function alreadyLoginCallback(state) {
+            if (state) {
+              loginUtil.login()
+            }
+          })
+        } else if (type == 'share') {
+
+        } else if (type == 'scan') {
+          wx.switchTab({
+            url: pagePath.Path_Me_Index,
+          })
+        }
       }
-    })
+    )
   },
 
   /**
