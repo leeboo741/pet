@@ -19,13 +19,10 @@ Page({
   data: {
     bannerData: [
       { 
-        imgPath: 'https://petimg.tyferp.com/weapp/banner01.jpg'
+        imgPath: 'https://img.taochonghui.com/weapp/banner01.jpg'
       },
       { 
-        imgPath: 'https://petimg.tyferp.com/weapp/banner02.jpg'
-      },
-      {
-        imgPath: 'https://petimg.tyferp.com/weapp/banner03.jpg'
+        imgPath: 'https://img.taochonghui.com/weapp/banner02.jpg'
       },
     ], // banner 数据
     storePhone:null, // 商家电话

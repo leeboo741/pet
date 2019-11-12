@@ -18,11 +18,11 @@ Page({
   data: {
     bannerList: [
       {
-        bannerImageUrl: "https://petimg.tyferp.com/weapp/banner01.jpg", // 图片地址
+        bannerImageUrl: "https://img.taochonghui.com/weapp/banner01.jpg", // 图片地址
         bannerTargetUrl: "", // 内容地址
       },
       {
-        bannerImageUrl: "https://petimg.tyferp.com/weapp/banner02.jpg",
+        bannerImageUrl: "https://img.taochonghui.com/weapp/banner02.jpg",
         bannerTargetUrl: "",
       },
     ], // banner数据列表

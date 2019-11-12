@@ -1,7 +1,7 @@
 <!--pages/consigned/contract/airbox/index.wxml-->
 <view class="image-box">
   <image class="image"
-         src='https://petimg.tyferp.com/weapp/petCage.jpg'
+         src='https://img.taochonghui.com/weapp/petCage.jpg'
          mode="widthFix">
   </image>
 </view>

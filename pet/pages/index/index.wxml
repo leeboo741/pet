@@ -56,7 +56,7 @@
 <view class='big-button-area'
       bindtap="tapBigButton">
   <image class='big-button-bg'
-         src='https://petimg.tyferp.com/weapp/business_register.png'
+         src='https://img.taochonghui.com/weapp/business_register.png'
          mode='scaleToFill'>
   </image>
 </view>
