@@ -1,6 +1,6 @@
 <!--pages/consigned/contract/insured/index.wxml-->
 <view class="content-box">
   <text class="content">
-  保价说明
+  保费按照宠物的声明价值投保。比如该宠物的声明价值是1000元，保价费就是10元钱，以此类推。投保以后，运输途中发生丢失或者死亡，按照客户投保时的声明价值进行赔付。
   </text>
 </view>
