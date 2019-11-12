@@ -203,17 +203,10 @@ Page({
           })
 
         } else {
-          if (res.data.message != null) {
-            wx.showToast({
-              title: res.data.message,
-              icon: 'none'
-            })
-          } else {
-            wx.showToast({
-              title: '未能查到相应单据！',
-              icon: "none"
-            })
-          }
+          wx.showToast({
+            title: '未能查到相应单据！',
+            icon: "none"
+          })
         }
       },
       fail(res) {
@@ -225,7 +218,6 @@ Page({
       },
       complete(res) {
         console.log("查单 complete：\n" + JSON.stringify(res));
-        wx.hideLoading();
       },
     })
   },
