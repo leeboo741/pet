@@ -1,6 +1,7 @@
 const LoginUtil = require("../utils/loginUtils.js");
 const PagePath = require("../utils/pagePath.js");
 const app = getApp();
+const Util = require("../utils/util.js");
 
 /**
  * 分享 微信小程序
@@ -38,10 +39,29 @@ function getOpenIdInShareMessage(options) {
  * @param getResultCallback
  */
 function getAppOpenData(options, getResultCallback) {
+  console.log("options :\n" + JSON.stringify(options));
   let type = options.type;
   if (type == null) {
+    console.log("options type null");
     getResultCallback("none",null);
+    if (options.q != null) {
+      let tempPath = Util.recoverySpecialChar(options.q);
+      console.log("options tempPath :\n" + tempPath);
+      let tempParams = Util.getUrlParamDict(tempPath);
+      console.log("options tempParams :\n" + JSON.stringify(tempParams))
+      if (tempParams.type == 'scan') {
+        let scanOrderNo = tempParams.orderno;
+        if (scanOrderNo != null) {
+          app.ShareData.scanOrderNo = scanOrderNo;
+          console.log("ScanOrderNo:\n" + app.ShareData.scanOrderNo);
+          if (getResultCallback != null && typeof getResultCallback == 'function') {
+            getResultCallback('scan', null);
+          }
+        }
+      }
+    }
   } else {
+    console.log("options type :\n" + JSON.stringify(options.type));
     if (options.type == 'share') {
       let shareOpenId = options.shareopenid;
       if (shareOpenId != null) {
@@ -51,16 +71,7 @@ function getAppOpenData(options, getResultCallback) {
           getResultCallback('share', null);
         }
       }
-    } else if (options.type == 'scan') {
-      let scanOrderNo = options.orderno;
-      if (scanOrderNo != null) {
-        app.ShareData.scanOrderNo = scanOrderNo;
-        console.log("ScanOrderNo:\n" + app.ShareData.scanOrderNo);
-        if (getResultCallback != null && typeof getResultCallback == 'function') {
-          getResultCallback('scan', null);
-        }
-      }
-    }
+    } 
   }
 }
 

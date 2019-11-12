@@ -115,8 +115,8 @@ Page({
     command.setText(50, 480, "TSS32.BF2", 1, 1, "出发时间：" + app.globalData.printOrder.leaveDate);
     command.setText(50, 560, "TSS32.BF2", 1, 1, "宠物：" + app.globalData.printOrder.petType.petTypeName + " -- " + app.globalData.printOrder.petClassify.petClassifyName);
     command.setText(50, 1400, "TSS32.BF2", 1, 1, "订单编号：" + app.globalData.printOrder.orderNo);
-    // command.setQR(350, 645, "L", 8, "A", app.globalData.printOrder.orderNo);
-    // command.setQR(350, 1130, "L", 8, "A", "http://www.baidu.com");
+    command.setQR(350, 645, "L", 5, "A", "https://www.taochonghui.com/weapp/jump/confirm/order?type=scan&orderno=" + app.globalData.printOrder.orderNo);
+    command.setQR(350, 1130, "L", 7, "A", "https://www.taochonghui.com/weapp/jump/index");
 
 
     // command.setSize(75, 60)

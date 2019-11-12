@@ -72,6 +72,54 @@ function isPhoneAvailable(phone) {
   }
 }
 
+/**
+ * 替换特殊字符
+ */
+function replaceSpecialChar(string) {
+  string = string.replace(/\%/g, "%25");
+  string = string.replace(/\#/g, "%23");
+  string = string.replace(/\&/g, "%26");
+  string = string.replace(/\ /g, "%20");
+  string = string.replace(/\//g, "%2F");
+  string = string.replace(/\?/g, "%3F");
+  string = string.replace(/\=/g, "%3D");
+  return string;
+}
+
+/**
+ * 恢复特殊字符
+ */
+function recoverySpecialChar(string) {
+  string = string.replace(/\%25/g, "%");
+  string = string.replace(/\%23/g, "#");
+  string = string.replace(/\%26/g, "&");
+  string = string.replace(/\%20/g, " ");
+  string = string.replace(/\%2F/g, "/");
+  string = string.replace(/\%3F/g, "?");
+  string = string.replace(/\%3D/g, "=");
+  return string;
+}
+
+/**
+ * 获取地址中参数
+ */
+function getUrlParamDict(url) {
+  let paramDict = {};
+  let tempPaths = url.split("?");
+  if (!checkEmpty(tempPaths) && tempPaths.length == 2) {
+    let paramStr = tempPaths[1];
+    let params = paramStr.split("&");
+    for (let i = 0; i < params.length; i++) {
+      let tempParamStr = params[i];
+      let tempParams = tempParamStr.split("=");
+      let tempParamKey = tempParams[0];
+      let tempParamValue = tempParams[1];
+      paramDict[tempParamKey] = tempParamValue;
+    }
+  }
+  return paramDict;
+}
+
 module.exports = {
   formatTime: formatTime,
   dateLater: dateLater,
@@ -79,4 +127,7 @@ module.exports = {
   checkEmpty: checkEmpty,
   isVideo: isVideo,
   isPhoneAvailable: isPhoneAvailable,
+  replaceSpecialChar: replaceSpecialChar,
+  recoverySpecialChar: recoverySpecialChar,
+  getUrlParamDict: getUrlParamDict,
 }
