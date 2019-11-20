@@ -244,6 +244,17 @@
   </i-steps>
 </i-panel>
 
+<i-panel i-class="panel"
+         wx:if='{{showConfirmButton}}'>
+  <i-cell>
+    <view slot='header'
+          class='confirm-button'
+          bindtap="tapConfirmOrder">
+    确认签收
+    </view>
+  </i-cell>
+</i-panel>
+
 <wxs module='parse'>
   module.exports={
     showReceipt: function(orderItem, userInfo) {

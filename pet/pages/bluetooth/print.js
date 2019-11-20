@@ -94,7 +94,7 @@ Page({
     command.setCls()
 
     // command.setText(0, 0,"TSS24.BF2",1,1,"+++++++++++++");
-    command.setText(50, 280, "TSS48.BF2", 1, 1, app.globalData.printOrder.transport.startCity);
+    command.setText(50, 256, "TSS48.BF2", 1, 1, app.globalData.printOrder.transport.startCity);
     let transportTypeStr = "";
     let type = app.globalData.printOrder.transport.transportType;
     if (type == 1) {
@@ -108,15 +108,17 @@ Page({
     } else {
       transportTypeStr = "大巴";
     }
-    command.setText(250, 280, "TSS24.BF2", 1, 1, transportTypeStr);
-    command.setText(350, 280, "TSS48.BF2", 1, 1, app.globalData.printOrder.transport.endCity);
+    command.setText(250, 248, "TSS24.BF2", 1, 1, transportTypeStr);
+    command.setText(350, 256, "TSS48.BF2", 1, 1, app.globalData.printOrder.transport.endCity);
 
-    command.setText(50, 400, "TSS32.BF2", 1, 1, "订单编号：" + app.globalData.printOrder.orderNo);
-    command.setText(50, 480, "TSS32.BF2", 1, 1, "出发时间：" + app.globalData.printOrder.leaveDate);
-    command.setText(50, 560, "TSS32.BF2", 1, 1, "宠物：" + app.globalData.printOrder.petType.petTypeName + " -- " + app.globalData.printOrder.petClassify.petClassifyName);
-    command.setText(50, 1400, "TSS32.BF2", 1, 1, "订单编号：" + app.globalData.printOrder.orderNo);
-    command.setQR(350, 645, "L", 5, "A", "https://www.taochonghui.com/weapp/jump/confirm/order?type=scan&orderno=" + app.globalData.printOrder.orderNo);
-    command.setQR(350, 1130, "L", 7, "A", "https://www.taochonghui.com/weapp/jump/index");
+    command.setText(186, 360, "TSS32.BF2", 1, 1, app.globalData.printOrder.orderNo);
+    command.setText(186, 432, "TSS32.BF2", 1, 1, app.globalData.printOrder.leaveDate);
+    command.setText(122, 504, "TSS32.BF2", 1, 1, app.globalData.printOrder.petType.petTypeName + " -- " + app.globalData.printOrder.petClassify.petClassifyName);
+    command.setText(122, 570, "TSS32.BF2", 1, 1, app.globalData.printOrder.num);
+    command.setText(386, 570, "TSS32.BF2", 1, 1, app.globalData.printOrder.weight + "Kg");
+    command.setText(186, 1384, "TSS32.BF2", 1, 1,app.globalData.printOrder.orderNo);
+    command.setQR(350, 637, "L", 5, "A", "https://www.taochonghui.com/weapp/jump/confirm/order?type=scan&orderno=" + app.globalData.printOrder.orderNo);
+    command.setQR(350, 1074, "L", 7, "A", "https://www.taochonghui.com/weapp/jump/index");
 
 
     // command.setSize(75, 60)

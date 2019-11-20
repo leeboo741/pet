@@ -21,6 +21,9 @@ Page({
     orderNo: null,
     ablePremium: false, // 是否允许补价
     ableCancelPremium: true, // 是否允许取消补价
+    showConfirmButton: false, // 是否展示签收按钮
+
+    backTimeIntervial: null,
   },
 
   /**
@@ -39,6 +42,93 @@ Page({
       ableCancelPremium: options.ablecancelpremium==0? false: true
     })
     this.requestOrderDetail(this.data.orderNo)
+    let that = this;
+    this.requestCheckConfirm(this.data.orderNo, loginUtil.getCustomerNo(),
+      function getResultCallback(data) {
+        console.log("是否可以确认签收 :\n" + JSON.stringify(data));
+        if (data == 0) {
+          
+        } else {
+          that.setData({
+            showConfirmButton: true
+          })
+        }
+      }
+    )
+  },
+
+  /**
+   * 收货请求
+   */
+  requestRecieve: function (orderNo) {
+    let that = this;
+    wx.showLoading({
+      title: '请稍等...',
+    })
+    wx.request({
+      url: config.URL_Service + config.URL_ConfirmOrder,
+      header: {
+        'content-type': 'application/x-www-form-urlencoded'
+      },
+      method: "POST", // 请求方式
+      data: {
+        orderNo: orderNo,
+        openId: loginUtil.getOpenId()
+      },
+      success(res) {
+        wx.hideLoading();
+        console.log("确认收货 success: \n" + JSON.stringify(res));
+        if (res.data.code == config.RES_CODE_SUCCESS) {
+          wx.showToast({
+            title: '收货成功',
+            duration: 1500,
+          })
+          that.data.backTimeIntervial = setTimeout(
+            function back(res) {
+              wx.navigateBack({
+                
+              })
+            },
+            1600
+          )
+        } else {
+          wx.showToast({
+            title: '签收失败',
+            icon: 'none'
+          })
+        }
+      },
+      fail(res) {
+        wx.hideLoading();
+        console.log("确认收货 fail: \n" + JSON.stringify(res));
+        wx.showToast({
+          title: '系统异常',
+          icon: "none"
+        })
+      },
+      complete(res) {
+        console.log("确认收货 complete: \n" + JSON.stringify(res));
+      },
+
+    })
+  },
+
+  /**
+   * 点击签收
+   */
+  tapConfirmOrder: function() {
+    let that = this;
+    wx.showModal({
+      title: '确认签收',
+      content: '确认签收订单：' + this.data.orderNo,
+      confirmText: "确认签收",
+      cancelText: "暂不签收",
+      success(res) {
+        if (res.confirm) {
+          that.requestRecieve(that.data.orderNo);
+        }
+      }
+    })
   },
 
   /**
@@ -67,6 +157,8 @@ Page({
    */
   onUnload: function () {
     console.log("/orderdetail/orderdetail 销毁")
+    clearTimeout(this.data.backTimeIntervial);
+    this.data.backTimeIntervial = null;
   },
 
   /**
@@ -196,6 +288,37 @@ Page({
       complete(res){
         wx.hideLoading();
       }
+    })
+  },
+
+  /**
+   * 查询是否可以收货
+   */
+  requestCheckConfirm: function (orderNo, customerNo, getResultCallback) {
+    wx.request({
+      url: config.URL_Service + config.URL_CheckConfirm,
+      data: {
+        orderNo: orderNo,
+        customerNo: customerNo
+      },
+      success(res) {
+        if (res.data.code == config.RES_CODE_SUCCESS) {
+          if (getResultCallback != null && typeof getResultCallback == 'function') {
+            getResultCallback(res.data.data)
+          }
+        } else {
+          wx.showToast({
+            title: res.errMsg,
+            icon: 'none'
+          })
+        }
+      },
+      fail(res) {
+        wx.showToast({
+          title: '系统异常',
+          icon: 'none'
+        })
+      },
     })
   },
 

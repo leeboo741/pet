@@ -103,16 +103,18 @@ Page({
                   content: '您无权限签收该订单，请咨询工作人员',
                   showCancel: false
                 })
-                app.globalData.scanOrderNo = null;
+                app.ShareData.scanOrderNo = null;
               } else {
                 wx.showModal({
                   title: '确认签收',
                   content: '是否确认签收订单：' + app.ShareData.scanOrderNo,
+                  confirmText: "签收",
+                  cancelText: "暂不签收",
                   success(res) {
                     if (res.confirm) {
                       that.requestRecieve(app.ShareData.scanOrderNo, -1);
-                      app.globalData.scanOrderNo = null;
                     }
+                    app.ShareData.scanOrderNo = null;
                   }
                 })
               }
@@ -124,12 +126,15 @@ Page({
           wx.showModal({
             title: '需要登陆',
             content: '请登录后再签收该订单',
+            confirmText: "去登陆",
+            cancelText:"暂不签收",
             success(res) {
               if (res.confirm) {
                 wx.navigateTo({
                   url: pagePath.Path_Login,
                 })
               }
+              app.ShareData.scanOrderNo = null;
             }
           })
         }
@@ -262,24 +267,34 @@ Page({
     wx.scanCode({
       onlyFromCamera: true,
       success(res){
-        that.data.checkBillNo = res.result;
-        loginUtil.checkLogin(function alreadyLoginCallback(state) {
-          if (state) {
-            that.requestCheckOrderNoByOrderNo(that.data.checkBillNo);
-          } else {
-            wx.showModal({
-              title: '暂未登录',
-              content: '请先登录后使用该功能',
-              success(res) {
-                if (res.confirm) {
-                  wx.navigateTo({
-                    url: pagePath.Path_Login,
-                  })
-                }
+        let tempParams = util.getUrlParamDict(res.result);
+        if (!util.checkEmpty(tempParams) && !util.checkEmpty(tempParams.type) && tempParams.type == 'scan') {
+          that.data.checkBillNo = tempParams.orderno;
+          if (that.data.checkBillNo != null) {
+            loginUtil.checkLogin(function alreadyLoginCallback(state) {
+              if (state) {
+                that.requestCheckOrderNoByOrderNo(that.data.checkBillNo);
+              } else {
+                wx.showModal({
+                  title: '暂未登录',
+                  content: '请先登录后使用该功能',
+                  success(res) {
+                    if (res.confirm) {
+                      wx.navigateTo({
+                        url: pagePath.Path_Login,
+                      })
+                    }
+                  }
+                })
               }
             })
           }
-        })
+        } else {
+          wx.showToast({
+            title: '请扫描有效二维码',
+            icon: 'none'
+          })
+        }
       },
     })
   },
@@ -800,6 +815,7 @@ Page({
         orderNo: inputOrderNo
       },
       success(res) {
+        wx.hideLoading();
         console.log("查单 success：\n" + JSON.stringify(res));
         if (res.data.data != null && res.data.code == config.RES_CODE_SUCCESS) {
           that.hiddenPopMask();
@@ -808,7 +824,12 @@ Page({
           })
 
         } else {
-          if (res.data.message != null) {
+          if (res.data.data == null) {
+            wx.showToast({
+              title: '没有查到相应单据',
+              icon: 'none'
+            })
+          } else if (res.data.message != null) {
             wx.showToast({
               title: res.data.message,
               icon: 'none'
@@ -822,16 +843,13 @@ Page({
         }
       },
       fail(res) {
+        wx.hideLoading();
         console.log("查单 fail：\n" + JSON.stringify(res));
         wx.showToast({
           title: '系统异常',
           icon: "none"
         })
-      },
-      complete(res) {
-        console.log("查单 complete：\n" + JSON.stringify(res));
-        wx.hideLoading();
-      },
+      }
     })
   },
 
