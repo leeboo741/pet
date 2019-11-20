@@ -57,6 +57,7 @@
 
 .business-navigation-title-icon{
   width: 10rpx;
+  height: 40rpx;
   border-radius: 5rpx;
   background: #ee2c2c;
   color: #00000000;

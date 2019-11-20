@@ -375,7 +375,6 @@ Page({
       },
       complete(res) {
         console.log("注册员工 complete:\n" + JSON.stringify(res));
-        wx.hideLoading();
       }
     })
   },
