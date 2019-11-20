@@ -135,6 +135,7 @@ Page({
       },
       method: "POST", // 请求方式
       success(res) {
+        wx.hideLoading();
         console.log("提现 success : \n" + JSON.stringify(res));
         wx.showModal({
           title: '提现申请已经提交',
@@ -142,6 +143,7 @@ Page({
         })
       },
       fail(res) {
+        wx.hideLoading();
         console.log("提现 fail : \n" + JSON.stringify(res));
         wx.showToast({
           title: '系统异常',
@@ -150,7 +152,6 @@ Page({
       },
       complete(res) {
         console.log("提现 complete : \n" + JSON.stringify(res));
-        wx.hideLoading();
       },
     })
   },

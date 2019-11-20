@@ -213,7 +213,8 @@ Page({
         "orderNo": orderNo,
         "openId": loginUtil.getOpenId()
       },
-      success (res) {
+      success(res) {
+        wx.hideLoading();
         console.log("获取订单详情 success：\n" + JSON.stringify(res));
         if (res.data.data != null && res.data.code == config.RES_CODE_SUCCESS) {
           that.setData({
@@ -224,6 +225,7 @@ Page({
         }
       },
       fail(res) {
+        wx.hideLoading();
         console.log("获取订单详情 fail：\n" + JSON.stringify(res));
         wx.showToast({
           title: '系统异常',
@@ -232,7 +234,6 @@ Page({
       },
       complete(res) {
         console.log("获取订单详情 complete：\n" + JSON.stringify(res));
-        wx.hideLoading();
       },
 
     })
@@ -256,7 +257,8 @@ Page({
         remarks: remark
       },
       method: 'POST',
-      success(res){
+      success(res) {
+        wx.hideLoading();
         console.log("新增备注 success:\n" + JSON.stringify(res));
         if (res.data.code == config.RES_CODE_SUCCESS && res.data.data > 0) {
           wx.showToast({
@@ -279,6 +281,7 @@ Page({
         }
       }, 
       fail(res) {
+        wx.hideLoading();
         console.log("新增备注 fail:\n" + JSON.stringify(res));
         wx.showToast({
           title: '网络波动，新增备注失败',
@@ -286,7 +289,6 @@ Page({
         })
       },
       complete(res){
-        wx.hideLoading();
       }
     })
   },

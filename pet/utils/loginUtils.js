@@ -259,9 +259,6 @@ function login(loginCallback) {
         loginCallback(Login_Fail, "微信登陆失败");
       }
     },
-    complete(res) {
-      console.log("微信login complete => " + JSON.stringify(res));
-    },
   })
 }
 

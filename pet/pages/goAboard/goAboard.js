@@ -105,6 +105,7 @@ Page({
     wx.request({
       url: urlstr, // 服务器地址
       success: res => {
+        wx.hideLoading();
         console.log("success => " + JSON.stringify(res));
         if (res.data.code == config.RES_CODE_SUCCESS) {
           that.setData({
@@ -118,13 +119,13 @@ Page({
         }
       },
       fail(res) {
+        wx.hideLoading();
         wx.showToast({
           title: '查询宠物类型失败',
           icon: 'none',
         })
       },
       complete(res) {
-        wx.hideLoading();
       },
     })
   },
@@ -145,6 +146,7 @@ Page({
         "petTypeName": currentType
       },
       success: res => {
+        wx.hideLoading();
         console.log("success => " + JSON.stringify(res));
         if (res.data.code == config.RES_CODE_SUCCESS) {
           let tempList = [];
@@ -162,13 +164,13 @@ Page({
         }
       },
       fail(res) {
+        wx.hideLoading();
         wx.showToast({
           title: '查询宠物类型失败',
           icon: 'none',
         })
       },
       complete(res) {
-        wx.hideLoading();
       },
     })
   },

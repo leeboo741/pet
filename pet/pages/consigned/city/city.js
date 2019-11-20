@@ -38,7 +38,8 @@ Page({
     })
     wx.request({
       url: config.URL_Service + config.URL_StartCity,
-      success (res) {
+      success(res) {
+        wx.hideLoading();
         that.data.citys = res.data.data.bodys;
         that.data.cityAZ = res.data.data.headers;
         that.setData({
@@ -47,14 +48,14 @@ Page({
           cityResults: that.data.citys,
         })
       },
-      fail (res) {
+      fail(res) {
+        wx.hideLoading();
         wx.showToast({
           title: '获取城市列表失败',
           icon: 'none'
         })
       },
       complete(res) {
-        wx.hideLoading();
       }
     })
   },
@@ -72,6 +73,7 @@ Page({
         "startCity": this.data.startCity
       },
       success(res) {
+        wx.hideLoading();
         that.data.citys = res.data.data.bodys;
         that.data.cityAZ = res.data.data.headers;
         that.setData({
@@ -81,13 +83,13 @@ Page({
         })
       },
       fail(res) {
+        wx.hideLoading();
         wx.showToast({
           title: '获取城市列表失败',
           icon: 'none'
         })
       },
       complete(res) {
-        wx.hideLoading();
       }
     })
   },

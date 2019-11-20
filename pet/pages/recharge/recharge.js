@@ -128,6 +128,7 @@ Page({
         rechargeAmount: this.data.rechargeAmount
       },
       success(res) {
+        wx.hideLoading();
         console.log("充值 success => \n" + JSON.stringify(res))
         wx.requestPayment({
           timeStamp: res.data.data.timeStamp,
@@ -138,6 +139,7 @@ Page({
         })
       },
       fail(res) {
+        wx.hideLoading();
         console.log("充值 fail => \n" + JSON.stringify(res))
         wx.showToast({
           title: '网络问题，支付失败',
@@ -146,7 +148,6 @@ Page({
       },
       complete(res) {
         console.log("充值 complete => \n" + JSON.stringify(res))
-        wx.hideLoading();
       },
     })
   },

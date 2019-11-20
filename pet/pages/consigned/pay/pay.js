@@ -388,6 +388,7 @@ Page({
       data: tempOrderObj,
       success(res) {
         console.log("提交订单 success => \n" + JSON.stringify(res));
+        wx.hideLoading();
         if (res.data.code == config.RES_CODE_SUCCESS) {
           that.setData({
             orderNo: res.data.data
@@ -441,6 +442,7 @@ Page({
         }
       },
       fail(res) {
+        wx.hideLoading();
         console.log("提交订单 fail => \n" + JSON.stringify(res));
         wx.showToast({
           title: '提交订单失败，请稍后再试',
@@ -449,7 +451,6 @@ Page({
       },
       complete(res) {
         console.log("提交订单 complete => \n" + JSON.stringify(res));
-        wx.hideLoading();
       },
     })
   },
@@ -468,6 +469,7 @@ Page({
         openId: loginUtil.getOpenId(),
       },
       success(res) {
+        wx.hideLoading();
         console.log("支付 success：\n" + JSON.stringify(res));
         wx.requestPayment({
           timeStamp: res.data.data.timeStamp,
@@ -490,6 +492,7 @@ Page({
         })
       },
       fail(res) {
+        wx.hideLoading();
         console.log("支付 fail：\n" + JSON.stringify(res));
         wx.showToast({
           title: '网络原因,支付失败',
@@ -498,7 +501,6 @@ Page({
       },
       complete(res) {
         console.log("支付 complete：\n" + JSON.stringify(res));
-        wx.hideLoading();
       }
     })
   },
@@ -550,6 +552,7 @@ Page({
       url: config.URL_Service + config.URL_PredictPrice,
       data: tempData,
       success(res) {
+        wx.hideLoading();
         console.log("获取预估价格 success => \n" + JSON.stringify(res));
         if (res.data.code == config.RES_CODE_SUCCESS) {
           that.setData({
@@ -563,6 +566,7 @@ Page({
         }
       },
       fail(res) {
+        wx.hideLoading();
         console.log("获取预估价格 fail => \n" + JSON.stringify(res));
         wx.showToast({
           title: '获取预估价格失败',
@@ -570,7 +574,6 @@ Page({
         })
       },
       complete(res) {
-        wx.hideLoading();
       },
     })
   },

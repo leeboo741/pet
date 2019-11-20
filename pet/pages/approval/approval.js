@@ -158,6 +158,7 @@ Page({
         phone: loginUtil.getPhone()
       },
       success(res) {
+        wx.hideLoading();
         console.log("获取待审核商户 success: \n" + JSON.stringify(res));
         if (res.data.code == config.RES_CODE_SUCCESS) {
           that.setData({
@@ -171,15 +172,13 @@ Page({
         }
       },
       fail(res) {
+        wx.hideLoading();
         console.log("获取待审核商户 fail: \n" + JSON.stringify(res));
         wx.showToast({
           title: '获取待审商户失败',
           icon: 'none'
         })
       },
-      complete(res) {
-        wx.hideLoading();
-      }
     })
   },
 
@@ -196,7 +195,8 @@ Page({
       data: {
         phone: loginUtil.getPhone()
       },
-      success(res){
+      success(res) {
+        wx.hideLoading();
         console.log("获取待审核员工 success: \n" + JSON.stringify(res));
         if (res.data.code == config.RES_CODE_SUCCESS) {
           that.setData({
@@ -210,6 +210,7 @@ Page({
         }
       },
       fail(res) {
+        wx.hideLoading();
         console.log("获取待审核员工 fail: \n" + JSON.stringify(res));
         wx.showToast({
           title: '获取待审员工失败',
@@ -217,7 +218,6 @@ Page({
         })
       },
       complete(res){
-        wx.hideLoading();
       }
     })
   },
@@ -237,6 +237,7 @@ Page({
       data: tempStationApply,
       method: "PUT",
       success(res) {
+        wx.hideLoading();
         console.log("请求驳回商家 success: \n" + JSON.stringify(res));
         if (res.data.code == config.RES_CODE_SUCCESS && res.data.data > 0) {
           wx.showToast({
@@ -254,6 +255,7 @@ Page({
         }
       },
       fail(res) {
+        wx.hideLoading();
         console.log("请求驳回商家 fail: \n" + JSON.stringify(res));
         wx.showToast({
           title: '网络波动，驳回失败',
@@ -261,7 +263,6 @@ Page({
         })
       },
       complete(res) {
-        wx.hideLoading();
       }
     })
   },
@@ -281,6 +282,7 @@ Page({
       data: tempStationApply,
       method: "PUT",
       success(res) {
+        wx.hideLoading();
         console.log("请求审核商家 success: \n" + JSON.stringify(res));
         if (res.data.code == config.RES_CODE_SUCCESS && res.data.data > 0) {
           wx.showToast({
@@ -298,6 +300,7 @@ Page({
         }
       },
       fail(res) {
+        wx.hideLoading();
         console.log("请求审核商家 fail: \n" + JSON.stringify(res));
         wx.showToast({
           title: '网络波动，审核失败',
@@ -305,7 +308,6 @@ Page({
         })
       },
       complete(res) {
-        wx.hideLoading();
       }
     })
   },
@@ -325,6 +327,7 @@ Page({
       data: tempStaffApply,
       method: "PUT",
       success(res) {
+        wx.hideLoading();
         console.log("请求驳回员工 success: \n" + JSON.stringify(res));
         if (res.data.code == config.RES_CODE_SUCCESS && res.data.data > 0) {
           wx.showToast({
@@ -342,6 +345,7 @@ Page({
         }
       },
       fail(res) {
+        wx.hideLoading();
         console.log("请求驳回员工 fail: \n" + JSON.stringify(res));
         wx.showToast({
           title: '网络波动，驳回失败',
@@ -349,7 +353,6 @@ Page({
         })
       },
       complete(res) {
-        wx.hideLoading();
       }
     })
   },
@@ -368,7 +371,8 @@ Page({
       url: config.URL_Service + config.URL_ApprovalStaffApply,
       data: tempStaffApply,
       method: "PUT",
-      success(res){
+      success(res) {
+        wx.hideLoading();
         console.log("请求审核员工 success: \n" + JSON.stringify(res));
         if (res.data.code == config.RES_CODE_SUCCESS && res.data.data > 0) {
           wx.showToast({
@@ -386,6 +390,7 @@ Page({
         }
       },
       fail(res) {
+        wx.hideLoading();
         console.log("请求审核员工 fail: \n" + JSON.stringify(res));
         wx.showToast({
           title: '网络波动，审核失败',
@@ -393,7 +398,6 @@ Page({
         })
       },
       complete(res) {
-        wx.hideLoading();
       }
     })
   },

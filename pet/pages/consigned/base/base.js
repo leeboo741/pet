@@ -874,7 +874,8 @@ Page({
       data: {
         "startCity": cityName
       },
-      success(res){
+      success(res) {
+        wx.hideLoading();
         console.log("查询保价费率 success => \n" + JSON.stringify(res))
         if (res.data.data != null) {
           that.data.addServerInsuredPrice.rate = res.data.data.rate * 100;
@@ -888,6 +889,7 @@ Page({
         })
       },
       fail(res) {
+        wx.hideLoading();
         console.log("查询保价费率 fail => \n" + JSON.stringify(res))
         wx.showToast({
           title: '查询保价费率失败',
@@ -896,7 +898,6 @@ Page({
       },
       complete(res) {
         console.log("查询保价费率 complete => \n" + JSON.stringify(res))
-        wx.hideLoading();
       },
     })
   },
@@ -980,6 +981,7 @@ Page({
       url: config.URL_Service + config.URL_PredictPrice,
       data: tempData,
       success(res) {
+        wx.hideLoading();
         console.log("获取预估价格 success => \n" + JSON.stringify(res));
         if (res.data.code == config.RES_CODE_SUCCESS) {
           that.setData({
@@ -997,14 +999,12 @@ Page({
         }
       },
       fail(res) {
+        wx.hideLoading();
         console.log("获取预估价格 fail => \n" + JSON.stringify(res));
         wx.showToast({
           title: '获取预估价格失败',
           icon: 'none'
         })
-      },
-      complete(res) {
-        wx.hideLoading();
       },
     })
   },
@@ -1029,6 +1029,7 @@ Page({
         "endCity" : this.data.endCity,
       },
       success(res) {
+        wx.hideLoading();
         console.log("获取可用运输方式 success => \n" + JSON.stringify(res));
         let ableList = res.data.data;
         for (let i = 0; i < that.data.transportTypes.length; i++) {
@@ -1043,6 +1044,7 @@ Page({
         })
       },
       fail(res) {
+        wx.hideLoading();
         console.log("获取可用运输方式 fail => \n" + JSON.stringify(res));
         wx.showToast({
           title: '获取可用运输方式失败',
@@ -1050,7 +1052,6 @@ Page({
         })
       },
       complete(res) {
-        wx.hideLoading();
       },
     })
   },
@@ -1068,6 +1069,7 @@ Page({
     wx.request({
       url: urlstr, // 服务器地址
       success: res => {
+        wx.hideLoading();
         console.log("success => " + JSON.stringify(res));
         if (res.data.code == config.RES_CODE_SUCCESS) {
           if (util.checkEmpty(res.data.data)) {
@@ -1075,7 +1077,6 @@ Page({
               title: '没有查到宠物类型数据',
               icon: 'none'
             })
-            wx.hideLoading();
             return;
           }
           that.setData({
@@ -1087,17 +1088,14 @@ Page({
             petClassify: null
           })
           // that.requestPetClassify(that.data.petType);
-          wx.hideLoading();
-        } else {
-          wx.hideLoading();
         }
       },
       fail(res) {
+        wx.hideLoading();
         wx.showToast({
           title: '查询宠物类型失败',
           icon: 'none',
         })
-        wx.hideLoading();
       },
       complete(res) {
       },

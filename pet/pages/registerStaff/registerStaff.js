@@ -303,21 +303,20 @@ Page({
         city: city
       },
       success(res) {
+        wx.hideLoading();
         console.log("获取站点列表 success: \n" + JSON.stringify(res));
         that.setData({
           stationList: res.data.data
         })
       },
       fail(res) {
+        wx.hideLoading();
         console.log("获取站点列表 fail: \n" + JSON.stringify(res));
         wx.showToast({
           title: '系统异常',
           icon: "none"
         })
       },
-      complete(res) {
-        wx.hideLoading();
-      }
     })
   },
 

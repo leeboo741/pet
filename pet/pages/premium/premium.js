@@ -131,7 +131,8 @@ Page({
       url: Config.URL_Service + Config.URL_Premium,
       data: requestData,
       method: "POST",
-      success(res){
+      success(res) {
+        wx.hideLoading();
         console.log("新增补价单 success:\n" + JSON.stringify(res));
         if (res.data.code == config.RES_CODE_SUCCESS && res.data.data > 0) {
           wx.showToast({
@@ -150,6 +151,7 @@ Page({
         }
       },
       fail(res) {
+        wx.hideLoading();
         console.log("新增补价单 fail:\n" + JSON.stringify(res));
         wx.showToast({
           title: '补价失败',
@@ -157,7 +159,6 @@ Page({
         })
       },
       complete(res){
-        wx.hideLoading();
       }
     })
   }

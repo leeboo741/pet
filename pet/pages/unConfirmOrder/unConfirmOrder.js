@@ -183,6 +183,7 @@ Page({
         "orderType": order.orderStates[0].orderType
       },
       success(res) {
+        wx.hideLoading();
         console.log("upload success =>" + JSON.stringify(res));
         let tempObj = JSON.parse(res.data);
         if (tempObj.code != config.RES_CODE_SUCCESS) {
@@ -219,6 +220,7 @@ Page({
         }
       },
       fail(res) {
+        wx.hideLoading();
         console.log("上传失败 index: " + uploadIndex);
         wx.showToast({
           title: "一个文件上传失败",
@@ -229,7 +231,6 @@ Page({
       complete(res) {
         console.log("上传完成 index: " + uploadIndex);
         uploadIndex++;
-        wx.hideLoading();
         if (!that.data.finishPage) {
           if (uploadIndex < fileList.length) {
             that.requestUploadFile(fileList, uploadIndex, order)
@@ -374,12 +375,14 @@ Page({
         queryParamStr: JSON.stringify(tempData)
       },
       success(res) {
+        wx.hideLoading();
         console.log("请求工作单 success：\n" + JSON.stringify(res));
         that.setData({
           orderList: res.data.data
         })
       },
       fail(res) {
+        wx.hideLoading();
         console.log("请求工作单 fail：\n" + JSON.stringify(res));
         wx.showToast({
           title: '系统异常',
@@ -388,7 +391,6 @@ Page({
       },
       complete(res) {
         console.log("请求工作单 complete：\n" + JSON.stringify(res));
-        wx.hideLoading();
         wx.stopPullDownRefresh();
       },
     })
@@ -524,6 +526,7 @@ Page({
         orderType: order.orderStates[0].orderType,
       },
       success(res) {
+        wx.hideLoading();
         console.log("确定到达 success: \n" + JSON.stringify(res));
         if (res.data.code != config.RES_CODE_SUCCESS) {
 
@@ -555,6 +558,7 @@ Page({
         }
       },
       fail(res) {
+        wx.hideLoading();
         console.log("确定到达 fail: \n" + JSON.stringify(res));
         let tempMsg = '网络异常，到达失败'
         if (order.orderStates[0].orderType == '待出港') {
@@ -567,7 +571,6 @@ Page({
       },
       complete(res) {
         console.log("确定到达 complete: \n" + JSON.stringify(res));
-        wx.hideLoading();
       }
     })
   },
@@ -608,6 +611,7 @@ Page({
         openId: loginUtil.getOpenId()
       },
       success(res) {
+        wx.hideLoading();
         console.log("确认收货 success: \n" + JSON.stringify(res));
         if (res.data.code == config.RES_CODE_SUCCESS) {
           wx.showToast({
@@ -626,6 +630,7 @@ Page({
         }
       },
       fail(res) {
+        wx.hideLoading();
         console.log("确认收货 fail: \n" + JSON.stringify(res));
         wx.showToast({
           title: '失败,网络波动',
@@ -634,7 +639,6 @@ Page({
       },
       complete(res) {
         console.log("确认收货 complete: \n" + JSON.stringify(res));
-        wx.hideLoading();
       },
     })
   },
@@ -968,6 +972,7 @@ Page({
       },
       method: 'POST',
       success(res) {
+        wx.hideLoading();
         console.log("新增备注 success:\n" + JSON.stringify(res));
         if (res.data.code == config.RES_CODE_SUCCESS && res.data.data > 0) {
           wx.showToast({
@@ -995,6 +1000,7 @@ Page({
         }
       },
       fail(res) {
+        wx.hideLoading();
         console.log("新增备注 fail:\n" + JSON.stringify(res));
         wx.showToast({
           title: '网络波动，新增备注失败',
@@ -1002,7 +1008,6 @@ Page({
         })
       },
       complete(res) {
-        wx.hideLoading();
       }
     })
   },
@@ -1094,7 +1099,8 @@ Page({
         address: orderItem.deliverAddress,
       },
       method: 'POST',
-      success(res){
+      success(res) {
+        wx.hideLoading();
         console.log("修改待签收状态 success: \n" + JSON.stringify(res));
         if (res.data.code == config.RES_CODE_SUCCESS && res.data.data > 0) {
           orderItem.orderStates[0].orderType = "派送中";
@@ -1113,6 +1119,7 @@ Page({
         }
       },
       fail(res) {
+        wx.hideLoading();
         console.log("修改待签收状态 fail: \n" + JSON.stringify(res));
 
         wx.showToast({
@@ -1121,7 +1128,6 @@ Page({
         })
       },
       complete(res){
-        wx.hideLoading();
       }
     })
   },

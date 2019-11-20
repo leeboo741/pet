@@ -698,6 +698,7 @@ Page({
         openId: loginUtil.getOpenId()
       },
       success(res) {
+        wx.hideLoading();
         console.log ("确认收货 success: \n" + JSON.stringify(res));
         if (res.data.code == config.RES_CODE_SUCCESS) {
           wx.showToast({
@@ -712,6 +713,7 @@ Page({
         }
       },
       fail(res) {
+        wx.hideLoading();
         console.log("确认收货 fail: \n" + JSON.stringify(res));
         wx.showToast({
           title: '系统异常',
@@ -720,7 +722,6 @@ Page({
       },
       complete(res) {
         console.log("确认收货 complete: \n" + JSON.stringify(res));
-        wx.hideLoading();
       },
 
     })
@@ -771,6 +772,7 @@ Page({
         openId: loginUtil.getOpenId()
       },
       success(res) {
+        wx.hideLoading();
         console.log("支付 success：\n" + JSON.stringify(res));
         wx.requestPayment({
           timeStamp: res.data.data.timeStamp,
@@ -787,6 +789,7 @@ Page({
         })
       },
       fail(res) {
+        wx.hideLoading();
         console.log("支付 fail：\n" + JSON.stringify(res));
         wx.showToast({
           title: '网络原因,支付失败',
@@ -795,7 +798,6 @@ Page({
       },
       complete(res) {
         console.log("支付 complete：\n" + JSON.stringify(res));
-        wx.hideLoading();
       }
     })
   },
@@ -874,6 +876,7 @@ Page({
         'content-type': "application/x-www-form-urlencoded"
       },
       success(res) {
+        wx.hideLoading();
         console.log("取消订单 success：\n" + JSON.stringify(res));
         if (res.data.data != null && res.data.code == config.RES_CODE_SUCCESS) {
           if (tempType == 0) {
@@ -915,6 +918,7 @@ Page({
         }
       },
       fail(res) {
+        wx.hideLoading();
         console.log("取消订单 fail：\n" + JSON.stringify(res));
         wx.showToast({
           title: '取消订单失败',
@@ -923,7 +927,6 @@ Page({
       },
       complete(res) {
         console.log("取消订单 complete：\n" + JSON.stringify(res));
-        wx.hideLoading();
       },
     })
   },
@@ -943,7 +946,8 @@ Page({
         "orderStatus": this.getSendBillType(tempType),
         "openId": loginUtil.getOpenId()
       },
-      success(res){
+      success(res) {
+        wx.hideLoading();
         console.log("请求单据列表 success => \n" + JSON.stringify(res))
         if (tempType == 0) {
           that.setData({
@@ -964,6 +968,7 @@ Page({
         }
       },
       fail(res) {
+        wx.hideLoading();
         console.log("请求单据列表 fail => \n" + JSON.stringify(res))
         wx.showToast({
           title: '系统异常',
@@ -972,7 +977,6 @@ Page({
       },
       complete(res) {
         console.log("请求单据列表 complete => \n" + JSON.stringify(res))
-        wx.hideLoading();
       },
     })
   },

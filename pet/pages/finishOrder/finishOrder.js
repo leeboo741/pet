@@ -218,6 +218,7 @@ Page({
         queryParamStr: JSON.stringify(tempData)
       },
       success(res) {
+        wx.hideLoading();
         console.log("请求所有单据 success：\n" + JSON.stringify(res));
         if (res.data.code != config.RES_CODE_SUCCESS) {
           wx.showToast({
@@ -245,6 +246,7 @@ Page({
         })
       },
       fail(res) {
+        wx.hideLoading();
         console.log("请求所有单据 fail：\n" + JSON.stringify(res)); 
         wx.showToast({
           title: '网络波动,稍后再试',
@@ -253,7 +255,6 @@ Page({
       },
       complete(res) {
         console.log("请求所有单据 complete：\n" + JSON.stringify(res));
-        wx.hideLoading();
         wx.stopPullDownRefresh();
       },
     })
@@ -532,6 +533,7 @@ Page({
       },
       method: 'POST',
       success(res) {
+        wx.hideLoading();
         console.log("新增备注 success:\n" + JSON.stringify(res));
         if (res.data.code == config.RES_CODE_SUCCESS && res.data.data > 0) {
           wx.showToast({
@@ -553,6 +555,7 @@ Page({
         }
       },
       fail(res) {
+        wx.hideLoading();
         console.log("新增备注 fail:\n" + JSON.stringify(res));
         wx.showToast({
           title: '网络波动，新增备注失败',
@@ -560,7 +563,6 @@ Page({
         })
       },
       complete(res) {
-        wx.hideLoading();
       }
     })
   },

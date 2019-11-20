@@ -114,12 +114,12 @@ Page({
         }
       },
       fail(res) {
+        wx.hideLoading();
         console.log("获取订单详情 fail：\n" + JSON.stringify(res));
         wx.showToast({
           title: '系统异常',
           icon: "none"
         })
-        wx.hideLoading();
       },
       complete(res) {
         console.log("获取订单详情 complete：\n" + JSON.stringify(res));
@@ -145,7 +145,8 @@ Page({
       data: {
         stationNo: stationNo
       },
-      success(res){
+      success(res) {
+        wx.hideLoading();
         console.log("获取站点电话 success：\n" + JSON.stringify(res));
         if (res.data.code == config.RES_CODE_SUCCESS) {
           that.setData({
@@ -154,6 +155,7 @@ Page({
         }
       },
       fail(res) {
+        wx.hideLoading();
         console.log("获取站点电话 fail\n" + JSON.stringify(res));
         wx.showToast({
           title: '系统异常',
@@ -161,7 +163,6 @@ Page({
         })
       },
       complete(res) {
-        wx.hideLoading();
       }
     })
   },
@@ -203,6 +204,7 @@ Page({
       data: tempData,
       method: "PUT",
       success(res) {
+        wx.hideLoading();
         console.log("修改订单联系人 success: \n" + JSON.stringify(res));
         if (res.data.code == config.RES_CODE_SUCCESS && res.data.data > 0) {
           wx.showToast({
@@ -222,6 +224,7 @@ Page({
         }
       },
       fail(res) {
+        wx.hideLoading();
         console.log("修改订单联系人 fail: \n" + JSON.stringify(res)); 
         wx.showToast({
           title: '更新失败！',
@@ -229,7 +232,6 @@ Page({
         })
       },
       complete(res) {
-        wx.hideLoading();
       }
     })
   },

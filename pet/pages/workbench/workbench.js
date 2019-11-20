@@ -184,6 +184,7 @@ Page({
         "orderType": order.orderStates[0].orderType
       },
       success(res) {
+        wx.hideLoading();
         console.log("upload success =>" + JSON.stringify(res));
         let tempObj = JSON.parse(res.data);
         if (tempObj.code != config.RES_CODE_SUCCESS) {
@@ -220,6 +221,7 @@ Page({
         }
       },
       fail(res) {
+        wx.hideLoading();
         console.log("上传失败 index: " + uploadIndex);
         wx.showToast({
           title: "一个文件上传失败",
@@ -230,7 +232,6 @@ Page({
       complete(res) {
         console.log("上传完成 index: " + uploadIndex);
         uploadIndex++;
-        wx.hideLoading();
         if (!that.data.finishPage) {
           if (uploadIndex < fileList.length) {
             that.requestUploadFile(fileList, uploadIndex, order)
@@ -577,6 +578,7 @@ Page({
         orderType: order.orderStates[0].orderType,
       },
       success(res) {
+        wx.hideLoading();
         console.log("确定入港 success: \n" + JSON.stringify(res));
         if (res.data.code != config.RES_CODE_SUCCESS) {
 
@@ -618,6 +620,7 @@ Page({
         }
       },
       fail(res) {
+        wx.hideLoading();
         console.log("确定入港 fail: \n" + JSON.stringify(res));
         let tempMsg = '网络异常，入港失败'
         if (order.orderStates[0].orderType == '待出港') {
@@ -630,7 +633,6 @@ Page({
       },
       complete(res) {
         console.log("确定入港 complete: \n" + JSON.stringify(res));
-        wx.hideLoading();
       }
     })
   },
@@ -999,6 +1001,7 @@ Page({
       },
       method: 'POST',
       success(res) {
+        wx.hideLoading();
         console.log("新增备注 success:\n" + JSON.stringify(res));
         if (res.data.code == config.RES_CODE_SUCCESS && res.data.data > 0) {
           wx.showToast({
@@ -1025,6 +1028,7 @@ Page({
         }
       },
       fail(res) {
+        wx.hideLoading();
         console.log("新增备注 fail:\n" + JSON.stringify(res));
         wx.showToast({
           title: '网络波动，新增备注失败',
@@ -1032,7 +1036,6 @@ Page({
         })
       },
       complete(res) {
-        wx.hideLoading();
       }
     })
   },
