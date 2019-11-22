@@ -69,7 +69,7 @@ Page({
   },
 
   /**
-   * 点击商家入驻
+   * 点击宠物店
    */
   tapRegisterStation: function () {
     wx.navigateTo({

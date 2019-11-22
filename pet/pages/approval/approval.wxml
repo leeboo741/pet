@@ -21,7 +21,7 @@
           wx:for-item='applyItem'
           wx:for-index='applyIndex'
           wx:key='{{applyIndex}}'>
-      <i-card title="商家入驻申请" 
+      <i-card title="宠物店申请" 
               extra="{{applyItem.registerTime}}">
         <view slot="content">
           <view class="station-name">

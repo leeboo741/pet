@@ -41,7 +41,7 @@ Page({
       },
       {
         icon: '../../resource/index_business_abroad.png',
-        name: '商家入驻',
+        name: '宠物店',
         // target: pagePath.Path_Aboard,
         target: pagePath.Path_Apply_Register_Station,
         actionType: BUSINESS_ACTION_TYPE_NAVIGATE,
