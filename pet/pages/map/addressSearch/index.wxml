@@ -1,0 +1,17 @@
+<!--pages/map/addressSearch/index.wxml-->
+<view class="address-box">
+  <view class="city-box">
+    <view class="city-title"></view>
+  </view>
+  <picker range="{{districtList}}"
+          bindchange="selectDistrict"
+          class="district-box">
+    <view>
+
+    </view>
+  </picker>
+</view>
+<view class="address-box">
+  <input class="address-input"></input>
+  <view class="search-button">搜索</view>
+</view>

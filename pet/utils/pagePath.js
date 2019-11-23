@@ -2,6 +2,8 @@ const Path_Home = "/pages/index/index2"; // 首页
 
 const Path_Login = "/pages/login/login"; // 登陆页
 const Path_Register = "/pages/register/register"; // 注册页
+const Path_Map = "/pages/map/map"; // 地图页
+const Path_Map_AddressSearch = "/pages/map/addressSearch/index"; // 地图地址搜索
 
 const Path_Order_Index = "/pages/consigned/base/base"; // 下单--首页
 const Path_Order_City = "/pages/consigned/city/city"; // 下单--城市选择
@@ -49,6 +51,8 @@ module.exports = {
 
   Path_Login: Path_Login, // 登陆页
   Path_Register: Path_Register, // 注册页
+  Path_Map: Path_Map, // 地图页
+  Path_Map_AddressSearch: Path_Map_AddressSearch, // 地图地址搜索
 
   Path_Order_Index: Path_Order_Index, // 下单--首页
   Path_Order_City: Path_Order_City, // 下单--城市选择

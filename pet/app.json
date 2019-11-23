@@ -36,7 +36,9 @@
     "pages/consigned/contract/receive/index",
     "pages/consigned/contract/send/index",
     "pages/consigned/contract/guarantee/index",
-    "pages/consigned/contract/insured/index"
+    "pages/consigned/contract/insured/index",
+    "pages/map/map",
+    "pages/map/addressSearch/index"
   ],
   "window": {
     "backgroundTextStyle": "light",

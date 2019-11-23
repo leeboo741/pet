@@ -179,6 +179,11 @@ page {
   line-height: 80rpx;
 }
 
+.input-focus{
+  border: 1rpx solid #ee2c2c;
+  border-radius: 8rpx;
+}
+
 .petNum {
   font-size: 32rpx;
   width: 200rpx;

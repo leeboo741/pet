@@ -53,12 +53,13 @@
           <view class="input-under goDate">{{date}} {{week}}</view>
         </picker>
         <input name='petNum'
-               class='input-under input-right petNum'
+               class='input-under input-right petNum {{countInputFocus?"input-focus":""}}'
                value='{{petCount==0?null:petCount}}'
                placeholder='数量'
                placeholder-class='input-normal-placeholder input-right'
                bindinput='countInput'
                bindblur='countOutFocus'
+               bindfocus='countFocus'
                type="number">
         </input>
         <icon class="iconfont iconmore"></icon>
@@ -74,20 +75,23 @@
           {{(petType==null||petType.length<=0)?"宠物类型":petType}}      
           </view>
         </picker>
-        <input class='input-under petKg input-right'
+        <input class='input-under petKg input-right {{classifyInputFocus?"input-focus":""}}'
                style="flex-grow: 1;"
                placeholder-class='input-normal-placeholder' 
                placeholder='品种'  
                value='{{petClassify==null||petClassify.length<=0?null:petClassify}}' 
-               bindinput='petClassifyInput'>
+               bindinput='petClassifyInput'
+               bindfocus='petClassifyFocus'
+               bindblur='petClassifyOutFocus'>
         </input>
         <input name='petKg'
                type='digit'
-               class='input-under petKg input-right'
+               class='input-under petKg input-right {{weightInpuFocus?"input-focus":""}}'
                placeholder-class='input-normal-placeholder' 
                placeholder='重量'  
                value='{{petWeight==0?null:petWeight}}' 
                bindinput='weightInput'
+               bindfocus="weightFocus"
                bindblur='weightOutFocus'>
         </input>
         <input class='input-under kg'

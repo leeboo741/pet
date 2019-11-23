@@ -1,0 +1,22 @@
+<!--pages/map/map.wxml-->
+<map class='map-content'
+     id='MyMap'
+     latitude='{{mapCenterLocation.latitude}}'
+     longitude='{{mapCenterLocation.longitude}}' 
+     scale="{{mapScale}}" 
+     show-location='{{true}}'
+     markers='{{mapMarkers}}'
+     bindtap='tapMap'
+     bindmarkertap='tapMarker'
+     bindcallouttap='tapCallout'
+     bindregionchange='changeRegion'>
+  <cover-view class="address-box"
+              bindtap="tapAddress">
+    <cover-view class="address-content">
+    {{address}}
+    </cover-view>
+    <cover-image class="address-icon"
+                 src="../../resource/index_business_station.png">
+    </cover-image>
+  </cover-view>
+</map>

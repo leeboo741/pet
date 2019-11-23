@@ -120,6 +120,17 @@ function getUrlParamDict(url) {
   return paramDict;
 }
 
+/**
+ * 检查是否是方法
+ * @param functionName
+ */
+function checkIsFunction(functionName) {
+  if (functionName != null && typeof functionName == "function") {
+    return true;
+  }
+  return false;
+}
+
 module.exports = {
   formatTime: formatTime,
   dateLater: dateLater,
@@ -130,4 +141,5 @@ module.exports = {
   replaceSpecialChar: replaceSpecialChar,
   recoverySpecialChar: recoverySpecialChar,
   getUrlParamDict: getUrlParamDict,
+  checkIsFunction: checkIsFunction,
 }

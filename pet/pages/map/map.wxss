@@ -1,0 +1,25 @@
+/* pages/map/map.wxss */
+.map-content{
+  width: 100vw;
+  height: 100vh;
+}
+
+.address-box {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  background: white;
+}
+
+.address-content{
+  margin: 20rpx;
+  flex-grow: 1;
+  background: white;
+}
+
+.address-icon{
+  margin: 20rpx;
+  width: 40rpx;
+  height: 40rpx;
+  background: white;
+}
