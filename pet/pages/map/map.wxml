@@ -11,12 +11,16 @@
      bindcallouttap='tapCallout'
      bindregionchange='changeRegion'>
   <cover-view class="address-box"
-              bindtap="tapAddress">
+              catchtap="tapAddress">
     <cover-view class="address-content">
     {{address}}
     </cover-view>
     <cover-image class="address-icon"
                  src="../../resource/index_business_station.png">
     </cover-image>
+  </cover-view>
+  <cover-view class="confirm-button"
+              catchtap='confirmSelect'>
+  确认
   </cover-view>
 </map>

@@ -13,6 +13,9 @@ const pagePath = require("../../../utils/pagePath.js");
 const ShareUtil = require("../../../utils/shareUtils.js");
 const AddressUtil = require("../../../utils/addressUtil.js");
 
+var QQMapWX = require('../../../libs/qqmap-wx-jssdk.min.js');
+var qqmapsdk;
+
 const CheckAbleStation_Type_Receipt = 0;
 const CheckAbleStation_Type_Send = 1;
 
@@ -105,6 +108,8 @@ Page({
       address: null, // 地址
       haveAbleStation: false, // 是否有可用站点
       contract: "《接宠说明》",
+      latitude: null,
+      longitude: null,
     },
     addServerSendPet: {
       name: "送宠到家",
@@ -113,7 +118,9 @@ Page({
       sendDistrict: null, // 送宠到家区县
       address: null, // 地址
       haveAbleStation: false, // 是否有可用站点
-      contract: "《送宠说明》"
+      contract: "《送宠说明》",
+      latitude: null,
+      longitude: null,
     },
     addServerInsuredPrice: {
       name: "保价",
@@ -146,6 +153,10 @@ Page({
   * 生命周期函数--监听页面加载
   */
   onLoad: function () {
+
+    qqmapsdk = new QQMapWX({
+      key: config.Key_QQ_Map
+    });
     // 初始化 发货日期 数据
     let tempDateObj = util.dateLater(new Date(),0);
     let endDateObj = util.dateLater(new Date(), 365);
@@ -170,7 +181,7 @@ Page({
    */
   onShow: function () {
     // 接受 城市选择页面 返回数据
-    if (app.globalData.trainBeginCity != null) {
+    if (app.globalData.trainBeginCity != null && app.globalData.trainBeginCity != this.data.beginCity) {
       // 重置运输方式
       for (let i = 0; i < this.data.transportTypes.length; i++){
         this.data.transportTypes[i].disable = true;
@@ -179,6 +190,8 @@ Page({
       this.data.addServerReceivePet.receiveDistrictList = AddressUtil.getDistrictByCity(app.globalData.trainBeginCity);
       this.data.addServerReceivePet.receiveDistrict = this.data.addServerReceivePet.receiveDistrictList[0];
       // 重置 上门接宠
+      this.data.addServerReceivePet.latitude = null;
+      this.data.addServerReceivePet.longitude = null;
       this.data.addServerReceivePet.address = null;
       this.data.addServerReceivePet.selected = false;
       this.data.addServerReceivePet.haveAbleStation = true;
@@ -186,6 +199,8 @@ Page({
       this.data.addServerSendPet.sendDistrictList = null;
       this.data.addServerSendPet.sendDistrict = null;
       // 重置 送宠到家 地址 并且关闭 送宠到家
+      this.data.addServerSendPet.latitude = null;
+      this.data.addServerSendPet.longitude = null;
       this.data.addServerSendPet.address = null;
       this.data.addServerSendPet.selected = false;
       this.data.addServerSendPet.haveAbleStation = false;
@@ -205,12 +220,54 @@ Page({
       this.requestInsurePriceRate(app.globalData.trainBeginCity);
       // this.checkAbleStation(app.globalData.trainBeginCity, CheckAbleStation_Type_Receipt);
       app.globalData.trainBeginCity = null;
+    } else if (this.data.beginCity == null) {
+      let that = this;
+      this.requestLocation(
+        function getCurrentLocationCallback(location) {
+          that.reGeocoderLocation(location,
+            function regeoCallback(result) {
+              let beginCity = result.address_component.city;
+              let district = result.address_component.district;
+              let detailAddress = result.formatted_addresses.recommend;
+              that.requestStartCityData(
+                function getStartCityListCallback(citys) {
+                  for (let i = 0; i < citys.length; i++) {
+                    let tempCity = citys[i].cityName;
+                    if (beginCity == tempCity) {
+                      that.data.addServerReceivePet.receiveDistrictList = AddressUtil.getDistrictByCity(beginCity);
+                      that.data.addServerReceivePet.receiveDistrict = district;
+                      that.data.addServerReceivePet.address = detailAddress;
+                      that.data.addServerReceivePet.latitude = location.latitude;
+                      that.data.addServerReceivePet.longitude = location.longitude;
+                      that.data.addServerReceivePet.haveAbleStation = true;
+                      that.setData({
+                        beginCity: beginCity,
+                        addServerReceivePet: that.data.addServerReceivePet
+                      })
+                      // 查询店铺电话
+                      that.requestStroePhoneByCityName(beginCity);
+                      // 查询保价费率
+                      that.requestInsurePriceRate(beginCity);
+                      break;
+                    }
+                  }
+                }
+              )
+             
+            }
+          )
+        }
+      )
     }
-    if (app.globalData.trainEndCity != null) {
+
+
+    if (app.globalData.trainEndCity != null && app.globalData.trainEndCity != this.data.endCity) {
       // 重置 送宠到家 市区选择器
       this.data.addServerSendPet.sendDistrictList = AddressUtil.getDistrictByCity(app.globalData.trainEndCity);
       this.data.addServerSendPet.sendDistrict = this.data.addServerSendPet.sendDistrictList[0];
       // 重置 送宠到家
+      this.data.addServerSendPet.longitude = null;
+      this.data.addServerSendPet.latitude = null;
       this.data.addServerSendPet.address = null;
       this.data.addServerSendPet.selected = false;
       this.data.addServerSendPet.haveAbleStation = true;
@@ -226,6 +283,102 @@ Page({
       // this.checkAbleStation(app.globalData.trainEndCity, CheckAbleStation_Type_Send);
       app.globalData.trainEndCity = null;
     }
+
+    if (app.globalData.receiveLocation != null) {
+      this.data.addServerReceivePet.receiveDistrict = app.globalData.receiveLocation.district;
+      this.data.addServerReceivePet.latitude = app.globalData.receiveLocation.latitude;
+      this.data.addServerReceivePet.longitude = app.globalData.receiveLocation.longitude;
+      this.data.addServerReceivePet.address = app.globalData.receiveLocation.detailAddress;
+      this.setData({
+        addServerReceivePet: this.data.addServerReceivePet
+      })
+      app.globalData.receiveLocation = null;
+      this.predictPrice();
+    }
+
+    if (app.globalData.sendLocation != null) {
+      this.data.addServerSendPet.sendDistrict = app.globalData.sendLocation.district;
+      this.data.addServerSendPet.latitude = app.globalData.sendLocation.latitude;
+      this.data.addServerSendPet.longitude = app.globalData.sendLocation.longitude;
+      this.data.addServerSendPet.address = app.globalData.sendLocation.detailAddress;
+      this.setData({
+        addServerSendPet: this.data.addServerSendPet
+      })
+      app.globalData.sendLocation = null;
+      this.predictPrice();
+    }
+  },
+
+  /**
+   * 请求始发城市数据
+   * @param getStartCityDataCallback
+   */
+  requestStartCityData: function (getStartCityDataCallback) {
+    let that = this;
+    wx.request({
+      url: config.URL_Service + config.URL_StartCity,
+      success(res) {
+        if (util.checkIsFunction(getStartCityDataCallback)) {
+          getStartCityDataCallback(res.data.data.bodys);
+        }
+      },
+      fail(res) {
+        wx.showToast({
+          title: '获取始发城市列表失败',
+          icon: 'none'
+        })
+      },
+    })
+  },
+
+  /**
+   * 逆地址解析
+   * @param location
+   * @param getReGeocoderCallback
+   */
+  reGeocoderLocation: function (location, getReGeocoderCallback) {
+    qqmapsdk.reverseGeocoder({
+      location: location,
+      success(res) {
+        console.log("regeocoder: \n" + JSON.stringify(res));
+        if (util.checkIsFunction(getReGeocoderCallback)) {
+          getReGeocoderCallback(res.result);
+        }
+      },
+      fail(res) {
+        console.error(res);
+      },
+    })
+  },
+
+  /**
+   * 请求当前位置
+   * @param getCurrentLocationCallback
+   */
+  requestLocation: function (getCurrentLocationCallback) {
+    let that = this;
+    wx.getLocation({
+      type: "gcj02",
+      success: function (res) {
+        console.log("------------ 定位成功 ------------");
+        console.log(res);
+        // 将经纬度交给 globalData 保管
+        const latitude = res.latitude;
+        const longitude = res.longitude;
+        if (util.checkIsFunction(getCurrentLocationCallback)) {
+          getCurrentLocationCallback({
+            latitude: latitude,
+            longitude: longitude
+          })
+        }
+      },
+      fail: function (res) {
+        wx.showToast({
+          title: '定位失败',
+          icon: 'none'
+        })
+      },
+    })
   },
 
   /**
@@ -373,7 +526,6 @@ Page({
     this.data.addServerReceivePet.selected = !this.data.addServerReceivePet.selected;
     if (!this.data.addServerReceivePet.selected) { 
       // 取消选中 置空 接宠地址 并且重新请求 价格数据
-      this.data.addServerReceivePet.address = null;
       this.predictPrice();
     }
     this.setData({
@@ -395,7 +547,6 @@ Page({
     this.data.addServerSendPet.selected = !this.data.addServerSendPet.selected;
     if (!this.data.addServerSendPet.selected) {
       // 取消选中 置空 送宠地址 并且重新请求 价格数据
-      this.data.addServerSendPet.address = null;
       this.predictPrice();
     }
     this.setData({
@@ -607,40 +758,21 @@ Page({
   },
 
   /**
-   * 接宠地址输入
+   * 选择接宠具体位置
    */
-  inputReceivePetAddress:function (e) {
-    this.data.addServerReceivePet.address = e.detail.value;
-    this.setData({
-      addServerReceivePet: this.data.addServerReceivePet
-    })
+  selectReceiveDetailAddress: function () {
     wx.navigateTo({
-      url: pagePath.Path_Map + "?city=" + this.data.beginCity + "&district=" + this.data.addServerReceivePet.receiveDistrict,
+      url: pagePath.Path_Map + "?city=" + this.data.beginCity + "&district=" + this.data.addServerReceivePet.receiveDistrict + "&address=" + this.data.addServerReceivePet.address + "&type=receive",
     })
   },
 
   /**
-   * 接宠地址失去焦点
+   * 选择送宠具体位置
    */
-  receivePetAddressOutFocus: function () {
-    this.predictPrice();
-  },
-
-  /**
-   * 送宠地址输入
-   */
-  inputSendPetAddress: function (e) {
-    this.data.addServerSendPet.address = e.detail.value;
-    this.setData({
-      addServerSendPet: this.data.addServerSendPet
+  selectSendDetailAddress: function (e) {
+    wx.navigateTo({
+      url: pagePath.Path_Map + "?city=" + this.data.endCity + "&district=" + this.data.addServerSendPet.sendDistrict + "&address=" + this.data.addServerSendPet.address + "&type=send",
     })
-  },
-
-  /**
-   * 送宠地址失去焦点
-   */
-  sendPetAddressOutFocus: function () {
-    this.predictPrice();
   },
 
   /**
@@ -742,7 +874,7 @@ Page({
       if (this.data.addServerReceivePet.address == null
         || this.data.addServerReceivePet.address.length <= 0) {
         wx.showToast({
-          title: '请输入接宠地址',
+          title: '请选择接宠地址',
           icon: 'none'
         })
         return;
@@ -752,7 +884,7 @@ Page({
       if (this.data.addServerSendPet.address == null
         || this.data.addServerSendPet.address.length <= 0) {
         wx.showToast({
-          title: '请输入送宠地址',
+          title: '请选择送宠地址',
           icon: 'none'
         })
         return;
@@ -787,10 +919,10 @@ Page({
       tempUrl = tempUrl + "&airbox=1";
     }
     if (this.data.addServerReceivePet.selected) {
-      tempUrl = tempUrl + "&receiveaddress=" + this.data.beginCity + this.data.addServerReceivePet.receiveDistrict + this.data.addServerReceivePet.address;
+      tempUrl = tempUrl + "&receiveaddress=" + this.data.beginCity + this.data.addServerReceivePet.receiveDistrict + this.data.addServerReceivePet.address + "&receivelatitude=" + this.data.addServerReceivePet.latitude + "&receivelongitude=" + this.data.addServerReceivePet.longitude;
     }
     if (this.data.addServerSendPet.selected) {
-      tempUrl = tempUrl + "&sendaddress=" + this.data.endCity + this.data.addServerSendPet.sendDistrict + this.data.addServerSendPet.address;
+      tempUrl = tempUrl + "&sendaddress=" + this.data.endCity + this.data.addServerSendPet.sendDistrict + this.data.addServerSendPet.address + "&sendlatitude=" + this.data.addServerSendPet.latitude + "&sendlongitude=" + this.data.addServerSendPet.longitude;
     }
     if (this.data.addServerInsuredPrice.selected) {
       tempUrl = tempUrl + "&insuredprice=" + this.data.addServerInsuredPrice.price;
@@ -1304,11 +1436,9 @@ Page({
         if (res.data.data == null || res.data.data.length <= 0) {
           if (type == CheckAbleStation_Type_Receipt) {
             that.data.addServerReceivePet.haveAbleStation = false;
-            that.data.addServerReceivePet.address = null;
             that.data.addServerReceivePet.selected = false;
           } else {
             that.data.addServerSendPet.haveAbleStation = false;
-            that.data.addServerSendPet.address = null;
             that.data.addServerSendPet.selected = false;
           }
         } else {

@@ -178,14 +178,10 @@
                 <i-icon type='enter' size='24' color='#D4D4D4' i-class='more'></i-icon>
               </view>
             </picker>
-            
-            <input class='addServer-append-info-input'
-                   placeholder-class='addServer-append-info-input-placeholder'
-                   placeholder='请输入接宠地址'
-                   value='{{addServerReceivePet.address}}'
-                   bindinput='inputReceivePetAddress'
-                   bindblur='receivePetAddressOutFocus'>
-            </input>
+            <view class="addServer-append-info-input {{addServerReceivePet.address==null||addServerReceivePet.address.length<=0?'addServer-append-info-input-placeholder':''}}"
+                  bindtap='selectReceiveDetailAddress'>
+            {{addServerReceivePet.address==null||addServerReceivePet.address.length<=0?"请选择具体位置":addServerReceivePet.address}}
+            </view>
           </view>
         </view>
         <view class='addedServer-item' hidden="{{!addServerSendPet.haveAbleStation}}">
@@ -210,13 +206,10 @@
                 <i-icon type='enter' size='24' color='#D4D4D4' i-class='more'></i-icon>
               </view>
             </picker>
-            <input class='addServer-append-info-input'
-                   placeholder-class='addServer-append-info-input-placeholder'
-                   placeholder='请输入送宠地址'
-                   value='{{addServerSendPet.address}}'
-                   bindinput='inputSendPetAddress'
-                   bindblur='sendPetAddressOutFocus'>
-            </input>
+            <view class="addServer-append-info-input {{addServerSendPet.address==null||addServerSendPet.address.length<=0?'addServer-append-info-input-placeholder':''}}"
+                  bindtap='selectSendDetailAddress'>
+            {{addServerSendPet.address==null||addServerSendPet.address.length<=0?"请选择具体位置":addServerSendPet.address}}
+            </view>
           </view>
         </view>
         <view class='addedServer-item' hidden='{{addServerInsuredPrice.rate==0}}'>

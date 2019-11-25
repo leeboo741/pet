@@ -45,7 +45,11 @@ Page({
 
     airbox: null, // 购买航空箱
     receiveAddress: null, // 接宠地址
+    receiveLatitude: null, // 接宠纬度
+    receiveLongitude: null, // 接宠经度
     sendAddress: null, // 送宠地址
+    sendLatitude: null, // 送宠纬度
+    sendLongitude: null, // 送宠经度
     insuredPrice: null, // 保价金额
     petCan: null, // 免费营养罐头
     guarantee: null, // 中介担保
@@ -87,12 +91,16 @@ Page({
     }
     if (options.receiveaddress != null) {
       this.setData({
-        receiveAddress: options.receiveaddress
+        receiveAddress: options.receiveaddress,
+        receiveLatitude: options.receivelatitude,
+        receiveLongitude: options.receivelongitude
       })
     }
     if (options.sendaddress != null) {
       this.setData({
-        sendAddress: options.sendaddress
+        sendAddress: options.sendaddress,
+        sendLatitude: options.sendlatitude,
+        sendLongitude: options.sendlongitude
       })
     }
     if (options.insuredprice != null) {
@@ -367,13 +375,21 @@ Page({
     }
 
     tempOrderObj.receiptAddress = "";
+    tempOrderObj.receiptLongitude = "";
+    tempOrderObj.receiptLatitude = "";
     if (this.data.receiveAddress != null) {
       tempOrderObj.receiptAddress = this.data.receiveAddress;
+      tempOrderObj.receiptLongitude = this.data.receiveLongitude;
+      tempOrderObj.receiptLatitude = this.data.receiveLatitude;
     }
 
     tempOrderObj.sendAddress = "";
+    tempOrderObj.sendLatitude = "";
+    tempOrderObj.sendLongitude = "";
     if (this.data.sendAddress != null) {
       tempOrderObj.sendAddress = this.data.sendAddress;
+      tempOrderObj.sendLongitude = this.data.sendLongitude;
+      tempOrderObj.sendLatitude = this.data.sendLatitude;
     } 
 
     tempOrderObj.petAmount = 0;

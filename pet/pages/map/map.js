@@ -5,9 +5,15 @@ var qqmapsdk;
 const config = require("../../utils/config.js");
 const AddressUtil = require("../../utils/addressUtil.js");
 const Util = require("../../utils/util.js");
+const PagePath = require("../../utils/pagePath.js");
+const app = getApp();
 
 const Map_Id = "MyMap";
 
+const Type_Enum = {
+  Receive: "receive",
+  Send: "send"
+}
 /**
  * 传进来 城市名称
  * 通过城市名称 获取区县列表
@@ -16,7 +22,7 @@ const Map_Id = "MyMap";
  * 反编译中心点位置
  * 给 province city district detailAddress address 赋值，
  * markers 添加 中心点标注 为 first 数据
- * qqmapSdk 获取 周边 宠物相关 poi点  添加进markers列表
+ * qqmapSdk 获取 周边 宠物相关 poi点  添加进markers列表 (暂时不搜索poi)
  * 数据初始化完成
  * 
  * 点击地图时 获取点击处位置坐标
@@ -27,7 +33,7 @@ const Map_Id = "MyMap";
  * 点击其他 markers 数据， 获取markers 数据 替换markers first 数据
  * 
  * 地图区域改变的时候，
- * qqmapSdk 获取 周边 宠物相关 poi点  添加进markers列表
+ * qqmapSdk 获取 周边 宠物相关 poi点  添加进markers列表 (暂时不搜索poi)
  * 
  * 点击地址栏 跳转 地址搜索页面
  * 传过去城市和区县
@@ -45,6 +51,7 @@ Page({
    * 页面的初始数据
    */
   data: {
+    type: null, // 类型
     province: null, // 省份
     city: null, // 城市
     district: null, // 区县
@@ -56,21 +63,7 @@ Page({
       latitude: 23.099994,
       longitude: 113.324520,
     }, // 地图中心坐标
-    mapMarkers: [{
-      id: 1,
-      latitude: 23.099994,
-      longitude: 113.324520,
-      title: 'T.I.T 创意园',
-      iconPath: "/resource/index_business_station.png",
-      width: "40rpx",
-      height: "40rpx",
-      callout: {
-        content: "文本",
-        fontSize: 15,
-        padding: 3,
-        display:"BYCLICK"
-      },
-    }], // 地图标注点集合
+    mapMarkers: [], // 地图标注点集合
     mapCtx: null,
   },
 
@@ -80,6 +73,9 @@ Page({
   onLoad: function (options) {
     this.setData({
       city: options.city,
+      district: options.district,
+      detailAddress: options.address,
+      type: options.type
     })
     this.getDistrictListByCity();
     qqmapsdk = new QQMapWX({
@@ -87,7 +83,7 @@ Page({
     });
 
     let that = this;
-    this.geocoderAddress(this.data.city + this.data.district,
+    this.geocoderAddress(this.data.city + this.data.district + this.data.detailAddress,
       function getGeocoderCallback(result) {
         that.setMapCenter(result);
       }
@@ -148,28 +144,42 @@ Page({
   /**
    * 点击地址
    */
-  tapAddress: function(e) {
-  },
+  // tapAddress: function(e) {
+  //   wx.navigateTo({
+  //     url: PagePath.Path_Map_AddressSearch + "?city=" + this.data.city + "&district+" + this.data.district,
+  //   })
+  // },
 
   /**
    * 点击地图
    */
   tapMap: function(e) {
     console.log("tapMap: \n" + JSON.stringify(e));
+    this.setMapCenter(e.detail)
   },
 
   /**
-   * 点击标注
+   * 确认选择
    */
-  tapMarker: function(e) {
-    console.log("tapMarker: \n" + JSON.stringify(e));
-  },
+  confirmSelect: function () {
+    let locationData = {
+      latitude: this.data.mapCenterLocation.latitude,
+      longitude: this.data.mapCenterLocation.longitude,
+      province: this.data.province,
+      city: this.data.city,
+      district: this.data.district,
+      detailAddress: this.data.detailAddress,
+    }
 
-  /**
-   * 点击标注气泡
-   */
-  tapCallout: function (e)  {
-    console.log("tapCallout: \n" + JSON.stringify(e));
+    if (this.data.type == Type_Enum.Receive) {
+      app.globalData.receiveLocation = locationData;
+    } else if (this.data.type == Type_Enum.Send) {
+      app.globalData.sendLocation = locationData;
+    }
+
+    wx.navigateBack({
+
+    })
   },
 
   /**
@@ -183,11 +193,71 @@ Page({
         longitude: location.longitude
       }
     })
+    let that = this;
     this.reGeocoderLocation(this.data.mapCenterLocation,
       function reGeocoderCallback(res) {
-
+        if (res.address_component.city == that.data.city) {
+          that.setData({
+            address: res.address,
+            province: res.address_component.province,
+            city: res.address_component.city,
+            district: res.address_component.district,
+            detailAddress: res.formatted_addresses.recommend
+          })
+          let marker = that.createMarker(
+            {
+              latitude: res.location.lat,
+              longitude: res.location.lng,
+            },
+            res.formatted_addresses.recommend
+          )
+          that.setData({
+            mapMarkers: [marker]
+          })
+        } else {
+          wx.showToast({
+            title: '您已超出起始城市范围',
+            icon: 'none'
+          })
+          that.setData({
+            mapCenterLocation: {
+              latitude: that.data.mapMarkers[0].latitude,
+              longitude: that.data.mapMarkers[0].longitude
+            }
+          })
+        }
+        
       }
     )
+  },
+
+  /**
+   * 创建一个marker
+   * @param location 坐标
+   * @param detailAddress 
+   */
+  createMarker: function (location, detailAddress) {
+    let marker = null;
+    marker = {
+      id: 0,
+      latitude: location.latitude,
+      longitude: location.longitude,
+      iconPath: "/resource/location_marker.png",
+      width: "60rpx",
+      height: "60rpx",
+      label: {
+        content: detailAddress,
+        fontSize: 16,
+        padding: 6,
+        display: "ALWAYS",
+        borderRadius: 3,
+        bgColor: "#000000d2",
+        color: "#fff",
+        anchorX: 0,
+        anchorY: 0
+      }
+    }
+    return marker;
   },
 
   /**
@@ -195,7 +265,6 @@ Page({
    */
   getDistrictListByCity: function() {
     this.data.districtList = AddressUtil.getDistrictByCity(this.data.city);
-    this.data.district = this.data.districtList[0];
   },
 
   /**
