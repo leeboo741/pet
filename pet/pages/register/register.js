@@ -93,18 +93,6 @@ Page({
   },
 
   /**
-   * 判断手机号
-   */
-  isPoneAvailable:function(poneInput) {
-    var myreg = /^[1][3,4,5,6,7,8][0-9]{9}$/;
-    if (!myreg.test(poneInput)) {
-      return false;
-    } else {
-      return true;
-    }
-  },
-
-  /**
    * 请求短信验证码
    */
   requestCode: function (phone) {
@@ -138,7 +126,7 @@ Page({
     // 确认 手机号 输入
     if (this.data.phoneNumber == null || 
         this.data.phoneNumber.length <= 0 || 
-        !this.isPoneAvailable(this.data.phoneNumber)) {
+      !util.isPhoneAvailable(this.data.phoneNumber)) {
       wx.showToast({
         title: '请输入正确手机号码！',
         icon: 'none',

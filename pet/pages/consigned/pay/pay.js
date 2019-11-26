@@ -209,7 +209,7 @@ Page({
       return;
     }
 
-    if (this.data.sendPhone == null || this.data.sendPhone.length <=0 || !this.isPoneAvailable(this.data.sendPhone)) {
+    if (this.data.sendPhone == null || this.data.sendPhone.length <=0 || !Util.isPhoneAvailable(this.data.sendPhone)) {
       wx.showToast({
         title: '请输入正确的寄宠人手机号',
         icon: 'none'
@@ -217,7 +217,7 @@ Page({
       return;
     }
 
-    if (this.data.receivePhone == null || this.data.receivePhone.length <= 0 || !this.isPoneAvailable(this.data.receivePhone)) {
+    if (this.data.receivePhone == null || this.data.receivePhone.length <= 0 || !Util.isPhoneAvailable(this.data.receivePhone)) {
       wx.showToast({
         title: '请输入正确的收宠人手机号',
         icon: 'none'
@@ -626,18 +626,6 @@ Page({
   /* ============================= 网络请求 End ============================== */
 
   /* ============================= 数据处理 Start ============================== */
-
-  /**
-     * 判断手机号
-     */
-  isPoneAvailable: function (poneInput) {
-    var myreg = /^[1][3,4,5,6,7,8][0-9]{9}$/;
-    if (!myreg.test(poneInput)) {
-      return false;
-    } else {
-      return true;
-    }
-  },
 
   /**
    * 计算预估金额

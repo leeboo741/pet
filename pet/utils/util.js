@@ -64,7 +64,7 @@ function isVideo(fileAddress) {
 }
 
 function isPhoneAvailable(phone) {
-  var myreg = /^[1][3,4,5,6,7,8][0-9]{9}$/;
+  var myreg = /^[1][3,4,5,6,7,8,9][0-9]{9}$/;
   if (!myreg.test(phone)) {
     return false;
   } else {
