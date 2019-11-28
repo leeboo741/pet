@@ -12,7 +12,7 @@
   text-align: center;
   height: 90rpx;
   line-height: 90rpx;
-  background:  linear-gradient(to right, rgb(255,147,87) , rgb(255, 51, 59));
+  background:  rgb(255, 51, 59);
   color: white;
   z-index: 2;
 }

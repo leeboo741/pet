@@ -57,11 +57,17 @@
             title='订单金额' 
             value='￥{{orderData.paymentAmount}}'></i-cell>
     <i-cell wx:if='{{orderData.transport.station.stationName!=null}}'
-            title='物流：' 
+            title='物流' 
             value='{{orderData.transport.station.stationName}}'></i-cell>
     <i-cell wx:if='{{orderData.transport.startCity!=null && orderData.transport.endCity!=null }}'
             title='物流区间' 
             value='{{orderData.transport.startCity}}-{{orderData.transport.endCity}}'></i-cell>
+    <i-cell wx:if='{{orderData.orderTransport != null && orderData.orderTransport.transportNum != null}}'
+            title='航班号/车次号'
+            value='{{orderData.orderTransport.transportNum}}'></i-cell>
+    <i-cell wx:if='{{orderData.orderTransport != null && orderData.orderTransport.expressNum != null}}'
+            title='快递单号'
+            value='{{orderData.orderTransport.expressNum}}'></i-cell>
     <i-cell wx:if='{{orderData.transport.transportType!=null}}'
             title='运输方式'
             value='{{parse.getTransportType(orderData.transport.transportType)}}'></i-cell>

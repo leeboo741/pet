@@ -82,6 +82,14 @@
           <view class='bill-info-way-end'>{{orderItem.transport.endCity}}</view>
           <view class='bill-info-pet-mode'>{{parse.getTransportType(orderItem.transport.transportType)}}</view>
         </view>
+        <view class="bill-info-way" wx:if='{{orderItem.orderTransport != null && orderItem.orderTransport.transportNum != null}}'>
+          <view class="bill-info-way-date">航班号/车次号：</view>
+          <view class="bill-info-way-date">{{orderItem.orderTransport.transportNum}}</view>
+        </view>
+        <view class="bill-info-way" wx:if='{{orderItem.orderTransport != null && orderItem.orderTransport.expressNum != null}}'>
+          <view class="bill-info-way-date">快递单号：</view>
+          <view class="bill-info-way-date">{{orderItem.orderTransport.expressNum}}</view>
+        </view>
         <view class='bill-info-pet'>
           <view class='bill-info-pet-type'>{{orderItem.petClassify.petClassifyName}}</view>
           <view class='bill-info-pet-info'>{{orderItem.petType.petTypeName}}</view>
