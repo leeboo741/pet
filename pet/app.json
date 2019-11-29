@@ -38,7 +38,8 @@
     "pages/consigned/contract/guarantee/index",
     "pages/consigned/contract/insured/index",
     "pages/map/map",
-    "pages/map/addressSearch/index"
+    "pages/map/addressSearch/index",
+    "pages/consigned/contract/orderExplain/index"
   ],
   "window": {
     "backgroundTextStyle": "light",

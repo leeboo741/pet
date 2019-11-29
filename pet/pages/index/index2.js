@@ -29,8 +29,8 @@ Page({
     businessList: [
       {
         icon: '../../resource/index_business_transport.png',
-        name: '查运费',
-        target: pagePath.Path_Order_Index,
+        name: '下单说明',
+        target: pagePath.Path_Contract_OrderExplain,
         actionType: BUSINESS_ACTION_TYPE_NAVIGATE,
       },
       {

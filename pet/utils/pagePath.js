@@ -17,6 +17,7 @@ const Path_Contract_Insured = "/pages/consigned/contract/insured/index"; // 投�
 const Path_Contract_petCan = "/pages/consigned/contract/petCan/index"; // 免费旅行餐协议
 const Path_Contract_Receive = "/pages/consigned/contract/receive/index"; // 接宠说明
 const Path_Contract_Send = "/pages/consigned/contract/send/index"; // 送宠说明
+const Path_Contract_OrderExplain = "/pages/consigned/contract/orderExplain/index"; // 下单说明
 
 
 const Path_Order_Filter = "/pages/orderFilter/orderFilter"; // 单据筛选
@@ -66,6 +67,7 @@ module.exports = {
   Path_Contract_petCan, // 免费旅行餐协议
   Path_Contract_Receive, // 接宠说明
   Path_Contract_Send, // 送宠说明
+  Path_Contract_OrderExplain, // 下单说明
 
   Path_Order_Filter: Path_Order_Filter, // 单据筛选
   Path_Order_Workbench: Path_Order_Workbench, // 工单

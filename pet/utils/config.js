@@ -4,16 +4,16 @@
  */
 /** =================================================== */
 const Service_Phone = "4007778889"; // 客服电话
-const Version_Name = "1.3.46"; // 版本名称
-const Version_Code = 56; // 版本编号
+const Version_Name = "1.3.47"; // 版本名称
+const Version_Code = 57; // 版本编号
 
 /** =================================================== */
 /** 
  *                      网络请求
  */
 /** =================================================== */
-const URL_Service = "https://www.taochonghui.com"; // 路径 
-// const URL_Service = "http://192.168.3.111:6060"; // 路径
+// const URL_Service = "https://www.taochonghui.com"; // 路径 
+const URL_Service = "http://192.168.3.111:6060"; // 刘
 // const URL_Service = "http://192.168.3.103:6060"; // 罗
 
 const URL_Register = "/api/customer/"; // 注册

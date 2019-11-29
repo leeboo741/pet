@@ -90,6 +90,8 @@ Page({
             }
           }
         })
+      } else if (state == loginUtil.Login_NoAuthSetting) {
+
       } else {
         wx.navigateTo({
           url: pagePath.Path_Register + '?backtype=1',

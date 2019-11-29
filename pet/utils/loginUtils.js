@@ -185,9 +185,13 @@ function login(loginCallback) {
                 wx.request({
                     url: config.URL_Service + config.URL_Login, // 服务器地址
                   data: {
-                    "code": wxCode
+                    "code": wxCode,
+                    "encryptedData": res.encryptedData,
+                    "iv": res.iv
                   }, // 参数
+                  method: "POST",
                   success: res => {
+                    wx.hideLoading();
                     console.log("success => " + JSON.stringify(res));
                     if (res.data.code == config.RES_CODE_SUCCESS) {
                       let tempUserInfo = res.data.data
@@ -225,6 +229,7 @@ function login(loginCallback) {
                     }
                   }, // 请求成功回调 登陆成功 保存 用户信息。登陆失败，跳转注册页面
                   fail: res => {
+                    wx.hideLoading();
                     console.log("fail => " + JSON.stringify(res));
                     if (loginCallback) {
                       loginCallback(Login_Fail, "链接失败，请稍后再试");
@@ -232,7 +237,6 @@ function login(loginCallback) {
                   }, // 请求失败回调,弹窗，重新请求
                   complete: res => {
                     console.log("complite => " + JSON.stringify(res));
-                    wx.hideLoading();
                   }, // 请求完成回调，隐藏loading
                 })
               }
@@ -281,6 +285,7 @@ module.exports = {
   Login_Success,
   Login_NotExist,
   Login_Fail,
+  Login_NoAuthSetting,
   login: login,
   saveUserInfo: saveUserInfo,
   getUserInfo: getUserInfo,

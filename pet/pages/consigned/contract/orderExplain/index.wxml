@@ -1,0 +1,7 @@
+<!--pages/consigned/contract/orderExplain/index.wxml-->
+<view class="image-box">
+  <image class="image"
+         src='https://img.taochonghui.com/weapp/selfHelp.jpg'
+         mode="widthFix">
+  </image>
+</view>
