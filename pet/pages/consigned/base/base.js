@@ -124,9 +124,10 @@ Page({
     },
     addServerInsuredPrice: {
       name: "保价",
-      selected: false,
+      selected: true,
       rate: 0, // 费率
-      price: 0, // 保价金额
+      price: 1000, // 保价金额
+      alert: "最低保额1000元，最高保额6000元", // 
       contract: "《投保须知》"
     },
     addServerPetCan: {
@@ -558,6 +559,8 @@ Page({
    * 保价
    */
   tapAddServerInsuredPrice: function () {
+    // 现在要必选
+    return;
     if (this.data.beginCity == null) {
       wx.showToast({
         title: '请先选择始发城市',
@@ -794,6 +797,19 @@ Page({
    * 保价金额失去焦点
    */
   insuredPriceOutFocus: function () {
+    let tempInput = this.data.addServerInsuredPrice.price;
+    if (!(tempInput < 6000 && tempInput > 1000)) {
+      if (tempInput < 1000) {
+        tempInput = 1000;
+      }
+      if (tempInput > 6000) {
+        tempInput = 6000;
+      }
+      this.data.addServerInsuredPrice.price = tempInput
+      this.setData({
+        addServerInsuredPrice: this.data.addServerInsuredPrice
+      })
+    }
     this.predictPrice();
   },
 

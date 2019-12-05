@@ -137,6 +137,38 @@
          增值服务
       </label>
       <view class='addedServer'>
+        <view class='addedServer-item' hidden='{{addServerInsuredPrice.rate==0}}'>
+          <view class='addServer-info' 
+                bindtap='tapAddServerInsuredPrice'>
+            <icon class="iconfont icongouhao gou {{addServerInsuredPrice.selected?'choose':''}}">
+            </icon>
+            <label class="server {{addServerInsuredPrice.selected?'choose':''}}">
+            {{addServerInsuredPrice.name}}
+            </label>
+            <label class='insuredPrice-rate' hidden='{{addServerInsuredPrice.rate==0}}'>
+            (费率：{{addServerInsuredPrice.rate}}%)
+            </label>
+            <view class="contract"
+                  catchtap="tapInsuredContract">
+            {{addServerInsuredPrice.contract}}
+            </view>
+          </view>
+          <view class='addServer-append-info'>
+            <view class='air-box-info'>
+            {{addServerInsuredPrice.alert}}
+            </view>
+          </view>
+          <view class='addServer-append-info' hidden='{{!addServerInsuredPrice.selected}}'>
+            <input class='addServer-append-info-input'
+                   placeholder-class='addServer-append-info-input-placeholder'
+                   placeholder='请输入保价金额'
+                   bindinput='inputInsuredPrice'
+                   bindblur='insuredPriceOutFocus'
+                   value='{{addServerInsuredPrice.price==0?"":addServerInsuredPrice.price}}'
+                   type='digit'>
+            </input>
+          </view>
+        </view>
         <view class='addedServer-item' hidden="{{!parse.showAirbox(addServerAirBox.ableUse, selectedTransportObj)}}">
           <view class='addServer-info' 
                 bindtap='tapAddServerAirBox'>
@@ -210,33 +242,6 @@
                   bindtap='selectSendDetailAddress'>
             {{addServerSendPet.address==null||addServerSendPet.address.length<=0?"请选择具体位置":addServerSendPet.address}}
             </view>
-          </view>
-        </view>
-        <view class='addedServer-item' hidden='{{addServerInsuredPrice.rate==0}}'>
-          <view class='addServer-info' 
-                bindtap='tapAddServerInsuredPrice'>
-            <icon class="iconfont icongouhao gou {{addServerInsuredPrice.selected?'choose':''}}">
-            </icon>
-            <label class="server {{addServerInsuredPrice.selected?'choose':''}}">
-            {{addServerInsuredPrice.name}}
-            </label>
-            <label class='insuredPrice-rate' hidden='{{addServerInsuredPrice.rate==0}}'>
-            (费率：{{addServerInsuredPrice.rate}}%)
-            </label>
-            <view class="contract"
-                  catchtap="tapInsuredContract">
-            {{addServerInsuredPrice.contract}}
-            </view>
-          </view>
-          <view class='addServer-append-info' hidden='{{!addServerInsuredPrice.selected}}'>
-            <input class='addServer-append-info-input'
-                   placeholder-class='addServer-append-info-input-placeholder'
-                   placeholder='请输入保价金额'
-                   bindinput='inputInsuredPrice'
-                   bindblur='insuredPriceOutFocus'
-                   value='{{addServerInsuredPrice.price==0?"":addServerInsuredPrice.price}}'
-                   type='digit'>
-            </input>
           </view>
         </view>
         <view class='addedServer-item'>
