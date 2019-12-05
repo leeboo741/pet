@@ -560,7 +560,15 @@ Page({
     }
 
     if (this.data.insuredPrice != null) {
-      tempData.insureAmount = this.data.insuredPrice;
+      tempData.petAmount = this.data.insuredPrice;
+    }
+
+    if (this.data.petCan != null) {
+      tempData.giveFood = this.data.petCan;
+    }
+
+    if (this.data.guarantee != null) {
+      tempData.guarantee = this.data.guarantee;
     }
 
     let that = this;

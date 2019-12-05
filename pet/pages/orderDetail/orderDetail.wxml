@@ -89,7 +89,8 @@
          title='增值服务'>
   <i-cell-group>
     <i-cell title='购买航空箱' 
-            value='{{(orderData.addedAirBox==null||orderData.addedAirBox==0)?"否":"是"}}'></i-cell>
+            value='{{(orderData.addedWeightCage==null)?"否":orderData.addedWeightCage.cageName}}'
+            label="{{(orderData.addedWeightCage==null|| orderData.addedWeightCage.cagePrice == null ||orderData.addedWeightCage.cagePrice==0)?'':'￥'+orderData.addedWeightCage.cagePrice}}"></i-cell>
     <i-cell title='上门接宠' 
             value='{{(orderData.receiptAddress==null||orderData.receiptAddress.length<=0)?"否":"是"}}' 
             label="{{orderData.receiptAddress}}"
@@ -104,7 +105,7 @@
             wx:if='{{parse.showSend(orderData, userInfo)}}'></i-cell>
     <i-cell title='保价' 
             value='{{(orderData.petAmount==null||orderData.petAmount==0)?"否":"是"}}' 
-            label="{{(orderData.petAmount==null||orderData.petAmount==0)?'':'￥'+order.petAmount}}"></i-cell>
+            label="{{(orderData.petAmount==null||orderData.petAmount==0)?'':'￥'+orderData.petAmount}}"></i-cell>
     <i-cell title='免费营养罐头' 
             value='{{(orderData.giveFood==null||orderData.giveFood=="否")?"否":"是"}}'></i-cell>
     <i-cell title='中介担保' 
