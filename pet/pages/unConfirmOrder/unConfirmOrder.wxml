@@ -119,7 +119,8 @@
           <view class='bill-info-pay-info'
                 wx:if='{{orderItem.orderStates[0].orderType!= null}}'>{{orderItem.orderStates[0].orderType}}</view>
           <view class='bill-info-pay-money'
-                wx:if='{{orderItem.paymentAmount!= null && userInfo.role != 3}}'>￥{{orderItem.paymentAmount}}</view>
+                wx:if='{{orderItem.paymentAmount!= null && userInfo.role != 3}}'
+                hidden>￥{{orderItem.paymentAmount}}</view>
         </view>
         <!-- 分配人员 -->
         <view class="bill-info-staff"

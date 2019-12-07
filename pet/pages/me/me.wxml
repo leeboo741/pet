@@ -232,7 +232,8 @@
         <view class='bill-info-pay'>
           <view class='bill-info-pay-label'>状态：</view>
           <view class='bill-info-pay-info'>{{unpayItem.state}}</view>
-          <view class='bill-info-pay-money'>￥{{unpayItem.paymentAmount}}</view>
+          <view class='bill-info-pay-money'
+                wx:if='{{userInfo.phone == unpayItem.senderPhone}}'>￥{{unpayItem.paymentAmount}}</view>
         </view>
       </view>
       <!-- 按钮区域 -->
@@ -313,7 +314,8 @@
         <view class='bill-info-pay'>
           <view class='bill-info-pay-label'>状态:</view>
           <view class='bill-info-pay-info'>{{unsendItem.state}}</view>
-          <view class='bill-info-pay-money'>￥{{unsendItem.paymentAmount}}</view>
+          <view class='bill-info-pay-money'
+                wx:if='{{userInfo.phone == unsendItem.senderPhone}}'>￥{{unsendItem.paymentAmount}}</view>
         </view>
       </view>
       <!-- 按钮区域 -->
@@ -396,7 +398,8 @@
         <view class='bill-info-pay'>
           <view class='bill-info-pay-label'>状态:</view>
           <view class='bill-info-pay-info'>{{unreceiveItem.state}}</view>
-          <view class='bill-info-pay-money'>￥{{unreceiveItem.paymentAmount}}</view>
+          <view class='bill-info-pay-money'
+                wx:if='{{userInfo.phone == unreceiveItem.senderPhone}}'>￥{{unreceiveItem.paymentAmount}}</view>
         </view>
       </view>
       <!-- 按钮区域 -->
@@ -478,7 +481,8 @@
         <view class='bill-info-pay'>
           <view class='bill-info-pay-label'>状态:</view>
           <view class='bill-info-pay-info'>{{completeItem.state}}</view>
-          <view class='bill-info-pay-money'>￥{{completeItem.paymentAmount}}</view>
+          <view class='bill-info-pay-money'
+                wx:if='{{userInfo.phone == completeItem.senderPhone}}'>￥{{completeItem.paymentAmount}}</view>
         </view>
       </view>
       <!-- 按钮区域 -->

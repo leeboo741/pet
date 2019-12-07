@@ -22,6 +22,7 @@ Page({
     ablePremium: false, // 是否允许补价
     ableCancelPremium: true, // 是否允许取消补价
     showConfirmButton: false, // 是否展示签收按钮
+    showPrice: false, // 是否展示价格
 
     backTimeIntervial: null,
   },
@@ -39,7 +40,8 @@ Page({
       type: options.type,
       userInfo: loginUtil.getUserInfo(),
       ablePremium: options.ablepremium==1? true: false,
-      ableCancelPremium: options.ablecancelpremium==0? false: true
+      ableCancelPremium: options.ablecancelpremium==0? false: true,
+      showPrice: options.showprice==0? false: true,
     })
     this.requestOrderDetail(this.data.orderNo)
     let that = this;

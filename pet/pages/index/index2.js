@@ -199,7 +199,7 @@ Page({
         console.log("查单 success：\n" + JSON.stringify(res));
         if (res.data.data != null && res.data.code == config.RES_CODE_SUCCESS) {
           wx.navigateTo({
-            url: pagePath.Path_Order_Detail + '?orderno=' + res.data.data + '&type=0',
+            url: pagePath.Path_Order_Detail + '?orderno=' + res.data.data + '&type=0' + "&showprice=0",
           })
 
         } else {

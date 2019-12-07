@@ -788,7 +788,7 @@ Page({
           })
         } else if (res.tapIndex == 2) {
           wx.navigateTo({
-            url: pagePath.Path_Order_Detail + '?orderno=' + orderNo + '&type=1',
+            url: pagePath.Path_Order_Detail + '?orderno=' + orderNo + '&type=1' + "&showprice=0",
           })
         } else {
           let allocationStaffList = that.data.orderList[index].orderAssignments;

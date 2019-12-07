@@ -377,7 +377,7 @@ Page({
       itemList: itemList,
       success(res) {
         if (res.tapIndex == 0) { // 订单详情
-          that.tapOrderDetail(e);
+          that.tapOrderDetail(e, that.data.unpayList[index]);
         } else if (res.tapIndex == 1) { // 修改订单
           that.tapEditOrder(e, true);
         } else if (res.tapIndex == 2) { // 取消订单
@@ -399,7 +399,7 @@ Page({
       itemList: itemList,
       success(res) {
         if (res.tapIndex == 0) { // 订单详情
-          that.tapOrderDetail(e);
+          that.tapOrderDetail(e,that.data.unsendList[index]);
         } else if (res.tapIndex == 1) { // 修改订单
           that.tapEditOrder(e, true);
         }
@@ -419,7 +419,7 @@ Page({
       itemList: itemList,
       success(res) {
         if (res.tapIndex == 0) { // 订单详情
-          that.tapOrderDetail(e);
+          that.tapOrderDetail(e, that.data.unreceiveList[index]);
         } else if (res.tapIndex == 1) { // 修改订单
           that.tapEditOrder(e, false);
         }
@@ -439,7 +439,7 @@ Page({
       itemList: itemList,
       success(res) {
         if (res.tapIndex == 0) { // 订单详情
-          that.tapOrderDetail(e);
+          that.tapOrderDetail(e, that.data.completeList[index]);
         } else if (res.tapIndex == 1) { // 修改订单
           that.tapEditOrder(e, false);
         }
@@ -462,10 +462,14 @@ Page({
   /**
    * 订单详情
    */
-  tapOrderDetail: function (e) {
+  tapOrderDetail: function (e, order) {
     console.log("详情：\n" + e.currentTarget.dataset.orderno)
+    let showPrice = 0;
+    if (this.data.userInfo.phone == order.senderPhone) {
+      showPrice = 1;
+    }
     wx.navigateTo({
-      url: pagePath.Path_Order_Detail + '?orderno=' + e.currentTarget.dataset.orderno + '&type=0' + '&ablepremium=1' + "&ablecancelpremium=0",
+      url: pagePath.Path_Order_Detail + '?orderno=' + e.currentTarget.dataset.orderno + '&type=0' + '&ablepremium=1' + "&ablecancelpremium=0" + "&showprice=" + showPrice,
     })
   },
 
@@ -834,7 +838,7 @@ Page({
         if (res.data.data != null && res.data.code == config.RES_CODE_SUCCESS) {
           that.hiddenPopMask();
           wx.navigateTo({
-            url: pagePath.Path_Order_Detail + '?orderno=' + res.data.data + '&type=0' + "&ablecancelpremium=0",
+            url: pagePath.Path_Order_Detail + '?orderno=' + res.data.data + '&type=0' + "&ablecancelpremium=0" + "&showprice=0",
           })
 
         } else {

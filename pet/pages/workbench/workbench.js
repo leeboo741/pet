@@ -734,8 +734,12 @@ Page({
             url: pagePath.Path_Order_Premium + '?orderno=' + orderNo,
           })
         } else if (res.tapIndex == 2) {
+          let showPrice = 0;
+          if (that.data.userInfo.role == 1) {
+            showPrice = 1;
+          }
           wx.navigateTo({
-            url: pagePath.Path_Order_Detail + '?orderno=' + orderNo + '&type=1',
+            url: pagePath.Path_Order_Detail + '?orderno=' + orderNo + '&type=1' + "&showprice=" + showPrice,
           })
         } else {
           let allocationStaffList = that.data.orderList[index].orderAssignments;

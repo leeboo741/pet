@@ -53,7 +53,7 @@
     <i-cell wx:if='{{orderData.state!=null}}'
             title='订单状态' 
             value='{{orderData.state}}'></i-cell>
-    <i-cell wx:if='{{orderData.paymentAmount!=null && userInfo.role != 3}}'
+    <i-cell wx:if='{{showPrice}}'
             title='订单金额' 
             value='￥{{orderData.paymentAmount}}'></i-cell>
     <i-cell wx:if='{{orderData.transport.station.stationName!=null}}'
