@@ -4,23 +4,30 @@
  */
 /** =================================================== */
 const Service_Phone = "4007778889"; // 客服电话
-const Version_Name = "1.3.47"; // 版本名称
-const Version_Code = 57; // 版本编号
+const Version_Name = "1.4.0"; // 版本名称
+const Version_Code = 60; // 版本编号
 
 /** =================================================== */
 /** 
  *                      网络请求
  */
 /** =================================================== */
-const URL_Service = "https://www.taochonghui.com"; // 路径 
-// const URL_Service = "http://192.168.3.111:6060"; // 刘
+// const URL_Service = "https://www.taochonghui.com"; // 路径 
+const URL_Service = "http://192.168.3.111:6060"; // 刘
 // const URL_Service = "http://192.168.3.103:6060"; // 罗
 
 const URL_Register = "/api/customer/"; // 注册
 const URL_Login = "/api/oAuth"; // 登陆
 const URL_UpdateCustomer = "/api/customer/updateCustomer"; // 更新用户
 const URL_CheckBalance = "/api/balance"; // 查询余额
-const URL_Withdraw ="/api/withdraw/staff"; // 提现
+const URL_Withdraw_Station ="/api/withdraw/station"; // 站点提现
+const URL_Withdraw_Business = "/api/withdraw/business"; // 商家提现
+const URL_WithdrawFlow_Station = "/api/withdraw/station/flow"; // 站点提现流水
+const URL_WithdrawFlow_Business = "/api/withdraw/business/flow"; // 商家提现流水
+const URL_BalanceFlow_Station = "/api/rebate/station/flow"; // 站点余额流水
+const URL_BalanceFlow_Business = "/api/rebate/business/flow"; // 商家余额流水
+const URL_BalanceBuffer_Station = "/api/balance/buffer/station"; // 站点 可用余额 和 冻结余额
+const URL_BalanceBuffer_Business = "/api/balance/buffer/business"; // 商家 可用余额 和 冻结余额
 const URL_GetCode = "/business/VerificationCode/"; // 获取短信验证码
 
 const URL_GetBusinessByPosition = "/api/business/listByPosition"; // 根据坐标获取周边商家
@@ -141,7 +148,14 @@ module.exports = {
   URL_Login, // 登陆
   URL_UpdateCustomer, // 更新用户
   URL_CheckBalance, // 查询余额
-  URL_Withdraw, // 提现
+  URL_Withdraw_Station, // 站点提现
+  URL_Withdraw_Business, // 商家提现
+  URL_WithdrawFlow_Station, // 站点提现流水
+  URL_WithdrawFlow_Business, // 商家提现流水
+  URL_BalanceFlow_Station, // 站点 余额流水
+  URL_BalanceFlow_Business, // 商家 余额流水
+  URL_BalanceBuffer_Station, // 站点 冻结余额 和 可用余额
+  URL_BalanceBuffer_Business, // 商家 冻结余额 和 可用余额
   URL_GetCode, // 获取短信验证码
 
   URL_GetBusinessByPosition, // 根据坐标获取周边商家

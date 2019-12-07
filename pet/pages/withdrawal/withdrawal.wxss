@@ -11,8 +11,26 @@
   color: #A1A0A5;
 }
 
+.balance-detail-box {
+  margin-top: 30rpx;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 80%;
+  font-size: 27rpx;
+}
+
+.balance-detail-able{
+  color: #A1A0A5;
+}
+
+.balance-detail-unable{
+  color: #ee2c2c;
+}
+
 .balance-money {
-  margin-top: 50rpx;
+  margin-top: 80rpx;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -38,11 +56,11 @@
 }
 
 .balance-withdrawal {
-  margin-top: 50px;
+  margin-top: 80rpx;
   background-color: #F14E4F;
   width: 500rpx;
   text-align: center;
-  font-size: 30rpx;
+  font-size: 34rpx;
   color:white;
   line-height: 100rpx;
   height: 100rpx;
@@ -54,4 +72,11 @@
   margin-right: 100rpx;
   text-align: right;
   font-size: 12px;
+}
+
+.withdrawal-flow{
+  margin-top: 50rpx;
+  font-size: 28rpx;
+  text-decoration: underline;
+  color: rgb(0, 110, 255);
 }

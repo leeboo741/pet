@@ -30,8 +30,8 @@
         <label class='nikeName'>{{userInfo.nickName}}</label>
         <label class='phone'>{{userInfo.phone}}</label>
         <view class='mymoney'>
-          <label>余额：</label>
-          <label class="money">{{userInfo.balance}}元</label>
+          <label bindtap="tapBalance">余额：</label>
+          <label class="money" bindtap="tapBalance">{{userInfo.balance}}元</label>
           <view class='recharge' 
                 bindtap='gotoRecharge'
                 hidden>

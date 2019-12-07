@@ -123,12 +123,12 @@ Page({
       longitude: null,
     },
     addServerInsuredPrice: {
-      name: "保价",
+      name: "声明价值",
       selected: true,
       rate: 0, // 费率
       price: 1000, // 保价金额
-      alert: "最低保额1000元，最高保额6000元", // 
-      contract: "《投保须知》"
+      // alert: "最低估价1000元，最高估价6000元", // 
+      contract: "《评估说明》"
     },
     addServerPetCan: {
       name: "免费旅行餐", // 名称
@@ -800,15 +800,22 @@ Page({
     let tempInput = this.data.addServerInsuredPrice.price;
     if (!(tempInput < 6000 && tempInput > 1000)) {
       if (tempInput < 1000) {
+        wx.showToast({
+          title: '最低1000元',
+        })
         tempInput = 1000;
       }
       if (tempInput > 6000) {
+        wx.showToast({
+          title: '最高6000元',
+        })
         tempInput = 6000;
       }
       this.data.addServerInsuredPrice.price = tempInput
       this.setData({
         addServerInsuredPrice: this.data.addServerInsuredPrice
       })
+      return;
     }
     this.predictPrice();
   },

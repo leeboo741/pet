@@ -39,7 +39,9 @@
     "pages/consigned/contract/insured/index",
     "pages/map/map",
     "pages/map/addressSearch/index",
-    "pages/consigned/contract/orderExplain/index"
+    "pages/consigned/contract/orderExplain/index",
+    "pages/withdrawal/withdrawalFlow/index",
+    "pages/balance/balanceFlow"
   ],
   "window": {
     "backgroundTextStyle": "light",

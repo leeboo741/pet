@@ -1,5 +1,13 @@
 <view class='container'>
   <view class='balance-label'>系统余额（{{balanceAmount}}元）</view>
+  <view class="balance-detail-box">
+    <view class="balance-detail-able">
+    可提现金额：{{ableBalance}}元
+    </view>
+    <view class="balance-detail-unable">
+    冻结金额：{{unableBalance}}元
+    </view>
+  </view>
   <view class="balance-money">
     <view class="balance-money-icon">
       <icon class='iconfont iconrenminbi'>
@@ -9,9 +17,16 @@
           type="digit" 
           bindinput="amountInput" 
           placeholder="0"
-          bindinput="inputAmount">
+          bindinput="inputAmount"
+          value="{{withdrawalAmount}}">
     </input>
   </view>
   <view class='balance-withdrawal'
-        bindtap="tapWithdrawal">提现</view>
+        bindtap="tapWithdrawal">
+  提现
+  </view>
+  <view class="withdrawal-flow"
+        bindtap="checkWithdrawalFlow">
+  提现流水查询
+  </view>
 </view>

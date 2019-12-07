@@ -18,6 +18,8 @@ Page({
   data: {
     withdrawalAmount: null, // 提现金额
     balanceAmount: 0, // 系统余额
+    ableBalance: 0, // 可用余额
+    unableBalance: 0, // 冻结金额
   },
 
   /**
@@ -27,6 +29,7 @@ Page({
     this.setData({
       balanceAmount: app.globalData.userInfo.balance
     })
+    this.checkBalanceBuffer();
   },
 
   /**
@@ -113,9 +116,9 @@ Page({
       })
       return;
     }
-    if (this.data.withdrawalAmount > this.data.balanceAmount) {
+    if (this.data.withdrawalAmount > this.data.ableBalance) {
       wx.showToast({
-        title: '余额不足',
+        title: '可用余额不足',
         icon: 'none'
       })
       return;
@@ -124,12 +127,27 @@ Page({
       title: '请稍等...',
     })
     let that = this;
-    wx.request({
-      url: config.URL_Service + config.URL_Withdraw,
-      data: {
+
+    let tempUrl = "";
+    let tempData = {};
+    
+    if (loginUtil.getStationNo() != null) {
+      tempUrl = config.URL_Service + config.URL_Withdraw_Station;
+      tempData = {
         openId: loginUtil.getOpenId(),
         amount: this.data.withdrawalAmount
-      },
+      }
+    } else if (loginUtil.getBusinessNo() != null) {
+      tempUrl = config.URL_Service + config.URL_Withdraw_Business;
+      tempData = {
+        businessNo: loginUtil.getBusinessNo(),
+        amount: this.data.withdrawalAmount
+      }
+    }
+
+    wx.request({
+      url: tempUrl,
+      data: tempData,
       header: {
         'content-type': 'application/x-www-form-urlencoded'
       },
@@ -137,10 +155,27 @@ Page({
       success(res) {
         wx.hideLoading();
         console.log("提现 success : \n" + JSON.stringify(res));
-        wx.showModal({
-          title: '提现申请已经提交',
-          content: '请耐心等待...',
-        })
+        if (res.data.code == config.RES_CODE_SUCCESS && res.data.data > 0) {
+          wx.showModal({
+            title: '提现申请已经提交',
+            content: '请耐心等待...',
+            showCancel: false,
+            success(res) {
+              if (res.confirm) {
+                that.setData({
+                  withdrawalAmount: null
+                })
+                that.checkBalanceBuffer();
+              }
+            }
+          })
+        } else {
+          wx.showToast({
+            title: '提现失败',
+            icon: 'none'
+          })
+        }
+        
       },
       fail(res) {
         wx.hideLoading();
@@ -157,9 +192,67 @@ Page({
   },
 
   /**
+   * 查询可用和冻结金额
+   */
+  checkBalanceBuffer: function () {
+    wx.showLoading({
+      title: '请稍等...',
+    })
+    let tempUrl = "";
+    let tempData = {};
+    if (loginUtil.getStationNo() != null) {
+      tempUrl = config.URL_Service + config.URL_BalanceBuffer_Station;
+      tempData = {
+        stationNo: loginUtil.getStationNo() 
+      }
+    } else if (loginUtil.getBusinessNo() != null) {
+      tempUrl = config.URL_Service + config.URL_BalanceBuffer_Business;
+      tempData = {
+        stationNo: loginUtil.getBusinessNo()
+      }
+    }
+    let that = this;
+    wx.request({
+      url: tempUrl,
+      data: tempData,
+      success(res) {
+        wx.hideLoading();
+        console.log("查询可用和冻结金额 success: \n" + JSON.stringify(res));
+        if (res.data.code == config.RES_CODE_SUCCESS) {
+          that.setData({
+            ableBalance: res.data.data.usable,
+            unableBalance: res.data.data.frozen
+          })
+        } else {
+          wx.showToast({
+            title: '查询可用余额失败',
+            icon: "none"
+          })
+        }
+      },
+      fail(res) {
+        console.log("查询可用和冻结金额 fail: \n" + JSON.stringify(res));
+        wx.showToast({
+          title: '系统异常',
+          icon:'none'
+        })
+      },
+    })
+  },
+
+  /**
    * 金额输入
    */
   inputAmount: function(e) {
     this.data.withdrawalAmount = e.detail.value
   },
+
+  /**
+   * 查看流水
+   */
+  checkWithdrawalFlow: function() {
+    wx.navigateTo({
+      url: pagePath.Path_Me_Withdrawal_Flow,
+    })
+  }
 })

@@ -36,9 +36,11 @@ const Path_Aboard = "/pages/goAboard/goAboard"; // 出国
 const Path_Me_Index = "/pages/me/me"; // 个人中心
 const Path_Me_Recharge = "/pages/recharge/recharge"; // 充值
 const Path_Me_Withdrawal = "/pages/withdrawal/withdrawal"; // 提现
+const Path_Me_Withdrawal_Flow = "/pages/withdrawal/withdrawalFlow/index"; // 提现流水
 const Path_Me_Setting = "/pages/setting/setting"; // 设置
 const Path_Me_Message = "/pages/message/message"; // 站内信
 const Path_Me_Approval = "/pages/approval/approval"; // 审批
+const Path_Me_Balance_Flow = "/pages/balance/balanceFlow"; // 余额流水
 
 const Path_Apply_Index = "/pages/applyJoin/applyJoin"; // 申请
 const Path_Apply_Register_Station = "/pages/registerStation/registerStation"; // 站点入驻申请
@@ -85,9 +87,11 @@ module.exports = {
   Path_Me_Index: Path_Me_Index, // 个人中心
   Path_Me_Recharge: Path_Me_Recharge, // 充值
   Path_Me_Withdrawal: Path_Me_Withdrawal, // 提现
+  Path_Me_Withdrawal_Flow: Path_Me_Withdrawal_Flow, // 提现流水
   Path_Me_Setting: Path_Me_Setting, // 设置
   Path_Me_Message: Path_Me_Message, // 站内信
   Path_Me_Approval: Path_Me_Approval, // 审批
+  Path_Me_Balance_Flow: Path_Me_Balance_Flow, // 余额流水
 
   Path_Apply_Index: Path_Apply_Index, // 申请
   Path_Apply_Register_Station: Path_Apply_Register_Station, // 站点入驻申请

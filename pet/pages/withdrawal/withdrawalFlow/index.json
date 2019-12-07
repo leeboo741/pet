@@ -1,0 +1,10 @@
+{
+  "usingComponents": {
+    "i-load-more": "/dist/load-more/index",
+    "i-panel": "/dist/panel/index",
+    "i-cell": "/dist/cell/index",
+    "i-cell-group": "/dist/cell-group/index"
+  },
+  "navigationBarTitleText": "提现流水",
+  "enablePullDownRefresh": true
+}

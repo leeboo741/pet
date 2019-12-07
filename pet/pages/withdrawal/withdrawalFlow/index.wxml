@@ -1,0 +1,16 @@
+<!--pages/withdrawal/withdrawalFlow/index.wxml-->
+<i-panel>
+  <i-cell-group>
+    <i-cell wx:for='{{dataSource}}'
+            wx:for-item='item'
+            wx:for-index='index'
+            wx:key='{{index}}'
+            title='￥{{item.amount}}'
+            value='{{item.state}}'
+            label='{{item.withdrawTime}}'>
+      
+    </i-cell>
+  </i-cell-group>
+</i-panel>
+
+<i-load-more tip="{{loadMoreTip}}" loading="{{loadMoreLoading}}" />

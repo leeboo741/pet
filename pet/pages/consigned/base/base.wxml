@@ -153,7 +153,8 @@
             {{addServerInsuredPrice.contract}}
             </view>
           </view>
-          <view class='addServer-append-info'>
+          <view class='addServer-append-info'
+                hidden>
             <view class='air-box-info'>
             {{addServerInsuredPrice.alert}}
             </view>

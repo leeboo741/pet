@@ -174,6 +174,7 @@ Page({
           userInfo: loginUtil.getUserInfo()
         })
         that.requestBillList(that.data.selectedBillType);
+        that.requestBalance();
         that.startGetNewMessageInterval();
       } else if (state == loginUtil.Login_Fail) {
         wx.showModal({
@@ -580,6 +581,15 @@ Page({
   gotoRecharge: function() {
     wx.navigateTo({
       url: pagePath.Path_Me_Recharge
+    })
+  },
+
+  /**
+   * 查看余额流水
+   */
+  tapBalance: function() {
+    wx.navigateTo({
+      url: pagePath.Path_Me_Balance_Flow,
     })
   },
 

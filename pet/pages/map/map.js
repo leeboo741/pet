@@ -7,6 +7,7 @@ const AddressUtil = require("../../utils/addressUtil.js");
 const Util = require("../../utils/util.js");
 const PagePath = require("../../utils/pagePath.js");
 const app = getApp();
+const ShareUtil = require("../../utils/shareUtils.js");
 
 const Map_Id = "MyMap";
 
@@ -138,7 +139,7 @@ Page({
    * 用户点击右上角分享
    */
   onShareAppMessage: function () {
-
+    return ShareUtil.getOnShareAppMessageForShareOpenId();
   },
 
   /**
