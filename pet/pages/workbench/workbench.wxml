@@ -299,14 +299,45 @@
         <view class="in-out-port-info-item">
           <input class="in-out-port-info-input"
                  placeholder="请输入航班号/车次号"
+                 placeholder-class="text-placeholder"
                  bindinput="inputOrderTransportNum"
                  data-index='{{orderIndex}}'
                  value="{{orderItem.outTransportInfo.transportNum}}">
           </input>
         </view>
+        <block wx:if="{{parse.getTransportType(orderItem.transport.transportType)=='单飞'||parse.getTransportType(orderItem.transport.transportType)=='随机'}}">
+          <view class="in-out-port-info-item">
+            <input class="in-out-port-info-input text-normal"
+                  placeholder="始发机场三字码"
+                  placeholder-class="text-placeholder"
+                  bindinput="inputStartCityCode"
+                  data-index='{{orderIndex}}'
+                  value="{{orderItem.outTransportInfo.startCityCode}}">
+            </input>
+            <input class="in-out-port-info-input text-normal"
+                  placeholder="目的机场三字码"
+                  placeholder-class="text-placeholder"
+                  bindinput="inputEndCityCode"
+                  data-index='{{orderIndex}}'
+                  value="{{orderItem.outTransportInfo.endCityCode}}">
+            </input>
+          </view>
+          <view class="in-out-port-info-item">
+            <picker class="in-out-port-info-input" 
+                    mode='date'
+                    bindchange="selectDepartureDate"
+                    data-index='{{orderIndex}}'>
+              <view class="in-out-port-info-input-value {{orderItem.outTransportInfo.departureDate == null || orderItem.outTransportInfo.departureDate.length <= 0 ? 'text-placeholder':'text-normal'}}">
+              {{orderItem.outTransportInfo.departureDate == null || orderItem.outTransportInfo.departureDate.length <= 0 ? "请选择出发时间":orderItem.outTransportInfo.departureDate}}
+              </view>
+            </picker>
+          </view>
+        </block>
+        
         <view class="in-out-port-info-item">
-          <input class="in-out-port-info-input"
+          <input class="in-out-port-info-input text-normal"
                  placeholder="请输入快递单号"
+                 placeholder-class="text-placeholder"
                  bindinput="inputOrderExpressNum"
                  data-index='{{orderIndex}}'
                  value="{{orderItem.outTransportInfo.expressNum}}">

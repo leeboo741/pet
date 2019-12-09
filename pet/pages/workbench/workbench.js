@@ -488,33 +488,93 @@ Page({
   requestPostTransportInfo: function (orderIndex) {
     const tempIndex = orderIndex;
     const order = this.data.orderList[tempIndex];
-    if (util.checkEmpty(order.outTransportInfo)
-      || util.checkEmpty(order.outTransportInfo.expressNum)) {
+    let tempData = {};
+    tempData.order = {
+      orderNo: order.orderNo
+    };
+    tempData.staff = {
+      openId: loginUtil.getOpenId()
+    };
+    tempData.transportType = order.transport.transportType;
+    
+    if (util.checkEmpty(order.outTransportInfo)) {
+      wx.showToast({
+        title: '运输信息有必填项未填写',
+        icon:'none'
+      })
+      return;
+    }
+
+    if (util.checkEmpty(order.outTransportInfo.expressNum)) {
       wx.showToast({
         title: '快递单号不能为空！',
         icon: 'none'
       })
       return;
+    } else {
+      tempData.expressNum = order.outTransportInfo.expressNum;
     }
+
+    if (order.transport.transportType == 3 || order.transport.transportType == 4) {
+      if (util.checkEmpty(order.outTransportInfo.transportNum)) {
+        wx.showToast({
+          title: '航班号不能为空',
+          icon: 'none'
+        })
+        return;
+      } else {
+        tempData.transportNum = order.outTransportInfo.transportNum;
+      }
+
+      if (util.checkEmpty(order.outTransportInfo.startCityCode)) {
+        wx.showToast({
+          title: '始发机场三字码不能为空',
+          icon:'none'
+        })
+        return;
+      } else {
+        tempData.startCity = order.outTransportInfo.startCityCode;
+      }
+
+      if (util.checkEmpty(order.outTransportInfo.endCityCode)) {
+        wx.showToast({
+          title: '目的机场三字码不能为空',
+          icon: 'none'
+        })
+        return;
+      } else {
+        tempData.endCity = order.outTransportInfo.endCityCode;
+      }
+
+      if (util.checkEmpty(order.outTransportInfo.departureDate)) {
+        wx.showToast({
+          title: '航班时间不能为空',
+          icon: 'none'
+        })
+        return;
+      } else {
+        tempData.dateTime = order.outTransportInfo.departureDate
+      }
+
+    } else {
+      if (!util.checkEmpty(order.outTransportInfo.transportNum)) {
+        tempData.transportNum = order.outTransportInfo.transportNum;
+      }
+      if (!util.checkEmpty(order.transport.startCity)) {
+        tempData.startCity = order.transport.startCity;
+      }
+      if (!util.checkEmpty(order.transport.endCity)) {
+        tempData.endCity = order.transport.endCity;
+      }
+    }
+    
     let that = this;
     wx.showLoading({
       title: '请稍等...',
     })
     wx.request({
       url: config.URL_Service + config.URL_PostTransportInfo,
-      data: {
-        order: {
-          orderNo: order.orderNo
-        },
-        staff: {
-          openId: loginUtil.getOpenId()
-        },
-        transportType: order.transport.transportType,
-        transportNum: order.outTransportInfo.transportNum,
-        startCity: order.transport.startCity,
-        endCity: order.transport.endCity,
-        expressNum: order.outTransportInfo.expressNum
-      },
+      data: tempData,
       method: "POST",
       success(res) {
         console.log("添加运输信息 success: \n" + JSON.stringify(res));
@@ -961,6 +1021,42 @@ Page({
       tempOrder.outTransportInfo = {};
     }
     tempOrder.outTransportInfo.expressNum = e.detail.value;
+  },
+
+  /**
+   * 输入始发机场三字码
+   */
+  inputStartCityCode: function(e) {
+    let tempOrder = this.data.orderList[e.currentTarget.dataset.index];
+    if (tempOrder.outTransportInfo == null) {
+      tempOrder.outTransportInfo = {};
+    }
+    tempOrder.outTransportInfo.startCityCode = e.detail.value;
+  },
+
+  /**
+   * 输入目的机场三字码
+   */
+  inputEndCityCode: function (e) {
+    let tempOrder = this.data.orderList[e.currentTarget.dataset.index];
+    if (tempOrder.outTransportInfo == null) {
+      tempOrder.outTransportInfo = {};
+    }
+    tempOrder.outTransportInfo.endCityCode = e.detail.value;
+  },
+
+  /**
+   * 选择出发时间
+   */
+  selectDepartureDate: function(e) {
+    let tempOrder = this.data.orderList[e.currentTarget.dataset.index];
+    if (tempOrder.outTransportInfo == null) {
+      tempOrder.outTransportInfo = {};
+    }
+    tempOrder.outTransportInfo.departureDate = e.detail.value;
+    this.setData({
+      orderList: this.data.orderList
+    })
   },
 
   /**
