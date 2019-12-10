@@ -1,7 +1,25 @@
 /* pages/map/map.wxss */
+
+.input-box{
+  width: 100vw;
+  height: 8vh;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.input{
+  width: 90%;
+  height: 80%;
+  border-radius: 8rpx;
+  border: 1rpx solid gainsboro; 
+  padding: 0rpx 10rpx;
+}
+
 .map-content{
   width: 100vw;
-  height: 100vh;
+  height: 92vh;
   z-index: 1;
 }
 

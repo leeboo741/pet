@@ -1,5 +1,5 @@
 var app = getApp();
-var encode = require("./encoding.js");
+var encode = require("../libs/encoding.js");
 var jpPrinter = {　　　　
   createNew: function() {　　　　　　
     var jpPrinter = {};

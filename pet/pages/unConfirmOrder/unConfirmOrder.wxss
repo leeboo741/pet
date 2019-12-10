@@ -380,6 +380,14 @@ page {
   padding: 10rpx;
 }
 
+.text-normal{
+  color: black;
+}
+
+.text-placeholder{
+  color: lightgray;
+}
+
 .in-out-port-info-button{
   padding: 8rpx 25rpx;
   margin-left: 15rpx;

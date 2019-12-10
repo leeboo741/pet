@@ -12,8 +12,8 @@ const Version_Code = 62; // 版本编号
  *                      网络请求
  */
 /** =================================================== */
-const URL_Service = "https://www.taochonghui.com"; // 路径 
-// const URL_Service = "http://192.168.3.111:6060"; // 刘
+// const URL_Service = "https://www.taochonghui.com"; // 路径 
+const URL_Service = "http://192.168.3.111:6060"; // 刘
 // const URL_Service = "http://192.168.3.103:6060"; // 罗
 
 const URL_Register = "/api/customer/"; // 注册

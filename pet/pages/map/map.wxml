@@ -1,4 +1,12 @@
 <!--pages/map/map.wxml-->
+<view class="input-box">
+  <input class="input"
+         placeholder='请输入地址'
+         value='{{detailAddress}}'
+         bindinput="inputAddress"
+         bindconfirm="confirmSearchAddress">
+  </input>
+</view>
 <map class='map-content'
      id='MyMap'
      latitude='{{mapCenterLocation.latitude}}'
@@ -10,15 +18,6 @@
      bindmarkertap='tapMarker'
      bindcallouttap='tapCallout'
      bindregionchange='changeRegion'>
-  <cover-view class="address-box"
-              catchtap="tapAddress">
-    <cover-view class="address-content">
-    {{address}}
-    </cover-view>
-    <cover-image class="address-icon"
-                 src="../../resource/index_business_station.png">
-    </cover-image>
-  </cover-view>
   <cover-view class="confirm-button"
               catchtap='confirmSelect'>
   确认

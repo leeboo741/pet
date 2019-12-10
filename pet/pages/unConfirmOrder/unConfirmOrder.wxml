@@ -299,16 +299,18 @@
       <view class="in-out-port-info-area"
             wx:if='{{orderItem.orderStates[0].orderType == "待签收" && orderItem.showChangeDeliver}}'>
         <view class="in-out-port-info-item">
-          <input class="in-out-port-info-input"
+          <input class="in-out-port-info-input text-normal"
                  placeholder="收件人名称"
+                 placeholder-class="text-placeholder"
                  bindinput="inputDeliverName"
                  data-index='{{orderIndex}}'
                  value="{{orderItem.deliverName}}">
           
           </input>
-          <input class="in-out-port-info-input"
+          <input class="in-out-port-info-input text-normal"
                  style="margin-left: 15rpx;"
                  placeholder="收件人电话"
+                 placeholder-class="text-placeholder"
                  bindinput="inputDeliverPhone"
                  data-index='{{orderIndex}}'
                  value="{{orderItem.deliverPhone}}">
@@ -316,13 +318,11 @@
           </input>
         </view>
         <view class="in-out-port-info-item">
-          <textarea class="in-out-port-info-input"
-                    placeholder="收件地址"
-                    bindinput="inputDeliverAddress"
-                    data-index='{{orderIndex}}'
-                    value="{{orderItem.deliverAddress}}"
-                    auto-height="{{true}}">
-          </textarea>
+          <view class="in-out-port-info-input {{orderItem.deliverAddress == null || orderItem.deliverAddress.length <= 0? 'text-placeholder':'text-normal'}}"
+                bindtap="selectDeliverAddress"
+                data-index='{{orderIndex}}'>
+          {{orderItem.deliverAddress == null || orderItem.deliverAddress.length <= 0? '请选择临时派送地址':orderItem.deliverAddress}}
+          </view>
           <view class="in-out-port-info-button"
                 bindtap="tapChangeToDeliver"
                 data-index='{{orderIndex}}'>

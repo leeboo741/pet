@@ -145,6 +145,10 @@
   justify-content: space-between;
 }
 
+.panel{
+  background: rgb(240, 240, 240);
+}
+
 /** ================================= iconfont Start ============================================ */
 
 @font-face {font-family: "iconfont";

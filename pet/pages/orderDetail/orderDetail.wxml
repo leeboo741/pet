@@ -267,7 +267,7 @@
     showReceipt: function(orderItem, userInfo) {
       if (userInfo.role != 3) {
         return true;
-      } else if (orderItem.state == "待揽件") {
+      } else if (orderItem.orderStates[orderItem.orderStates.length-1].orderType == "待揽件") {
         return true;
       }
       return false;
@@ -275,7 +275,7 @@
     showSend: function(orderItem, userInfo) {
       if (userInfo.role != 3) {
         return true;
-      } else if (orderItem.state != "待揽件") {
+      } else if (orderItem.orderStates[orderItem.orderStates.length-1].orderType == "派送中") {
         return true;
       }
       return false;

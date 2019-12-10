@@ -53,6 +53,15 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
+    if (app.globalData.tempDeliverLocation != null) {
+      let tempOrder = this.data.orderList[app.globalData.tempDeliverIndex];
+      tempOrder.deliverAddress = app.globalData.tempDeliverLocation.city + app.globalData.tempDeliverLocation.detailAddress;
+      this.setData({
+        orderList: this.data.orderList
+      })
+      app.globalData.tempDeliverLocation = null;
+      app.globalData.tempDeliverIndex = null;
+    }
   },
 
   /**
@@ -1044,11 +1053,14 @@ Page({
   },
 
   /**
-   * 输入临派地址
+   * 选择临派地址
    */
-  inputDeliverAddress: function (e) {
+  selectDeliverAddress: function (e) {
+    let tempIndex = e.currentTarget.dataset.index;
     let tempOrder = this.data.orderList[e.currentTarget.dataset.index];
-    tempOrder.deliverAddress = e.detail.value;
+    wx.navigateTo({
+      url: pagePath.Path_Map + "?city=" + tempOrder.transport.endCity + "&orderindex=" + tempIndex + "&type=tempdeliver",
+    })
   },
 
   /**
