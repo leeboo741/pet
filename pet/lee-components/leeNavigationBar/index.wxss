@@ -1,0 +1,78 @@
+/* lee-components/leeNavigationBar/index.wxss */
+.navigation-bar {
+  width: 100%;
+  overflow: hidden;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 999;
+  flex-shrink: 0;
+}
+
+.navigation-bar-content{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.navigation-bar-left{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.navigation-bar-center{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.navigation-bar-left-content-box{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.navigation-bar-center-content-box{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+}
+
+.icon-box-single{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin: 0rpx;
+  flex-grow: 1;
+  width: 100%;
+}
+
+.icon-box-double{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin: 0rpx auto;
+  flex-grow: 1;
+  height: 100%;
+}
+
+.icon-split-line{
+  height: 50%;
+  width: 2rpx;
+}
+
+.navigation-bar-center-title{
+  width: 100%;
+  text-align: center;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}

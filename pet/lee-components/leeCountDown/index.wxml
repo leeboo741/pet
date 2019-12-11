@@ -1,0 +1,2 @@
+<!--component/leeCountDown/index.wxml-->
+<view class='i-class'>{{timeStr}}</view>

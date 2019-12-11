@@ -1,0 +1,86 @@
+<!--lee-components/leeImageUpload/index.wxml-->
+<view class="i-class upload-image">
+  <view class="upload-image-box">
+    <view class="upload-image-item"
+          wx:for='{{imagePathList}}'
+          wx:for-item='uploadImageItem'
+          wx:for-index='uploadImageIndex'
+          wx:key='{{uploadImageIndex}}'>
+      <i-image wx:if='{{!parse.isVideo(uploadImageItem)}}'
+               imageSrc='{{uploadImageItem}}'
+               i-class='upload-image-item-image'
+               catchtap="tapImageItem"
+               data-index='{{uploadImageIndex}}'
+               data-src='{{uploadImageItem}}'>
+      </i-image>
+      <block wx:else>
+        <video class='upload-image-item-image'
+               src="{{uploadImageItem}}"
+               id='{{uploadImageItem}}'
+               bindended='playEnd'>
+        </video>
+        <view class="video-tap-box"
+              catchtap="tapVideoItem"
+              data-index='{{uploadImageIndex}}'
+              data-src='{{uploadImageItem}}'
+              data-id='{{uploadImageItem}}'>
+        </view>
+      </block>
+      <view class="progress-box"
+            hidden="{{!parse.showProgress(uploadImageProgress, currentUploadIndex, uploadImageIndex)}}">
+        <i-progress percent="{{uploadImageProgress}}" ableActive='{{true}}' style="width: 90%;" strokWidth='15'>
+        </i-progress>
+      </view>
+      <view class="delete-box"
+            wx:if='{{ableDelete}}'
+            catchtap="deleteImageAction"
+            data-index='{{uploadImageIndex}}'
+            data-imagepath='{{uploadImageItem}}'>
+        <i-image imageSrc='../leeImageUpload/delete.png'
+                 i-class='delete-image'>
+        </i-image>
+      </view>
+    </view>
+    <view class="upload-image-item"
+          wx:if='{{showAddNewButton}}'
+          hidden="{{selectMode=='append'&&imagePathList.length>=maxImageCount}}"
+          catchtap="tapAddNewUploadImage">
+      <view class='upload-image-item-image'>
+        <i-image i-class="upload-image-item-center"
+                 imageSrc='../leeImageUpload/add_new.png'>
+        </i-image>
+      </view>
+    </view>
+  </view>
+</view>
+
+<wxs module='parse'>
+  module.exports={
+    showProgress: function(progressValue, currentIndex, index) {
+      if (currentIndex != index) {
+        return false;
+      }
+      if (progressValue < 0 || progressValue >= 100 ) {
+        return false;
+      }
+      return true;
+    },
+    isVideo: function(path) {
+      var index = path.lastIndexOf(".");
+      var suffix = path.substring(index + 1);
+      if (suffix == "mp4" ||
+        suffix == "mov" ||
+        suffix == "m4v" ||
+        suffix == "3gp" ||
+        suffix == "avi" ||
+        suffix == "m3u8" ||
+        suffix == "webm") {
+        return true;
+      }
+      return false;
+    },
+    getVideoId: function(path) {
+      return path;
+    }
+  }
+</wxs>

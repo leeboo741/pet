@@ -1,0 +1,44 @@
+<!--lee-components/leeNotice/index.wxml-->
+<view wx:if='{{show}}'
+      class="notice-bar i-class">
+  <i-icon wx:if="{{showIcon}}"
+          type="{{iconType}}"
+          size="{{iconSize}}"
+          color="{{iconColor}}"
+          custom="{{iconCustom}}"
+          class="notice-icon">
+  </i-icon>
+  <scroll-view class="notice-bar-scroll {{parse.getNoticeBarScrollClass(showIcon,showCloseBtn)}}"
+               scroll-x='{{true}}'
+               scroll-y='{{false}}'>
+    <view class="notice-bar-content">
+      <view class="notice-bar-content-item"
+            wx:for='{{notices}}'
+            wx:for-item='noticeItem'
+            wx:for-index='noticeIndex'
+            wx:key='{{noticeIndex}}'>
+      {{noticeItem}}
+      </view>
+    </view>
+  </scroll-view> 
+  <i-icon wx:if="{{showCloseBtn}}"
+          class="notice-close"
+          type="cancel-2" 
+          size="{{iconSize}}" 
+          color="{{iconColor}}" 
+          bindtap="closeNoticeAction">
+  </i-icon>
+</view>
+<wxs module='parse'>
+  module.exports={
+    getNoticeBarScrollClass: function(showIcon, showCloseBtn) {
+      if (showIcon && showCloseBtn) {
+        return "notice-bar-scroll-small";
+      } else if (!showIcon && !showCloseBtn) {
+        return "notice-bar-scroll-big";
+      } else {
+        return "notice-bar-scroll-middle";
+      }
+    }
+  }
+</wxs>

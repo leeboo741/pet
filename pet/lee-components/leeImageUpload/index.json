@@ -1,0 +1,7 @@
+{
+  "component": true,
+  "usingComponents": {
+    "i-progress": "/lee-components/leeProgress/index",
+    "i-image": "/lee-components/leePlaceholdImage/index"
+  }
+}

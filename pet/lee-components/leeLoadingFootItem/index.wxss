@@ -1,0 +1,69 @@
+/* lee-components/leeLoadingFootItem/index.wxss */
+.load-box{
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.load-background{
+  position: absolute;
+  top: 0rpx;
+  left: 0rpx;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.load-background-line{
+  width: 90%;
+  border-bottom: 2rpx solid #53a1f0;
+}
+
+.load-content{
+  z-index: 1;
+  background: white;
+  position: relative;
+  padding: 15rpx 40rpx;
+  margin: 15rpx;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+@keyframes iconRotate{
+  0% {transform: rotate(0deg);}
+  50% {transform: rotate(180deg);}
+  100% {transform: rotate(360deg);}
+}
+
+.loading-icon{
+  animation: iconRotate 3s linear infinite;
+}
+
+.load-loading{
+  color: #53a1f0;
+}
+
+.load-end{
+  color: #53a1f0;
+}
+
+.load-normal{
+  color: #53a1f0;
+}
+
+.load-empty{
+  color: #53a1f0;
+}
+
+.load-title{
+  color: #53a1f0;
+  font-size: 32rpx;
+  margin-left: 15rpx;
+}

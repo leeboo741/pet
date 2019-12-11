@@ -1,105 +1,169 @@
 <!--pages/registerStation/registerStation.wxml-->
+<i-panel i-class='panel'
+         title='基本信息'>
+  <i-cell-group>
+    <i-cell title='商家名称'>
+      <view slot="icon"
+            class="non-null-icon">
+      *
+      </view>
+      <input slot="footer" 
+            placeholder="名称"
+            bindinput="inputName">
+      </input>
+    </i-cell>
+    <i-cell title='联系人手机'>
+      <view slot="icon"
+            class="non-null-icon">
+      *
+      </view>
+      <input slot="footer" 
+            placeholder="手机号"
+            bindinput="inputPhone"
+            type="number">
+      </input>
+    </i-cell>
+    <i-cell>
+      <view slot="icon"
+            class="non-null-icon">
+      *
+      </view>
+      <input slot="header"
+            placeholder="验证码"
+            bindinput="inputCode"
+            type="number">
+      </input>
+      <view class="get-code-button {{ableGetCode?'get-able':'get-disable'}}"
+            slot="footer"
+            bindtap="getCode">
+      {{getCodeTitle}}
+      </view>
+    </i-cell>
+    <i-cell title='开始营业时间'>
+      <view slot="icon"
+            class="non-null-icon">
+      *
+      </view>
+      <picker mode='time'
+              slot='footer'
+              bindchange='selectStartTime'>
+        <view>
+        {{parse.getTimeStr(startTime)}}
+        </view>
+      </picker>
+    </i-cell>
+    <i-cell title='结束营业时间'>
+      <view slot="icon"
+            class="non-null-icon">
+      *
+      </view>
+      <picker mode='time'
+              slot='footer'
+              bindchange='selectEndTime'>
+        <view>
+        {{parse.getTimeStr(endTime)}}
+        </view>
+      </picker>
+    </i-cell>
+    <i-cell title='省/市/区'>
+      <view slot="icon"
+            class="non-null-icon">
+      *
+      </view>
+      <picker mode='region'
+              slot='footer'
+              bindchange='selectRegion'>
+        <view>
+        {{parse.getRegionStr(region)}}
+        </view>
+      </picker>
+    </i-cell>
+    <i-cell title='地址'>
+      <view slot="icon"
+            class="non-null-icon">
+      *
+      </view>
+      <textarea slot="footer" 
+                auto-height
+                placeholder="详细地址"
+                bindinput="inputDetailAddress">
+      </textarea>
+    </i-cell>
+    <i-cell title='描述'>
+      <textarea slot="footer" 
+                auto-height
+                placeholder="描述内容"
+                bindinput="inputDescribe">
+      </textarea>
+    </i-cell>
+  </i-cell-group>
+</i-panel>
 
-<i-cell-group>
-  <i-cell title='商家名称'>
-    <view slot="icon"
-          class="non-null-icon">
-    *
-    </view>
-    <input slot="footer" 
-           placeholder="名称"
-           bindinput="inputName">
-    </input>
-  </i-cell>
-  <i-cell title='联系人手机'>
-    <view slot="icon"
-          class="non-null-icon">
-    *
-    </view>
-    <input slot="footer" 
-           placeholder="手机号"
-           bindinput="inputPhone"
-           type="number">
-    </input>
-  </i-cell>
-  <i-cell>
-    <view slot="icon"
-          class="non-null-icon">
-    *
-    </view>
-    <input slot="header"
-           placeholder="验证码"
-           bindinput="inputCode"
-           type="number">
-    </input>
-    <view class="get-code-button {{ableGetCode?'get-able':'get-disable'}}"
-          slot="footer"
-          bindtap="getCode">
-    {{getCodeTitle}}
-    </view>
-  </i-cell>
-  <i-cell title='开始营业时间'>
-    <view slot="icon"
-          class="non-null-icon">
-    *
-    </view>
-    <picker mode='time'
-            slot='footer'
-            bindchange='selectStartTime'>
-      <view>
-      {{parse.getTimeStr(startTime)}}
-      </view>
-    </picker>
-  </i-cell>
-  <i-cell title='结束营业时间'>
-    <view slot="icon"
-          class="non-null-icon">
-    *
-    </view>
-    <picker mode='time'
-            slot='footer'
-            bindchange='selectEndTime'>
-      <view>
-      {{parse.getTimeStr(endTime)}}
-      </view>
-    </picker>
-  </i-cell>
-  <i-cell title='省/市/区'>
-    <view slot="icon"
-          class="non-null-icon">
-    *
-    </view>
-    <picker mode='region'
-            slot='footer'
-            bindchange='selectRegion'>
-      <view>
-      {{parse.getRegionStr(region)}}
-      </view>
-    </picker>
-  </i-cell>
-  <i-cell title='地址'>
-    <view slot="icon"
-          class="non-null-icon">
-    *
-    </view>
-    <textarea slot="footer" 
-              auto-height
-              placeholder="详细地址"
-              bindinput="inputDetailAddress">
-    </textarea>
-  </i-cell>
-  <i-cell title='描述'>
-    <textarea slot="footer" 
-              auto-height
-              placeholder="描述内容"
-              bindinput="inputDescribe">
-    </textarea>
-  </i-cell>
-</i-cell-group>
-<view class="apply-button"
-      bindtap="tapApply">
-提交申请
-</view>
+<!-- <i-panel i-class='panel'
+         title='营业执照'>
+  <i-image-upload uploadUrl='{{uploadUrl}}'
+                  name='multipartFile'
+                  formData='{{}}'
+                  startUpload='{{false}}'
+                  autoUpload='{{true}}'
+                  bind:upload-complete='uploadComplete'
+                  bind:delete-image='deleteImage'
+                  bind:addnew='addNewImage'
+                  ableDelete='{{true}}'
+                  selectMode='cover'
+                  maxImageCount='{{1}}'
+                  imageSourceType="{{['album', 'camera']}}"
+                  showAddNewButton='{{true}}'
+                  ableVideo='{{false}}'>
+  </i-image-upload>
+</i-panel>
+
+<i-panel i-class='panel'
+         title='手持身份证'>
+  <i-image-upload uploadUrl='{{uploadUrl}}'
+                  name='multipartFile'
+                  formData='{{}}'
+                  startUpload='{{false}}'
+                  autoUpload='{{true}}'
+                  bind:upload-complete='uploadComplete'
+                  bind:delete-image='deleteImage'
+                  bind:addnew='addNewImage'
+                  ableDelete='{{true}}'
+                  selectMode='cover'
+                  maxImageCount='{{1}}'
+                  imageSourceType="{{['album', 'camera']}}"
+                  showAddNewButton='{{true}}'
+                  ableVideo='{{false}}'>
+  </i-image-upload>
+</i-panel>
+
+<i-panel i-class='panel'
+         title='店内照片'>
+  <i-image-upload uploadUrl='{{uploadUrl}}'
+                  name='multipartFile'
+                  formData='{{}}'
+                  startUpload='{{false}}'
+                  autoUpload='{{true}}'
+                  bind:upload-complete='uploadComplete'
+                  bind:delete-image='deleteImage'
+                  bind:addnew='addNewImage'
+                  ableDelete='{{true}}'
+                  selectMode='append'
+                  maxImageCount='{{9}}'
+                  videoMaxLength='{{10}}'
+                  imageSourceType="{{['album', 'camera']}}"
+                  videoSourceType="{{['album', 'camera']}}"
+                  showAddNewButton='{{true}}'>
+  </i-image-upload>
+</i-panel> -->
+
+<i-panel i-class='panel'>
+  <view class="apply-button"
+        bindtap="tapApply">
+  提交申请
+  </view>
+</i-panel>
+
 <wxs module='parse'>
   module.exports={
     getRegionStr: function(region) {

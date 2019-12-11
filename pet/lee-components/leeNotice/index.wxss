@@ -1,0 +1,41 @@
+/* lee-components/leeNotice/index.wxss */
+.notice-bar{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.notice-icon{
+  width: 8%;
+}
+
+.notice-bar-scroll{
+  display: flex;
+  padding: 10rpx 15rpx;
+}
+
+.notice-bar-scroll-small{
+  width: 84%;
+}
+
+.notice-bar-scroll-middle{
+  width: 92%;
+}
+
+.notice-bar-scroll-big{
+  width: 100%;
+}
+
+.notice-bar-content{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.notice-bar-content-item{
+  font-size: 32rpx;
+}
+
+.notice-close{
+  width: 8%;
+}

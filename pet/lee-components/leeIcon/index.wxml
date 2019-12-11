@@ -1,0 +1,4 @@
+<!--lee-components/leeIcon/index.wxml-->
+<view class="i-class iconfont {{type===''?'':'icon-'+type}} {{custom}}" 
+      style="font-size:{{size}}rpx;{{color?'color:'+color:''}}">
+</view>

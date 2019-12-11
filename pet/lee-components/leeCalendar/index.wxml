@@ -1,0 +1,87 @@
+<!--lee-components/leeCalendar/index.wxml-->
+<!-- 容器样式 接受大小等等内容 因为内部的样式如果接受外部的话，容易造成日历的样式错乱 -->
+<view class='i-class'>
+  <!-- 日历内容 -->
+  <view class='calendar-area'>
+    <!-- 日历头部 展示星期 -->
+    <view class='calendar-header'>
+      <view class='calendar-header-item'
+            wx:for='{{weeks}}'
+            wx:for-item='weekItem'
+            wx:for-index='weekIndex'
+            wx:key='{{weekIndex}}'>
+        <view class='i-week-title-class'>
+        {{weekItem}}
+        </view>
+      </view>
+    </view>
+    <!-- 月份 -->
+    <view class='calendar-title'>
+      <view class='calendar-title-text'>{{currentPageTitle}}</view>
+    </view>
+    <!-- 日历本体 -->
+    <view class='calendar-content'>
+      <view class='calendar-day'
+            wx:for='{{dayDataSource}}'
+            wx:for-item='dayItem'
+            wx:for-index='dayIndex'
+            wx:key='{{dayIndex}}'
+            bindtap='tapDayItem'
+            data-index='{{dayIndex}}'
+            data-day='{{dayItem.day}}'
+            data-month='{{dayItem.month}}'
+            data-year='{{dayItem.year}}'>
+        <view wx:if='{{dayItem == null}}' class='calendar-day-item-empty i-day-item-empty-class'>
+          <slot name='slot-day-item-empty'></slot>
+        </view>
+        <view wx:else class='calendar-day-item i-day-item-class'>
+          <!-- // today 红色 | warning 红色 | alert 黄色 | remind 蓝色 | complete 绿色 | default 灰色 -->
+          <view class='calendar-day-item-title i-day-item-title-class {{lightingType.getTypeClass(dayItem.lightingType, true)}}'>
+          {{dayItem.day}}
+          </view>
+          <view class='calendar-day-item-lighting i-day-item-lighting-class {{lightingType.getTypeClass(dayItem.lightingType, false)}}'>
+          </view>
+        </view>
+      </view>
+    </view>
+    <!-- 日历底部 -->
+    <view class='calendar-footer'>
+      <view class='calendar-month-selecter'>
+        <view class='calendar-month-selecter-button'
+              bindtap='tapMonthSelecter'
+              data-type='last'>
+          <view class='calendar-month-selecter-button-title'>上个月</view>
+        </view>
+        <view class='calendar-month-selecter-button'
+              bindtap='tapMonthSelecter'
+              data-type='next'>
+          <view class='calendar-month-selecter-button-title'>下个月</view>
+        </view>
+      </view>
+      <slot name='slot-calendar-footer'></slot>
+    </view>
+  </view>
+</view>
+<wxs module='lightingType'>
+  module.exports = {
+    getTypeClass : function(type, showDefaultSpot){
+      if (type == "today") {
+        return "today";
+      } else if (type == "warning") {
+        return "warning";
+      } else if (type == "alert") {
+        return "alert";
+      } else if (type == "remind") {
+        return "remind";
+      } else if (type == "complete") {
+        return "complete";
+      } else {
+        if (showDefaultSpot) {
+          return "default";
+        } else {
+          return "";
+        }
+      }
+    }
+  }
+</wxs>

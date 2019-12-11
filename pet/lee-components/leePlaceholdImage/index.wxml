@@ -1,0 +1,54 @@
+<!--lee-components/leePlaceholdImage/index.wxml-->
+<image class="i-class"
+       src='{{imageSrc}}'
+       mode="{{mode}}"
+       lazy-load="{{lazyLoad}}"
+       hidden="{{parse.hiddenImage(loadState, imageSrc)}}"
+       binderror="loadError"
+       bindload="load">
+</image>
+
+<image class="i-class placehold-image"
+       src='{{placeholderSrc}}'
+       mode="{{mode}}"
+       wx:if="{{parse.showPlaceholderImage(loadState, imageSrc)}}">
+</image>
+
+<image class="i-class fail-image"
+       src='{{parse.getFailSrc(failSrc, placeholderSrc)}}'
+       mode="{{mode}}"
+       wx:if="{{parse.showFailImage(loadState, imageSrc)}}">
+</image>
+
+<wxs module='parse'>
+  module.exports={
+    hiddenImage: function(state, imageSrc) {
+      if (state != 1) {
+        return true;
+      } else if (imageSrc == null || imageSrc.length <= 0) {
+        return true;
+      }
+      return false;
+    },
+    showPlaceholderImage: function(state, imageSrc) {
+      if (state == 0 && (imageSrc != null && imageSrc.length > 0)){
+        return true;
+      }
+      return false;
+    },
+    showFailImage: function(state, imageSrc) {
+      if (state == 2) {
+        return true;
+      } else if (imageSrc == null || imageSrc.length <= 0) {
+        return true;
+      }
+      return false;
+    },
+    getFailSrc: function (failSrc, placeholderSrc) {
+      if (failSrc != null && failSrc.length > 0) {
+        return failSrc;
+      }
+      return placeholderSrc;
+    }
+  }
+</wxs>

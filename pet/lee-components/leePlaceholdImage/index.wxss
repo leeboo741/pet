@@ -1,0 +1,6 @@
+/* lee-components/leePlaceholdImage/index.wxss */
+.before-load{
+  width: 0rpx;
+  height: 0rpx;
+  opacity: 0;
+}

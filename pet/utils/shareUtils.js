@@ -7,9 +7,16 @@ const Util = require("../utils/util.js");
  * 分享 微信小程序
  */
 function getOnShareAppMessageForShareOpenId(){
+  let tempPath = PagePath.Path_Home + '?shareopenid=' + LoginUtil.getOpenId() + '&type=share';
+  if (LoginUtil.getStationNo() != null) {
+    tempPath = tempPath + "&stationno=" + LoginUtil.getStationNo();
+  }
+  if (LoginUtil.getBusinessNo() != null) {
+    tempPath = tempPath + "&businessno=" + LoginUtil.getBusinessNo();
+  }
   return {
-    title: "淘宠惠一站式服务中心",
-    path: PagePath.Path_Home + '?shareopenid=' + LoginUtil.getOpenId() + '&type=share',
+    title: "淘宠惠宠物一站式服务中心",
+    path: tempPath,
     success: function (res) {
       // 转发成功
       // 2018.10.10号之后不允许获知用户分享状态，所以，这个回调没用了
@@ -43,7 +50,6 @@ function getAppOpenData(options, getResultCallback) {
   let type = options.type;
   if (type == null) {
     console.log("options type null");
-    getResultCallback("none",null);
     if (options.q != null) {
       let tempPath = Util.recoverySpecialChar(options.q);
       console.log("options tempPath :\n" + tempPath);
@@ -59,13 +65,21 @@ function getAppOpenData(options, getResultCallback) {
           }
         }
       }
+    } else {
+      if (getResultCallback != null && typeof getResultCallback == 'function') {
+        getResultCallback("none", null);
+      }
     }
   } else {
     console.log("options type :\n" + JSON.stringify(options.type));
     if (options.type == 'share') {
       let shareOpenId = options.shareopenid;
+      let shareStationNo = options.stationno;
+      let shareBusinessNo = options.businessno;
       if (shareOpenId != null) {
         app.ShareData.openId = shareOpenId;
+        app.ShareData.stationNo = shareStationNo;
+        app.ShareData.businessNo = shareBusinessNo;
         console.log("ShareOpenId:\n" + app.ShareData.openId);
         if (getResultCallback != null && typeof getResultCallback == 'function') {
           getResultCallback('share', null);

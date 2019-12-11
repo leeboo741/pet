@@ -1,0 +1,66 @@
+<!--lee-components/leeNavigationBar/index.wxml-->
+<view class="navigation-bar" 
+      style='height:{{naviHeight}}px; background-color:{{backgroundColor}};'>
+  <view class="navigation-bar-content"
+        style="height:{{naviHeightWithoutStatusbar}}px; margin-top:{{statusBarHeight}}px">
+    <view class="navigation-bar-left"
+          style="width:{{leftAreaWidth}}px; ">
+      <view class="navigation-bar-left-content-box"
+            wx:if='{{parse.getLeftButtonState(showBackButton, showCustomButton)!=1}}'
+            style="margin:{{naviTopPadding}}px 0rpx {{naviTopPadding}}px {{naviLeftPadding}}px; border-radius:{{menuHeight/2}}px; width:{{parse.getLeftButtonState(showBackButton, showCustomButton)==2?menuWidth:menuHeight}}px; border-color: #0000001A; border-width:1rpx; border-style: solid; background-color:{{iconBackgroundColor}}; height:{{menuHeight}}px;">
+        <view class="{{parse.getLeftButtonState(showBackButton, showCustomButton)==0?'icon-box-single':'icon-box-double'}}"
+              wx:if="{{showBackButton}}"
+              bindtap="tapBackButton">
+          <i-icon type="left-arrow"
+                  size="42"
+                  color="{{iconColor}}">
+          </i-icon>
+        </view>
+        <view class="icon-split-line"
+              style="background: #ffffff4D;"
+              wx:if='{{parse.getLeftButtonState(showBackButton, showCustomButton)==2}}'>
+        </view>
+        <view class="{{parse.getLeftButtonState(showBackButton, showCustomButton)==0?'icon-box-single':'icon-box-double'}}"
+              wx:if="{{showCustomButton}}"
+              bindtap="tapCustomButton">
+          <i-icon type="{{customButtonIconType}}"
+                  size="42"
+                  color="{{iconColor}}">
+          </i-icon>
+        </view>
+      </view>
+    </view>
+    <view class="navigation-bar-center"
+          style="width:{{centerAreaWidth}}px">
+      <view class="navigation-bar-center-content-box">
+        <view class="navigation-bar-center-title"
+              style="color:{{titleColor}}; font-size:{{titleSize}}rpx; font-weight:{{titleWeight}}; height:{{naviHeightWithoutStatusbar}}px; line-height:{{naviHeightWithoutStatusbar}}px"
+              wx:if="{{!showCustomCenter}}">
+        {{title}}
+        </view>
+        <slot wx:else>
+        </slot>
+      </view>
+    </view>
+    <view class="navigation-bar-right">
+      <view></view>
+    </view>
+  </view>
+</view>
+<view class="navbar-background"
+      wx:if='{{!ableFloat}}'
+      style='height:{{naviHeight}}px; background-color:#00000000;'>
+</view>
+<wxs module='parse'>
+  module.exports={
+    getLeftButtonState: function(showBack, showCustom){
+      if (showBack && showCustom) {
+        return 2;
+      } else if (!showBack && !showCustom) {
+        return 1;
+      } else {
+        return 0;
+      }
+    }
+  }
+</wxs>

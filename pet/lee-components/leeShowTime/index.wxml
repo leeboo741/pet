@@ -1,0 +1,2 @@
+<!--lee-components/leeShowTime/index.wxml-->
+<view class='i-class'>{{showContent}}</view>

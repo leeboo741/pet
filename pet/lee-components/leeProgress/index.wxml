@@ -1,0 +1,67 @@
+<!--lee-components/leeProgress/index.wxml-->
+<!--                               i-progress-box
+    --------------------------------------------------------------------------
+    |                                 header                                 |
+    --------------------------------------------------------------------------
+    |                            progress-center                             |
+    | left/show-left-info |  progress-center-center  | right/show-right-info |
+    --------------------------------------------------------------------------
+    |                                 footer                                 |
+    --------------------------------------------------------------------------
+ -->
+<view class="i-class i-progress-box {{ableActive?'i-progress-active':''}}">
+  <!-- header -->
+  <slot name='progress-header'>
+  </slot>
+  <!-- center -->
+  <view class='i-progress-center'>
+    <!-- center-left -->
+    <slot name='progress-center-left'
+          wx:if='{{showInfoStatus!="left"}}'>
+    </slot>
+    <view class="i-progress-info"
+          style='color: {{parse.getProgressColor(status, progressColor)}}'
+          wx:if='{{showInfoStatus=="left"}}'>
+    {{percent}}%
+    </view>
+    <!-- center-center -->
+    <view class="i-progress-center-center">
+      <view class="i-progress-center-center-bg" style="width:{{percent}}%; height:{{strokWidth}}rpx; background-color: {{parse.getProgressColor(status, progressColor)}}">
+      </view>
+      <view class="i-progress-center-center-content">
+        <slot name='progress-center-center'>
+        </slot>
+      </view>
+    </view>
+    <!-- center-right -->
+    <slot name='progress-center-right'
+          wx:if='{{showInfoStatus!="right"}}'>
+    </slot>
+    <view class="i-progress-info"
+          style='color: {{parse.getProgressColor(status, progressColor)}}'
+          wx:if='{{showInfoStatus=="right"}}'>
+    {{percent}}%
+    </view>
+  </view>
+  <!-- footer -->
+  <slot name="progress-footer">
+  </slot>
+</view>
+
+<wxs module='parse'>
+  module.exports={
+    getProgressColor: function(status, progressColor) {
+      if (status == "normal") {
+        return "#2db7f5";
+      } else if (status == "wrong") {
+        return "#ff9900";
+      } else if (status == "error") {
+        return "#ed3f14";
+      } else if (status == "success") {
+        return "#19be6b";
+      } else {
+        return progressColor;
+      }
+    }
+  }
+</wxs>

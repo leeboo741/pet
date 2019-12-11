@@ -1,0 +1,44 @@
+<!--lee-components/leeLoadingFootItem/index.wxml-->
+<view class="load-box i-class">
+  <view class="load-background"
+        hidden="{{!showBackground}}">
+    <view class="load-background-line">
+    </view>
+    <slot name='background'></slot>
+  </view>
+  <view class="load-content">
+    <view class="load-loading"
+          hidden="{{loadState != 0}}">
+      <i-icon i-class='loading-icon'
+              type='loading-1'
+              size="48">
+      </i-icon>
+      <slot name='loading'></slot>
+    </view>
+    <view class="load-end"
+          hidden="{{loadState != 1}}">
+      <i-icon type='check'
+              size="48">
+      </i-icon>
+      <slot name='end'></slot>
+    </view>
+    <view class="load-normal"
+          hidden="{{loadState != 2}}">
+      <i-icon type='many'
+              size="48">
+      </i-icon>
+      <slot name='normal'></slot>
+    </view>
+    <view class="load-empty"
+          hidden="{{loadState != 3}}">
+      <i-icon type='empty-2'
+              size="48">
+      </i-icon>
+      <slot name='empty'></slot>
+    </view>
+    <view class="load-title">
+    {{loadTitle}}
+      <slot name='title'></slot>
+    </view>
+  </view>
+</view>

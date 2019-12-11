@@ -1,0 +1,148 @@
+/* lee-components/leeCalendar/index.wxss */
+.calendar-area{
+  display: flex;
+  flex-direction: column;
+}
+
+.calendar-header{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border-bottom: 1rpx solid lightgray;
+}
+
+.calendar-header-item{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-grow: 1;
+  flex-shrink: 0;
+  font-size: 28rpx;
+  padding: 10rpx;
+}
+
+.calendar-title{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 20rpx 40prx;
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #778899;
+}
+
+.calendar-title-text{
+  margin: 10rpx 30rpx;
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #778899;
+}
+
+.calendar-content{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.calendar-day{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 14.285714%;
+  height: 120rpx;
+  text-align: center;
+}
+
+.calendar-day-item-empty{
+  height: 120rpx;
+  color: rgba(0, 0, 0, 0);
+}
+
+.calendar-day-item{
+  height: 120rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.calendar-day-item-title{
+  line-height: 60rpx;
+  height: 60rpx;
+  width: 60rpx;
+  border-radius: 30rpx;
+  font-size: 30rpx;
+}
+
+.warning{
+  font-weight: bold;
+  background: #ee2c2c;
+  color: white;
+}
+
+.alert{
+  font-weight: bold;
+  background: #ff9900;
+  color: white;
+}
+
+.remind{
+  font-weight: bold;
+  background: #2d8cf0;
+  color: white;
+}
+
+.complete{
+  font-weight: bold;
+  background: #19be6b;
+  color: white;
+}
+
+.default{
+  font-weight: bold;
+  background: #dcdcdc;
+  color: gray;
+}
+
+.today{
+  line-height: 70rpx;
+  height: 70rpx;
+  width: 70rpx;
+  border-radius: 35rpx;
+  font-size: 35rpx;
+  font-weight: bold;
+  background: #b2d235;
+  color: white;
+}
+
+.calendar-day-item-lighting{
+  margin-top: 10rpx;
+  line-height: 20rpx;
+  width: 20rpx;
+  height: 20rpx;
+  border-radius: 20rpx;
+}
+
+.calendar-month-selecter{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.calendar-month-selecter-button{
+  width: 45%;
+  border-radius: 10rpx;
+  border: 1rpx solid #778899;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.calendar-month-selecter-button-title{
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #778899;
+  padding: 10rpx;
+}
