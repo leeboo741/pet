@@ -1,0 +1,8 @@
+{
+  "usingComponents": {
+    "i-load-more": "/dist/load-more/index",
+    "i-icon": "/dist/icon/index"
+  },
+  "navigationBarTitleText": "工作单",
+  "enablePullDownRefresh": true
+}

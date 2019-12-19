@@ -3,6 +3,8 @@
 const config = require("../../utils/config.js");
 const util = require("../../utils/util.js");
 const ShareUtil = require("../../utils/shareUtils.js");
+const PagePath = require("../../utils/pagePath.js");
+const app = getApp();
 
 const intervalDuration = 60;
 
@@ -25,6 +27,10 @@ Page({
     describe: null, // 描述
     latitude: null, // 纬度
     longitude: null, // 经度
+    serviceItemList:[], // 服务内容
+    licenseImagePath: null, // 执照图片
+    idCardImagePath: null, // 身份证图片
+    storeImagePathList: null, // 店铺图片列表
     getCodeTitle: "获取验证码", // 获取验证码按钮标题
     ableGetCode: true, // 是否允许获得验证码
     intervalID: null, // 获取验证码定时器Id
@@ -51,7 +57,12 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    if (!util.checkEmpty(app.globalData.selectServiceItem)) {
+      this.setData({
+        serviceItemList: app.globalData.selectServiceItem
+      })
+      app.globalData.selectServiceItem = null
+    }
   },
 
   /**
@@ -205,6 +216,17 @@ Page({
   inputDetailAddress: function (e) {
     this.setData({
       detail: e.detail.value
+    })
+  },
+
+  /**
+   * 选择服务内容
+   */
+  selectServiceItem: function() {
+    console.log("选择服务内容")
+    app.globalData.selectServiceItem = this.data.serviceItemList
+    wx.navigateTo({
+      url: PagePath.Path_Station_ServiceItemSelect,
     })
   },
 

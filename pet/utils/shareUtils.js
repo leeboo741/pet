@@ -64,6 +64,15 @@ function getAppOpenData(options, getResultCallback) {
             getResultCallback('scan', null);
           }
         }
+      } else if (tempParams.type == "rqimg") {
+        let businessNo = tempParams.businessno;
+        if (businessNo != null) {
+          app.ShareData.businessNo = businessNo;
+          console.log("businessNo:\n" + app.ShareData.businessNo);
+          if (getResultCallback != null && typeof getResultCallback == 'function') {
+            getResultCallback('rqimg', null);
+          }
+        }
       }
     } else {
       if (getResultCallback != null && typeof getResultCallback == 'function') {
@@ -85,7 +94,7 @@ function getAppOpenData(options, getResultCallback) {
           getResultCallback('share', null);
         }
       }
-    } 
+    }
   }
 }
 

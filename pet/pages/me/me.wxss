@@ -389,6 +389,8 @@ page {
   display: flex;
   /* justify-content: center; */
   align-items: center;
+  flex-direction: row;
+  flex-wrap: wrap;
 }
 
 .btnCommon label {
@@ -407,6 +409,7 @@ page {
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  margin-bottom: 8rpx;
 }
 
 .btnOper label {

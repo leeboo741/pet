@@ -89,6 +89,30 @@
                 bindinput="inputDetailAddress">
       </textarea>
     </i-cell>
+    <!-- <i-cell title='服务内容'
+            is-link>
+      <view slot="icon"
+            class="non-null-icon">
+      *
+      </view>
+      <view class="empty-item-box"
+            slot='footer'
+            catchtap='selectServiceItem'>
+      请选择服务内容
+      </view>
+    </i-cell>
+    <i-cell wx:if='{{serviceItemList!=null&&serviceItemList.length>0}}'>
+      <view class="item-box"
+            slot='header'>
+        <view class='service-item'
+              wx:for='{{serviceItemList}}'
+              wx:for-item='serviceItem'
+              wx:for-index='serviceIndex'
+              wx:key='{{serviceIndex}}'>
+        {{serviceItem}}
+        </view>
+      </view>
+    </i-cell> -->
     <i-cell title='描述'>
       <textarea slot="footer" 
                 auto-height
@@ -150,7 +174,7 @@
                   ableDelete='{{true}}'
                   selectMode='append'
                   maxImageCount='{{9}}'
-                  videoMaxLength='{{10}}'
+                  videoMaxLength='{{30}}'
                   imageSourceType="{{['album', 'camera']}}"
                   videoSourceType="{{['album', 'camera']}}"
                   showAddNewButton='{{true}}'>

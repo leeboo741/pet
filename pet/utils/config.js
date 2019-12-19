@@ -4,8 +4,8 @@
  */
 /** =================================================== */
 const Service_Phone = "4007778889"; // 客服电话
-const Version_Name = "1.4.3"; // 版本名称
-const Version_Code = 63; // 版本编号
+const Version_Name = "1.4.6"; // 版本名称
+const Version_Code = 66; // 版本编号
 
 /** =================================================== */
 /** 
@@ -13,7 +13,8 @@ const Version_Code = 63; // 版本编号
  */
 /** =================================================== */
 // const URL_Service = "https://www.taochonghui.com"; // 路径 
-const URL_Service = "http://192.168.3.111:6060"; // 刘
+const URL_Service = "https://test.taochonghui.com"; // 测试服务器
+// const URL_Service = "http://192.168.3.111:6060"; // 刘
 // const URL_Service = "http://192.168.3.103:6060"; // 罗
 
 const URL_Register = "/api/customer/"; // 注册
@@ -75,6 +76,10 @@ const URL_GetStationPhone = '/station/api/get/phone'; // 获取站点电话
 const URL_UnPayPremiumCount = "/api/order/premium/count/unpaid"; // 未支付差价单数量
 const URL_CancelPremium = "/api/order/premium/cancel"; // 取消补价单
 const URL_CheckConfirm = "/api/order/check/order"; // 查询是否可以收货
+const URL_OrderRefund = "/api/order/refund"; // 订单退款
+const URL_ChangeOrderPrice = "/api/order/update/price"; // 修改订单价格
+const URL_Order_Evalueate = "/api/order/evaluate"; // 订单评价
+const URL_Order_Station_All = "/api/order/list/station"; // 查询站点所有订单
 
 const URL_GetCouponList = '/aip/coupon/listByOpenId'; // 获取优惠券列表
 
@@ -203,6 +208,10 @@ module.exports = {
   URL_UnPayPremiumCount, // 获取未支付差价单数量
   URL_CancelPremium, // 取消补价单
   URL_CheckConfirm, // 查询是否可以收货
+  URL_OrderRefund, // 订单退款
+  URL_ChangeOrderPrice, // 订单改价
+  URL_Order_Evalueate, // 订单评价
+  URL_Order_Station_All, // 查询站点所有订单
 
   URL_GetCouponList, // 获取优惠券列表
 

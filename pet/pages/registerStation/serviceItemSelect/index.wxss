@@ -1,0 +1,25 @@
+/* pages/registerStation/serviceItemSelect/index.wxss */
+.service-item{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 20rpx 30rpx;
+  border-bottom: 1rpx solid rgb(240, 240, 240);
+}
+
+.service-item-name{
+  font-size: 36rpx;
+  flex-grow: 1;
+}
+
+.confirm-button{
+  width: 90%;
+  height: 80rpx;
+  border-radius: 10rpx;
+  color: white;
+  background: #2d8cf0;
+  line-height: 80rpx;
+  text-align: center;
+  font-size: 34rpx;
+  margin: 50rpx auto;
+}

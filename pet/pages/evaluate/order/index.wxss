@@ -1,0 +1,48 @@
+/* pages/evaluate/order/index.wxss */
+
+.star-box{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.star-item{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10rpx;
+}
+
+.star-image{
+  width: 50rpx;
+  height: 50rpx;
+}
+
+.input-area{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-grow: 1;
+  padding: 10rpx;
+  background: rgb(250, 250, 250);
+  border-radius: 8rpx;
+  min-height: 180rpx;
+  border: 1rpx solid rgb(73, 71, 71);
+}
+
+.input{
+  background: rgb(250, 250, 250);
+  width: 100%;
+  min-height: 160rpx;
+}
+
+.submit-button{
+  border-radius: 8rpx;
+  background: #ee2c2c;
+  color: white;
+  font-size: 34rpx;
+  height: 90rpx;
+  line-height: 90rpx;
+  text-align: center;
+}

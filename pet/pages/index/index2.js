@@ -85,6 +85,19 @@ Page({
           wx.switchTab({
             url: pagePath.Path_Me_Index,
           })
+        } else if (type == "rqimg") {
+          loginUtil.checkLogin(function alreadyLoginCallback(state) {
+            wx.hideLoading();
+            if (state) {
+              wx.navigateTo({
+                url: pagePath.Path_Station_Detail + "?stationno=" + app.ShareData.businessNo,
+              })
+            } else {
+              wx.navigateTo({
+                url: pagePath.Path_Login,
+              })
+            }
+          })
         }
       }
     )
@@ -101,7 +114,18 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    if (app.ShareData.businessNo != null) {
+      loginUtil.checkLogin(function alreadyLoginCallback(state) {
+        wx.hideLoading();
+        if (state) {
+          wx.navigateTo({
+            url: pagePath.Path_Station_Detail + "?stationno=" + app.ShareData.businessNo,
+          })
+        } else{
+          app.ShareData.businessNo = null;
+        }
+      })
+    }
   },
 
   /**

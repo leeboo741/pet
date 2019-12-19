@@ -1,0 +1,87 @@
+<!--pages/evaluate/order/index.wxml-->
+<i-panel i-class='panel'
+         title='订单信息'>
+  <i-cell-group>
+    <i-cell title='订单号'
+            value='{{orderNo}}'>
+
+    </i-cell>
+  </i-cell-group>
+</i-panel>
+
+<i-panel i-class='panel'
+         title='评价星级'>
+  <i-cell-group>
+    <i-cell>
+      <view class="star-box"
+            slot='header'>
+        <view class="star-item"
+              wx:for='{{5}}'
+              wx:for-item='starItem'
+              wx:for-index='starIndex'
+              wx:key='{{starIndex}}'
+              bindtap="tapStar"
+              data-level='{{starIndex+1}}'>
+          <image class="star-image"
+                 src='{{starLevel>=(starIndex+1)?"/resource/star_light.png":"/resource/star_unlight.png"}}'>
+          </image>
+        </view>
+      </view>
+    </i-cell>
+  </i-cell-group>
+</i-panel>
+
+<i-panel i-class='panel'
+         title='评价内容'>
+  <i-cell-group>
+    <i-cell>
+      <view class="input-area"
+            slot='header'>
+        <textarea class="input"
+                  bindinput="inputContent"
+                  placeholder="请输入评价内容"
+                  auto-height>
+        </textarea>
+      </view>
+    </i-cell>
+  </i-cell-group>
+</i-panel>
+
+<!-- <i-panel i-class='panel'
+         title='评价图片'>
+  <i-cell-group>
+    <i-cell>
+      <i-image-upload imagePathList='{{imagePath}}'
+                      uploadUrl='{{uploadUrl}}'
+                      name='multipartFiles'
+                      formData='{{}}'
+                      startUpload='{{false}}'
+                      autoUpload='{{flase}}'
+                      bind:upload-complete='uploadComplete'
+                      bind:delete-image='deleteImage'
+                      bind:addnew='addNewImage'
+                      ableDelete='{{true}}'
+                      selectMode='append'
+                      maxImageCount='{{9}}'
+                      maxVideoLength='{{30}}'
+                      imageSourceType="{{['album', 'camera']}}"
+                      videoSourceType="{{['album', 'camera']}}"
+                      showAddNewButton='{{true}}'
+                      ableVideo='{{true}}'
+                      slot='header'>
+      </i-image-upload>
+    </i-cell>
+  </i-cell-group>
+</i-panel> -->
+
+<i-panel i-class='panel'>
+  <i-cell-group>
+    <i-cell>
+      <view slot='header'
+            class="submit-button"
+            bindtap="tapSubmit">
+      确定
+      </view>
+    </i-cell>
+  </i-cell-group>
+</i-panel>

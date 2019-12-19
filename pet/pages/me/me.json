@@ -1,6 +1,7 @@
 {
   "usingComponents": {
-    "i-icon": "/dist/icon/index"
+    "i-icon": "/dist/icon/index",
+    "i-load-more": "/dist/load-more/index"
   },
   "navigationBarTitleText": "个人中心"
 }

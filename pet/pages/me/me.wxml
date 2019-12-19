@@ -82,6 +82,15 @@
     <view class='btnCommon'>
       <view class="btnOper"
             hidden="{{userInfo.role == 0}}"
+            bindtap='gotounpay'>
+        <i-icon type="createtask"
+                color="#F1B000"
+                size="32">
+        </i-icon>
+        <label>未付</label>
+      </view>
+      <view class="btnOper"
+            hidden="{{userInfo.role == 0}}"
             bindtap='gotoWorkbench'>
         <i-icon type="activity"
                 color="#F1B000"

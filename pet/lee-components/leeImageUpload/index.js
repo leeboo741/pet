@@ -14,6 +14,9 @@ const UploadFileService = require("../request/uploadFile/uploadFileService.js");
 
 const Utils = require("../utils/utils.js");
 
+const ResourceType_Img = "IMG";
+const ResourceType_Video = "VIDEO";
+
 Component({
   /** ==================================================== */
   /** ================= 组件数据 Start ==================== */
@@ -132,14 +135,20 @@ Component({
    */
   methods: {
     /**
+     * 是否是视频
+     */
+    isVideo: function(resourceType) {
+      return resourceType == ResourceType_Video;
+    },
+    /**
      * 点击预览图片
      */
     tapImageItem: function (e) {
       let tempPreviewImageList = [];
       for (let i = 0; i < this.data.imagePathList.length; i++) {
         let tempImagePath = this.data.imagePathList[i];
-        if (!Utils.checkIsVideo(tempImagePath)) {
-          tempPreviewImageList.push(tempImagePath);
+        if (!this.isVideo(tempImagePath.type)) {
+          tempPreviewImageList.push(tempImagePath.resource);
         }
       }
       wx.previewImage({
@@ -245,7 +254,10 @@ Component({
                 // 重置 返回值列表
                 // 重置 上传下标
                 that.setData({
-                  imagePathList: res.tempFilePaths,
+                  imagePathList: {
+                    resource: res.tempFilePaths,
+                    type: ResourceType_Img
+                  },
                   serviceImagePathList: [],
                   currentUploadIndex: 0,
                 })
@@ -254,7 +266,10 @@ Component({
                 // 上传列表 追加
                 // 返回值列表不动 等待上传后追加
                 // 下标不动 上传完成后已经+1 当前下标正确
-                that.data.imagePathList = that.data.imagePathList.concat(res.tempFilePaths);
+                that.data.imagePathList = that.data.imagePathList.concat({
+                  resource: res.tempFilePaths,
+                  type: ResourceType_Img
+                });
                 that.setData({
                   imagePathList: that.data.imagePathList,
                 })
@@ -263,7 +278,10 @@ Component({
               let callBackFunctionName = 'addnew'; // 触发事件 方法名
               let myEventDetail = {
                 imagePathList: that.data.imagePathList,
-                newPathList: res.tempFilePaths
+                newPathList: {
+                  resource: res.tempFilePaths,
+                  type: ResourceType_Img
+                }
               }; // detail对象，提供给事件监听函数
               let myEventOption = {
                 'bubbles': false, // 事件是否冒泡
@@ -289,12 +307,18 @@ Component({
             tempVideoParam.success = function success(res) {
               if (that.data.selectMode == "cover") {
                 that.setData({
-                  imagePathList: [res.tempFilePath],
+                  imagePathList: [{
+                    resource: res.tempFilePath,
+                    type: ResourceType_Video
+                  }],
                   serviceImagePathList: [],
                   currentUploadIndex: 0,
                 })
               } else if (that.data.selectMode == "append") {
-                that.data.imagePathList.push(res.tempFilePath);
+                that.data.imagePathList.push({
+                  resource: res.tempFilePath,
+                  type: ResourceType_Video
+                });
                 that.setData({
                   imagePathList: that.data.imagePathList,
                 })
@@ -303,7 +327,10 @@ Component({
               let callBackFunctionName = 'addnew'; // 触发事件 方法名
               let myEventDetail = {
                 imagePathList: that.data.imagePathList,
-                newPathList: [res.tempFilePath]
+                newPathList: [{
+                  resource: res.tempFilePath,
+                  type: ResourceType_Video
+                }]
               }; // detail对象，提供给事件监听函数
               let myEventOption = {
                 'bubbles': false, // 事件是否冒泡
@@ -358,7 +385,7 @@ Component({
       // 上传地址
       tempParam.url = this.data.uploadUrl;
       // 图片地址
-      tempParam.filePath = this.data.imagePathList[this.data.currentUploadIndex];
+      tempParam.filePath = this.data.imagePathList[this.data.currentUploadIndex].resource;
       if (this.data.name != null && this.data.name.length > 0) {
         tempParam.name = this.data.name;
       }

@@ -3,7 +3,10 @@
       wx:for='{{stationList}}'
       wx:for-index='stationIndex'
       wx:for-item='stationItem'
-      wx:key='{{stationIndex}}'>
+      wx:key='{{stationIndex}}'
+      bindtap="tapStation"
+      data-stationno='{{stationItem.businessNo}}'
+      data-index='{{stationIndex}}'>
   <view class="station-item-head">
     
   </view>
@@ -27,7 +30,7 @@
       营业时间：{{parse.parseTime(stationItem.startBusinessHours)}}-{{parse.parseTime(stationItem.endBusinessHours)}}
       </view>
       <view class="station-phone"
-            bindtap="callPhone"
+            catchtap="callPhone"
             data-phonenumber='{{stationItem.phoneNumber}}'>
         <i-icon type="mobilephone"
                 size='15'

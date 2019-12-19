@@ -32,3 +32,22 @@
   font-size: 36rpx;
   border-radius: 10rpx;
 }
+
+.empty-item-box{
+
+}
+
+.item-box{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.service-item{
+  padding: 4rpx 10rpx;
+  margin: 5rpx 8rpx;
+  border-radius: 8rpx;
+  background: coral;
+  color: white;
+}

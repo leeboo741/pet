@@ -40,7 +40,12 @@
     "pages/map/map",
     "pages/consigned/contract/orderExplain/index",
     "pages/withdrawal/withdrawalFlow/index",
-    "pages/balance/balanceFlow"
+    "pages/balance/balanceFlow",
+    "pages/refund/index",
+    "pages/evaluate/order/index",
+    "pages/station/stationDetail/index",
+    "pages/registerStation/serviceItemSelect/index",
+    "pages/unPayWork/index"
   ],
   "window": {
     "backgroundTextStyle": "light",

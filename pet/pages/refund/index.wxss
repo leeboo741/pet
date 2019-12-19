@@ -1,0 +1,20 @@
+/* pages/refund/index.wxss */
+
+.input{
+  flex-grow: 1;
+  padding: 5prx 20rpx;
+  border-radius: 5rpx;
+  background: rgb(240, 240, 240);
+  width: 100%;
+  min-height: 60rpx;
+}
+
+.submit-button{
+  border-radius: 8rpx;
+  background: #ee2c2c;
+  color: white;
+  font-size: 34rpx;
+  height: 90rpx;
+  line-height: 90rpx;
+  text-align: center;
+}

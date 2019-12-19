@@ -1,0 +1,103 @@
+<!--pages/station/stationDetail/index.wxml-->
+<text>{{stationNo}}</text>
+<i-panel i-class='panel'
+         title='基本信息'>
+  <i-cell-group>
+    <i-cell>
+      <view class="station-item"
+            slot='header'>
+        <view class="station-item-head">
+          
+        </view>
+        <view class="station-item-content">
+          <view class="station-logo-box">
+            <image class="station-logo"
+                  src="{{parse.getLogoPath(stationData.iconAddress)}}"
+                  lazy-load="{{true}}"
+                  mode="scaleToFit">
+            </image>
+          </view>
+          <view class="station-info-box">
+            <view class="station-name">
+            {{stationData.businessName}}
+            </view>
+            <view class="station-business-hours">
+              <i-icon type="time"
+                      size='15'
+                      color="#b5d7eb">
+              </i-icon>
+            营业时间：{{parse.parseTime(stationData.startBusinessHours)}}-{{parse.parseTime(stationData.endBusinessHours)}}
+            </view>
+            <view class="station-phone"
+                  catchtap="callPhone"
+                  data-phonenumber='{{stationData.phoneNumber}}'>
+              <i-icon type="mobilephone"
+                      size='15'
+                      color="#b5d7eb">
+              </i-icon>
+            联系电话：{{stationData.phoneNumber}}
+            </view>
+            <view class="station-address">
+              <i-icon type="coordinates"
+                      size='15'
+                      color="#b5d7eb">
+              </i-icon>
+            地址：{{stationData.province}}{{stationData.city}}{{stationData.detailAddress}}
+            </view>
+          </view>
+        </view>
+        <view class="station-item-foot">
+          <view class="station-service-box">
+            <view class="service-item"
+                  wx:for='{{stationData.serviceList}}'
+                  wx:for-item='serviceItem'
+                  wx:for-index='serviceIndex'
+                  wx:key='{{serviceIndex}}'>
+            {{serviceItem}}
+            </view>
+          </view>
+        </view>    
+      </view>
+    </i-cell>
+  </i-cell-group>
+</i-panel>
+
+<i-panel i-class='panel'
+         title='营业执照'>
+  <i-image-upload showAddNewButton='{{false}}'
+                  imagePathList='{{}}'>
+
+  </i-image-upload>
+</i-panel>
+
+<i-panel i-class='panel'
+         title='手持身份证'>
+  <i-image-upload showAddNewButton='{{false}}'
+                  imagePathList='{{}}'>
+
+  </i-image-upload>
+</i-panel>
+
+<i-panel i-class='panel'
+         title='店铺内照片'>
+  <i-image-upload showAddNewButton='{{false}}'
+                  imagePathList='{{}}'>
+
+  </i-image-upload>
+</i-panel>
+
+<wxs module='parse'>
+  module.exports={
+    parseTime: function(time) {
+      var timeArray = time.split(':');
+      var tempTime = timeArray[0] + ":" + timeArray[1];
+      return tempTime
+    },
+    getLogoPath: function(imagePath) {
+      if (imagePath == null || imagePath.length <= 0) {
+        return "/resource/store_placeholder.png";
+      }
+      return imagePath;
+    }
+  }
+</wxs>

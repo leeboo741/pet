@@ -431,19 +431,32 @@ Page({
    * 点击已完成更多
    */
   tapCompleteMore: function (e) {
-    let itemList = ["订单详情", "修改订单"];
+    // let itemList = ["订单详情", "评价"];
+    let itemList = ["订单详情"];
     let index = e.currentTarget.dataset.tapindex;
     let orderNo = e.currentTarget.dataset.orderno;
+    let tempOrder = this.data.completeList[index];
     let that = this;
     wx.showActionSheet({
       itemList: itemList,
       success(res) {
         if (res.tapIndex == 0) { // 订单详情
           that.tapOrderDetail(e, that.data.completeList[index]);
-        } else if (res.tapIndex == 1) { // 修改订单
-          that.tapEditOrder(e, false);
         }
+        //  else if (res.tapIndex == 1) { // 修改订单
+        //   // that.tapEditOrder(e, false);
+        //   that.evaluateOrder(tempOrder)
+        // }
       },
+    })
+  },
+
+  /**
+   * 评价订单
+   */
+  evaluateOrder: function (order) {
+    wx.navigateTo({
+      url: pagePath.Path_Order_Evaluate + "?orderno=" + order.orderNo,
     })
   },
 
@@ -613,6 +626,15 @@ Page({
   gotoWithDrawal: function() {
     wx.navigateTo({
       url: pagePath.Path_Me_Withdrawal
+    })
+  },
+
+  /**
+   * 前往未付款订单
+   */
+  gotounpay: function() {
+    wx.navigateTo({
+      url: pagePath.Path_Order_Unpay,
     })
   },
 

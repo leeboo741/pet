@@ -776,7 +776,7 @@ Page({
    * 点击更多
    */
   tapMoreOperate: function(e) {
-    let itemList = ["打印标签", "补价", "订单详情"];
+    let itemList = ["打印标签", "补价", "订单详情", "退款"];
     if (this.data.userInfo.role == 1) {
       itemList.push("分配订单")
     }
@@ -800,6 +800,10 @@ Page({
           }
           wx.navigateTo({
             url: pagePath.Path_Order_Detail + '?orderno=' + orderNo + '&type=1' + "&showprice=" + showPrice,
+          })
+        } else if (res.tapIndex == 3) {
+          wx.navigateTo({
+            url: pagePath.Path_Order_Refund + '?orderno=' + orderNo,
           })
         } else {
           let allocationStaffList = that.data.orderList[index].orderAssignments;

@@ -159,6 +159,10 @@ Page({
     if (app.ShareData.openId != null) {
       tempData.shareOpenId = app.ShareData.openId
     }
+    tempData.businessNo = "";
+    if (app.ShareData.businessNo != null) {
+      tempData.businessNo = app.ShareData.businessNo
+    }
     console.log("绑定数据 => " + JSON.stringify(tempData));
     wx.request({
       url: config.URL_Service + config.URL_Register,

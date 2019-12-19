@@ -4,6 +4,7 @@ const app = getApp();
 const config = require("../../utils/config.js");
 const util = require("../../utils/util.js");
 const ShareUtil = require("../../utils/shareUtils.js");
+const PagePath = require("../../utils/pagePath.js");
 
 Page({
 
@@ -78,6 +79,19 @@ Page({
     wx.makePhoneCall({
       phoneNumber: e.currentTarget.dataset.phonenumber,
     })
+  },
+
+  /**
+   * 点击驿站
+   */
+  tapStation: function(e) {
+    let tempStation = this.data.stationList[e.currentTarget.dataset.index];
+    let stationNo = e.currentTarget.dataset.stationno;
+
+    // wx.navigateTo({
+    //   url: PagePath.Path_Station_Detail + "?stationno=" + stationNo,
+    // })
+
   },
 
   /**

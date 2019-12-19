@@ -1,0 +1,51 @@
+<!--pages/refund/index.wxml-->
+<i-panel title='订单信息'
+         i-class='panel'>
+  <i-cell-group>
+    <i-cell title='订单号'
+            value='{{orderNo}}'>
+    </i-cell>
+  </i-cell-group>
+</i-panel>
+<i-panel title='费用'
+         i-class='panel'>
+  <i-cell-group>
+    <i-cell title='扣减服务费'>
+      <input class="input"
+             placeholder="0"
+             bindinput="inputServiceAmount"
+             type='digit'
+             slot='footer'>
+      
+      </input>
+    </i-cell>
+  </i-cell-group>
+</i-panel>
+
+<i-panel title='退款原因'
+         i-class='panel'>
+  <i-cell-group>
+    <i-cell>
+      <textarea class="input"
+                style="min-height: 200rpx"
+                auto-height="{{true}}"
+                bindinput="inputReason"
+                placeholder="请输入退款原因"
+                slot='header'>
+      
+      </textarea>
+    </i-cell>
+  </i-cell-group>
+</i-panel>
+
+<i-panel i-class='panel'>
+  <i-cell-group>
+    <i-cell>
+      <view class="submit-button"
+            slot='header'
+            bindtap="tapSubmit">
+      确定
+      </view>
+    </i-cell>
+  </i-cell-group>
+</i-panel>

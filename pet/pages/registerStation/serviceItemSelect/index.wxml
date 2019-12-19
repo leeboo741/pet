@@ -1,0 +1,30 @@
+<!--pages/registerStation/serviceItemSelect/index.wxml-->
+<i-panel title="员工列表"
+         i-class='panel'>
+  <view wx:for="{{serviceItemList}}" 
+        wx:for-item='serviceItem'
+        wx:for-index='serviceIndex'
+        wx:key="{{serviceIndex}}" 
+        class="service-item"
+        bindtap="tapService"
+        data-index="{{serviceIndex}}">
+    <view class="service-item-name">
+    {{serviceItem.name}}  
+    </view> 
+    <i-icon type="success_fill"
+            size="32"
+            color="#2d8cf0"
+            wx:if="{{serviceItem.selected}}">
+    </i-icon>
+    <i-icon type="success_fill"
+            size="32"
+            color="#e9eaec"
+            wx:else>
+    </i-icon>
+  </view>
+</i-panel>
+
+<view class="confirm-button"
+      bindtap="confirm">
+确定
+</view>

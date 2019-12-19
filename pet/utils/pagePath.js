@@ -21,14 +21,19 @@ const Path_Contract_OrderExplain = "/pages/consigned/contract/orderExplain/index
 
 const Path_Order_Filter = "/pages/orderFilter/orderFilter"; // 单据筛选
 const Path_Order_Workbench = "/pages/workbench/workbench"; // 工单
+const Path_Order_Unpay = "/pages/unPayWork/index"; // 未付款订单
 const Path_Order_UnConfirmOrder = "/pages/unConfirmOrder/unConfirmOrder"; // 收货单
 const Path_Order_All = "/pages/finishOrder/finishOrder"; // 所有单据
 const Path_Order_Detail = "/pages/orderDetail/orderDetail"; // 单据详情
 const Path_Order_Allocation_SelectorStaff = "/pages/selectorStaff/selectorStaff"; // 分配--选择员工
 const Path_Order_Edit = "/pages/editOrder/editOrder"; // 编辑订单
 const Path_Order_Premium = "/pages/premium/premium"; // 补差价
+const Path_Order_Refund = "/pages/refund/index"; // 申请退款
+const Path_Order_Evaluate = "/pages/evaluate/order/index"; // 评价订单
 
 const Path_Station = "/pages/station/station";  // 驿站
+const Path_Station_ServiceItemSelect = "/pages/registerStation/serviceItemSelect/index"; // 驿站服务内容选择
+const Path_Station_Detail = "/pages/station/stationDetail/index"; // 驿站详情
 
 const Path_Aboard = "/pages/goAboard/goAboard"; // 出国
 
@@ -71,14 +76,19 @@ module.exports = {
 
   Path_Order_Filter: Path_Order_Filter, // 单据筛选
   Path_Order_Workbench: Path_Order_Workbench, // 工单
+  Path_Order_Unpay: Path_Order_Unpay, // 未付款
   Path_Order_UnConfirmOrder: Path_Order_UnConfirmOrder, // 收货单
   Path_Order_All: Path_Order_All, // 所有单据
   Path_Order_Detail: Path_Order_Detail, // 单据详情
   Path_Order_Allocation_SelectorStaff: Path_Order_Allocation_SelectorStaff, // 分配--选择员工
   Path_Order_Edit: Path_Order_Edit, // 编辑订单
   Path_Order_Premium: Path_Order_Premium, // 补差价
+  Path_Order_Refund: Path_Order_Refund, // 申请退款
+  Path_Order_Evaluate: Path_Order_Evaluate, // 订单评价
 
   Path_Station: Path_Station,  // 驿站
+  Path_Station_ServiceItemSelect: Path_Station_ServiceItemSelect, // 驿站服务内容选择
+  Path_Station_Detail: Path_Station_Detail, // 驿站详情
 
   Path_Aboard: Path_Aboard, // 出国
 

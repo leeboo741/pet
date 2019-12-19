@@ -7,23 +7,23 @@
           wx:for-index='uploadImageIndex'
           wx:key='{{uploadImageIndex}}'>
       <i-image wx:if='{{!parse.isVideo(uploadImageItem)}}'
-               imageSrc='{{uploadImageItem}}'
+               imageSrc='{{uploadImageItem.resource}}'
                i-class='upload-image-item-image'
                catchtap="tapImageItem"
                data-index='{{uploadImageIndex}}'
-               data-src='{{uploadImageItem}}'>
+               data-src='{{uploadImageItem.resource}}'>
       </i-image>
       <block wx:else>
         <video class='upload-image-item-image'
-               src="{{uploadImageItem}}"
-               id='{{uploadImageItem}}'
+               src="{{uploadImageItem.resource}}"
+               id='{{uploadImageItem.resource}}'
                bindended='playEnd'>
         </video>
         <view class="video-tap-box"
               catchtap="tapVideoItem"
               data-index='{{uploadImageIndex}}'
-              data-src='{{uploadImageItem}}'
-              data-id='{{uploadImageItem}}'>
+              data-src='{{uploadImageItem.resource}}'
+              data-id='{{uploadImageItem.resource}}'>
         </view>
       </block>
       <view class="progress-box"
@@ -35,7 +35,7 @@
             wx:if='{{ableDelete}}'
             catchtap="deleteImageAction"
             data-index='{{uploadImageIndex}}'
-            data-imagepath='{{uploadImageItem}}'>
+            data-imagepath='{{uploadImageItem.resource}}'>
         <i-image imageSrc='../leeImageUpload/delete.png'
                  i-class='delete-image'>
         </i-image>
@@ -66,21 +66,7 @@
       return true;
     },
     isVideo: function(path) {
-      var index = path.lastIndexOf(".");
-      var suffix = path.substring(index + 1);
-      if (suffix == "mp4" ||
-        suffix == "mov" ||
-        suffix == "m4v" ||
-        suffix == "3gp" ||
-        suffix == "avi" ||
-        suffix == "m3u8" ||
-        suffix == "webm") {
-        return true;
-      }
-      return false;
-    },
-    getVideoId: function(path) {
-      return path;
+      return path.type == "VIDEO";
     }
   }
 </wxs>
