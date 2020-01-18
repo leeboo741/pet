@@ -559,8 +559,20 @@ Page({
    */
   tapSetting: function () {
     console.log("点击设置")
-    wx.navigateTo({
-      url: pagePath.Path_Me_Setting,
+    // wx.navigateTo({
+    //   url: pagePath.Path_Me_Setting,
+    // })
+    let that = this;
+    wx.showActionSheet({
+      itemList: ["退出登陆"],
+      success(res) {
+        if(res.tapIndex == 0) {
+          wx.clearStorage();
+          that.setData({
+            userInfo: loginUtil.getUserInfo()
+          })
+        }
+      }
     })
   },
 

@@ -208,7 +208,7 @@ Page({
     } else if (loginUtil.getBusinessNo() != null) {
       tempUrl = config.URL_Service + config.URL_BalanceBuffer_Business;
       tempData = {
-        stationNo: loginUtil.getBusinessNo()
+        businessNo: loginUtil.getBusinessNo()
       }
     }
     let that = this;

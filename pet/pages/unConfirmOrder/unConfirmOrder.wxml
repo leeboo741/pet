@@ -395,23 +395,27 @@
 
 </view>
 
-<wxs module='parse'>
-  module.exports={
-    showSender: function(orderItem, userInfo) {
-      if (userInfo.role != 3) {
+      <!-- if (userInfo.role != 3) {
         return true;
       } else if (orderItem.orderStates[0].orderType == "待揽件") {
         return true;
       }
-      return false;
-    },
-    showReceiver: function(orderItem, userInfo) {
-      if (userInfo.role != 3) {
+      return false; -->
+
+      <!-- if (userInfo.role != 3) {
         return true;
       } else if (orderItem.orderStates[0].orderType != "待揽件") {
         return true;
       }
-      return false;
+      return false; -->
+
+<wxs module='parse'>
+  module.exports={
+    showSender: function(orderItem, userInfo) {
+      return true;
+    },
+    showReceiver: function(orderItem, userInfo) {
+      return true;
     },
     showChangeDeliver: function(orderItem) {
       if (orderItem.orderStates[0].orderType == "待签收") {

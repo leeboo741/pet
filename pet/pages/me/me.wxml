@@ -62,8 +62,7 @@
         </view>
         <!--设置按钮-->
         <view class="btn-icon"
-              bindtap='tapSetting'
-              hidden>
+              bindtap='tapSetting'>
           <i-icon type="setup"
                   color="#778899"
                   size="25">
@@ -151,7 +150,8 @@
         <label>提现</label>
       </view>
       <view class="btnOper"
-            bindtap="applyStation">
+            bindtap="applyStation"
+            wx:if='{{userInfo!=null}}'>
         <i-icon type="businesscard"
                 color="#F1B000"
                 size="32">

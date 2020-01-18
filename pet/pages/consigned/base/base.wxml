@@ -245,7 +245,7 @@
             </view>
           </view>
         </view>
-        <view class='addedServer-item'>
+        <view class='addedServer-item' hidden="{{!addServerPetCan.ableUse}}">
           <view class='addServer-info' 
                 bindtap='tapAddServerPetCan'>
             <icon class="iconfont icongouhao gou {{addServerPetCan.selected?'choose':''}}">

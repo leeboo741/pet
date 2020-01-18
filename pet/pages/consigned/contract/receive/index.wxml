@@ -1,6 +1,6 @@
 <!--pages/consigned/contract/receive/index.wxml-->
 <view class="content-box">
   <text class="content">
-  接宠所在地，距离当地网点十公里范围内免费，超出范围接宠司机会收取相应路费。具体以当地网点联系结果为准。
+  接宠所在地，距离当地网点10公里范围内免费，超出范围接宠司机会收取相应路费。具体以当地网点联系结果为准。
   </text>
 </view>

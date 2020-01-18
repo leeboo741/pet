@@ -3,6 +3,6 @@
     "i-load-more": "/dist/load-more/index",
     "i-icon": "/dist/icon/index"
   },
-  "navigationBarTitleText": "工作单",
+  "navigationBarTitleText": "未付款",
   "enablePullDownRefresh": true
 }

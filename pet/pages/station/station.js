@@ -5,6 +5,9 @@ const config = require("../../utils/config.js");
 const util = require("../../utils/util.js");
 const ShareUtil = require("../../utils/shareUtils.js");
 const PagePath = require("../../utils/pagePath.js");
+const LoadFootItemState = require("../../lee-components/leeLoadingFootItem/loadFootObj.js");
+
+const Limit = 20;
 
 Page({
 
@@ -14,6 +17,8 @@ Page({
   data: {
     stationList:[],
     location:null, // 位置信息
+    pageIndex: 0,
+    loadState: LoadFootItemState.Loading_State_Normal
   },
 
   /**
@@ -55,6 +60,7 @@ Page({
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
+    this.data.pageIndex = 0;
     this.requestLocation();
   },
 
@@ -62,7 +68,14 @@ Page({
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function () {
-
+    if (this.data.loadState == LoadFootItemState.Loading_State_End ||
+      this.data.loadState == LoadFootItemState.Loading_State_Loading) {
+      return;
+    }
+    this.setData({
+      loadState: LoadFootItemState.Loading_State_Loading,
+    })
+    this.requestStation();
   },
 
   /**
@@ -141,7 +154,9 @@ Page({
       url: config.URL_Service + config.URL_GetBusinessByPosition,
       data: {
         latitude: this.data.location.latitude,
-        longitude: this.data.location.longitude
+        longitude: this.data.location.longitude,
+        offset: this.data.pageIndex,
+        limit: Limit
       },
       success(res) {
         wx.hideLoading();
@@ -152,9 +167,27 @@ Page({
             icon: 'none'
           })
         } else {
-          that.setData({
-            stationList: res.data.data
-          })
+          if (that.data.pageIndex == 0) {
+            that.setData({
+              stationList: res.data.data,
+              pageIndex: that.data.pageIndex + Limit,
+              loadState: LoadFootItemState.Loading_State_Normal
+            })
+          } else {
+            let tempData = that.data.stationList.concat(res.data.data);
+            that.data.pageIndex = that.data.pageIndex + Limit;
+            if (res.data.data.length < Limit) {
+              that.setData({
+                stationList: tempData,
+                loadState: LoadFootItemState.Loading_State_End
+              })
+            } else {
+              that.setData({
+                stationList: tempData,
+                loadState: LoadFootItemState.Loading_State_Normal
+              })
+            }
+          }
         }
       },
       fail(res) {

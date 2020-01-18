@@ -43,8 +43,10 @@ Page({
         icon: '../../resource/index_business_abroad.png',
         name: '宠物店',
         // target: pagePath.Path_Aboard,
-        target: pagePath.Path_Apply_Register_Station,
-        actionType: BUSINESS_ACTION_TYPE_NAVIGATE,
+        // target: pagePath.Path_Apply_Register_Station,
+        target: pagePath.Path_Station,
+        // actionType: BUSINESS_ACTION_TYPE_NAVIGATE,
+        actionType: BUSINESS_ACTION_TYPE_SWITCH,
       },
       {
         icon: '../../resource/index_business_order_list.png',
@@ -89,9 +91,9 @@ Page({
           loginUtil.checkLogin(function alreadyLoginCallback(state) {
             wx.hideLoading();
             if (state) {
-              wx.navigateTo({
-                url: pagePath.Path_Station_Detail + "?stationno=" + app.ShareData.businessNo,
-              })
+              // wx.navigateTo({
+              //   url: pagePath.Path_Station_Detail + "?stationno=" + app.ShareData.businessNo,
+              // })
             } else {
               wx.navigateTo({
                 url: pagePath.Path_Login,
@@ -118,11 +120,9 @@ Page({
       loginUtil.checkLogin(function alreadyLoginCallback(state) {
         wx.hideLoading();
         if (state) {
-          wx.navigateTo({
-            url: pagePath.Path_Station_Detail + "?stationno=" + app.ShareData.businessNo,
-          })
-        } else{
-          app.ShareData.businessNo = null;
+          // wx.navigateTo({
+          //   url: pagePath.Path_Station_Detail + "?stationno=" + app.ShareData.businessNo,
+          // })
         }
       })
     }

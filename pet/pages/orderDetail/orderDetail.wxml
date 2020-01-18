@@ -261,24 +261,29 @@
     </view>
   </i-cell>
 </i-panel>
-
-<wxs module='parse'>
-  module.exports={
-    showReceipt: function(orderItem, userInfo) {
-      if (userInfo.role != 3) {
+<!-- showReceipt
+if (userInfo.role != 3) {
         return true;
       } else if (orderItem.orderStates[orderItem.orderStates.length-1].orderType == "待揽件") {
         return true;
       }
-      return false;
-    },
-    showSend: function(orderItem, userInfo) {
-      if (userInfo.role != 3) {
+      return false; -->
+<!-- showSend
+ if (userInfo.role != 3) {
         return true;
       } else if (orderItem.orderStates[orderItem.orderStates.length-1].orderType == "派送中") {
         return true;
       }
-      return false;
+      return false;-->
+<!-- showTempDeliver
+ -->
+<wxs module='parse'>
+  module.exports={
+    showReceipt: function(orderItem, userInfo) {
+      return true;
+    },
+    showSend: function(orderItem, userInfo) {
+      return true;
     },
     getTempDeliverName: function(order){
       if (order.orderTempDelivers != null && order.orderTempDelivers.length > 0) {

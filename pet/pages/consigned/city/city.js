@@ -40,6 +40,7 @@ Page({
       url: config.URL_Service + config.URL_StartCity,
       success(res) {
         wx.hideLoading();
+        console.log(res);
         that.data.citys = res.data.data.bodys;
         that.data.cityAZ = res.data.data.headers;
         that.setData({

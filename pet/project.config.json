@@ -73,6 +73,13 @@
 					"pathName": "pages/index/index2",
 					"query": "q=https%3A%2F%2Fwww.taochonghui.com%2Fweapp%2Fjump%2Fshare%3Ftype%3Drqimg%26businessno%3Dd32ceabd6a9744e98d39006a60c40485&scancode_time=1576231976",
 					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "商家扫码2",
+					"pathName": "pages/index/index2",
+					"query": "q=https%3A%2F%2Fwww.taochonghui.com%2Fweapp%2Fjump%2Fshare%3Ftype%3Drqimg%26businessno%3D2c69e29b0ef647f189ad7c3aca2cdcdb&scancode_time=1576922969",
+					"scene": null
 				}
 			]
 		}

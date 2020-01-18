@@ -44,8 +44,7 @@
               class="button-box">
           <view class="button-opt button-reject"
                 bindtap="tapRejectStationApply"
-                data-index='{{applyIndex}}'
-                hidden>
+                data-index='{{applyIndex}}'>
           驳回
           </view>
           <view class="button-opt button-approval"
@@ -93,8 +92,7 @@
               class="button-box">
           <view class="button-opt button-reject"
                 bindtap="tapRejectStaffApply"
-                data-index='{{applyIndex}}'
-                hidden>
+                data-index='{{applyIndex}}'>
           驳回
           </view>
           <view class="button-opt button-approval"

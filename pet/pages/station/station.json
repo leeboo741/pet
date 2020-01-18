@@ -1,6 +1,7 @@
 {
   "usingComponents": {
-    "i-icon":"/dist/icon/index"
+    "i-icon":"/dist/icon/index",
+    "i-load-foot-item": "/lee-components/leeLoadingFootItem/index"
   },
   "navigationBarTitleText": "驿站",
   "enablePullDownRefresh": true

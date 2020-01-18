@@ -26,7 +26,9 @@ Page({
     readCharacter: false, // 是否查到 读取 服务
     notifyCharacter: false, // 是否查到 通知 服务
 
-    orderFilter: null, // 更多筛选条件
+    orderFilter: null, // 更多筛选条
+
+    uploadFailCount: 0, // 上传失败数量
   },
 
   /**
@@ -112,8 +114,9 @@ Page({
    */
   handleReadyToInHarbour: function (order) {
     if ((!util.checkEmpty(order.currentUploadVideos) || !util.checkEmpty(order.currentUploadImages))
-      && util.checkEmpty(order.uploadImages)
-      && util.checkEmpty(order.uploadVideos)) {
+      // && util.checkEmpty(order.uploadImages)
+      // && util.checkEmpty(order.uploadVideos)
+      ) {
       order.readyToInHarbour = true;
     } else {
       order.readyToInHarbour = false;
@@ -156,6 +159,7 @@ Page({
       uploadList = uploadList.concat(tempOrder.uploadVideos)
     }
     let uploadIndex = 0;
+    this.data.uploadFailCount = 0;
     let uploadLength = uploadList.length;
     console.log("需要上传的文件 => \n图片:\n" + JSON.stringify(tempOrder.uploadImages) + "\n视频：\n" + JSON.stringify(tempOrder.uploadVideos));
     this.requestUploadFile(uploadList, uploadIndex, tempOrder);
@@ -192,6 +196,7 @@ Page({
             title: "文件上传失败",
             icon: 'none'
           })
+          that.data.uploadFailCount++;
         } else {
           let mediaAddress = tempObj.data[0].viewAddress;
           let tempVideoObj = {
@@ -223,6 +228,7 @@ Page({
       fail(res) {
         wx.hideLoading();
         console.log("上传失败 index: " + uploadIndex);
+        that.data.uploadFailCount ++;
         wx.showToast({
           title: "一个文件上传失败",
           icon: 'none'
@@ -236,9 +242,16 @@ Page({
           if (uploadIndex < fileList.length) {
             that.requestUploadFile(fileList, uploadIndex, order)
           } else {
-            wx.showToast({
-              title: '上传完成',
-            })
+            if (that.data.uploadFailCount > 0) {
+              wx.showToast({
+                title: that.data.uploadFailCount +"张图片上传失败",
+                icon: 'none'
+              })
+            } else {
+              wx.showToast({
+                title: '上传完成',
+              })
+            }
             that.handleReadyToUpload(order)
             that.handleReadyToInHarbour(order);
           }

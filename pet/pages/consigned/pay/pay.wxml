@@ -5,7 +5,7 @@
       <icon class='iconfont iconfengexian'>
       </icon>
       <label>
-      寄宠人信息
+      寄宠人信息(身份证姓名)
       </label>
     </view>
     <view class='sendUserInfo'>
@@ -30,7 +30,7 @@
       <icon class='iconfont iconfengexian'>
       </icon>
       <label>
-      收宠人信息
+      收宠人信息(身份证姓名)
       </label>
     </view>
     <view class='receiveUserInfo'>

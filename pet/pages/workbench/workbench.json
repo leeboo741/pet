@@ -1,6 +1,7 @@
 {
   "usingComponents": {
-    "i-icon": "/dist/icon/index"
+    "i-icon": "/dist/icon/index",
+    "i-image-upload": "/lee-components/leeImageUpload/index"
   },
   "navigationBarTitleText": "工作单",
   "enablePullDownRefresh": true

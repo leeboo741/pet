@@ -107,7 +107,7 @@ Page({
       receiveDistrict: null, // 上门接宠区县
       address: null, // 地址
       haveAbleStation: false, // 是否有可用站点
-      contract: "《接宠说明》",
+      contract: "《接宠超免费范围另行付费》",
       latitude: null,
       longitude: null,
     },
@@ -118,7 +118,7 @@ Page({
       sendDistrict: null, // 送宠到家区县
       address: null, // 地址
       haveAbleStation: false, // 是否有可用站点
-      contract: "《送宠说明》",
+      contract: "《送宠路费由当地网点另收》",
       latitude: null,
       longitude: null,
     },
@@ -128,9 +128,10 @@ Page({
       rate: 0, // 费率
       price: 1000, // 保价金额
       // alert: "最低估价1000元，最高估价6000元", // 
-      contract: "《评估说明》"
+      contract: "《须知》"
     },
     addServerPetCan: {
+      ableUse: false,
       name: "免费旅行餐", // 名称
       selected: false, // 是否选中
       alert: "免费旅行餐由比瑞吉公司赠送。非必要选择。产品质量由比瑞吉公司把关，与斑马速运无关！",
@@ -141,6 +142,13 @@ Page({
       selected: false, // 是否选中
       alert: "", // 提示
       contract: "《担保注意事项》"
+    },
+    addServerWater: {
+      ableUse: true,
+      name: "饮水器",
+      selected: false,
+      alert: "",
+      contract: "",
     },
 
     countInputFocus: false,

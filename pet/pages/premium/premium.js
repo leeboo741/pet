@@ -134,7 +134,7 @@ Page({
       success(res) {
         wx.hideLoading();
         console.log("新增补价单 success:\n" + JSON.stringify(res));
-        if (res.data.code == config.RES_CODE_SUCCESS && res.data.data > 0) {
+        if (res.data.code == Config.RES_CODE_SUCCESS && res.data.data > 0) {
           wx.showToast({
             title: '补价成功',
           },1000)

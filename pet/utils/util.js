@@ -49,6 +49,8 @@ function checkEmpty(obj) {
 }
 
 function isVideo(fileAddress) {
+  let addressList = fileAddress.split("?");
+  fileAddress = addressList[0];
   let index = fileAddress.lastIndexOf(".");
   let suffix = fileAddress.substring(index + 1);
   if (suffix == "mp4" ||

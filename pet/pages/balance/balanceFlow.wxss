@@ -1,1 +1,52 @@
 /* pages/balance/balanceFlow.wxss */
+
+.flow-item{
+  display: flex;
+  flex-direction: column;
+}
+
+.flow-item-title{
+  font-size: 32rpx;
+}
+
+.flow-type{
+  font-size: 28rpx;
+  margin-top: 8rpx;
+}
+
+.flow-item-content{
+  margin-top: 10rpx;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.balance-box{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.flow-value{
+  font-size: 38rpx;
+  margin-right: 10rpx;
+  font-weight: bold;
+}
+
+.flow-value-positive{
+  color: #18c020;
+}
+
+.flow-value-negative{
+  color: #ee2c2c;
+}
+
+.balance-value{
+  color: #727e73;
+  font-size: 34rpx;
+}
+
+.flow-time{
+  font-size: 26rpx;
+}

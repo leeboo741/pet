@@ -4,6 +4,7 @@
 const loginUtil = require("../../utils/loginUtils.js");
 const pagePath = require("../../utils/pagePath.js");
 const ShareUtil = require("../../utils/shareUtils.js");
+const app = getApp();
 
 Page({
 
@@ -46,7 +47,7 @@ Page({
    * 生命周期函数--监听页面卸载
    */
   onUnload: function () {
-
+    app.ShareData.businessNo = null;
   },
 
   /**

@@ -69,6 +69,7 @@ Page({
     console.log("/register/register 销毁")
     clearInterval(this.data.intervalID);
     this.data.intervalID = null;
+    app.ShareData.businessNo = null;
   },
 
   /**

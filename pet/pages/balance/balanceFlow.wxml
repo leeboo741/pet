@@ -4,13 +4,74 @@
     <i-cell wx:for='{{dataSource}}'
             wx:for-item='item'
             wx:for-index='index'
-            wx:key='{{index}}'
-            title='￥{{item.rebateAmount}}'
-            value='关联订单：{{item.order.orderNo}}'
-            label='{{item.rebateTime}}'>
-      
+            wx:key='{{index}}'>
+      <view slot='header'
+            class="flow-item">
+        <view class='flow-item-title'>
+        {{item.linkNo!=null && item.linkNo.length > 0?"关联单号":"单号"}}：{{item.linkNo!=null && item.linkNo.length > 0?item.linkNo:item.billNo}}
+        </view>
+        <view class="flow-type">
+        流水类型：{{parse.getFlowType(item.flowType)}}
+        </view>
+        <view class=" flow-item-content">
+          <view class="balance-box">
+            <view class="flow-value {{parse.getFlowValueClass(item.flowAmount)}}">
+            ￥{{parse.getSign(item.flowAmount)}}{{item.flowAmount}}
+            </view>
+            <view class="balance-value">
+            (￥{{item.balance}})
+            </view>
+          </view>
+          <view class="flow-time">
+          {{item.dateTime}}
+          </view>
+        </view>
+      </view>
+      <view slot='header'
+            class="balance-box">
+        
+      </view>
     </i-cell>
   </i-cell-group>
 </i-panel>
 
 <i-load-more tip="{{loadMoreTip}}" loading="{{loadMoreLoading}}" />
+
+<wxs module='parse'>
+  module.exports={
+    getFlowValueClass:function(flowValue) {
+      if (flowValue >= 0) {
+        return "flow-value-positive";
+      } else {
+        return "flow-value-negative";
+      }
+    },
+    getSign:function(flowValue){
+      if (flowValue>=0) {
+        return "+";
+      }
+      return "";
+    },
+    getFlowType:function(type) {
+      if (type ==  'orderStation') {
+        return "订单所得";
+      } else if (type == 'orderRebate') {
+        return "分享客户下单返利";
+      } else if (type == 'withdrawConfirm') {
+        return "提现发起";
+      } else if (type == 'withdrawReject') {
+        return "提现驳回";
+      } else if (type == 'orderRefund') {
+        return "订单退款";
+      } else if (type == 'recharge') {
+        return "余额充值";
+      } else if (type == "orderPremium") {
+        return "订单补价";
+      } else if (type == "orderInsure") {
+        return "保险花费";
+      } else {
+        return "其他";
+      }
+    }
+  }
+</wxs>
