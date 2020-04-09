@@ -27,7 +27,7 @@ Page({
    */
   onLoad: function (options) {
     this.setData({
-      balanceAmount: app.globalData.userInfo.balance
+      balanceAmount: loginUtil.getBalance()
     })
     this.checkBalanceBuffer();
   },
@@ -95,9 +95,7 @@ Page({
           content: '请先登录后使用该功能',
           success(res){
             if (res.confirm) {
-              wx.navigateTo({
-                url: pagePath.Path_Login,
-              })
+              loginUtil.login();
             }
           }
         })
@@ -134,7 +132,7 @@ Page({
     if (loginUtil.getStationNo() != null) {
       tempUrl = config.URL_Service + config.URL_Withdraw_Station;
       tempData = {
-        openId: loginUtil.getOpenId(),
+        customerNo: loginUtil.getCustomerNo(),
         amount: this.data.withdrawalAmount
       }
     } else if (loginUtil.getBusinessNo() != null) {

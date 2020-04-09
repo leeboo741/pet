@@ -78,7 +78,7 @@ Page({
         if (type == 'none') {
           loginUtil.checkLogin(function alreadyLoginCallback(state) {
             if (state) {
-              loginUtil.login()
+              loginUtil.getNewUserInfo()
             }
           })
         } else if (type == 'share') {
@@ -95,9 +95,7 @@ Page({
               //   url: pagePath.Path_Station_Detail + "?stationno=" + app.ShareData.businessNo,
               // })
             } else {
-              wx.navigateTo({
-                url: pagePath.Path_Login,
-              })
+              loginUtil.login();
             }
           })
         }
@@ -194,9 +192,7 @@ Page({
           content: '请登录后使用该功能',
           success (res) {
             if (res.confirm) {
-              wx.navigateTo({
-                url: pagePath.Path_Login,
-              })
+              loginUtil.login();
             }
           }
         })

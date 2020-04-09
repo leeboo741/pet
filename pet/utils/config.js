@@ -14,11 +14,14 @@ const Version_Code = 78; // 版本编号
 /** =================================================== */
 // const URL_Service = "https://www.taochonghui.com"; // 路径 
 // const URL_Service = "https://test.taochonghui.com"; // 测试服务器
-const URL_Service = "http://192.168.3.111:6060"; // 刘
+const URL_Service = "http://192.168.3.111:7777"; // 刘
 // const URL_Service = "http://192.168.3.103:6060"; // 罗
 
 const URL_Register = "/api/customer/"; // 注册
-const URL_Login = "/api/oAuth"; // 登陆
+const URL_GetUserInfoByCode = "/api/wechat/userinfo/open"; // 通过WXCode 获取 信息
+const URL_GetUserInfoByBaseInfo = "/api/wechat/userinfo/union"; // 通过基本信息获取用户信息
+const URL_LoginWithUnionId = "/api/oAuth/unionId"; // 通过unionID 更新用户信息
+const URL_Login = "/api/oAuth/we-Chat"; // 登陆
 const URL_UpdateCustomer = "/api/customer/updateCustomer"; // 更新用户
 const URL_CheckBalance = "/api/balance"; // 查询余额
 const URL_Withdraw_Station ="/api/withdraw/station"; // 站点提现
@@ -65,7 +68,7 @@ const URL_CancelOrder = "/api/order/cancelOrder"; // 取消订单
 const URL_GetOrderListByOrderStatus = "/api/order/listOrderList"; // 根据订单类型查询订单列表
 const URL_GetStationAllOrder = "/api/consign/port/list/Complete"; // 获取当前站点所有订单 包含已完成
 const URL_OrderDetail = "/api/order/orderDetail"; // 查询订单详情
-const URL_GetOrderNoByOrderNo = "/api/order/getOrderNoByOrderNo"; // 通过单号模糊查询单号
+const URL_GetOrderNoByOrderNo = "/api/consign/order-no/auto"; // 通过单号模糊查询单号
 const URL_ConfirmOrder = "/api/order/confirmOrder"; // 确认收货
 const URL_GetUnConfirmOrderList = "/api/order/listUncertainty"; // 获取未确认收货订单
 const URL_AlloctionOrder = '/api/order/assignment/'; // 订单分配
@@ -150,7 +153,10 @@ module.exports = {
   URL_Service, // 请求路径
 
   URL_Register, // 注册
+  URL_GetUserInfoByCode, // 通过CODE获取用户信息
+  URL_GetUserInfoByBaseInfo, // 通过基本信息获取用户信息
   URL_Login, // 登陆
+  URL_LoginWithUnionId, // 通过unionId登录 更新用户信息
   URL_UpdateCustomer, // 更新用户
   URL_CheckBalance, // 查询余额
   URL_Withdraw_Station, // 站点提现

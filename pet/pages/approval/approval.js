@@ -155,7 +155,7 @@ Page({
     wx.request({
       url: config.URL_Service + config.URL_GetUnauditedStation,
       data: {
-        phone: loginUtil.getPhone()
+        customerNo: loginUtil.getCustomerNo()
       },
       success(res) {
         wx.hideLoading();

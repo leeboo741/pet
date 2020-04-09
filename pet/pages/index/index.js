@@ -126,7 +126,7 @@ Page({
         if (type == 'none') {
           loginUtil.checkLogin(function alreadyLoginCallback(state) {
             if (state) {
-              loginUtil.login()
+              loginUtil.getNewUserInfo()
             }
           })
         } else if (type == 'share') {

@@ -506,7 +506,8 @@ Page({
       orderNo: order.orderNo
     };
     tempData.staff = {
-      openId: loginUtil.getOpenId()
+      staffNo: loginUtil.getStaffNo(),
+      phone: loginUtil.getPhone()
     };
     tempData.transportType = order.transport.transportType;
     

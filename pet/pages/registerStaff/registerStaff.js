@@ -248,9 +248,7 @@ Page({
           content: '请先登录后再提交申请',
           success(res) {
             if (res.confirm) {
-              wx.navigateTo({
-                url: pagePath.Path_Login,
-              })
+              loginUtil.login();
             }
           }
         })
@@ -328,7 +326,6 @@ Page({
       title: '提交申请中...',
     })
     let tempStaffObj = {
-      openId: loginUtil.getOpenId(),
       phone: this.data.phone,
       staffName: this.data.name,
       station: this.data.stationList[this.data.selectStaionIndex],

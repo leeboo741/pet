@@ -20,7 +20,7 @@
 		}
 	},
 	"compileType": "miniprogram",
-	"libVersion": "2.9.0",
+	"libVersion": "2.9.4",
 	"appid": "wxcbdaa290fc45a263",
 	"projectname": "pet",
 	"debugOptions": {

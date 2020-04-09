@@ -1,33 +1,19 @@
 <!--pages/register/register.wxml-->
-<!-- 手机号输入 -->
-<i-cell-group>
-  <i-cell title='手机号'>
-    <view slot="icon"
-          class="non-null-icon">
-    *
-    </view>
-    <input slot="footer" 
-           placeholder="输入手机号"
-           bindinput="inputPhone"
-           type="number">
-    </input>
-  </i-cell>
-  <i-cell>
-    <view slot="icon"
-          class="non-null-icon">
-    *
-    </view>
-    <input slot="header"
-           placeholder="输入验证码"
-           bindinput="inputCode"
-           type="number">
-    </input>
-    <view class="get-code-button {{ableGetCode?'get-able':'get-disable'}}"
-          slot="footer"
-          bindtap="getCode">
-    {{getCodeTitle}}
-    </view>
-  </i-cell>
-</i-cell-group>
-<!-- 注册按钮 -->
-<button class='button-confirm button-blue' bindtap='registerAccount'>注册用户</button>
+
+<view class="background-view">
+</view>
+<view class="front-view register-box">
+  <button class="register-button" 
+          bindgetuserinfo="getUserInfo" 
+          wx:if="{{loginStep == 0}}" 
+          openType="getUserInfo">
+  授权获取基本信息
+  </button>
+  <button bindgetphonenumber="getPhoneNumber" 
+          open-type="getPhoneNumber" 
+          class="register-button" 
+          openType="getPhoneNumber" 
+          wx:if="{{loginStep == 1}}">
+  登录
+  </button>
+</view>

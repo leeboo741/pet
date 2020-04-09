@@ -2,7 +2,6 @@
   "pages": [
     "pages/index/index2",
     "pages/index/index",
-    "pages/login/login",
     "pages/register/register",
     "pages/consigned/base/base",
     "pages/consigned/city/city",
@@ -11,7 +10,6 @@
     "pages/consigned/text/text",
     "pages/consigned/coupon/couponQRCode/couponQRCode",
     "pages/station/station",
-    "pages/goAboard/goAboard",
     "pages/me/me",
     "pages/recharge/recharge",
     "pages/withdrawal/withdrawal",

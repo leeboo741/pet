@@ -103,7 +103,7 @@ Page({
     wx.request({
       url: config.URL_Service + config.URL_Get_Message,
       data: {
-        openId: loginUtil.getOpenId(),
+        customerNo: loginUtil.getCustomerNo(),
         offset: startIndex,
         limit: this.data.pageSize
       },
@@ -154,7 +154,7 @@ Page({
     wx.request({
       url: config.URL_Service + config.URL_Get_New_Message,
       data: {
-        openId: loginUtil.getOpenId(),
+        customerNo: loginUtil.getCustomerNo(),
         lastModifyTime: lastGetMessageTime
       },
       success(res) {
@@ -250,17 +250,20 @@ Page({
    */
   tapMessage: function (e) {
     let link = e.currentTarget.dataset.link;
+    if (util.checkEmpty(link)) {
+      return;
+    }
     let paths = link.split("?");
     let pathType = paths[0];
 
     if (pathType == "action") {
       if (paths[1] == "login") {
-        loginUtil.login(function loginCallback(state, msg) {
-          if (state == loginUtil.Login_Success) {
+        loginUtil.getNewUserInfo(function getNewUserInfo(success) {
+          if (success) {
             wx.navigateBack({
               delta: 1,
             })
-          } else if (state == loginUtil.Login_Fail) {
+          } else {
             wx.showModal({
               title: '更新用户信息失败',
               content: '请稍后再试',

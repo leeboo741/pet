@@ -81,19 +81,14 @@ Page({
   tapUpdateUserInfo: function () {
     loginUtil.checkLogin(function alreadyLoginCallback(islogin){
       if (islogin) {
-        loginUtil.login(function loginCallback(state, msg) {
-          if (state == loginUtil.Login_Success) {
+        loginUtil.getNewUserInfo(function getNewUserInfo(success) {
+          if (success) {
             wx.showToast({
               title: '更新成功',
             })
-          } else if (state == loginUtil.Login_Fail) {
-            wx.showToast({
-              title: '更新失败',
-              icon: 'none'
-            })
           } else {
             wx.showToast({
-              title: msg,
+              title: '更新失败',
               icon: 'none'
             })
           }
@@ -105,9 +100,7 @@ Page({
           confirmText: '前往登录',
           success(res){
             if (res.confirm) {
-              wx.navigateTo({
-                url: pagePath.Path_Login,
-              })
+              loginUtil.login();
             }
           }
         })

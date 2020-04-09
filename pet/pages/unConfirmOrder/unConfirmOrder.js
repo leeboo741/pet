@@ -617,7 +617,7 @@ Page({
       data: {
         fileList: fileList,
         orderNo: order.orderNo,
-        openId: loginUtil.getOpenId()
+        customerNo: loginUtil.getCustomerNo()
       },
       success(res) {
         wx.hideLoading();

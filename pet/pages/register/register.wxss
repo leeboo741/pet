@@ -24,3 +24,23 @@
   background: rgb(236, 236, 236);
   border: 1rpx solid #778899;
 }
+
+.register-box{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  top: 0rpx;
+  left: 0rpx;
+  right: 0rpx;
+  bottom: 0rpx;
+}
+
+.register-button{
+  height: 80rpx;
+  width: 80%;
+  border-radius: 15rpx;
+  background: rgb(1, 160, 1);
+  color: white;
+  font-size: 30rpx;
+}

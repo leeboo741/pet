@@ -34,19 +34,6 @@ App({
 
   globalData: {
 
-    openId: null,
-
-    /** =========== 用户数据 =========== */
-    userInfo: {
-      customerNo: null, // id
-      nickName: null, // 昵称
-      avatarUrl: null, // 头像
-      gender: null, // 性别
-      openId: null, // openId
-      phone: null, // 手机号
-      role: null, // 角色
-    }, // 用户信息
-
     platform: "",
     screenWidth: wx.getSystemInfoSync().screenWidth,
     screenHeight: wx.getSystemInfoSync().screenHeight,

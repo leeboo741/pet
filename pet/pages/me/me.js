@@ -130,9 +130,7 @@ Page({
             cancelText:"暂不签收",
             success(res) {
               if (res.confirm) {
-                wx.navigateTo({
-                  url: pagePath.Path_Login,
-                })
+                loginUtil.login();
               }
               app.ShareData.scanOrderNo = null;
             }
@@ -163,39 +161,11 @@ Page({
   /**
    * 点击登陆|注册
    */
-  tapLoginOrRegister: function(){
-    let that = this;
-    loginUtil.login(function loginCallback(state, msg){
-      if (state == loginUtil.Login_Success) {
-        wx.showToast({
-          title: '登陆成功',
-        })
-        that.setData({
-          userInfo: loginUtil.getUserInfo()
-        })
-        that.requestBillList(that.data.selectedBillType);
-        that.requestBalance();
-        that.startGetNewMessageInterval();
-      } else if (state == loginUtil.Login_Fail) {
-        wx.showModal({
-          title: '登陆失败',
-          content: msg,
-          success(res) {
-            if (res.confirm) {
-              that.tapLoginOrRegister();
-            }
-          }
-        })
-      } else if (state == loginUtil.Login_NoAuthSetting) {
-        
-      } else {
-        wx.navigateTo({
-          url: pagePath.Path_Register + '?backtype=0',
-        })
-      }
-    })
+  tapLoginOrRegister: function(button){
+    console.log("button:"+JSON.stringify(button));
+    loginUtil.login();
   },
-
+  
   /**
    * 联系商家
    */
@@ -252,9 +222,7 @@ Page({
           content: '请先登录后使用该功能',
           success(res) {
             if (res.confirm) {
-              wx.navigateTo({
-                url: pagePath.Path_Login,
-              })
+              loginUtil.login();
             }
           }
         })
@@ -283,9 +251,7 @@ Page({
                   content: '请先登录后使用该功能',
                   success(res) {
                     if (res.confirm) {
-                      wx.navigateTo({
-                        url: pagePath.Path_Login,
-                      })
+                      loginUtil.login();
                     }
                   }
                 })
@@ -323,9 +289,7 @@ Page({
           content: '请先登录后使用该功能',
           success(res) {
             if (res.confirm) {
-              wx.navigateTo({
-                url: pagePath.Path_Login,
-              })
+              loginUtil.login();
             }
           }
         })
@@ -352,9 +316,7 @@ Page({
                 content: '请先登录后使用该功能',
                 success(res) {
                   if (res.confirm) {
-                    wx.navigateTo({
-                      url: pagePath.Path_Login,
-                    })
+                    loginUtil.login();
                   }
                 }
               })
@@ -506,9 +468,7 @@ Page({
                 content: '请先登录后使用该功能',
                 success(res) {
                   if (res.confirm) {
-                    wx.navigateTo({
-                      url: pagePath.Path_Login,
-                    })
+                    loginUtil.login();
                   }
                 }
               })
@@ -534,9 +494,7 @@ Page({
           content: '请先登录后使用该功能',
           success(res) {
             if (res.confirm) {
-              wx.navigateTo({
-                url: pagePath.Path_Login,
-              })
+              loginUtil.login();
             }
           }
         })
@@ -745,7 +703,7 @@ Page({
       method: "POST", // 请求方式
       data: {
         orderNo: orderNo,
-        openId: loginUtil.getOpenId()
+        customerNo: loginUtil.getCustomerNo()
       },
       success(res) {
         wx.hideLoading();
@@ -785,14 +743,13 @@ Page({
     wx.request({
       url: config.URL_Service + config.URL_CheckBalance,
       data: {
-        openId: loginUtil.getOpenId()
+        customerNo: loginUtil.getCustomerNo()
       },
       success(res){
         console.log("查询余额 success => \n" + JSON.stringify(res));
-        that.data.userInfo.balance = res.data.data;
-        app.globalData.userInfo.balance = res.data.data;
+        loginUtil.resetBalance(res.data.data);
         that.setData({
-          userInfo: that.data.userInfo
+          userInfo: loginUtil.getUserInfo()
         })
       },
       fail(res) {
@@ -819,7 +776,7 @@ Page({
       url: config.URL_Service + config.URL_Payment,
       data: {
         orderNo: orderNo,
-        openId: loginUtil.getOpenId()
+        customerNo: loginUtil.getCustomerNo()
       },
       success(res) {
         wx.hideLoading();
@@ -863,7 +820,7 @@ Page({
     wx.request({
       url: config.URL_Service + config.URL_GetOrderNoByOrderNo,
       data: {
-        openId: loginUtil.getOpenId(),
+        customerNo: loginUtil.getCustomerNo(),
         orderNo: inputOrderNo
       },
       success(res) {
@@ -874,7 +831,6 @@ Page({
           wx.navigateTo({
             url: pagePath.Path_Order_Detail + '?orderno=' + res.data.data + '&type=0' + "&ablecancelpremium=0" + "&showprice=0",
           })
-
         } else {
           if (res.data.data == null) {
             wx.showToast({
@@ -918,7 +874,7 @@ Page({
     wx.request({
       url: config.URL_Service + config.URL_CancelOrder,
       data: {
-        openId: loginUtil.getOpenId(),
+        customerNo: loginUtil.getCustomerNo(),
         orderNo: orderNo
       },
       method: "PUT",
@@ -994,7 +950,7 @@ Page({
       url: config.URL_Service + config.URL_GetOrderListByOrderStatus,
       data: {
         "orderStatus": this.getSendBillType(tempType),
-        "openId": loginUtil.getOpenId()
+        "customerNo": loginUtil.getCustomerNo()
       },
       success(res) {
         wx.hideLoading();
@@ -1040,7 +996,7 @@ Page({
     wx.request({
       url: config.URL_Service + config.URL_Get_New_Message,
       data: {
-        openId: loginUtil.getOpenId(),
+        customerNo: loginUtil.getCustomerNo(),
         lastModifyTime: lastGetMessageTime
       },
       success(res) {

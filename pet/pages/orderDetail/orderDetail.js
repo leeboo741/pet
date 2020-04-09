@@ -75,7 +75,7 @@ Page({
       method: "POST", // 请求方式
       data: {
         orderNo: orderNo,
-        openId: loginUtil.getOpenId()
+        customerNo: loginUtil.getCustomerNo()
       },
       success(res) {
         wx.hideLoading();
@@ -213,7 +213,7 @@ Page({
       url: config.URL_Service + config.URL_OrderDetail,
       data: {
         "orderNo": orderNo,
-        "openId": loginUtil.getOpenId()
+        "customerNo": loginUtil.getCustomerNo()
       },
       success(res) {
         wx.hideLoading();
@@ -455,7 +455,7 @@ Page({
       url: config.URL_Service + config.URL_PayPremium,
       data: {
         billNo: billNo,
-        openId: loginUtil.getOpenId()
+        customerNo: loginUtil.getCustomerNo()
       },
       success(res) {
         wx.hideLoading();

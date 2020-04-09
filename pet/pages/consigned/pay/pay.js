@@ -251,9 +251,7 @@ Page({
           content: '请先登录后下单',
           success(res) {
             if (res.confirm) {
-              wx.navigateTo({
-                url: pagePath.Path_Login,
-              })
+              loginUtil.login();
             }
           }
         })
@@ -334,7 +332,7 @@ Page({
       title: '提交订单中...',
     })
     let tempOrderObj = {
-      "openId": loginUtil.getOpenId(),
+      "customerNo": loginUtil.getCustomerNo(),
 
       "startCity": this.data.startCity,
       "endCity": this.data.endCity,
@@ -427,9 +425,7 @@ Page({
                       content: '请先登录后付款',
                       success(res) {
                         if (res.confirm) {
-                          wx.navigateTo({
-                            url: pagePath.Path_Login,
-                          })
+                          loginUtil.login();
                         }
                       }
                     })
@@ -482,7 +478,7 @@ Page({
       url: config.URL_Service + config.URL_Payment,
       data: {
         orderNo: orderNo,
-        openId: loginUtil.getOpenId(),
+        customerNo: loginUtil.getCustomerNo(),
       },
       success(res) {
         wx.hideLoading();
@@ -529,7 +525,7 @@ Page({
       title: '请稍等...',
     })
     let tempData = {
-      "openId": loginUtil.getOpenId(),
+      "customerNo": loginUtil.getCustomerNo(),
       "startCity": this.data.startCity,
       "endCity": this.data.endCity,
       "transportType": this.data.transport,
@@ -575,6 +571,7 @@ Page({
     wx.request({
       url: config.URL_Service + config.URL_PredictPrice,
       data: tempData,
+      method: "POST",
       success(res) {
         wx.hideLoading();
         console.log("获取预估价格 success => \n" + JSON.stringify(res));
@@ -664,9 +661,7 @@ Page({
           content: '请先登录后才能获取预估价格',
           success(res) {
             if (res.confirm) {
-              wx.navigateTo({
-                url: pagePath.Path_Login,
-              })
+              loginUtil.login();
             }
           }
         })

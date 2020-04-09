@@ -1,5 +1,19 @@
 /**app.wxss**/
 
+.background-view{
+  z-index: -1;
+  position: fixed;
+  top: 0rpx;
+  left: 0rpx;
+  right: 0rpx;
+  bottom: 0rpx;
+  background:rgb(250, 250, 250);
+}
+
+.front-view{
+  z-index: 0;
+}
+
 .page-white{
   background: white;
 }

@@ -1,5 +1,8 @@
 const app = getApp();
 const config = require("../utils/config.js");
+const UrlPath = require('../utils/config.js');
+const Util = require("../utils/util.js");
+const PagePath = require("../utils/pagePath.js");
 
 const Login_Success = 0;
 const Login_NotExist = 1;
@@ -54,14 +57,37 @@ function getUserInfo() {
 }
 
 /**
+ * 更新用户余额
+ */
+function resetBalance(balance) {
+  if (balance == null || balance.length < 0) {
+    balance = 0;
+  }
+  let userInfo = getUserInfo();
+  userInfo.balance = balance;
+  saveUserInfo(userInfo);
+}
+
+/**
+ * 获取用户余额
+ */
+function getBalance() {
+  let userInfo = getUserInfo();
+  if (userInfo == null || userInfo.balance == null || userInfo.balance.length < 0) {
+    return 0;
+  }
+  return userInfo.balance;
+}
+
+/**
  * 获取站点编号
  */
 function getStationNo(){
   let userInfo = getUserInfo();
-  if (userInfo == null || userInfo.stationNo == null || userInfo.stationNo.length <= 0) {
+  if (userInfo == null || userInfo.staff == null || userInfo.staff.station == null || userInfo.staff.station.stationNo == null || userInfo.staff.station.stationNo.length <= 0) {
     return null;
   }
-  return userInfo.stationNo;
+  return userInfo.staff.station.stationNo;
 }
 
 /**
@@ -76,14 +102,26 @@ function getCustomerNo() {
 }
 
 /**
+ * 获取性别
+ */
+function getSex() {
+  let userInfo = getUserInfo();
+  if (userInfo && userInfo.sex == 1) {
+    return '男';
+  } else {
+    return '女';
+  }
+}
+
+/**
  * 获取员工编号
  */
 function getStaffNo() {
   let userInfo = getUserInfo();
-  if (userInfo == null || userInfo.staffNo == null || userInfo.staffNo.length <= 0) {
+  if (userInfo == null || userInfo.staff == null || userInfo.staff.staffNo == null || userInfo.staff.staffNo.length <= 0) {
     return null;
   }
-  return userInfo.staffNo;
+  return userInfo.staff.staffNo;
 }
 
 /**
@@ -91,10 +129,10 @@ function getStaffNo() {
  */
 function getBusinessNo() {
   let userInfo = getUserInfo();
-  if (userInfo == null || userInfo.businessNo == null || userInfo.businessNo.length <= 0) {
+  if (userInfo == null || userInfo.business == null || userInfo.business.businessNo == null || userInfo.business.businessNo.length <= 0) {
     return null;
   }
-  return userInfo.businessNo;
+  return userInfo.business.businessNo;
 }
 
 /**
@@ -124,7 +162,7 @@ function isBusiness() {
  */
 function getPhone(){
   let userInfo = getUserInfo();
-  if (userInfo == null || userInfo.openId == null || userInfo.openId.length <= 0) {
+  if (userInfo == null || userInfo.phone == null || userInfo.phone.length <= 0) {
     return null;
   }
   return userInfo.phone;
@@ -142,127 +180,172 @@ function getOpenId() {
 }
 
 /**
+ * 获取unionId
+ */
+function getUnionId() {
+  let userInfo = getUserInfo();
+  if (userInfo == null || userInfo.unionId == null || userInfo.unionId.length <= 0) {
+    return null;
+  }
+  return userInfo.unionId;
+}
+
+/**
  * 是否登陆
  */
 function isLogin() {
-  let openId = getOpenId();
-  if (openId == null) {
+  let customerNo = getCustomerNo();
+  if (customerNo == null) {
     return false;
   }
   return true;
 }
 
-
-function login(loginCallback) {
-  wx.showLoading({
-    title: '请稍等...',
-  })
-  console.log("微信登陆")
-  // 登录
+/**
+ * 获取微信加密过的基本信息
+ */
+function getWXUserInfo(getWXUserInfoCallback){
+  let that = this;
   wx.login({
-    success: res => {
-      console.log("微信login success => " + res.code);
-      // 发送 res.code 到后台换取 openId, sessionKey, unionId
+    success(res){
       let wxCode = res.code;
-      app.globalData.code = res.code;
-      // 查看是否授权
-      wx.getSetting({
-        success(res) {
-          console.log("获取授权成功")
-          if (res.authSetting['scope.userInfo']) {
-            console.log("获取 scope.userInfo 授权成功")
-            // 已经授权，可以直接调用 getUserInfo 获取头像昵称
-            wx.getUserInfo({
-              success(res) {
-                console.log("微信登陆 => \n" + JSON.stringify(res));
-                let userInfo = res.userInfo;
-                if (userInfo.gender != null && userInfo.gender == "1") {
-                  userInfo.gender = "男";
-                } else {
-                  userInfo.gender = "女";
-                }
-                // 向服务器请求登陆，返回 本微信 在服务器状态，注册|未注册，
-                wx.request({
-                    url: config.URL_Service + config.URL_Login, // 服务器地址
-                  data: {
-                    "code": wxCode,
-                    "encryptedData": res.encryptedData,
-                    "iv": res.iv
-                  }, // 参数
-                  method: "POST",
-                  success: res => {
-                    wx.hideLoading();
-                    console.log("success => " + JSON.stringify(res));
-                    if (res.data.code == config.RES_CODE_SUCCESS) {
-                      let tempUserInfo = res.data.data
-                      userInfo.customerNo = tempUserInfo.customerNo
-                      userInfo.openId = tempUserInfo.openId
-                      userInfo.phone = tempUserInfo.phone
-                      userInfo.nickName = tempUserInfo.customerName
-                      userInfo.avatarUrl = tempUserInfo.headerImage
-                      userInfo.gender = tempUserInfo.sex
-                      userInfo.role = tempUserInfo.role
-                      userInfo.balance = tempUserInfo.balance
-                      if (tempUserInfo.staff != null) {
-                        userInfo.staffNo = tempUserInfo.staff.staffNo
-                        userInfo.stationNo = tempUserInfo.staff.station.stationNo
-                      }
-                      if (tempUserInfo.business != null) {
-                        userInfo.businessNo = tempUserInfo.business.businessNo;
-                      }
-                      saveUserInfo(userInfo);
-                      if (loginCallback) {
-                        loginCallback(Login_Success, "登陆成功");
-                      }
-                    } else if (res.data.code == config.RES_CODE_NOTEXIST) {
-                      app.globalData.nickName = userInfo.nickName;
-                      app.globalData.avatarUrl = userInfo.avatarUrl;
-                      app.globalData.gender = userInfo.gender;
-                      app.globalData.openId = res.data.message;
-                      if (loginCallback) {
-                        loginCallback(Login_NotExist, "未注册");
-                      }
-                    } else {
-                      if (loginCallback) {
-                        loginCallback(Login_Fail, "登陆失败，请稍后再试");
-                      }
-                    }
-                  }, // 请求成功回调 登陆成功 保存 用户信息。登陆失败，跳转注册页面
-                  fail: res => {
-                    wx.hideLoading();
-                    console.log("fail => " + JSON.stringify(res));
-                    if (loginCallback) {
-                      loginCallback(Login_Fail, "链接失败，请稍后再试");
-                    }
-                  }, // 请求失败回调,弹窗，重新请求
-                  complete: res => {
-                    console.log("complite => " + JSON.stringify(res));
-                  }, // 请求完成回调，隐藏loading
-                })
+      that.getBaseInfoByWXCode(wxCode, function getBaseInfoCallBack(openId, sessionKey){
+        wx.getUserInfo({
+          success(wxUserInfo) {
+            let tempUserInfo = wxUserInfo.userInfo; // 用户信息对象
+            let rawData = wxUserInfo.rawData; // 不包括敏感信息的原始数据字符串，用于计算签名
+            let signature = wxUserInfo.signature; // 签名
+            let encryptedData = wxUserInfo.encryptedData; // 加密数据
+            let iv = wxUserInfo.iv; // 加密算法初始向量
+            wxUserInfo.openId = openId;
+            wxUserInfo.sessionKey = sessionKey;
+            that.getUserInfoByBaseInfo(wxUserInfo, function getUserInfoCallback(userInfo){
+              if (Util.checkIsFunction(getWXUserInfoCallback)) {
+                getWXUserInfoCallback(userInfo);
               }
             })
-          } else {
-            wx.hideLoading();
-            if (loginCallback) {
-              loginCallback(Login_NoAuthSetting, "未授权！");
-            }
           }
-        },
-        fail(res) {
-          console.log("获取授权失败");
-          wx.hideLoading();
-        },
-        complete(res) {
-        },
+        })
       })
-    },
-    fail(res) {
-      console.log("微信login fail => " + JSON.stringify(res));
+    }
+  })
+}
 
-      if (loginCallback) {
-        loginCallback(Login_Fail, "微信登陆失败");
+function getBaseInfoByWXCode(wxCode, getBaseInfoCallback) {
+  wx.request({
+    url: UrlPath.URL_Service + UrlPath.URL_GetUserInfoByCode,
+    data: {
+      code: wxCode
+    },
+    success(res) {
+      console.log("通过CODE获取用户信息:" + JSON.stringify(res));
+      let resultData = res.data.data;
+      let openId = resultData.openid;
+      let sessionKey = resultData.sessionKey;
+      if (getBaseInfoCallback && Util.checkIsFunction(getBaseInfoCallback)) {
+        getBaseInfoCallback(openId, sessionKey);
       }
     },
+    fail(res) {
+      console.log("通过CODE获取用户信息失败");
+      wx.showToast({
+        title: '登录请求失败',
+        icon: 'none'
+      })
+    },
+  })
+} 
+function getUserInfoByBaseInfo(baseInfo, getUserInfoCallback) {
+  wx.request({
+    url: UrlPath.URL_Service + UrlPath.URL_GetUserInfoByBaseInfo,
+    data: {
+      encryptedData: baseInfo.encryptedData,
+      sessionKey: baseInfo.sessionKey,
+      iv: baseInfo.iv
+    },
+    success(res) {
+      console.log("通过基本信息获取用户信息:" + JSON.stringify(res));
+      if (Util.checkIsFunction(getUserInfoCallback)) {
+        getUserInfoCallback(res.data.data)
+      }
+    },
+    fail(res) {
+      console.log("通过基本信息获取用户信息失败");
+      wx.showToast({
+        title: '获取用户信息失败',
+        icon: 'none'
+      })
+    },
+  })
+}
+
+/**
+ * 登录操作
+ */
+function login(loginCallback) {
+  wx.navigateTo({
+    url: PagePath.Path_Register,
+  })
+}
+
+/**
+ * 登录 获取服务器端的用户信息
+ */
+function getLogin(userInfo, encryptedData, iv, shareOpenId, loginCallback) {
+  let that = this;
+  wx.request({
+    url: UrlPath.URL_Service + UrlPath.URL_Login,
+    data: {
+      encryptedData: encryptedData,
+      iv: iv,
+      shareOpenId: shareOpenId ? shareOpenId:null,
+      wxUserInfo: userInfo
+    },
+    method: "POST", // 请求方式
+    success(res){
+      console.log("登录获取用户信息:"+ JSON.stringify(res.data.data));
+      that.saveUserInfo(res.data.data);
+      if (loginCallback) {
+        loginCallback();
+      }
+    },
+    fail(res){
+      wx.showToast({
+        title: '登录|注册失败',
+        icon: 'none'
+      })
+    }
+  })
+} 
+
+/**
+ * 获取服务器端的新用户信息
+ */
+function getNewUserInfo(getNewUserInfoCallback) {
+  if (getUnionId() == null) {
+    return;
+  }
+  let that = this;
+  wx.request({
+    url: UrlPath.URL_Service + UrlPath.URL_LoginWithUnionId,
+    data: {
+      unionId: getUnionId()
+    },
+    method: 'POST',
+    header: {
+      'content-type': 'application/x-www-form-urlencoded'
+    },
+    success(res) {
+      that.saveUserInfo(res.data.data);
+      if (Util.checkIsFunction(getNewUserInfoCallback)) {
+        getNewUserInfoCallback(true);
+      }
+    },
+    fail(res) {
+      if (Util.checkIsFunction(getNewUserInfoCallback)) {
+        getNewUserInfoCallback(false);
+      }
+    }
   })
 }
 
@@ -293,6 +376,7 @@ module.exports = {
   isLogin: isLogin,
   getPhone: getPhone,
   getOpenId: getOpenId,
+  getUnionId: getUnionId,
   checkLogin: checkLogin,
   getStaffNo: getStaffNo,
   getStationNo: getStationNo,
@@ -300,4 +384,11 @@ module.exports = {
   isStaff: isStaff,
   isBusiness: isBusiness,
   getCustomerNo: getCustomerNo,
+  getWXUserInfo: getWXUserInfo,
+  getBaseInfoByWXCode: getBaseInfoByWXCode,
+  getUserInfoByBaseInfo: getUserInfoByBaseInfo,
+  getLogin: getLogin,
+  getNewUserInfo: getNewUserInfo,
+  resetBalance: resetBalance,
+  getBalance: getBalance
 }

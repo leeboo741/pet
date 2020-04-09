@@ -4,13 +4,12 @@
     <view class='info'>
       <!--个人头像-->
       <view class='pic'>
-          <image src='{{userInfo.avatarUrl}}' 
-                 wx:if='{{userInfo != null && userInfo.avatarUrl != null && userInfo.avatarUrl.length > 0}}'>
+          <image src='{{userInfo.headerImage}}' 
+                 wx:if='{{userInfo != null && userInfo.customerNo != null && userInfo.customerNo.length > 0}}'>
           </image>
           <button wx:else
                   class="login-button"
-                  bindtap="tapLoginOrRegister"
-                  open-type="getUserInfo">
+                  bindtap="tapLoginOrRegister">
           登陆|注册
           </button>
           <view class="sign-box">
@@ -27,7 +26,7 @@
       </view>
       <!--常规信息-->
       <view class='userInfo'>
-        <label class='nikeName'>{{userInfo.nickName}}</label>
+        <label class='nikeName'>{{userInfo.customerName}}</label>
         <label class='phone'>{{userInfo.phone}}</label>
         <view class='mymoney'>
           <label bindtap="tapBalance">余额：</label>
@@ -223,8 +222,8 @@
           <view class='bill-info-pet-mode'>{{parse.getTransportType(unpayItem.transport.transportType)}}</view>
         </view>
         <view class='bill-info-pet'>
-          <view class='bill-info-pet-type'>{{unpayItem.petClassify.petClassifyName}}</view>
-          <view class='bill-info-pet-info'>{{unpayItem.petType.petTypeName}}</view>
+          <view class='bill-info-pet-type'>{{unpayItem.petGenre.petGenreName}}</view>
+          <view class='bill-info-pet-info'>{{unpayItem.petSort.petSortName}}</view>
         </view>
         <view class="bill-info-person">
           <view class="bill-info-person-label">寄件人：</view>
@@ -305,8 +304,8 @@
           <view class='bill-info-pet-mode'>{{parse.getTransportType(unsendItem.transport.transportType)}}</view>
         </view>
         <view class='bill-info-pet'>
-          <view class='bill-info-pet-type'>{{unsendItem.petClassify.petClassifyName}}</view>
-          <view class='bill-info-pet-info'>{{unsendItem.petType.petTypeName}}</view>
+          <view class='bill-info-pet-type'>{{unsendItem.petGenre.petGenreName}}</view>
+          <view class='bill-info-pet-info'>{{unsendItem.petSort.petSortName}}</view>
         </view>
         <view class="bill-info-person">
           <view class="bill-info-person-label">寄件人：</view>
@@ -389,8 +388,8 @@
           <view class='bill-info-pet-mode'>{{parse.getTransportType(unreceiveItem.transport.transportType)}}</view>
         </view>
         <view class='bill-info-pet'>
-          <view class='bill-info-pet-type'>{{unreceiveItem.petClassify.petClassifyName}}</view>
-          <view class='bill-info-pet-info'>{{unreceiveItem.petType.petTypeName}}</view>
+          <view class='bill-info-pet-type'>{{unreceiveItem.petGenre.petGenreName}}</view>
+          <view class='bill-info-pet-info'>{{unreceiveItem.petSort.petSortName}}</view>
         </view>
         <view class="bill-info-person">
           <view class="bill-info-person-label">寄件人：</view>
@@ -472,8 +471,8 @@
           <view class='bill-info-pet-mode'>{{parse.getTransportType(completeItem.transport.transportType)}}</view>
         </view>
         <view class='bill-info-pet'>
-          <view class='bill-info-pet-type'>{{completeItem.petClassify.petClassifyName}}</view>
-          <view class='bill-info-pet-info'>{{completeItem.petType.petTypeName}}</view>
+          <view class='bill-info-pet-type'>{{completeItem.petGenre.petGenreName}}</view>
+          <view class='bill-info-pet-info'>{{completeItem.petSort.petSortName}}</view>
         </view>
         <view class="bill-info-person">
           <view class="bill-info-person-label">寄件人：</view>

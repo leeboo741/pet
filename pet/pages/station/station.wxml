@@ -13,7 +13,7 @@
   <view class="station-item-content">
     <view class="station-logo-box">
       <image class="station-logo"
-             src="{{parse.getLogoPath(stationItem.iconAddress)}}"
+             src="{{parse.getLogoPath(stationItem.headImg)}}"
              lazy-load="{{true}}"
              mode="scaleToFit">
       </image>
@@ -27,23 +27,23 @@
                 size='15'
                 color="#b5d7eb">
         </i-icon>
-      营业时间：{{parse.parseTime(stationItem.startBusinessHours)}}-{{parse.parseTime(stationItem.endBusinessHours)}}
+      营业时间：{{parse.parseTime(stationItem.startHours)}}-{{parse.parseTime(stationItem.endHours)}}
       </view>
       <view class="station-phone"
             catchtap="callPhone"
-            data-phonenumber='{{stationItem.phoneNumber}}'>
+            data-phonenumber='{{stationItem.contactPhone}}'>
         <i-icon type="mobilephone"
                 size='15'
                 color="#b5d7eb">
         </i-icon>
-      联系电话：{{stationItem.phoneNumber}}
+      联系电话：{{stationItem.contactPhone}}
       </view>
       <view class="station-address">
         <i-icon type="coordinates"
                 size='15'
                 color="#b5d7eb">
         </i-icon>
-      地址：{{stationItem.province}}{{stationItem.city}}{{stationItem.detailAddress}}
+      地址：{{stationItem.province}}{{stationItem.city}}{{stationItem.area}}{{stationItem.detailAddress}}
       </view>
     </view>
   </view>

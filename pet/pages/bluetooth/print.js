@@ -113,7 +113,7 @@ Page({
 
     command.setText(186, 360, "TSS32.BF2", 1, 1, app.globalData.printOrder.orderNo);
     command.setText(186, 432, "TSS32.BF2", 1, 1, app.globalData.printOrder.leaveDate);
-    command.setText(122, 504, "TSS32.BF2", 1, 1, app.globalData.printOrder.petType.petTypeName + " -- " + app.globalData.printOrder.petClassify.petClassifyName);
+    command.setText(122, 504, "TSS32.BF2", 1, 1, app.globalData.printOrder.petSort.petSortName + " -- " + app.globalData.printOrder.petGenre.petGenreName);
     command.setText(122, 570, "TSS32.BF2", 1, 1, app.globalData.printOrder.num);
     command.setText(386, 570, "TSS32.BF2", 1, 1, app.globalData.printOrder.weight + "Kg");
     command.setText(186, 1384, "TSS32.BF2", 1, 1,app.globalData.printOrder.orderNo);
@@ -143,7 +143,7 @@ Page({
     //   transportTypeStr = "大巴";
     // }
     // command.setText(20, 330, "TSS24.BF2", 1, 1, "运输方式：" + transportTypeStr);
-    // command.setText(20, 390, "TSS24.BF2", 1, 1, "宠物：" + app.globalData.printOrder.petType.petTypeName + " -- " + app.globalData.printOrder.petClassify.petClassifyName);
+    // command.setText(20, 390, "TSS24.BF2", 1, 1, "宠物：" + app.globalData.printOrder.petSort.petSortName + " -- " + app.globalData.printOrder.petGenre.petGenreName);
     // command.setQR(380, 150, "L", 8, "A", app.globalData.printOrder.orderNo);
 
     this.data.timeOutIntervel = setTimeout(function(){

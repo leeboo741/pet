@@ -77,12 +77,12 @@
     <i-cell wx:if='{{orderData.weight!=null}}'
             title='宠物重量' 
             value='{{orderData.weight}}kg'></i-cell>
-    <i-cell wx:if='{{orderData.petType.petTypeName!=null}}'
+    <i-cell wx:if='{{orderData.petSort.petSortName!=null}}'
             title='宠物种类' 
-            value='{{orderData.petType.petTypeName}}'></i-cell>
-    <i-cell wx:if='{{orderData.petClassify.petClassifyName!=null}}'
+            value='{{orderData.petSort.petSortName}}'></i-cell>
+    <i-cell wx:if='{{orderData.petGenre.petGenreName!=null}}'
             title='宠物品种' 
-            value='{{orderData.petClassify.petClassifyName}}'></i-cell>
+            value='{{orderData.petGenre.petGenreName}}'></i-cell>
   </i-cell-group>
 </i-panel>
 <i-panel i-class="panel" 

@@ -32,7 +32,7 @@ Page({
     storePhone:null, // 商家电话
     rate: 0, // 保价费率
 
-    totalPrice: 0, // 总计金额
+    totalPrice: null, // 总计金额
 
     beginCity: null, // 始发城市 
     endCity: null, // 目的城市
@@ -970,49 +970,49 @@ Page({
   predictPrice: function () {
     if (this.data.beginCity == null) {
       this.setData({
-        totalPrice: 0
+        totalPrice: null
       })
       wx.hideLoading();
       return;
     }
     if (this.data.endCity == null) {
       this.setData({
-        totalPrice: 0
+        totalPrice: null
       })
       wx.hideLoading();
       return;
     }
     if (this.data.petCount == 0) {
       this.setData({
-        totalPrice: 0
+        totalPrice: null
       })
       wx.hideLoading();
       return;
     }
     if (this.data.petWeight == 0) {
       this.setData({
-        totalPrice: 0
+        totalPrice: null
       })
       wx.hideLoading();
       return;
     }
     if (this.data.selectedTransportObj == null) {
       this.setData({
-        totalPrice: 0
+        totalPrice: null
       })
       wx.hideLoading();
       return;
     }
     if (this.data.petClassify == null) {
       this.setData({
-        totalPrice: 0
+        totalPrice: null
       })
       wx.hideLoading();
       return;
     }
     if (this.data.petType == null) {
       this.setData({
-        totalPrice: 0
+        totalPrice: null
       })
       wx.hideLoading();
       return;
@@ -1028,9 +1028,7 @@ Page({
           content: '登录后才能获取预估价格',
           success(res){
             if (res.confirm) {
-              wx.navigateTo({
-                url: pagePath.Path_Login,
-              })
+              loginUtil.login();
             }
           }
         })
@@ -1105,7 +1103,7 @@ Page({
       title: '请稍等...'
     })
     let tempData = {
-      "openId": loginUtil.getOpenId(),
+      "customerNo": loginUtil.getCustomerNo(),
       "startCity": this.data.beginCity,
       "endCity": this.data.endCity,
       "transportType": this.data.selectedTransportObj.transportId,
@@ -1175,6 +1173,7 @@ Page({
     wx.request({
       url: config.URL_Service + config.URL_PredictPrice,
       data: tempData,
+      method: "POST",
       success(res) {
         wx.hideLoading();
         console.log("获取预估价格 success => \n" + JSON.stringify(res));

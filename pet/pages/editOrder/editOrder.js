@@ -99,7 +99,7 @@ Page({
       url: Config.URL_Service + Config.URL_OrderDetail,
       data: {
         "orderNo": orderNo,
-        "openId": LoginUtil.getOpenId()
+        "customerNo": LoginUtil.getCustomerNo()
       },
       success(res) {
         wx.hideLoading();

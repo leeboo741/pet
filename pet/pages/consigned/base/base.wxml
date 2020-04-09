@@ -300,7 +300,7 @@
    <!-- 预估金额 -->
    <view class="money">
       <view style='float:left;font:36rpx arial,sans-serif;'>预估金额</view>
-      <view style='text-align: left;font:36rpx arial,sans-serif;  padding-left: 5px;color:red'>¥{{totalPrice}}</view>
+      <view style='text-align: left;font:36rpx arial,sans-serif;  padding-left: 5px;color:red'>¥{{parse.showPrice(totalPrice)}}</view>
    </view>
    <!-- 预订  -->
    <view class="pay">
@@ -319,6 +319,12 @@
         return true;
       }
       return false;
+    },
+    showPrice: function(pirceObj) {
+      if (priceObj == null) {
+        return 0;
+      }
+      return priceObj.orderAmount;
     }
   }
 </wxs>

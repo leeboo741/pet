@@ -93,7 +93,7 @@ Page({
     })
     let that = this;
     wx.request({
-      url: config.URL_Service + config.URL_GetSubStaff + loginUtil.getOpenId(),
+      url: config.URL_Service + config.URL_GetSubStaff + loginUtil.getCustomerNo(),
       success(res) {
         wx.hideLoading();
         console.log("请求下属员工 success: \n" + JSON.stringify(res));
@@ -176,7 +176,7 @@ Page({
     wx.request({
       url: config.URL_Service + config.URL_AlloctionOrder,
       data: {
-        openId: loginUtil.getOpenId(),
+        customerNo: loginUtil.getCustomerNo(),
         orderNo: this.data.orderNo,
         staffNo: tempStaffNoList
       },

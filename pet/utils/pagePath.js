@@ -1,6 +1,5 @@
 const Path_Home = "/pages/index/index2"; // 首页
 
-const Path_Login = "/pages/login/login"; // 登陆页
 const Path_Register = "/pages/register/register"; // 注册页
 const Path_Map = "/pages/map/map"; // 地图页
 
@@ -55,8 +54,7 @@ const Path_Print_Print = "/pages/bluetooth/print"; // 开始打印
   
 module.exports = {
   Path_Home: Path_Home, // 首页
-
-  Path_Login: Path_Login, // 登陆页
+  
   Path_Register: Path_Register, // 注册页
   Path_Map: Path_Map, // 地图页
 

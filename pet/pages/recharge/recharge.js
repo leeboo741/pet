@@ -104,9 +104,7 @@ Page({
           content: '请先登录后使用该功能',
           success(res) {
             if (res.confirm) {
-              wx.navigateTo({
-                url: pagePath.Path_Login,
-              })
+              loginUtil.login();
             }
           }
         })
@@ -124,7 +122,7 @@ Page({
     wx.request({
       url: config.URL_Service + config.URL_Recharge,
       data: {
-        openId: loginUtil.getOpenId(),
+        customerNo: loginUtil.getCustomerNo(),
         rechargeAmount: this.data.rechargeAmount
       },
       success(res) {
