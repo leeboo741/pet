@@ -22,7 +22,7 @@ Page({
 
     storePhone: null, // 获取商家电话
 
-    predictPrice: 0, // 预估金额
+    predictPrice: null, // 预估金额
     confirmCondition: false, // 确认条件
     confirmClause: false, // 确认条款
 

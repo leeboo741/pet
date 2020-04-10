@@ -298,9 +298,15 @@
       <icon class="iconfont icondianhua tel" style=''></icon>
    </view>
    <!-- 预估金额 -->
-   <view class="money">
-      <view style='float:left;font:36rpx arial,sans-serif;'>预估金额</view>
-      <view style='text-align: left;font:36rpx arial,sans-serif;  padding-left: 5px;color:red'>¥{{parse.showPrice(totalPrice)}}</view>
+   <view class="money-box">
+    <view class="money">
+        <view style='float:left;font:36rpx arial,sans-serif;'>{{parse.showJoinPirce(totalPrice)?'客户价格:':'预估金额:'}}</view>
+        <view style='text-align: left;font:36rpx arial,sans-serif;  padding-left: 5px;color:red'>¥{{totalPrice==null?'0':parse.showJoinPirce(totalPrice)?totalPrice.retailOrderAmount:totalPrice.orderAmount}}</view>
+    </view>
+    <view class="money" wx:if="{{parse.showJoinPirce(totalPrice)}}">
+        <view style='float:left;font:36rpx arial,sans-serif;'>合作金额:</view>
+        <view style='text-align: left;font:36rpx arial,sans-serif;  padding-left: 5px;color:red'>¥{{totalPrice.joinOrderAmount}}</view>
+    </view>
    </view>
    <!-- 预订  -->
    <view class="pay">
@@ -320,11 +326,11 @@
       }
       return false;
     },
-    showPrice: function(pirceObj) {
-      if (priceObj == null) {
-        return 0;
+    showJoinPirce: function(priceObj) {
+      if (priceObj == null || priceObj.orderDifferentAmount != 0) {
+        return false;
       }
-      return priceObj.orderAmount;
-    }
+      return true;
+    },
   }
 </wxs>

@@ -183,17 +183,29 @@ page {
 }
 
 
-.money {
+.money-box{
   float: left;
   width: 450rpx;
   font-family: sans-serif;
-  font-size: 18px;
+  font-size: 32rpx;
+  color:#7F7F7F;
+  display: flex;
+  flex-direction: column;
+  letter-spacing:2rpx;
+  padding-left: 20rpx;
+}
+
+.money {
+  float: left;
+  /* width: 450rpx; */
+  font-family: sans-serif;
+  font-size: 32rpx;
   color:#7F7F7F;
   display:flex; 
-  /*justify-content:center; */
-  padding-left: 10px;
+  flex-direction: row;
+  padding-left: 20rpx;
   align-items:center;
-  letter-spacing:1px;
+  letter-spacing:2rpx;
 }
 
 .button-confirm{
