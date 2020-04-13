@@ -65,7 +65,8 @@
                 class="business-item {{parse.businessSpliceLine(businessIndex)}}"
                 bindtap="tapBusiness"
                 data-target='{{businessItem.target}}'
-                data-actiontype='{{businessItem.actionType}}'>
+                data-actiontype='{{businessItem.actionType}}'
+                data-data='{{businessItem.data}}'>
             <image class="business-item-icon"
                   src="{{businessItem.icon}}">
             </image>

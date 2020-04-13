@@ -41,6 +41,28 @@
     </view>
   </i-cell>
 </i-panel>
+<i-panel i-class='panel'
+         title='提货信息'
+         wx:if='{{parse.showTakerInfo(orderData.orderTakeDetail)}}'>
+  <i-cell-group>
+    <i-cell title='联系人'
+            label='{{orderData.orderTakeDetail.contact}}'
+            value='{{orderData.orderTakeDetail.phone}}'
+            bindtap='callPhone'
+            data-phone='{{orderData.orderTakeDetail.phone}}'
+            is-link>
+    </i-cell>
+    <i-cell title='提货地址'
+            label='{{orderData.orderTakeDetail.province}}{{orderData.orderTakeDetail.city}}{{orderData.orderTakeDetail.region}}'
+            value='{{orderData.orderTakeDetail.detailAddress}}'
+            bindtap='tapTakeAddress'
+            is-link>
+    </i-cell>
+    <i-cell title='提货时间'
+            value='{{orderData.orderTakeDetail.takeTime}}'>
+    </i-cell>
+  </i-cell-group>
+</i-panel>
 <i-panel i-class="panel" 
          title='订单内容'>
   <i-cell-group>
@@ -335,6 +357,12 @@ if (userInfo.role != 3) {
     },
     showVideo: function(videoList){
       if (videoList!=null && videoList.length>0) {
+        return true;
+      }
+      return false;
+    },
+    showTakerInfo: function(orderTakeDetail) {
+      if (orderTakeDetail != null) {
         return true;
       }
       return false;

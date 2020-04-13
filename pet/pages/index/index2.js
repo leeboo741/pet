@@ -8,7 +8,8 @@ const ShareUtil = require("../../utils/shareUtils.js");
 
 const BUSINESS_ACTION_TYPE_NAVIGATE = 0;
 const BUSINESS_ACTION_TYPE_SWITCH = 1;
-const BUSINESS_ACTION_TYPE_OTHER = 2;
+const BUSINESS_ACTION_TYPE_MINIPROGRAME = 2;
+const BUSINESS_ACTION_TYPE_OTHER = 3;
 
 Page({
 
@@ -41,12 +42,10 @@ Page({
       },
       {
         icon: '../../resource/index_business_abroad.png',
-        name: '宠物店',
-        // target: pagePath.Path_Aboard,
-        // target: pagePath.Path_Apply_Register_Station,
-        target: pagePath.Path_Station,
-        // actionType: BUSINESS_ACTION_TYPE_NAVIGATE,
-        actionType: BUSINESS_ACTION_TYPE_SWITCH,
+        name: '宠物商城',
+        target: "pages/index/index?from=transport&target=mall",
+        data: 'wxca35493268376086',
+        actionType: BUSINESS_ACTION_TYPE_MINIPROGRAME,
       },
       {
         icon: '../../resource/index_business_order_list.png',
@@ -62,9 +61,10 @@ Page({
       },
       {
         icon: '../../resource/index_business_check_order.png',
-        name: '订单跟踪',
-        target: pagePath.Path_Me_Index,
-        actionType: BUSINESS_ACTION_TYPE_SWITCH,
+        name: '商城积分',
+        target: "pages/index/index?from=transport&target=point",
+        data: 'wxca35493268376086',
+        actionType: BUSINESS_ACTION_TYPE_MINIPROGRAME,
       },
     ]
   },  
@@ -172,6 +172,19 @@ Page({
     } else if (e.currentTarget.dataset.actiontype == BUSINESS_ACTION_TYPE_SWITCH) {
       wx.switchTab({
         url: e.currentTarget.dataset.target,
+      })
+    } else if (e.currentTarget.dataset.actiontype == BUSINESS_ACTION_TYPE_MINIPROGRAME) {
+      console.log('跳转小程序AppId:' + e.currentTarget.dataset.data + '/nPath:' + e.currentTarget.dataset.target);
+      wx.navigateToMiniProgram({
+        appId: e.currentTarget.dataset.data,
+        path: e.currentTarget.dataset.target,
+        envVersion: 'develop',
+        success(res) {
+          console.log('跳转小程序成功:' + JSON.stringify(res));
+        },
+        fail(res) {
+          console.log('跳转小程序失败:' + JSON.stringify(res));
+        }
       })
     } else {
 

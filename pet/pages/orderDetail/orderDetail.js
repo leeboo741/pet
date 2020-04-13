@@ -357,6 +357,16 @@ Page({
   },
 
   /**
+   * 点击提货地址
+   */
+  tapTakeAddress: function(e) {
+    wx.openLocation({
+      latitude: this.data.orderData.orderTakeDetail.latitude,
+      longitude: this.data.orderData.orderTakeDetail.longitude,
+    })
+  },
+
+  /**
    * 导航
    */
   tapToNavigation: function (e) {

@@ -594,7 +594,7 @@ Page({
         console.log("添加运输信息 success: \n" + JSON.stringify(res));
         wx.hideLoading();
         if (res.data.code == config.RES_CODE_SUCCESS && res.data.data > 0) {
-          that.requestConfirmInHarbour(tempIndex)
+          that.requestOrderTaker(tempIndex)
         } else {
           wx.showToast({
             title: '添加运输信息失败！',
@@ -613,6 +613,94 @@ Page({
       complete(res){
 
       }
+    })
+  },
+
+  /**
+   * 提交提货信息
+   */
+  requestOrderTaker: function(orderIndex) {
+    const tempIndex = orderIndex;
+    const order = this.data.orderList[tempIndex];
+    if (util.checkEmpty(order.orderTakeDetail)) {
+      wx.showToast({
+        title: '提货信息有必填项未填写',
+        icon: 'none'
+      })
+      return;
+    }
+    if (util.checkEmpty(order.orderTakeDetail.contact)) {
+      wx.showToast({
+        title: '请输入提货联系人名称',
+        icon: 'none'
+      })
+      return;
+    }
+    if (util.checkEmpty(order.orderTakeDetail.phone)) {
+      wx.showToast({
+        title: '请输入提货联系人电话',
+        icon: 'none'
+      })
+      return;
+    }
+    if (util.checkEmpty(order.orderTakeDetail.takeTime)) {
+      wx.showToast({
+        title: '请选择提货时间',
+        icon: 'none'
+      })
+      return;
+    }
+    if (util.checkEmpty(order.orderTakeDetail.province)
+      || util.checkEmpty(order.orderTakeDetail.city)
+      || util.checkEmpty(order.orderTakeDetail.region)) {
+      wx.showToast({
+        title: '请选择提货省市区',
+        icon: 'none'
+      })
+      return;
+    }
+    if (util.checkEmpty(order.orderTakeDetail.detailAddress)) {
+      wx.showToast({
+        title: '请选择提货详细地址',
+        icon: 'none'
+      })
+      return;
+    }
+    let tempData = order.orderTakeDetail;
+    tempData.order = {
+      orderNo: order.orderNo
+    };
+    tempData.station = {
+      stationNo: loginUtil.getStationNo()
+    }
+    wx.showLoading({
+      title: '请稍等...',
+    })
+    let that = this;
+    wx.request({
+      url: config.URL_Service + config.URL_PostOrderTakerInfo,
+      method: "POST", // 请求方式
+      data: tempData,
+      success(res) {
+        console.log("添加提货信息 success: \n" + JSON.stringify(res));
+        wx.hideLoading();
+        if (res.data.code == config.RES_CODE_SUCCESS) {
+          that.requestConfirmInHarbour(tempIndex)
+        } else {
+          wx.showToast({
+            title: '添加提货信息失败！',
+            icon: 'none'
+          })
+        }
+      },
+      fail(res) {
+        console.log("添加提货信息 fail: \n" + JSON.stringify(res));
+        wx.showToast({
+          title: '网络波动，稍后再试',
+          icon: 'none'
+        })
+        wx.hideLoading();
+      },
     })
   },
 
@@ -641,9 +729,6 @@ Page({
     let that = this;
     wx.request({
       url: config.URL_Service + config.URL_ConfirmInOutHarbour,
-      header: {
-        'content-type': 'application/x-www-form-urlencoded'
-      },
       method: "POST", // 请求方式
       data: {
         fileList: fileList,
@@ -1075,6 +1160,76 @@ Page({
     this.setData({
       orderList: this.data.orderList
     })
+  },
+
+  /**
+   * 输入提货处联系人
+   */
+  inputOrderTakerContact: function(e) {
+    let tempOrder = this.data.orderList[e.currentTarget.dataset.index];
+    if (tempOrder.orderTakeDetail == null) {
+      tempOrder.orderTakeDetail = {};
+    }
+    tempOrder.orderTakeDetail.contact = e.detail.value;
+    this.setData({
+      orderList: this.data.orderList
+    })
+  },
+
+  /**
+   * 输入提货联系人电话
+   */
+  inputOrderTakerContactPhone: function (e) {
+    let tempOrder = this.data.orderList[e.currentTarget.dataset.index];
+    if (tempOrder.orderTakeDetail == null) {
+      tempOrder.orderTakeDetail = {};
+    }
+    tempOrder.orderTakeDetail.phone = e.detail.value;
+    this.setData({
+      orderList: this.data.orderList
+    })
+  },
+
+  /**
+   * 选择提货时间
+   */
+  selectTakeDate: function (e) {
+    let tempOrder = this.data.orderList[e.currentTarget.dataset.index];
+    if (tempOrder.orderTakeDetail == null) {
+      tempOrder.orderTakeDetail = {};
+    }
+    tempOrder.orderTakeDetail.takeTime = e.detail.value;
+    this.setData({
+      orderList: this.data.orderList
+    })
+  },
+
+  /**
+   * 选择提货地址省市区
+   */
+  selectTakeRegion: function (e) {
+    let tempOrder = this.data.orderList[e.currentTarget.dataset.index];
+    if (tempOrder.orderTakeDetail == null) {
+      tempOrder.orderTakeDetail = {};
+    }
+    let region = e.detail.value;
+    tempOrder.orderTakeDetail.province = region[0];
+    tempOrder.orderTakeDetail.city = region[1];
+    tempOrder.orderTakeDetail.region = region[2];
+    this.setData({
+      orderList: this.data.orderList
+    })
+  },
+
+  /**
+   * 输入提货详细地址
+   */
+  inputOrderTakeDetailAddress: function(e) {
+    let tempOrder = this.data.orderList[e.currentTarget.dataset.index];
+    if (tempOrder.orderTakeDetail == null) {
+      tempOrder.orderTakeDetail = {};
+    }
+    tempOrder.orderTakeDetail.detailAddress = e.detail.value;
   },
 
   /**

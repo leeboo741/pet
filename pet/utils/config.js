@@ -63,6 +63,7 @@ const URL_GetStorePhoneByCityName = "/api/business/getPhoneByCityName"; // 通�
 
 const URL_ChangeToDeliver = "/api/order/deliver"; // 修改待签收状态为派送
 const URL_PostTransportInfo = "/api/order/transport"; // 添加运输信息
+const URL_PostOrderTakerInfo = "/api/order/take-detail"; // 添加提货信息
 const URL_Order = "/api/order/insertOrder"; // 下单
 const URL_CancelOrder = "/api/order/cancelOrder"; // 取消订单
 const URL_GetOrderListByOrderStatus = "/api/order/listOrderList"; // 根据订单类型查询订单列表
@@ -198,6 +199,7 @@ module.exports = {
 
   URL_ChangeToDeliver, // 修改代签收状态为派送
   URL_PostTransportInfo, // 添加运输信息
+  URL_PostOrderTakerInfo, // 添加提货信息
   URL_Order, // 下单
   URL_CancelOrder, // 取消订单
   URL_GetOrderListByOrderStatus, // 根据订单类型查询订单列表
