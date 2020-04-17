@@ -533,10 +533,7 @@ Page({
       return;
     }
     this.data.addServerReceivePet.selected = !this.data.addServerReceivePet.selected;
-    if (!this.data.addServerReceivePet.selected) { 
-      // 取消选中 置空 接宠地址 并且重新请求 价格数据
-      this.predictPrice();
-    }
+    this.predictPrice();
     this.setData({
       addServerReceivePet: this.data.addServerReceivePet
     })
