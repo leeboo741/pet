@@ -123,7 +123,8 @@ Page({
       url: config.URL_Service + config.URL_Recharge,
       data: {
         customerNo: loginUtil.getCustomerNo(),
-        rechargeAmount: this.data.rechargeAmount
+        rechargeAmount: this.data.rechargeAmount,
+        appType: loginUtil.getAppType()
       },
       success(res) {
         wx.hideLoading();

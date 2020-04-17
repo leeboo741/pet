@@ -46,12 +46,24 @@ Page({
 
   getUserInfo: function(button) {
     let that = this;
+    wx.showLoading({
+      title: '请稍等...',
+    })
     LoginUtil.getWXUserInfo(function callback(wxUserInfo) {
       console.log("WXUserInfo:" + JSON.stringify(wxUserInfo));
-      that.setData({
-        loginStep: Login_Step_GetPhoneNumber,
-        wxUserInfo: wxUserInfo,
+      wx.hideLoading();
+      wx.showModal({
+        title: '请前往登录',
+        content: '授权成功,请前往登录',
+        showCancel: false,
+        success(res) {
+          that.setData({
+            loginStep: Login_Step_GetPhoneNumber,
+            wxUserInfo: wxUserInfo,
+          })
+        }
       })
+      
     })
   },
 

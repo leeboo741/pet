@@ -465,7 +465,8 @@ Page({
       url: config.URL_Service + config.URL_PayPremium,
       data: {
         billNo: billNo,
-        customerNo: loginUtil.getCustomerNo()
+        customerNo: loginUtil.getCustomerNo(),
+        appType: loginUtil.getAppType()
       },
       success(res) {
         wx.hideLoading();

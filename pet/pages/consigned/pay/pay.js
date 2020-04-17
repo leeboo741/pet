@@ -479,6 +479,7 @@ Page({
       data: {
         orderNo: orderNo,
         customerNo: loginUtil.getCustomerNo(),
+        appType: loginUtil.getAppType(),
       },
       success(res) {
         wx.hideLoading();

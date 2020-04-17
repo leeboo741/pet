@@ -776,7 +776,8 @@ Page({
       url: config.URL_Service + config.URL_Payment,
       data: {
         orderNo: orderNo,
-        customerNo: loginUtil.getCustomerNo()
+        customerNo: loginUtil.getCustomerNo(),
+        appType: loginUtil.getAppType()
       },
       success(res) {
         wx.hideLoading();

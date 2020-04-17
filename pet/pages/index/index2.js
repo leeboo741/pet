@@ -43,7 +43,7 @@ Page({
       {
         icon: '../../resource/index_business_abroad.png',
         name: '宠物商城',
-        target: "pages/index/index?from=transport&target=mall",
+        target: "pages/index/index?source=mini_app_transport&target=mall",
         data: 'wxca35493268376086',
         actionType: BUSINESS_ACTION_TYPE_MINIPROGRAME,
       },
@@ -62,7 +62,7 @@ Page({
       {
         icon: '../../resource/index_business_check_order.png',
         name: '商城积分',
-        target: "pages/index/index?from=transport&target=point",
+        target: "pages/index/index?source=mini_app_transport&target=pointexchange",
         data: 'wxca35493268376086',
         actionType: BUSINESS_ACTION_TYPE_MINIPROGRAME,
       },
@@ -73,6 +73,9 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    if (loginUtil.updateAppVersion()) {
+      loginUtil.deleteUserInfo();
+    }
     ShareUtil.getAppOpenData(options,
       function getResultCallback(type, data) {
         if (type == 'none') {

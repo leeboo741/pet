@@ -10,6 +10,44 @@ const Login_Fail = 2;
 const Login_NoAuthSetting = 3;
 
 const Key_UserInfo = "userInfo";
+const Key_CurrentVersionCode = 'CurrentVersionCode'
+
+/**
+ * 是否是当前最新版本Code
+ */
+function updateAppVersion() {
+  try {
+    let currentVersionCode = wx.getStorageSync(Key_CurrentVersionCode);
+    if (currentVersionCode < config.Version_Code) {
+      saveAppVersionCode(config.Version_Code);
+      return true;
+    } else {
+      saveAppVersionCode(config.Version_Code);
+      return false;
+    }
+  } catch (e) {
+    saveAppVersionCode(config.Version_Code);
+    return true;
+  }
+}
+
+/**
+ * 存入当前版本Code
+ */
+function saveAppVersionCode() {
+  try {
+    wx.setStorageSync(Key_CurrentVersionCode, config.Version_Code);
+  } catch (e) {
+
+  }
+}
+
+/**
+ * 获取当前AppType
+ */
+function getAppType(){
+  return "WeappConsign";
+}
 
 /**
  * 获取用户
@@ -390,5 +428,7 @@ module.exports = {
   getLogin: getLogin,
   getNewUserInfo: getNewUserInfo,
   resetBalance: resetBalance,
-  getBalance: getBalance
+  getBalance: getBalance,
+  getAppType: getAppType,
+  updateAppVersion: updateAppVersion,
 }
