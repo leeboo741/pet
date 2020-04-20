@@ -13,13 +13,13 @@
           登陆|注册
           </button>
           <view class="sign-box">
-            <view class="sign-item" hidden='{{userInfo.staffNo==null||userInfo.role!=1}}'>
+            <view class="sign-item" hidden='{{userInfo.staff.staffNo==null||userInfo.role!=1}}'>
             老板
             </view>
-            <view class="sign-item" hidden="{{userInfo.staffNo==null||userInfo.role==1}}">
+            <view class="sign-item" hidden="{{userInfo.staff.staffNo==null||userInfo.role==1}}">
             认证员工
             </view>
-            <view class="sign-item" hidden="{{userInfo.businessNo==null}}">
+            <view class="sign-item" hidden="{{userInfo.business.businessNo==null}}">
             认证商家
             </view>
           </view>

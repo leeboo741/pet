@@ -15,6 +15,8 @@ Page({
     refundReason: null,
 
     backTimeout : null,
+
+    submiting: false,
   },
 
   /**
@@ -105,8 +107,8 @@ Page({
    * 请求提交
    */
   requestSubmit: function() {
-    wx.showLoading({
-      title: '提交中...',
+    this.setData({
+      submiting: true
     })
     let that = this;
     wx.request({
@@ -124,20 +126,25 @@ Page({
       method: "POST",
       success(res) {
         console.log("申请退款 success: \n" + JSON.stringify(res));
+
         if (res.data.code == Config.RES_CODE_SUCCESS) {
           if (res.data.data > 0) {
-            wx.showToast({
-              title: '提交成功',
-              duration: 1500,
+
+            wx.navigateBack({
+
             })
-            that.data.backTimeout = setTimeout(
-              function (res) {
-                wx.navigateBack({
+            // wx.showToast({
+            //   title: '提交成功',
+            //   duration: 1500,
+            // })
+            // that.data.backTimeout = setTimeout(
+            //   function (res) {
+            //     wx.navigateBack({
                   
-                })
-              },
-              1550
-            )
+            //     })
+            //   },
+            //   1550
+            // )
           }
         }
       },
@@ -146,6 +153,11 @@ Page({
         wx.showToast({
           title: '系统异常',
           icon: 'none'
+        })
+      },
+      complete(res) {
+        that.setData({
+          submiting: false
         })
       }
     })

@@ -9,6 +9,10 @@ const ShareUtil = require("../../utils/shareUtils.js");
 const app = getApp();
 const maxVideoLength = 10; // 最大视频长度限制
 
+const OrderTakeDetailInputState_UnStart = 0;
+const OrderTakeDetailInputState_UnComplete = 1;
+const OrderTakeDetailInputState_Complete = 2;
+
 Page({
 
   /**
@@ -594,7 +598,25 @@ Page({
         console.log("添加运输信息 success: \n" + JSON.stringify(res));
         wx.hideLoading();
         if (res.data.code == config.RES_CODE_SUCCESS && res.data.data > 0) {
-          that.requestOrderTaker(tempIndex)
+          that.checkOrderTakeDetailIsComplete(order.orderTakeDetail, function inputStateCallback(state){
+            if (state == OrderTakeDetailInputState_UnStart) {
+              that.requestConfirmInHarbour(tempIndex);
+            } else if (state == OrderTakeDetailInputState_UnComplete) {
+              wx.showModal({
+                title: '提货信息未输入完全',
+                content: '是否补全提货信息?不补全将不会提交当前提货信息',
+                cancelText:'继续补全',
+                confirmText: '放弃补全',
+                success(takeOrderCompleteRes){
+                  if (takeOrderCompleteRes.confirm) {
+                    that.requestConfirmInHarbour(tempIndex);
+                  }
+                }
+              })
+            } else {
+              that.requestOrderTaker(tempIndex);
+            }
+          })
         } else {
           wx.showToast({
             title: '添加运输信息失败！',
@@ -616,56 +638,43 @@ Page({
     })
   },
 
+  
+  /**
+   * 提货信息是否输入完成
+   */
+  checkOrderTakeDetailIsComplete: function(orderTakeDetail, inputStateCallback) {
+    var orderTakeDetailInputState = OrderTakeDetailInputState_UnStart;
+    if (!util.checkEmpty(orderTakeDetail)) {
+      orderTakeDetailInputState = OrderTakeDetailInputState_Complete;
+      if (util.checkEmpty(orderTakeDetail.contact)) {
+        orderTakeDetailInputState = OrderTakeDetailInputState_UnComplete;
+      }
+      if (util.checkEmpty(orderTakeDetail.phone)) {
+        orderTakeDetailInputState = OrderTakeDetailInputState_UnComplete;
+      }
+      if (util.checkEmpty(orderTakeDetail.takeTime)) {
+        orderTakeDetailInputState = OrderTakeDetailInputState_UnComplete;
+      }
+      if (util.checkEmpty(orderTakeDetail.province)
+        || util.checkEmpty(orderTakeDetail.city)
+        || util.checkEmpty(orderTakeDetail.region)) {
+        orderTakeDetailInputState = OrderTakeDetailInputState_UnComplete;
+      }
+      if (util.checkEmpty(orderTakeDetail.detailAddress)) {
+        orderTakeDetailInputState = OrderTakeDetailInputState_UnComplete;
+      }
+    }
+    if (util.checkIsFunction(inputStateCallback)) {
+      inputStateCallback(orderTakeDetailInputState);
+    }
+  },
+
   /**
    * 提交提货信息
    */
   requestOrderTaker: function(orderIndex) {
     const tempIndex = orderIndex;
     const order = this.data.orderList[tempIndex];
-    if (util.checkEmpty(order.orderTakeDetail)) {
-      wx.showToast({
-        title: '提货信息有必填项未填写',
-        icon: 'none'
-      })
-      return;
-    }
-    if (util.checkEmpty(order.orderTakeDetail.contact)) {
-      wx.showToast({
-        title: '请输入提货联系人名称',
-        icon: 'none'
-      })
-      return;
-    }
-    if (util.checkEmpty(order.orderTakeDetail.phone)) {
-      wx.showToast({
-        title: '请输入提货联系人电话',
-        icon: 'none'
-      })
-      return;
-    }
-    if (util.checkEmpty(order.orderTakeDetail.takeTime)) {
-      wx.showToast({
-        title: '请选择提货时间',
-        icon: 'none'
-      })
-      return;
-    }
-    if (util.checkEmpty(order.orderTakeDetail.province)
-      || util.checkEmpty(order.orderTakeDetail.city)
-      || util.checkEmpty(order.orderTakeDetail.region)) {
-      wx.showToast({
-        title: '请选择提货省市区',
-        icon: 'none'
-      })
-      return;
-    }
-    if (util.checkEmpty(order.orderTakeDetail.detailAddress)) {
-      wx.showToast({
-        title: '请选择提货详细地址',
-        icon: 'none'
-      })
-      return;
-    }
     let tempData = order.orderTakeDetail;
     tempData.order = {
       orderNo: order.orderNo

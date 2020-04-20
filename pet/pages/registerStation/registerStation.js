@@ -5,6 +5,7 @@ const util = require("../../utils/util.js");
 const ShareUtil = require("../../utils/shareUtils.js");
 const PagePath = require("../../utils/pagePath.js");
 const app = getApp();
+const LoginUtil = require("../../utils/loginUtils.js");
 
 const intervalDuration = 60;
 
@@ -15,6 +16,7 @@ Page({
    */
   data: {
     name: null, // 名称
+    contact: null, // 联系人名称
     phone: null, // 手机号
     code: null, // 验证码
     startTime: null, // 开始时间
@@ -109,6 +111,15 @@ Page({
   inputName: function (e) {
     this.setData({
       name: e.detail.value
+    })
+  },
+
+  /**
+   * 输入联系人名称
+   */
+  inputContact: function (e) {
+    this.setData({
+      contact: e.detail.value
     })
   },
 
@@ -251,6 +262,13 @@ Page({
       })
       return;
     }
+    if (util.checkEmpty(this.data.contact)) {
+      wx.showToast({
+        title: '请输入联系人名称',
+        icon: 'none'
+      })
+      return;
+    }
     if (util.checkEmpty(this.data.phone) || !util.isPhoneAvailable(this.data.phone)) {
       wx.showToast({
         title: '请输入正确手机号',
@@ -327,14 +345,17 @@ Page({
       title: '提交申请中...',
     })
     let tempData = {
+      customerNo: LoginUtil.getCustomerNo(),
       businessName: this.data.name,
-      phoneNumber: this.data.phone,
-      startBusinessHours: this.data.startTime,
-      endBusinessHours: this.data.endTime,
-      describes: this.data.describe,
+      contact: this.data.contact,
+      contactPhone: this.data.phone,
+      startHours: this.data.startTime,
+      endHours: this.data.endTime,
+      describe: this.data.describe,
       province: this.data.province,
       city: this.data.city,
-      detailAddress: this.data.district + this.data.detail,
+      area: this.data.district,
+      detailAddress: this.data.detail,
       verificationCode: this.data.code,
     };
     let that = this;

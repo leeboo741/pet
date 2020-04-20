@@ -12,13 +12,15 @@ const Login_NoAuthSetting = 3;
 const Key_UserInfo = "userInfo";
 const Key_CurrentVersionCode = 'CurrentVersionCode'
 
+const LastNeedClearUserInfoVersionCode = 78;
+
 /**
  * 是否是当前最新版本Code
  */
 function updateAppVersion() {
   try {
     let currentVersionCode = wx.getStorageSync(Key_CurrentVersionCode);
-    if (currentVersionCode < config.Version_Code) {
+    if (currentVersionCode <= 78 && currentVersionCode < config.Version_Code) {
       saveAppVersionCode(config.Version_Code);
       return true;
     } else {

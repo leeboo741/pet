@@ -12,6 +12,16 @@
             bindinput="inputName">
       </input>
     </i-cell>
+    <i-cell title='联系人'>
+      <view slot="icon"
+            class="non-null-icon">
+      *
+      </view>
+      <input slot="footer" 
+            placeholder="联系人"
+            bindinput="inputContact">
+      </input>
+    </i-cell>
     <i-cell title='联系人手机'>
       <view slot="icon"
             class="non-null-icon">

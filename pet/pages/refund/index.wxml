@@ -41,11 +41,13 @@
 <i-panel i-class='panel'>
   <i-cell-group>
     <i-cell>
-      <view class="submit-button"
-            slot='header'
-            bindtap="tapSubmit">
-      确定
-      </view>
+      <button type="warn"
+              loading='{{submiting}}'
+              class="submit-button"
+              slot='header'
+              bindtap="tapSubmit">
+      退款
+      </button>
     </i-cell>
   </i-cell-group>
 </i-panel>
