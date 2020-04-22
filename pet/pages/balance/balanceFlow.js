@@ -5,6 +5,7 @@ const LoginUtil = require("../../utils/loginUtils.js");
 const Util = require("../../utils/util.js");
 const Config = require("../../utils/config.js");
 const ShareUtil = require("../../utils/shareUtils.js");
+const PagePath = require("../../utils/pagePath.js");
 
 Page({
 
@@ -133,6 +134,16 @@ Page({
    */
   onShareAppMessage: function () {
     return ShareUtil.getOnShareAppMessageForShareOpenId();
+  },
+
+  /**
+   * 点击流水item
+   */
+  tapFlowItemAction: function(button) {
+    let orderNo = button.currentTarget.dataset.flow.billNo;
+    wx.navigateTo({
+      url: PagePath.Path_Order_Detail + '?orderno=' + orderNo + '&type=1' + "&ablecancelpremium=0" + "&showprice=0",
+    })
   },
 
   /**

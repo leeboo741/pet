@@ -223,11 +223,11 @@
             </input>
           </view>
           <view class="in-out-port-info-item">
-            <picker class="in-out-port-info-input" mode='date' bindchange="selectTakeDate" data-index='{{orderIndex}}'>
+            <!-- <picker class="in-out-port-info-input" mode='date' bindchange="selectTakeDate" data-index='{{orderIndex}}'>
               <view class="in-out-port-info-input-value {{orderItem.orderTakeDetail.takeTime == null || orderItem.orderTakeDetail.takeTime.length <= 0 ? 'text-placeholder':'text-normal'}}">
                 {{orderItem.orderTakeDetail.takeTime == null || orderItem.orderTakeDetail.takeTime.length
                 <=0 ? "请选择提货时间":orderItem.orderTakeDetail.takeTime}} </view>
-            </picker>
+            </picker> -->
             <picker class="in-out-port-info-input" mode='region' bindchange="selectTakeRegion" data-index='{{orderIndex}}'>
               <view class="in-out-port-info-input-value {{parse.getOrderTakeRegion(orderItem.orderTakeDetail) != null ? 'text-normal':'text-placeholder'}}">
                 {{parse.getOrderTakeRegion(orderItem.orderTakeDetail) != null ? parse.getOrderTakeRegion(orderItem.orderTakeDetail):'选择提货省市区'}}
@@ -238,9 +238,7 @@
               <input class="in-out-port-info-input text-normal" placeholder="提货详细地址" placeholder-class="text-placeholder" bindinput="inputOrderTakeDetailAddress" data-index='{{orderIndex}}' value="{{orderItem.orderTakeDetail.detailAddress}}">
               </input>
             </view>
-
           </view>
-
 
           <!-- 按钮区域 -->
           <view class='bill-operate-box'>

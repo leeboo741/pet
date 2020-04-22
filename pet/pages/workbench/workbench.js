@@ -256,6 +256,12 @@ Page({
                 title: '上传完成',
               })
             }
+            that.getDefaultOrderTakerDetail(order, function getDefaultOrderTakerCallback(defaultOrderTaker){
+              order.orderTakeDetail = defaultOrderTaker;
+              that.setData({
+                orderList: that.data.orderList
+              })
+            })
             that.handleReadyToUpload(order)
             that.handleReadyToInHarbour(order);
           }
@@ -638,6 +644,34 @@ Page({
     })
   },
 
+  /**
+   * 获取默认提货配置
+   */
+  getDefaultOrderTakerDetail: function (order, getDefaultOrderTakerCallback) {
+    let that = this;
+    wx.showLoading({
+      title: '请稍等...',
+    })
+    wx.request({
+      url: config.URL_Service + config.URL_GetDefaultOrderTakerInfo + order.orderNo,
+      success(res) {
+        console.log ("获取默认提货信息配置success: " + JSON.stringify(res));
+        if (res.data.code == config.RES_CODE_SUCCESS && res.data.data != null) {
+          if (getDefaultOrderTakerCallback && typeof getDefaultOrderTakerCallback == 'function') {
+            getDefaultOrderTakerCallback(res.data.data);
+          }
+        } 
+      },
+      fail(res) {
+        console.log("获取默认提货信息配置fail: " + JSON.stringify(res));
+      },
+      complete(res) {
+        wx.hideLoading();
+      },
+
+    })
+  },
+
   
   /**
    * 提货信息是否输入完成
@@ -652,9 +686,9 @@ Page({
       if (util.checkEmpty(orderTakeDetail.phone)) {
         orderTakeDetailInputState = OrderTakeDetailInputState_UnComplete;
       }
-      if (util.checkEmpty(orderTakeDetail.takeTime)) {
-        orderTakeDetailInputState = OrderTakeDetailInputState_UnComplete;
-      }
+      // if (util.checkEmpty(orderTakeDetail.takeTime)) {
+      //   orderTakeDetailInputState = OrderTakeDetailInputState_UnComplete;
+      // }
       if (util.checkEmpty(orderTakeDetail.province)
         || util.checkEmpty(orderTakeDetail.city)
         || util.checkEmpty(orderTakeDetail.region)) {

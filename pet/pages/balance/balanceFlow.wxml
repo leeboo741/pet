@@ -6,7 +6,10 @@
             wx:for-index='index'
             wx:key='{{index}}'>
       <view slot='header'
-            class="flow-item">
+            class="flow-item"
+            bindtap="tapFlowItemAction"
+            data-index='{{index}}'
+            data-flow='{{item}}'>
         <view class='flow-item-title'>
         {{item.linkNo!=null && item.linkNo.length > 0?"关联单号":"单号"}}：{{item.linkNo!=null && item.linkNo.length > 0?item.linkNo:item.billNo}}
         </view>
