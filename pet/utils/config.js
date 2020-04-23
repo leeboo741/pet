@@ -50,6 +50,7 @@ const URL_GetSubStaff = "/api/staff/"; // 获取下属员工
 
 const URL_PetType = "/api/petType"; // 宠物类型
 const URL_PetClassify = "/api/petClassify"; // 宠物品种
+const URL_GetPetClassifyListByKeyword = '/api/petClassify/keyWord/'; // 根据关键字搜索宠物品种列表
 const URL_StartCity = "/api/transport/listStartCity"; // 始发城市
 const URL_EndCity = "/api/transport/listEndCity"; // 目标城市
 const URL_AbleTransportType = "/api/transport/listTransportType"; // 可用运输方式
@@ -187,6 +188,7 @@ module.exports = {
 
   URL_PetType, // 宠物类型
   URL_PetClassify, // 宠物品种
+  URL_GetPetClassifyListByKeyword, // 根据关键字查询宠物品种列表
   URL_StartCity, // 始发城市
   URL_EndCity, // 目标城市
   URL_AbleTransportType, // 可用运输方式

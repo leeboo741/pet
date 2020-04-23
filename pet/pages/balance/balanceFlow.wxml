@@ -10,19 +10,70 @@
             bindtap="tapFlowItemAction"
             data-index='{{index}}'
             data-flow='{{item}}'>
-        <view class='flow-item-title'>
+        <view class='flow-item-title' style="margin-bottom: 25rpx;">
         {{item.linkNo!=null && item.linkNo.length > 0?"关联单号":"单号"}}：{{item.linkNo!=null && item.linkNo.length > 0?item.linkNo:item.billNo}}
         </view>
-        <view class="flow-type">
+        <view class="flow-type" style="margin-bottom: 25rpx;">
         流水类型：{{parse.getFlowType(item.flowType)}}
         </view>
+        <view class="flow-type" wx:if='{{(item.stationBalanceFlowList!=null&&item.stationBalanceFlowList.length>0)||(item.businessBalanceFlowList!=null&&item.businessBalanceFlowList.length>0)}}'>
+        其他流水去向：
+        </view>
+        <view class='flow-item-detail' 
+              wx:if='{{item.stationBalanceFlowList!=null&&item.stationBalanceFlowList.length>0}}'>
+          <view class="flow-item-detail-title">
+          相关站点:
+          </view>
+          <view class="flow-item-detail-item-box">
+            <view class="flow-item-detail-item"
+                  wx:for='{{item.stationBalanceFlowList}}'
+                  wx:for-item='stationBalanceFlowItem'
+                  wx:for-index='stationBalanceFlowIndex'
+                  wx:key='flowNo'>
+              <view class="flow-item-detail-item-name">
+              {{stationBalanceFlowIndex+1}}. {{stationBalanceFlowItem.station.stationName}}
+              </view>
+              <view class="flow-item-detail-item-value" style="margin-left: 8rpx;">
+              ￥{{stationBalanceFlowItem.flowAmount}}
+              </view>
+              <view class="flow-item-detail-item-type" style="margin-left: 8rpx;">
+              ({{parse.getFlowType(stationBalanceFlowItem.flowType)}})
+              </view>
+            </view>
+          </view>
+        </view>
+
+        <view class='flow-item-detail' 
+              wx:if='{{item.businessBalanceFlowList!=null&&item.businessBalanceFlowList.length>0}}'>
+          <view class="flow-item-detail-title">
+          相关商家:
+          </view>
+          <view class="flow-item-detail-item-box">
+            <view class="flow-item-detail-item"
+                  wx:for='{{item.businessBalanceFlowList}}'
+                  wx:for-item='businessBalanceFlowItem'
+                  wx:for-index='businessBalanceFlowIndex'
+                  wx:key='flowNo'>
+              <view class="flow-item-detail-item-name">
+              {{businessBalanceFlowIndex+1}}. {{businessBalanceFlowItem.business.businessName}}
+              </view>
+              <view class="flow-item-detail-item-value" style="margin-left: 8rpx;">
+              ￥{{businessBalanceFlowItem.flowAmount}}
+              </view>
+              <view class="flow-item-detail-item-type" style="margin-left: 8rpx;">
+              ({{parse.getFlowType(businessBalanceFlowItem.flowType)}})
+              </view>
+            </view>
+          </view>
+        </view>
+
         <view class=" flow-item-content">
           <view class="balance-box">
             <view class="flow-value {{parse.getFlowValueClass(item.flowAmount)}}">
             ￥{{parse.getSign(item.flowAmount)}}{{item.flowAmount}}
             </view>
             <view class="balance-value">
-            (￥{{item.balance}})
+            (余额:￥{{item.balance}})
             </view>
           </view>
           <view class="flow-time">

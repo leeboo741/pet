@@ -189,6 +189,13 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
+    if (app.globalData.selectClassifyName != null) {
+      this.setData({
+        petClassify: app.globalData.selectClassifyName
+      })
+      app.globalData.selectClassifyName = null;
+    }
+
     // 接受 城市选择页面 返回数据
     if (app.globalData.trainBeginCity != null && app.globalData.trainBeginCity != this.data.beginCity) {
       // 重置运输方式
@@ -1365,6 +1372,9 @@ Page({
   petClassifyFocus: function() {
     this.setData({
       classifyInputFocus: true
+    })
+    wx.navigateTo({
+      url: pagePath.Path_Order_ClassifySelect,
     })
   },
 

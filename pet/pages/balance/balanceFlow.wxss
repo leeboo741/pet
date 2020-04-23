@@ -6,7 +6,8 @@
 }
 
 .flow-item-title{
-  font-size: 32rpx;
+  font-size: 36rpx;
+  font-weight: bold;
 }
 
 .flow-type{
@@ -14,8 +15,40 @@
   margin-top: 8rpx;
 }
 
-.flow-item-content{
+.flow-item-detail{
   margin-top: 10rpx;
+  font-size: 28rpx;
+  display: flex;
+  flex-direction: column;
+}
+
+.flow-item-detail-title{
+  margin:0rpx 10rpx;
+}
+
+.flow-item-detail-item-box{
+  display: flex;
+  flex-direction: column;
+  padding: 10rpx;
+}
+
+.flow-item-detail-item{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.flow-item-detail-item-name{
+  font-size: 26rpx;
+}
+
+.flow-item-detail-item-value{
+  font-size: 28rpx;
+  color: goldenrod;
+}
+
+.flow-item-content{
+  margin-top: 25rpx;
   display: flex;
   flex-direction: row;
   justify-content: space-between;

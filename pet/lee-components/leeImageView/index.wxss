@@ -1,0 +1,20 @@
+/* lee-components/leeImageView/index.wxss */
+.image-box{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.content-box{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.image-content{
+  width: 90%;
+  height: 90%;
+  border-radius: 15rpx;
+}

@@ -1,0 +1,108 @@
+<!--lee-components/leeImageView/index.wxml-->
+
+<view class="image-box i-class">
+  <view class="content-box" style='margin:{{contentMargin}}'> 
+    <block wx:if='{{srcType==0}}'>
+      <image class="image-content i-image-class"
+            style='{{parse.getContentStyle(contentStyle)}}'
+            src='{{src}}'
+            mode="{{mode}}"
+            lazy-load="{{lazyLoad}}"
+            hidden="{{parse.hiddenImage(loadState, src)}}"
+            binderror="loadError"
+            bindload="load">
+      </image>
+
+      <image class="image-content placehold-image"
+            style='{{parse.getContentStyle(contentStyle)}}'
+            src='{{placeholderSrc}}'
+            mode="{{placeholderMode}}"
+            wx:if="{{parse.showPlaceholderImage(loadState, src)}}">
+      </image>
+
+      <image class="image-content fail-image"
+            style='{{parse.getContentStyle(contentStyle)}}'
+            src='{{parse.getFailSrc(failSrc, placeholderSrc)}}'
+            mode="{{failMode}}"
+            wx:if="{{parse.showFailImage(loadState, src)}}">
+      </image>
+    </block>
+
+    <block wx:elif='{{srcType==1}}'>
+      <video class="image-content i-image-class"
+            style='{{parse.getContentStyle(contentStyle)}}'
+            src="{{src}}"
+            id="{{src}}"
+            bindended="playEnd"
+            bindpause="playPause"
+            bindplay="play"
+            controls='{{showControls}}'
+            autoplay='{{videoAutoPlay}}'
+            muted='{{videoMuted}}'
+            loop='{{videoLoop}}'
+            show-fullscreen-btn='{{videoShowFullScreenButton}}'
+            show-play-btn='{{videoShowBottomPlayButton}}'
+            show-center-play-btn='{{videoShowCenterPlayButton}}'
+            show-mute-btn='{{videoShowMuteButton}}'
+            show-progress='{{videoShowProgress}}'>
+      
+      </video>
+    </block>
+
+    <block wx:else>
+      <image class="image-content fail-image"
+            style='{{parse.getContentStyle(contentStyle)}}'
+            src='{{parse.getFailSrc(failSrc, placeholderSrc)}}'
+            mode="{{mode}}">
+      </image>
+    </block>
+  </view>
+</view>
+
+
+
+
+
+<wxs module='parse'>
+  module.exports={
+    getContentStyle: function(contentStyle){
+      if (contentStyle == 'none') {
+        return "";
+      } else if (contentStyle == 'round') {
+        return "border-radius: 50%";
+      } else if (contentStyle == 'card') {
+        return "border-radius: 15rpx";
+      } else {
+        return "";
+      }
+    },
+    hiddenImage: function(state, imageSrc) {
+      if (state != 1) {
+        return true;
+      } else if (imageSrc == null || imageSrc.length <= 0) {
+        return true;
+      }
+      return false;
+    },
+    showPlaceholderImage: function(state, imageSrc) {
+      if (state == 0 && (imageSrc != null && imageSrc.length > 0)){
+        return true;
+      }
+      return false;
+    },
+    showFailImage: function(state, imageSrc) {
+      if (state == 2) {
+        return true;
+      } else if (imageSrc == null || imageSrc.length <= 0) {
+        return true;
+      }
+      return false;
+    },
+    getFailSrc: function (failSrc, placeholderSrc) {
+      if (failSrc != null && failSrc.length > 0) {
+        return failSrc;
+      }
+      return placeholderSrc;
+    }
+  }
+</wxs>

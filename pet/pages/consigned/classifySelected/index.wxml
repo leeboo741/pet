@@ -1,0 +1,43 @@
+<!--pages/consigned/classifySelected/index.wxml-->
+<view class="background-view">
+  <view class="input-box">
+    <input class="input-normal"
+           style="padding: 10rpx; margin: 0rpx 15rpx; flex-grow: 1"
+           placeholder="输入宠物品种"
+           placeholder-class="input-normal-placeholder"
+           value='{{searchword}}'
+           bindinput="inputSearchword"
+           focus>
+    </input>
+    <button class="confirm-button"
+            bindtap="confirmInput">
+    确定
+    </button>
+  </view>
+</view>
+
+<view class="front-view" wx:if='{{searchResultList!=null&&searchResultList.length>0}}'>
+  <i-panel title='推荐:'>
+    <i-cell-group>
+      <i-cell wx:for='{{searchResultList}}'
+              wx:for-item='resultItem'
+              wx:for-index='resultIndex'
+              wx:key='resultItem'>
+        <view slot='header'
+              class="classify-item"
+              bindtap="tapClassifyItemAction"
+              data-index='{{resultIndex}}'>
+          <i-image i-class='classify-icon'
+                   imageSrc='{{resultItem.petGenreImg}}'
+                   contentStyle='round'>
+          </i-image>
+          <view class="classify-name">
+          {{resultItem.petGenreName}}
+          </view>
+        </view>
+      </i-cell>
+    </i-cell-group>
+  </i-panel>
+  <view class="empty-area">
+  </view>
+</view>

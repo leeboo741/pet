@@ -5,6 +5,7 @@ const Path_Map = "/pages/map/map"; // 地图页
 
 const Path_Order_Index = "/pages/consigned/base/base"; // 下单--首页
 const Path_Order_City = "/pages/consigned/city/city"; // 下单--城市选择
+const Path_Order_ClassifySelect = "/pages/consigned/classifySelected/index"; // 下单--宠物品种选择
 const Path_Order_Pay = "/pages/consigned/pay/pay"; // 下单--支付
 const Path_Order_Coupon = "/pages/consigned/coupon/coupon"; // 下单--优惠券
 const Path_Order_Coupon_QRCode = "/pages/consigned/coupon/couponQRCode/couponQRCode"; // 下单--优惠券二维码
@@ -60,6 +61,7 @@ module.exports = {
 
   Path_Order_Index: Path_Order_Index, // 下单--首页
   Path_Order_City: Path_Order_City, // 下单--城市选择
+  Path_Order_ClassifySelect: Path_Order_ClassifySelect, // 下单--宠物品种选择
   Path_Order_Pay: Path_Order_Pay, // 下单--支付
   Path_Order_Coupon: Path_Order_Coupon, // 下单--优惠券
   Path_Order_Coupon_QRCode: Path_Order_Coupon_QRCode, // 下单--优惠券二维码

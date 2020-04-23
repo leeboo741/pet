@@ -43,7 +43,9 @@
     "pages/evaluate/order/index",
     "pages/station/stationDetail/index",
     "pages/registerStation/serviceItemSelect/index",
-    "pages/unPayWork/index"
+    "pages/unPayWork/index",
+    "pages/station/stationMap/index",
+    "pages/consigned/classifySelected/index"
   ],
   "window": {
     "backgroundTextStyle": "light",

@@ -1,0 +1,56 @@
+/* pages/consigned/classifySelected/index.wxss */
+.empty-area{
+  height: 100rpx;
+  z-index: 1;
+}
+
+.input-box{
+  z-index: 2;
+  position: fixed;
+  left: 0rpx;
+  right: 0rpx;
+  bottom: 0rpx;
+  height: 100rpx;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  background: white;
+}
+
+.input{
+  width: 70%;
+  height: 84rpx;
+  border-radius: 14rpx;
+  border: 1rpx solid #778899;
+  padding-left: 0rpx;
+  padding-right: 0rpx;
+}
+
+.confirm-button{
+  width: 20%;
+  height: 80rpx;
+  line-height: 80rpx;
+  border-radius: 14rpx;
+  background: #ee2c2c;
+  color: white;
+  padding-left: 0rpx;
+  padding-right: 0rpx;
+  font-size: 32rpx;
+  margin: 0rpx 15rpx;
+}
+
+.classify-item{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.classify-icon{
+  width: 80rpx;
+  height: 80rpx;
+}
+
+.classify-name{
+  margin-left: 30rpx;
+}
