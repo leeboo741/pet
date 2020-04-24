@@ -522,12 +522,29 @@ Page({
     // })
     let that = this;
     wx.showActionSheet({
-      itemList: ["退出登陆"],
+      itemList: ["退出登陆","更新用户信息"],
       success(res) {
         if(res.tapIndex == 0) {
           wx.clearStorage();
           that.setData({
             userInfo: loginUtil.getUserInfo()
+          })
+        } else if (res.tapIndex == 1) {
+          loginUtil.checkLogin(function alreadyLoginCallback(isLogin) {
+            if (isLogin) {
+              loginUtil.updateCustomer(function updateCallback(isSuccess){
+                if (isSuccess) {
+                  that.setData({
+                    userInfo: loginUtil.getUserInfo()
+                  })
+                }
+              })
+            } else {
+              wx.showToast({
+                title: '请先登录',
+                icon:'none'
+              })
+            }
           })
         }
       }

@@ -1,2 +1,73 @@
 <!--pages/station/stationMap/index.wxml-->
-<text>pages/station/stationMap/index.wxml</text>
+<map class='map-content' id='MyMap' latitude='{{mapCenterLocation.latitude}}' longitude='{{mapCenterLocation.longitude}}' scale="{{mapScale}}" show-location='{{true}}' markers='{{mapMarkers}}' bindtap='tapMap' bindmarkertap='tapMarker' bindregionchange='changeRegion'
+  style='position: fixed'>
+</map>
+<view class="empty-zone">
+</view>
+<i-panel i-class='panel'>
+  <i-cell-group>
+    <i-cell wx:for='{{allStationList}}' wx:for-item='stationItem' wx:for-index='stationIndex' wx:key='businessNo'>
+      <view slot='header' class="station-item" bindtap="tapStationItem" data-stationno='{{stationItem.businessNo}}' data-index='{{stationIndex}}'>
+        <view class="station-item-head">
+        </view>
+        <view class="station-item-content">
+          <view class="station-logo-box">
+            <i-image i-class="station-logo" imageSrc="{{stationItem.headImg}}" contentStyle='round'>
+            </i-image>
+          </view>
+          <view class="station-info-box">
+            <view class="station-name" catchtap="tapStationName" data-index='{{stationIndex}}'>
+              {{stationItem.businessName}}
+            </view>
+            <view class="station-business-hours">
+              <i-icon type="time" size='15' color="#b5d7eb">
+              </i-icon>
+              营业时间：{{parse.parseTime(stationItem.startHours)}}-{{parse.parseTime(stationItem.endHours)}}
+            </view>
+            <view class="station-phone" catchtap="callPhone" data-phonenumber='{{stationItem.contactPhone}}'>
+              <i-icon type="mobilephone" size='15' color="#b5d7eb">
+              </i-icon>
+              联系电话：{{stationItem.contactPhone}}
+            </view>
+            <view class="station-address" catchtap="tapStationAddress" data-index='{{stationIndex}}'>
+              <i-icon type="coordinates" size='15' color="#b5d7eb">
+              </i-icon>
+              地址：{{stationItem.province}}{{stationItem.city}}{{stationItem.area}}{{stationItem.detailAddress}}
+            </view>
+          </view>
+        </view>
+        <view class="station-item-foot">
+        </view>
+      </view>
+    </i-cell>
+  </i-cell-group>
+  <!-- 加载块 -->
+  <i-load-foot-item loadState='{{loadState}}'>
+  </i-load-foot-item>
+
+  <view class="empty-area" wx:if="{{parse.showEmpty(allStationList)}}">
+    <view class="empty-content">
+      <i-icon type="service" size="30" color="#778899">
+      </i-icon>
+      <view class="empty-title">
+        暂无驿站数据
+      </view>
+    </view>
+  </view>
+</i-panel>
+
+<wxs module='parse'>
+  module.exports = {
+    parseTime: function(time) {
+      var timeArray = time.split(':');
+      var tempTime = timeArray[0] + ":" + timeArray[1];
+      return tempTime
+    },
+    showEmpty: function(datasource) {
+      if (datasource == null || datasource.length <= 0) {
+        return true;
+      }
+      return false;
+    }
+  }
+</wxs>

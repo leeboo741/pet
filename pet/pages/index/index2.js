@@ -56,8 +56,8 @@ Page({
       {
         icon: '../../resource/index_business_station.png',
         name: '附近网点',
-        target: pagePath.Path_Station,
-        actionType: BUSINESS_ACTION_TYPE_SWITCH,
+        target: pagePath.Path_Station_Map,
+        actionType: BUSINESS_ACTION_TYPE_NAVIGATE,
       },
       {
         icon: '../../resource/index_business_check_order.png',
@@ -76,6 +76,11 @@ Page({
     if (loginUtil.updateAppVersion()) {
       loginUtil.deleteUserInfo();
     }
+    loginUtil.checkLogin(function alreadyLoginCallback(isLogin){
+      if (isLogin) {
+        loginUtil.updateCustomer()
+      }
+    })
     ShareUtil.getAppOpenData(options,
       function getResultCallback(type, data) {
         if (type == 'none') {

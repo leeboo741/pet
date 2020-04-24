@@ -1,1 +1,103 @@
 /* pages/station/stationMap/index.wxss */
+
+
+.map-content{
+  width: 100vw;
+  height: 40vh;
+  z-index: 1;
+  position: absolute;
+  top: 0rpx;
+  left: 0rpx;
+  right: 0rpx;
+}
+
+.empty-zone{
+  z-index: 0;
+  width: 100vw;
+  height: 40vh;
+}
+
+.station-item{
+  display: flex;
+  flex-direction: column;
+}
+
+.station-item-head{
+  display: flex;
+}
+
+.station-item-content{
+  display: flex;
+  flex-direction: row;
+  margin: 15rpx;
+  border-radius: 8rpx;
+  box-shadow: 0px -2px 5px 2px #F4F4F4;
+}
+
+.station-item-foot{
+  display: flex;
+}
+
+.station-logo-box{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10rpx;
+}
+
+.station-logo{
+  width: 160rpx;
+  height: 160rpx;
+}
+
+.station-info-box{
+  display: flex;
+  flex-direction: column;
+  padding: 20rpx 10rpx;
+}
+
+.station-name{
+  font-size: 38rpx;
+  font-weight: bold;
+  color: #778899;
+  margin-bottom: 20rpx;
+  text-decoration: underline;
+}
+
+.station-business-hours{
+  font-size: 30rpx;
+  color: lightblue;
+  margin-bottom: 20rpx;
+}
+
+.station-phone{
+  font-size: 30rpx;
+  color: lightblue;
+  text-decoration: underline;
+  margin-bottom: 20rpx;
+}
+
+.station-address{
+  font-size: 30rpx;
+  color: lightblue;
+  text-decoration: underline;
+}
+
+.empty-area{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 160rpx 40rpx;
+  background: #00000000;
+}
+
+.empty-content{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.empty-title{
+  font-size: 30rpx;
+  color: #778899;
+}

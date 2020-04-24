@@ -329,6 +329,34 @@ function login(loginCallback) {
 }
 
 /**
+ * 更新用户信息
+ */
+function updateCustomer(updateCallback) {
+  let that = this;
+  wx.request({
+    url: UrlPath.URL_Service + UrlPath.URL_UpdateCustomer + this.getCustomerNo(),
+    success(res) {
+      if (res.data.code == config.RES_CODE_SUCCESS) {
+        console.log("更新用户信息: " + JSON.stringify(res));
+        that.saveUserInfo(res.data.data);
+        if (Util.checkIsFunction(updateCallback)) {
+          updateCallback(true);
+        }
+      } else {
+        if (Util.checkIsFunction(updateCallback)) {
+          updateCallback(false);
+        }
+      }
+    },
+    fail(res) {
+      if (Util.checkIsFunction(updateCallback)) {
+        updateCallback(false);
+      }
+    }
+  })
+}
+
+/**
  * 登录 获取服务器端的用户信息
  */
 function getLogin(userInfo, encryptedData, iv, shareOpenId, loginCallback) {
@@ -410,6 +438,7 @@ module.exports = {
   Login_Fail,
   Login_NoAuthSetting,
   login: login,
+  updateCustomer: updateCustomer,
   saveUserInfo: saveUserInfo,
   getUserInfo: getUserInfo,
   deleteUserInfo: deleteUserInfo,

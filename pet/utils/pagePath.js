@@ -34,6 +34,7 @@ const Path_Order_Evaluate = "/pages/evaluate/order/index"; // 评价订单
 const Path_Station = "/pages/station/station";  // 驿站
 const Path_Station_ServiceItemSelect = "/pages/registerStation/serviceItemSelect/index"; // 驿站服务内容选择
 const Path_Station_Detail = "/pages/station/stationDetail/index"; // 驿站详情
+const Path_Station_Map = "/pages/station/stationMap/index"; // 驿站地图
 
 const Path_Aboard = "/pages/goAboard/goAboard"; // 出国
 
@@ -89,6 +90,7 @@ module.exports = {
   Path_Station: Path_Station,  // 驿站
   Path_Station_ServiceItemSelect: Path_Station_ServiceItemSelect, // 驿站服务内容选择
   Path_Station_Detail: Path_Station_Detail, // 驿站详情
+  Path_Station_Map: Path_Station_Map, // 驿站地图
 
   Path_Aboard: Path_Aboard, // 出国
 

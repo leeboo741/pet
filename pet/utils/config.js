@@ -4,17 +4,17 @@
  */
 /** =================================================== */
 const Service_Phone = "4007778889"; // 客服电话
-const Version_Name = "1.4.21"; // 版本名称
-const Version_Code = 81; // 版本编号
+const Version_Name = "1.5.0"; // 版本名称
+const Version_Code = 82; // 版本编号
 
 /** =================================================== */
 /** 
  *                      网络请求
  */
 /** =================================================== */
-// const URL_Service = "https://consign.taochonghui.com"
+const URL_Service = "https://consign.taochonghui.com"
 // const URL_Service = "https://test.taochonghui.com"; // 测试服务器
-const URL_Service = "http://192.168.3.111:7777"; // 刘
+// const URL_Service = "http://192.168.3.111:7777"; // 刘
 // const URL_Service = "http://192.168.3.103:6060"; // 罗
 
 const URL_Register = "/api/customer/"; // 注册
@@ -22,7 +22,7 @@ const URL_GetUserInfoByCode = "/api/wechat/userinfo/open"; // 通过WXCode 获�
 const URL_GetUserInfoByBaseInfo = "/api/wechat/userinfo/union"; // 通过基本信息获取用户信息
 const URL_LoginWithUnionId = "/api/oAuth/unionId"; // 通过unionID 更新用户信息
 const URL_Login = "/api/oAuth/we-Chat"; // 登陆
-const URL_UpdateCustomer = "/api/customer/updateCustomer"; // 更新用户
+const URL_UpdateCustomer = "/api/oAuth/customer-no/"; // 更新用户
 const URL_CheckBalance = "/api/balance"; // 查询余额
 const URL_Withdraw_Station ="/api/withdraw/station"; // 站点提现
 const URL_Withdraw_Business = "/api/withdraw/business"; // 商家提现
@@ -35,6 +35,8 @@ const URL_BalanceBuffer_Business = "/api/balance/buffer/business"; // 商家 可
 const URL_GetCode = "/business/VerificationCode/"; // 获取短信验证码
 
 const URL_GetBusinessByPosition = "/api/business/listByPosition"; // 根据坐标获取周边商家
+const URL_GetBusinessCityGroup = "/api/business/list/city/group"; // 查询商家数据的城市分组
+const URL_GetBusinessListByProvince = "/api/business/list/province/"; // 通过省份查询商家列表
 
 const URL_Register_Business = "/business/insetBusiness"; // 注册商家
 const URL_Register_Staff = "/api/staff/applyForStaff"; // 注册员工
@@ -173,6 +175,8 @@ module.exports = {
   URL_GetCode, // 获取短信验证码
 
   URL_GetBusinessByPosition, // 根据坐标获取周边商家
+  URL_GetBusinessCityGroup, // 查询商家数据的城市分组
+  URL_GetBusinessListByProvince, // 通过省份查询商家列表
 
   URL_Register_Business, // 注册商家
   URL_Register_Staff, // 注册员工
