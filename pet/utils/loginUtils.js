@@ -96,6 +96,14 @@ function getUserInfo() {
   }
 }
 
+function getStaffInfo() {
+  let userInfo = getUserInfo();
+  if (userInfo == null) {
+    return null;
+  }
+  return userInfo.staff;
+}
+
 /**
  * 更新用户余额
  */
@@ -441,6 +449,7 @@ module.exports = {
   updateCustomer: updateCustomer,
   saveUserInfo: saveUserInfo,
   getUserInfo: getUserInfo,
+  getStaffInfo: getStaffInfo,
   deleteUserInfo: deleteUserInfo,
   isLogin: isLogin,
   getPhone: getPhone,

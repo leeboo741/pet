@@ -255,7 +255,7 @@ Page({
         order: {
           orderNo: this.data.orderData.orderNo
         },
-        staff: loginUtil.getUserInfo(),
+        staff: loginUtil.getStaffInfo(),
         remarks: remark
       },
       method: 'POST',

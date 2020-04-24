@@ -1312,7 +1312,7 @@ Page({
         order: {
           orderNo: orderItem.orderNo
         },
-        staff: loginUtil.getUserInfo(),
+        staff: loginUtil.getStaffInfo(),
         remarks: orderItem.remarkInput
       },
       method: 'POST',
