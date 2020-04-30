@@ -524,9 +524,6 @@ Page({
     let that = this;
     wx.request({
       url: config.URL_Service + config.URL_ConfirmInOutHarbour,
-      header: {
-        'content-type': 'application/x-www-form-urlencoded'
-      },
       method: "POST", // 请求方式
       data: {
         fileList: fileList,

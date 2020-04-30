@@ -178,10 +178,7 @@ Page({
       data: {
         customerNo: loginUtil.getCustomerNo(),
         orderNo: this.data.orderNo,
-        staffNo: tempStaffNoList
-      },
-      header: {
-        'content-type': 'application/x-www-form-urlencoded'
+        staffNoList: tempStaffNoList
       },
       method: "POST", // 请求方式
       success(res) {
