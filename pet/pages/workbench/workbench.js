@@ -5,6 +5,7 @@ const config = require("../../utils/config.js");
 const loginUtil = require("../../utils/loginUtils.js");
 const pagePath = require("../../utils/pagePath.js");
 const ShareUtil = require("../../utils/shareUtils.js");
+const WorkOrderManager = require("../../manager/orderManager/workOrder.js");
 
 const app = getApp();
 const maxVideoLength = 10; // 最大视频长度限制
@@ -117,13 +118,26 @@ Page({
    * 是否可以操作 揽件 入港 出港
    */
   handleReadyToInHarbour: function (order) {
+    let that = this;
     if ((!util.checkEmpty(order.currentUploadVideos) || !util.checkEmpty(order.currentUploadImages))
       // && util.checkEmpty(order.uploadImages)
       // && util.checkEmpty(order.uploadVideos)
       ) {
       order.readyToInHarbour = true;
+
+      that.getDefaultOrderTakerDetail(order, function getDefaultOrderTakerCallback(defaultOrderTaker) {
+        if (defaultOrderTaker != null) {
+          order.orderTakeDetail = defaultOrderTaker;
+        } else {
+          order.orderTakeDetail = WorkOrderManager.getOrderTakerInfoWithCityName(order.transport.endCity);
+        }
+        that.setData({
+          orderList: that.data.orderList
+        })
+      })
     } else {
       order.readyToInHarbour = false;
+      order.orderTakeDetail = null;
     }
     this.setData({
       orderList: this.data.orderList
@@ -256,12 +270,6 @@ Page({
                 title: '上传完成',
               })
             }
-            that.getDefaultOrderTakerDetail(order, function getDefaultOrderTakerCallback(defaultOrderTaker){
-              order.orderTakeDetail = defaultOrderTaker;
-              that.setData({
-                orderList: that.data.orderList
-              })
-            })
             that.handleReadyToUpload(order)
             that.handleReadyToInHarbour(order);
           }
@@ -656,7 +664,7 @@ Page({
       url: config.URL_Service + config.URL_GetDefaultOrderTakerInfo + order.orderNo,
       success(res) {
         console.log ("获取默认提货信息配置success: " + JSON.stringify(res));
-        if (res.data.code == config.RES_CODE_SUCCESS && res.data.data != null) {
+        if (res.data.code == config.RES_CODE_SUCCESS) {
           if (getDefaultOrderTakerCallback && typeof getDefaultOrderTakerCallback == 'function') {
             getDefaultOrderTakerCallback(res.data.data);
           }
@@ -664,6 +672,9 @@ Page({
       },
       fail(res) {
         console.log("获取默认提货信息配置fail: " + JSON.stringify(res));
+        if (getDefaultOrderTakerCallback && typeof getDefaultOrderTakerCallback == 'function') {
+          getDefaultOrderTakerCallback(null);
+        }
       },
       complete(res) {
         wx.hideLoading();
@@ -728,6 +739,7 @@ Page({
         console.log("添加提货信息 success: \n" + JSON.stringify(res));
         wx.hideLoading();
         if (res.data.code == config.RES_CODE_SUCCESS) {
+          WorkOrderManager.saveOrderTakerInfoWithCityName(order.transport.endCity,order.orderTakeDetail);
           that.requestConfirmInHarbour(tempIndex)
         } else {
           wx.showToast({
