@@ -39,7 +39,9 @@ function saveOrderTakerInfoWithCityName(cityName, orderTakerInfo) {
   } catch (e) {
 
   }
-
+  if (orderTakerDict == null || typeof orderTakerDict != 'object' || orderTakerDict.length <= 0) {
+    orderTakerDict = {};
+  }
   orderTakerDict[cityName] = orderTakerInfo;
 
   try {
