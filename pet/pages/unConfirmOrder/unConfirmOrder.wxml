@@ -27,7 +27,38 @@
         <view class="filter-item-content">
         {{orderFilter.orderType}}
         </view>
-      </view>
+      </view><view class="filter-item" hidden="{{!parse.showFilterEndCity(orderFilter)}}">
+				<view class="filter-item-title">
+					目的地：
+				</view>
+				<view class="filter-item-content">
+					{{orderFilter.endCity}}
+				</view>
+			</view>
+			<view class="filter-item" hidden="{{!parse.showFilterName(orderFilter)}}">
+				<view class="filter-item-title">
+					名字：
+				</view>
+				<view class="filter-item-content">
+					{{orderFilter.name}}
+				</view>
+			</view>
+			<view class="filter-item" hidden="{{!parse.showFilterPhone(orderFilter)}}">
+				<view class="filter-item-title">
+					电话：
+				</view>
+				<view class="filter-item-content">
+					{{orderFilter.phone}}
+				</view>
+			</view>
+			<view class="filter-item" hidden="{{!parse.showFilterCode(orderFilter)}}">
+				<view class="filter-item-title">
+					航空公司代码：
+				</view>
+				<view class="filter-item-content">
+					{{orderFilter.code}}
+				</view>
+			</view>
       <view class="filter-item"
             hidden="{{!parse.showFilterOrderDate(orderFilter)}}">
         <view class="filter-item-title">
@@ -119,7 +150,7 @@
           <view class='bill-info-pay-info'
                 wx:if='{{orderItem.orderStates[0].orderType!= null}}'>{{orderItem.orderStates[0].orderType}}</view>
           <view class='bill-info-pay-money'
-                wx:if='{{orderItem.paymentAmount!= null && userInfo.role != 3}}'
+                wx:if='{{orderItem.paymentAmount!= null}}'
                 hidden>￥{{orderItem.paymentAmount}}</view>
         </view>
         <!-- 分配人员 -->
@@ -488,7 +519,30 @@
         return false;
       }
       return true;
-    },
+    },showFilterEndCity: function(orderFilter) {
+			if (orderFilter.endCity == null || orderFilter.endCity.length <= 0) {
+				return false;
+			}
+			return true;
+		},
+		showFilterName: function(orderFilter) {
+			if (orderFilter.name == null || orderFilter.name.length <= 0) {
+				return false;
+			}
+			return true;
+		},
+		showFilterPhone: function(orderFilter) {
+			if (orderFilter.phone == null || orderFilter.phone.length <= 0) {
+				return false;
+			}
+			return true;
+		},
+		showFilterCode: function(orderFilter) {
+			if (orderFilter.code == null || orderFilter.code.length <= 0) {
+				return false;
+			}
+			return true;
+		},
     showFilterOrderDate: function(orderFilter) {
       if (orderFilter.startOrderDate != null 
         && orderFilter.startOrderDate.length > 0 

@@ -208,14 +208,24 @@
             </view>
           </view>
           <view class='addServer-append-info' hidden='{{!addServerReceivePet.selected}}'>
-            <picker bindchange="bindReceivePickerChange" range="{{addServerReceivePet.receiveDistrictList}}">
-              <view class='server-select-area'>
-                <view class='server-select-button {{addServerReceivePet.receiveDistrict!=null?"":"select-button-placeholder"}}'>
-                {{addServerReceivePet.receiveDistrict!=null?addServerReceivePet.receiveDistrict:"请选择区县"}}
+            <view style='display: flex; flex-direction: row; align-item: center;'>
+              <picker bindchange="bindReceivePickerChange" range="{{addServerReceivePet.receiveDistrictList}}" style='flex-grow:1'>
+                <view class='server-select-area'>
+                  <view class='server-select-button {{addServerReceivePet.receiveDistrict!=null?"":"select-button-placeholder"}}'>
+                  {{addServerReceivePet.receiveDistrict!=null?addServerReceivePet.receiveDistrict:"请选择区县"}}
+                  </view>
+                  <i-icon type='enter' size='24' color='#D4D4D4' i-class='more'></i-icon>
                 </view>
-                <i-icon type='enter' size='24' color='#D4D4D4' i-class='more'></i-icon>
-              </view>
-            </picker>
+              </picker>
+              <block wx:if='{{totalPrice != null}}'>
+                <view style='font-size: 26rpx; color: red; margin-right: 15rpx;'>
+                ￥{{parse.getNumber(totalPrice.receiptAmount.amount)}}
+                </view>
+                <view style='font-size: 26rpx; color: blue;'>
+                {{parse.getDistance(parse.getNumber(totalPrice.receiptAmount.distance))}}
+                </view>
+              </block>
+            </view>
             <view class="addServer-append-info-input {{addServerReceivePet.address==null||addServerReceivePet.address.length<=0?'addServer-append-info-input-placeholder':''}}"
                   bindtap='selectReceiveDetailAddress'>
             {{addServerReceivePet.address==null||addServerReceivePet.address.length<=0?"请选择具体位置":addServerReceivePet.address}}
@@ -236,14 +246,25 @@
             </view>
           </view>
           <view class='addServer-append-info' hidden='{{!addServerSendPet.selected}}'>
-            <picker bindchange="bindSendPickerChange" value='{{0}}' range="{{addServerSendPet.sendDistrictList}}">
-              <view class='server-select-area'>
-                <view class='server-select-button {{addServerSendPet.sendDistrict!=null?"":"select-button-placeholder"}}'>
-                {{addServerSendPet.sendDistrict!=null?addServerSendPet.sendDistrict:"请选择区县"}}
+            <view style='display: flex; flex-direction: row; align-item: center;'>
+              <picker bindchange="bindSendPickerChange" value='{{0}}' range="{{addServerSendPet.sendDistrictList}}" style='flex-grow:1'>
+                <view class='server-select-area'>
+                  <view class='server-select-button {{addServerSendPet.sendDistrict!=null?"":"select-button-placeholder"}}'>
+                  {{addServerSendPet.sendDistrict!=null?addServerSendPet.sendDistrict:"请选择区县"}}
+                  </view>
+                  <i-icon type='enter' size='24' color='#D4D4D4' i-class='more'></i-icon>
                 </view>
-                <i-icon type='enter' size='24' color='#D4D4D4' i-class='more'></i-icon>
-              </view>
-            </picker>
+              </picker>
+
+              <block wx:if='{{totalPrice != null}}'>
+                <view style='font-size: 26rpx; color: red; margin-right: 15rpx;'>
+                ￥{{parse.getNumber(totalPrice.sendAmount.amount)}}
+                </view>
+                <view style='font-size: 26rpx; color: blue;'>
+                {{parse.getDistance(parse.getNumber(totalPrice.sendAmount.distance))}}
+                </view>
+              </block>
+            </view>
             <view class="addServer-append-info-input {{addServerSendPet.address==null||addServerSendPet.address.length<=0?'addServer-append-info-input-placeholder':''}}"
                   bindtap='selectSendDetailAddress'>
             {{addServerSendPet.address==null||addServerSendPet.address.length<=0?"请选择具体位置":addServerSendPet.address}}
@@ -325,6 +346,25 @@
 
 <wxs module='parse'>
   module.exports={
+    getDistance: function(distance){
+      if (distance < 1000) {
+        return distance + " m";
+      } else {
+        return (distance/1000).toFixed(1) + " km";
+      }
+    },
+    getNumber: function(num){
+      if (num != null && typeof num == 'string') {
+        num = parseFloat(num);
+        num = num.toFixed(2);
+      } else if (num != null && typeof num == 'number'){
+        num = num;
+        num = num.toFixed(2);
+      } else {
+        num = 0;
+      }
+      return num;
+    },
     showAirbox: function(ableUse, selectedTransportObj){
       if(selectedTransportObj != null && selectedTransportObj.transportId != 1 && ableUse){
         return true;

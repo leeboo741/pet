@@ -178,6 +178,10 @@ Page({
       tempSearchKey = searchKey
     }
     let orderTypes = [];
+    let endCity = "";
+    let name = "";
+    let phone = "";
+    let code = "";
     let startOrderDate = "";
     let endOrderDate = "";
     let startLeaveDate = "";
@@ -186,6 +190,18 @@ Page({
       orderTypes = [
         orderFilter.orderType
       ];
+    }
+    if (orderFilter != null && !util.checkEmpty(orderFilter.endCity)) {
+      endCity = orderFilter.endCity;
+    }
+    if (orderFilter != null && !util.checkEmpty(orderFilter.name)) {
+      name = orderFilter.name;
+    }
+    if (orderFilter != null && !util.checkEmpty(orderFilter.phone)) {
+      phone = orderFilter.phone;
+    }
+    if (orderFilter != null && !util.checkEmpty(orderFilter.code)) {
+      code = orderFilter.code;
     }
     if (orderFilter != null && !util.checkEmpty(orderFilter.startOrderDate)) {
       startOrderDate = orderFilter.startOrderDate;
@@ -211,6 +227,10 @@ Page({
       endLeaveTime: endLeaveDate,
       offset: offset,
       limit: that.data.pageSize,
+      endCity: endCity,
+      name: name,
+      phone: phone,
+      code: code,
     }
     wx.request({
       url: config.URL_Service + config.URL_GetStationAllOrder,

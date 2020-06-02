@@ -1,8 +1,4 @@
 
-page {
-  background-color: #F0F0F0;
-}
-
 .sendTip {
   display:flex;
   margin-top: 20px;

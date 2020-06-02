@@ -64,22 +64,22 @@
   text-decoration: underline;
 }
 
-.station-business-hours{
+.station-row{
+  display: flex;
+  flex-direction: row;
   font-size: 30rpx;
   color: lightblue;
   margin-bottom: 20rpx;
 }
 
-.station-phone{
-  font-size: 30rpx;
-  color: lightblue;
-  text-decoration: underline;
-  margin-bottom: 20rpx;
+.station-row-title{
+  flex-grow: 1;
+  margin-left: 15rpx;
 }
 
-.station-address{
-  font-size: 30rpx;
-  color: lightblue;
+.station-row-title-underline{
+  flex-grow: 1;
+  margin-left: 15rpx;
   text-decoration: underline;
 }
 

@@ -141,24 +141,32 @@
     <i-load-more style='width:100%' tip="{{loadMoreTip}}" loading="{{loadMoreLoading}}" />
   </block>
 </view>
+<!-- 
 
+showSender: function(orderItem, userInfo) {
+  if (userInfo.role != 3) {
+    return true;
+  } else if (orderItem.orderStates[0].orderType == "待揽件") {
+    return true;
+  }
+  return false;
+},
+showReceiver: function(orderItem, userInfo) {
+  if (userInfo.role != 3) {
+    return true;
+  } else if (orderItem.orderStates[0].orderType != "待揽件") {
+    return true;
+  }
+  return false;
+},
+ -->
 <wxs module='parse'>
   module.exports={
     showSender: function(orderItem, userInfo) {
-      if (userInfo.role != 3) {
-        return true;
-      } else if (orderItem.orderStates[0].orderType == "待揽件") {
-        return true;
-      }
-      return false;
+      return true;
     },
     showReceiver: function(orderItem, userInfo) {
-      if (userInfo.role != 3) {
-        return true;
-      } else if (orderItem.orderStates[0].orderType != "待揽件") {
-        return true;
-      }
-      return false;
+      return true;
     },
     getTransportType: function(type){
       if (type == 1) {

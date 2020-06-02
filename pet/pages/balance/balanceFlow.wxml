@@ -10,6 +10,42 @@
             bindtap="tapFlowItemAction"
             data-index='{{index}}'
             data-flow='{{item}}'>
+        <view class="item-header">
+          <view class="item-no">
+            单号:{{item.order.orderNo}}
+          </view>
+          <view class="item-payment">
+            订单金额:￥{{item.order.paymentAmount}}
+          </view>
+        </view>
+        <view class="detail-box">
+          <view class="detail-item"
+                wx:for='{{item.orderFlowDetails}}'
+                wx:for-item='flowItem'
+                wx:for-index='flowIndex'
+                wx:key='flowNo'>
+            <view class="detail-item-content">
+              <view class="station-name">
+                {{flowItem.flowName}}
+              </view>
+              <view class="flow-type">
+                {{parse.getFlowType(flowItem.flowType)}}
+              </view>
+              <view class="flow-price">
+                ￥{{parse.getFlowAmount(flowItem.flowAmount)}}
+              </view>
+              <view class="flow-time">
+                {{flowItem.flowTime}}
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+      <!-- <view slot='header'
+            class="flow-item"
+            bindtap="tapFlowItemAction"
+            data-index='{{index}}'
+            data-flow='{{item}}'>
         <view class='flow-item-title' style="margin-bottom: 25rpx;">
         {{item.linkNo!=null && item.linkNo.length > 0?"关联单号":"单号"}}：{{item.linkNo!=null && item.linkNo.length > 0?item.linkNo:item.billNo}}
         </view>
@@ -80,11 +116,7 @@
           {{item.dateTime}}
           </view>
         </view>
-      </view>
-      <view slot='header'
-            class="balance-box">
-        
-      </view>
+      </view> -->
     </i-cell>
   </i-cell-group>
 </i-panel>
@@ -93,6 +125,16 @@
 
 <wxs module='parse'>
   module.exports={
+    getFlowAmount: function(amount){
+      if (amount != null && typeof amount =='string') {
+        var value = parseFloat(amount);
+        value = value.toFixed(2);
+        return value;
+      } else if (amount != null && typeof amount =='number') {
+        return amount;
+      }
+      return 0;
+    },
     getFlowValueClass:function(flowValue) {
       if (flowValue >= 0) {
         return "flow-value-positive";

@@ -2,6 +2,5 @@
   "usingComponents": {
     "i-icon": "/dist/icon/index"
   },
-  "backgroundColor": "#ffffff",
-  "navigationBarTitleText": "宠物托运"
+  "backgroundColor": "#ffffff"
 }

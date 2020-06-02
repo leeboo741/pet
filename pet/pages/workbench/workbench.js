@@ -125,11 +125,12 @@ Page({
       ) {
       order.readyToInHarbour = true;
 
-      that.getDefaultOrderTakerDetail(order, function getDefaultOrderTakerCallback(defaultOrderTaker) {
-        if (defaultOrderTaker != null) {
+      that.getDefaultOrderTakerDetail(order,null, function getDefaultOrderTakerCallback(defaultOrderTaker) {
+        if (defaultOrderTaker!=null) {
           order.orderTakeDetail = defaultOrderTaker;
         } else {
-          order.orderTakeDetail = WorkOrderManager.getOrderTakerInfoWithCityName(order.transport.endCity);
+          order.orderTakeDetail = {};
+          // order.orderTakeDetail = WorkOrderManager.getOrderTakerInfoWithCityName(order.transport.endCity, WorkOrderManager.getAirportCompanyCode(order));
         }
         that.setData({
           orderList: that.data.orderList
@@ -367,6 +368,10 @@ Page({
       config.Order_State_ToOutPort,
       config.Order_State_ToPack,
     ];
+    let endCity = "";
+    let name = "";
+    let phone = "";
+    let code = "";
     let startOrderDate = "";
     let endOrderDate = "";
     let startLeaveDate = "";
@@ -375,6 +380,18 @@ Page({
       orderTypes = [
         orderFilter.orderType
       ];
+    }
+    if (orderFilter != null && !util.checkEmpty(orderFilter.endCity)) {
+      endCity = orderFilter.endCity;
+    }
+    if (orderFilter != null && !util.checkEmpty(orderFilter.name)) {
+      name = orderFilter.name;
+    }
+    if (orderFilter != null && !util.checkEmpty(orderFilter.phone)) {
+      phone = orderFilter.phone;
+    }
+    if (orderFilter != null && !util.checkEmpty(orderFilter.code)) {
+      code = orderFilter.code;
     }
     if (orderFilter != null && !util.checkEmpty(orderFilter.startOrderDate)) {
       startOrderDate = orderFilter.startOrderDate;
@@ -398,6 +415,10 @@ Page({
       endOrderTime: endOrderDate,
       startLeaveTime: startLeaveDate,
       endLeaveTime: endLeaveDate,
+      endCity: endCity,
+      name: name,
+      phone: phone,
+      code: code,
     }
     wx.request({
       url: config.URL_Service + config.URL_GetInOrOutHarbourList,
@@ -547,16 +568,17 @@ Page({
       tempData.expressNum = order.outTransportInfo.expressNum;
     }
 
+    if (util.checkEmpty(order.outTransportInfo.transportNum)) {
+      wx.showToast({
+        title: '航班号不能为空',
+        icon: 'none'
+      })
+      return;
+    } else {
+      tempData.transportNum = order.outTransportInfo.transportNum;
+    }
+
     if (order.transport.transportType == 3 || order.transport.transportType == 4) {
-      if (util.checkEmpty(order.outTransportInfo.transportNum)) {
-        wx.showToast({
-          title: '航班号不能为空',
-          icon: 'none'
-        })
-        return;
-      } else {
-        tempData.transportNum = order.outTransportInfo.transportNum;
-      }
 
       if (util.checkEmpty(order.outTransportInfo.startCityCode)) {
         wx.showToast({
@@ -578,26 +600,24 @@ Page({
         tempData.endCity = order.outTransportInfo.endCityCode;
       }
 
-      if (util.checkEmpty(order.outTransportInfo.departureDate)) {
-        wx.showToast({
-          title: '航班时间不能为空',
-          icon: 'none'
-        })
-        return;
-      } else {
-        tempData.dateTime = order.outTransportInfo.departureDate
-      }
-
     } else {
-      if (!util.checkEmpty(order.outTransportInfo.transportNum)) {
-        tempData.transportNum = order.outTransportInfo.transportNum;
-      }
       if (!util.checkEmpty(order.transport.startCity)) {
         tempData.startCity = order.transport.startCity;
       }
       if (!util.checkEmpty(order.transport.endCity)) {
         tempData.endCity = order.transport.endCity;
       }
+    }
+
+
+    if (util.checkEmpty(order.outTransportInfo.departureDate)) {
+      wx.showToast({
+        title: '出发时间不能为空',
+        icon: 'none'
+      })
+      return;
+    } else {
+      tempData.dateTime = order.outTransportInfo.departureDate
     }
     
     let that = this;
@@ -655,18 +675,22 @@ Page({
   /**
    * 获取默认提货配置
    */
-  getDefaultOrderTakerDetail: function (order, getDefaultOrderTakerCallback) {
+  getDefaultOrderTakerDetail: function (order,code, getDefaultOrderTakerCallback) {
     let that = this;
     wx.showLoading({
       title: '请稍等...',
     })
     wx.request({
-      url: config.URL_Service + config.URL_GetDefaultOrderTakerInfo + order.orderNo,
+      url: config.URL_Service + config.URL_GetDefaultOrderTakerInfo(order.orderNo, code),
       success(res) {
         console.log ("获取默认提货信息配置success: " + JSON.stringify(res));
         if (res.data.code == config.RES_CODE_SUCCESS) {
           if (getDefaultOrderTakerCallback && typeof getDefaultOrderTakerCallback == 'function') {
-            getDefaultOrderTakerCallback(res.data.data);
+            if(!util.checkEmpty(res.data.data)) {
+              getDefaultOrderTakerCallback(res.data.data[0]);
+            } else {
+              getDefaultOrderTakerCallback(null);
+            }
           }
         } 
       },
@@ -727,6 +751,9 @@ Page({
     tempData.station = {
       stationNo: loginUtil.getStationNo()
     }
+    if (order.transport.transportType == 3 || order.transport.transportType == 4) {
+      tempData.code = order.outTransportInfo.transportNum;
+    }
     wx.showLoading({
       title: '请稍等...',
     })
@@ -739,7 +766,7 @@ Page({
         console.log("添加提货信息 success: \n" + JSON.stringify(res));
         wx.hideLoading();
         if (res.data.code == config.RES_CODE_SUCCESS) {
-          WorkOrderManager.saveOrderTakerInfoWithCityName(order.transport.endCity,order.orderTakeDetail);
+          // WorkOrderManager.saveOrderTakerInfoWithCityName(order.transport.endCity,WorkOrderManager.getAirportCompanyCode(order), order.orderTakeDetail);
           that.requestConfirmInHarbour(tempIndex)
         } else {
           wx.showToast({
@@ -1168,6 +1195,32 @@ Page({
       tempOrder.outTransportInfo = {};
     }
     tempOrder.outTransportInfo.transportNum = e.detail.value;
+
+    // let tempOrderTakerInfo = WorkOrderManager.getOrderTakerInfoWithCityName(tempOrder.transport.endCity, WorkOrderManager.getAirportCompanyCode(tempOrder));
+    // if (tempOrderTakerInfo != null && Object.keys(tempOrderTakerInfo).length > 0) {
+    //   tempOrder.orderTakeDetail = tempOrderTakerInfo;
+    //   this.setData({
+    //     orderList: this.data.orderList
+    //   })
+    // }
+  },
+
+  /**
+   * 航班号/车次号丢失焦点
+   */
+  orderTransoportNumLostFocus: function(e) {
+    let that = this;
+    let tempOrder = this.data.orderList[e.currentTarget.dataset.index];
+    if (tempOrder.transport.transportType == 3 || tempOrder.transport.transportType == 4) {
+      this.getDefaultOrderTakerDetail(tempOrder,e.detail.value,function getDefaultOrderTakerCallback(defaultOrderTaker) {
+        if (defaultOrderTaker != null) {
+          tempOrder.orderTakeDetail = defaultOrderTaker;
+        } 
+        that.setData({
+          orderList: that.data.orderList
+        })
+      })
+    }
   },
 
   /**

@@ -6,6 +6,7 @@ const Util = require("../../utils/util.js");
 const Config = require("../../utils/config.js");
 const ShareUtil = require("../../utils/shareUtils.js");
 const PagePath = require("../../utils/pagePath.js");
+const BalanceManager = require("../../manager/balanceManager/balanceManager.js");
 
 Page({
 
@@ -70,7 +71,6 @@ Page({
         that.setData({
           dataSource: data,
         })
-        that.data.offset = that.data.offset + Limit;
         that.setData({
           loadMoreLoading: false,
         })
@@ -112,7 +112,6 @@ Page({
         that.setData({
           dataSource: tempList
         })
-        that.data.offset = that.data.offset + Limit;
         that.setData({
           loadMoreLoading: false,
         })
@@ -154,28 +153,41 @@ Page({
   * @param offset
   * @param getDataCallback
   */
-  requestData: function (offset, getDataCallback) {
-    let tempUrl = "";
-    let tempData = {};
+  requestData: function (offset, getDataCallback, getFailCallback) {
+    let that = this;
     if (LoginUtil.getStationNo() != null) {
-      tempUrl = Config.URL_Service + Config.URL_BalanceFlow_Station;
-      tempData = {
-        stationNo: LoginUtil.getStationNo(),
-        offset: offset,
-        limit: Limit
-      }
+      BalanceManager.getStationBalanceFlow(LoginUtil.getStationNo(), offset, Limit, function getFlowCallback(res){
+        console.log("余额流水 success： \n" + JSON.stringify(res));
+        if (res.data.code == Config.RES_CODE_SUCCESS) {
+          that.data.offset = that.data.offset + Limit;
+          if (Util.checkIsFunction(getDataCallback)) {
+            getDataCallback(res.data.data)
+          }
+        } else {
+          let msg = res.data.message;
+          if (msg == null) {
+            msg = "获取流水失败";
+          }
+          wx.showToast({
+            title: msg,
+            icon: 'none'
+          })
+          if (Util.checkIsFunction(getFailCallback)) {
+            getFailCallback(res)
+          }
+        }
+      }, function failCallback(res) {
+        console.log("余额流水 fail \n" + JSON.stringify(res));
+        wx.showToast({
+          title: '系统异常',
+          icon: 'none'
+        })
+        if (Util.checkIsFunction(getFailCallback)) {
+          getFailCallback(res)
+        }
+      })
     } else if (LoginUtil.getBusinessNo() != null) {
-      tempUrl = Config.URL_Service + Config.URL_BalanceFlow_Business;
-      tempData = {
-        businessNo: LoginUtil.getBusinessNo(),
-        offset: offset,
-        limit: Limit
-      }
-    }
-    wx.request({
-      url: tempUrl,
-      data: tempData,
-      success(res) {
+      BalanceManager.getBusinessBalanceFlow(LoginUtil.getBusinessNo(), offset, Limit, function getFlowCallback(res){
         console.log("余额流水 success： \n" + JSON.stringify(res));
         if (res.data.code == Config.RES_CODE_SUCCESS) {
           if (Util.checkIsFunction(getDataCallback)) {
@@ -190,15 +202,20 @@ Page({
             title: msg,
             icon: 'none'
           })
+          if (Util.checkIsFunction(getFailCallback)) {
+            getFailCallback(res)
+          }
         }
-      },
-      fail(res) {
+      }, function failCallback(res){
         console.log("余额流水 fail \n" + JSON.stringify(res));
         wx.showToast({
           title: '系统异常',
           icon: 'none'
         })
-      },
-    })
+        if (Util.checkIsFunction(getFailCallback)) {
+          getFailCallback(res)
+        }
+      })
+    }
   }
 })

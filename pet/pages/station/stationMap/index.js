@@ -334,6 +334,16 @@ Page({
   },
 
   /**
+   * 打开商家二维码
+   */
+  tapWXQRCode: function(e) {
+    let tempStation = this.data.allStationList[e.currentTarget.dataset.index];
+    wx.previewImage({
+      urls: [tempStation.weChatImg],
+    })
+  },
+
+  /**
    * ======================== 地图事件 =========================
    */
 

@@ -3,6 +3,15 @@
   background: rgb(240, 240, 240);
 }
 
+.picker{
+  flex-grow: 1;
+  width: 300rpx;
+}
+
+.placeholder-color{
+  color: lightgray;
+}
+
 .filter-button{
   width: 90%;
   margin: 30rpx auto;

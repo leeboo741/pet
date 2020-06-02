@@ -133,6 +133,28 @@ function checkIsFunction(functionName) {
   return false;
 }
 
+/**
+ * 是否是 object 对象
+ * @return true 是 false 非
+ */
+function checkIsObject(obj) {
+  if (obj != null && typeof obj == "object") {
+    return true;
+  }
+  return false;
+}
+
+/**
+ * 检查是否是空的 object 对象
+ * @return true 空 false 非空
+ */
+function checkObjectIsEmpty(obj) {
+  if (this.checkIsObject(obj) && Object.keys(obj).length > 0) {
+    return false;
+  }
+  return true;
+}
+
 module.exports = {
   formatTime: formatTime,
   dateLater: dateLater,
@@ -144,4 +166,6 @@ module.exports = {
   recoverySpecialChar: recoverySpecialChar,
   getUrlParamDict: getUrlParamDict,
   checkIsFunction: checkIsFunction,
+  checkIsObject: checkIsObject,
+  checkObjectIsEmpty: checkObjectIsEmpty
 }

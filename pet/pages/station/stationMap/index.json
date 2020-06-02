@@ -4,7 +4,7 @@
     "i-cell":"/dist/cell/index",
     "i-cell-group": "/dist/cell-group/index",
     "i-image" : "/lee-components/leeImageView/index",
-    "i-icon": "/dist/icon/index",
+    "i-icon": "/lee-components/leeIcon/index",
     "i-load-foot-item": "/lee-components/leeLoadingFootItem/index"
   },
   "navigationBarTitleText": "网点"

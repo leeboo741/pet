@@ -4,8 +4,8 @@
  */
 /** =================================================== */
 const Service_Phone = "4007778889"; // 客服电话
-const Version_Name = "1.5.2"; // 版本名称
-const Version_Code = 84; // 版本编号
+const Version_Name = "1.5.4"; // 版本名称
+const Version_Code = 86; // 版本编号
 
 /** =================================================== */
 /** 
@@ -13,9 +13,7 @@ const Version_Code = 84; // 版本编号
  */
 /** =================================================== */
 // const URL_Service = "https://consign.taochonghui.com"
-// const URL_Service = "https://test.taochonghui.com"; // 测试服务器
-const URL_Service = "http://192.168.3.111:7777"; // 刘
-// const URL_Service = "http://192.168.3.103:6060"; // 罗
+const URL_Service = "http://192.168.3.111:7777"; // 祥林
 
 const URL_Register = "/api/customer/"; // 注册
 const URL_GetUserInfoByCode = "/api/wechat/userinfo/open"; // 通过WXCode 获取 信息
@@ -28,8 +26,12 @@ const URL_Withdraw_Station ="/api/withdraw/station"; // 站点提现
 const URL_Withdraw_Business = "/api/withdraw/business"; // 商家提现
 const URL_WithdrawFlow_Station = "/api/withdraw/station/flow"; // 站点提现流水
 const URL_WithdrawFlow_Business = "/api/withdraw/business/flow"; // 商家提现流水
-const URL_BalanceFlow_Station = "/api/rebate/station/flow"; // 站点余额流水
-const URL_BalanceFlow_Business = "/api/rebate/business/flow"; // 商家余额流水
+function URL_BalanceFlow_Station(stationNo, offset, limit) {
+  return "/api/order/flow/station/" + stationNo + "/offset/" + offset + "/limit/" + limit;
+} // 站点余额流水
+function URL_BalanceFlow_Business(businessNo, offset, limit) {
+  return "/api/order/flow/business/" + businessNo + "/offset/" + offset + "/limit/" + limit;
+} // 商家余额流水
 const URL_BalanceBuffer_Station = "/api/balance/buffer/station"; // 站点 可用余额 和 冻结余额
 const URL_BalanceBuffer_Business = "/api/balance/buffer/business"; // 商家 可用余额 和 冻结余额
 const URL_GetCode = "/business/VerificationCode/"; // 获取短信验证码
@@ -67,7 +69,13 @@ const URL_GetStorePhoneByCityName = "/api/business/getPhoneByCityName"; // 通�
 const URL_ChangeToDeliver = "/api/order/deliver"; // 修改待签收状态为派送
 const URL_PostTransportInfo = "/api/order/transport"; // 添加运输信息
 const URL_PostOrderTakerInfo = "/api/order/take-detail"; // 添加提货信息
-const URL_GetDefaultOrderTakerInfo = "/api/order/take-detail/default/"; // 获取默认提货配置
+function URL_GetDefaultOrderTakerInfo(orderNo, code) {
+  if(code != null && code.length>0) {
+    return "/api/order/take-detail/default/" + orderNo + "/code/" + code;
+  } else {
+    return "/api/order/take-detail/default/" + orderNo;
+  }
+} // 获取默认提货配置
 const URL_Order = "/api/order/insertOrder"; // 下单
 const URL_CancelOrder = "/api/order/cancelOrder"; // 取消订单
 const URL_GetOrderListByOrderStatus = "/api/order/listOrderList"; // 根据订单类型查询订单列表
@@ -121,7 +129,7 @@ const Role_Staff_Manager = 1; // 管理员
 const Role_Staff_Service = 2; // 客服
 const Role_Staff_Diver = 3; // 司机
 
-const Order_State_ToPay = "待付款";
+const Order_State_ToPay = "待付款";  
 const Order_State_ToPack = "待揽件";
 const Order_State_ToInPort = "待入港";
 const Order_State_InPort = "已入港";
@@ -132,8 +140,31 @@ const Order_State_Arrived = "已到达";
 const Order_State_Delivering = "派送中";
 const Order_State_ToSign = "待签收";
 const Order_State_Completed = "已完成";
+
+/**
+ * TO_BE_PAID("待付款", "订单生成成功，等待用户支付"),
+
+CANCEL("已取消", "用户取消了订单"),
+
+PAID("已支付", "订单已支付"),
+
+SHIPPED("待发货", "支付之后等待入港"),
+
+RECEIVING("待收货", "从起始站点出港之后"),
+
+COMPLETED("已完成", "订单已完成"),
+
+REFUND("已退款", "订单退款完成");
+ */
+const Order_State_TO_BE_PAID = "待付款";
+const Order_State_CANCEL = "已取消";
+const Order_State_PAID = "已支付";
+const Order_State_SHIPPED = "待发货";
+const Order_State_RECEIVING = "待收货";
+const Order_State_COMPLETED = "已完成";
+const Order_State_REFUND = "已退款";
 /** =================================================== */
-/** 
+/**  
  *                      Key
  */
 /** =================================================== */
@@ -266,6 +297,15 @@ module.exports = {
   Order_State_Delivering, // 派送中
   Order_State_ToSign, // 待签收
   Order_State_Completed, // 已完成
+
+  // ~~~不确定用不用~~~ //
+  Order_State_TO_BE_PAID, // 待付款
+  Order_State_CANCEL, // 已取消
+  Order_State_PAID, // 已付款
+  Order_State_SHIPPED, // 待出港
+  Order_State_RECEIVING, // 待入港
+  Order_State_COMPLETED, // 已完成
+  Order_State_REFUND, // 已退款
 
   Key_LastGetMessageTime, // 最后获取站内信时间
   Key_QQ_Map, // 腾讯地图appkey

@@ -112,6 +112,47 @@ Page({
   },
 
   /**
+   * 选择目的地
+   * @param {*} e 
+   */
+  bindEndCityChange: function (e) {
+    console.log(JSON.stringify(e));
+    this.setData({
+      ["orderFilter.endCity"]: e.detail.value[1]
+    })
+  },
+
+  /**
+   * 输入名字
+   * @param {*} e 
+   */
+  inputName: function(e) {
+    this.setData({
+      ["orderFilter.name"]: e.detail.value
+    })
+  },
+
+  /**
+   * 输入电话
+   * @param {*} e 
+   */
+  inputPhone: function(e) {
+    this.setData({
+      ["orderFilter.phone"]: e.detail.value
+    })
+  },
+
+  /**
+   * 输入航空公司代号
+   * @param {*} e 
+   */
+  inputCode: function(e) {
+    this.setData({
+      ["orderFilter.code"]: e.detail.value
+    })
+  },
+
+  /**
    * 选择开始下单时间
    */
   bindStartOrderDate: function (e) {
@@ -157,6 +198,10 @@ Page({
   tapFilter: function() {
     let orderFilter = this.data.orderFilter;
     if (Util.checkEmpty(orderFilter.orderType) 
+      && Util.checkEmpty(orderFilter.endCity)
+      && Util.checkEmpty(orderFilter.name)
+      && Util.checkEmpty(orderFilter.phone)
+      && Util.checkEmpty(orderFilter.code)
       && Util.checkEmpty(orderFilter.startOrderDate)
       && Util.checkEmpty(orderFilter.endOrderDate)
       && Util.checkEmpty(orderFilter.startLeaveDate)

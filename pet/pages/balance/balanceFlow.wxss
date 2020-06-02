@@ -5,6 +5,68 @@
   flex-direction: column;
 }
 
+.item-header{
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20rpx;
+}
+
+.item-no{
+  text-align: left;
+  font-size: 36rpx;
+  font-weight: bold;
+}
+
+.item-payment{
+  text-align: left;
+  font-size: 32rpx;
+  color: #ee2c2c;
+}
+
+.detail-box{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.detail-item{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50%;
+  margin-bottom: 15rpx;
+}
+
+.detail-item-content{
+  width: 90%;
+  height: 90%;
+  border-radius: 10rpx;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0px -2px 5px 2px #F4F4F4;
+  padding: 8rpx 10rpx;
+}
+
+.station-name{
+  font-size: 28rpx;
+}
+
+.flow-type{
+  font-size: 24rpx;
+  color: goldenrod;
+}
+
+.flow-price{
+  color: #ee2c2c;
+  font-size: 25rpx;
+}
+
+.flow-time{
+  font-size: 23rpx;
+  color: gray;
+}
+
 .flow-item-title{
   font-size: 36rpx;
   font-weight: bold;

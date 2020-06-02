@@ -7,10 +7,47 @@
               class="picker"
               range="{{orderTypeRange}}"
               bindchange="bindTypeChange">
-        <view>
+        <view class="{{parse.getPlacecolorClass(orderFilter.orderType)}}">
         {{parse.getPickerTypeStr(orderFilter.orderType)}}
         </view>      
       </picker>       
+    </i-cell>
+    <i-cell title='目的地'>
+      <picker slot='footer'
+              class="picker"
+              mode='region'
+              bindchange="bindEndCityChange">
+        <view class="{{parse.getPlacecolorClass(orderFilter.endCity)}}">
+        {{parse.getPickerEndCity(orderFilter.endCity)}}
+        </view> 
+      </picker>
+    </i-cell>
+    <i-cell title='名字'>
+      <input slot='footer'
+             class='picker'
+             placeholder="寄件人、收件人名称"
+             value='{{orderFilter.name}}'
+             bindinput="inputName"
+             placeholder-class="placeholder-color"> 
+      </input>
+    </i-cell>
+    <i-cell title='电话'>
+      <input slot='footer'
+             class='picker'
+             placeholder="寄件人、收件人电话"
+             value='{{orderFilter.phone}}'
+             bindinput="inputPhone"
+             placeholder-class="placeholder-color"> 
+      </input>
+    </i-cell>
+    <i-cell title='航空公司代码'>
+      <input slot='footer'
+             class='picker'
+             placeholder="航空公司代码"
+             value='{{orderFilter.code}}'
+             bindinput="inputCode"
+             placeholder-class="placeholder-color"> 
+      </input>
     </i-cell>
   </i-cell-group>
 </i-panel>
@@ -22,7 +59,7 @@
               class="picker"
               mode='date'
               bindchange="bindStartOrderDate">
-        <view>
+        <view class="{{parse.getPlacecolorClass(orderFilter.startOrderDate)}}">
         {{parse.getPickerDateStr(orderFilter.startOrderDate)}}
         </view>      
       </picker>       
@@ -32,7 +69,7 @@
               class="picker"
               mode='date'
               bindchange="bindEndOrderDate">
-        <view>
+        <view class="{{parse.getPlacecolorClass(orderFilter.endOrderDate)}}">
         {{parse.getPickerDateStr(orderFilter.endOrderDate)}}
         </view>      
       </picker>       
@@ -47,7 +84,7 @@
               class="picker"
               mode='date'
               bindchange="bindStartLeaveDate">
-        <view>
+        <view class="{{parse.getPlacecolorClass(orderFilter.startLeaveDate)}}">
         {{parse.getPickerDateStr(orderFilter.startLeaveDate)}}
         </view>     
       </picker>       
@@ -57,7 +94,7 @@
               class="picker"
               mode='date'
               bindchange="bindEndLeaveDate">
-        <view>
+        <view class="{{parse.getPlacecolorClass(orderFilter.endLeaveDate)}}">
         {{parse.getPickerDateStr(orderFilter.endLeaveDate)}}
         </view>      
       </picker>       
@@ -72,17 +109,29 @@
 
 <wxs module='parse'>
   module.exports = {
+    getPickerEndCity: function(endCity) {
+      if (endCity != null && endCity.length > 0) {
+        return endCity;
+      }
+      return "目的地";
+    },
     getPickerTypeStr: function(type) {
       if (type != null && type.length > 0) {
         return type;
       }
-      return "请选择类型"
+      return "类型"
     },
     getPickerDateStr: function(date) {
       if (date != null && date.length > 0) {
         return date;
       }
-      return "请选择日期"
+      return "日期"
+    },
+    getPlacecolorClass: function(value) {
+      if (value!=null && value.length>0) {
+        return "";
+      }
+      return "placeholder-color";
     },
   }
 </wxs>

@@ -16,58 +16,91 @@
   </view>
 
 
-  <view class="block-fillet"
-        style="flex-direction: row; align-items: center;"
-        hidden="{{orderFilter==null}}">
-    <view class="filter-box">
-      <view class="filter-item"
-            hidden="{{!parse.showFilterType(orderFilter)}}">
-        <view class="filter-item-title">
-        订单类型：
-        </view>
-        <view class="filter-item-content">
-        {{orderFilter.orderType}}
-        </view>
-      </view>
-      <view class="filter-item"
-            hidden="{{!parse.showFilterOrderDate(orderFilter)}}">
-        <view class="filter-item-title">
-        下单时间：
-        </view>
-        <view class="filter-item-content">
-        {{orderFilter.startOrderDate}} 至 {{orderFilter.endOrderDate}}
-        </view>
-      </view>
-      <view class="filter-item"
-            hidden="{{!parse.showFilterLeaveDate(orderFilter)}}">
-        <view class="filter-item-title">
-        出发时间：
-        </view>
-        <view class="filter-item-content">
-        {{orderFilter.startLeaveDate}} 至 {{orderFilter.endLeaveDate}}
-        </view>
-      </view>
-    </view>
-    <view class="filter-clear-box">
-      <view class="filter-clear-button"
-            bindtap="tapClearFilter">
-        <i-icon type='trash'
-                size="24">
-        </i-icon>
-      </view>
-    </view>
-  </view>
+  
 
   <!-- 单据信息 -->
   <scroll-view scroll-y
                class="scroll-box"
-               bindscrolltolower='loadMore'
-               wx:if='{{!parse.showEmpty(orderList)}}'>
+               bindscrolltolower='loadMore'>
+    <view class="block-fillet"
+        style="flex-direction: row; align-items: center;"
+        hidden="{{orderFilter==null}}">
+      <view class="filter-box">
+        <view class="filter-item"
+              hidden="{{!parse.showFilterType(orderFilter)}}">
+          <view class="filter-item-title">
+          订单类型：
+          </view>
+          <view class="filter-item-content">
+          {{orderFilter.orderType}}
+          </view>
+        </view>
+        <view class="filter-item" hidden="{{!parse.showFilterEndCity(orderFilter)}}">
+          <view class="filter-item-title">
+            目的地：
+          </view>
+          <view class="filter-item-content">
+            {{orderFilter.endCity}}
+          </view>
+        </view>
+        <view class="filter-item" hidden="{{!parse.showFilterName(orderFilter)}}">
+          <view class="filter-item-title">
+            名字：
+          </view>
+          <view class="filter-item-content">
+            {{orderFilter.name}}
+          </view>
+        </view>
+        <view class="filter-item" hidden="{{!parse.showFilterPhone(orderFilter)}}">
+          <view class="filter-item-title">
+            电话：
+          </view>
+          <view class="filter-item-content">
+            {{orderFilter.phone}}
+          </view>
+        </view>
+        <view class="filter-item" hidden="{{!parse.showFilterCode(orderFilter)}}">
+          <view class="filter-item-title">
+            航空公司代码：
+          </view>
+          <view class="filter-item-content">
+            {{orderFilter.code}}
+          </view>
+        </view>
+        <view class="filter-item"
+              hidden="{{!parse.showFilterOrderDate(orderFilter)}}">
+          <view class="filter-item-title">
+          下单时间：
+          </view>
+          <view class="filter-item-content">
+          {{orderFilter.startOrderDate}} 至 {{orderFilter.endOrderDate}}
+          </view>
+        </view>
+        <view class="filter-item"
+              hidden="{{!parse.showFilterLeaveDate(orderFilter)}}">
+          <view class="filter-item-title">
+          出发时间：
+          </view>
+          <view class="filter-item-content">
+          {{orderFilter.startLeaveDate}} 至 {{orderFilter.endLeaveDate}}
+          </view>
+        </view>
+      </view>
+      <view class="filter-clear-box">
+        <view class="filter-clear-button"
+              bindtap="tapClearFilter">
+          <i-icon type='trash'
+                  size="24">
+          </i-icon>
+        </view>
+      </view>
+    </view>
     <view class="bill-item"
           wx:for='{{orderList}}'
           wx:for-item='orderItem'
           wx:for-index='orderIndex'
-          wx:key='{{orderIndex}}'>
+          wx:key='{{orderIndex}}'
+          wx:if='{{!parse.showEmpty(orderList)}}'>
       <view class='block-fillet bill-info-box'>
         <view class='bill-info-icon'><icon class='iconfont iconfeiji1'></icon></view>
         <view class='bill-info-billNo'>{{orderItem.orderNo}}</view>
@@ -116,7 +149,7 @@
             <view class='bill-info-pay-info'
                   wx:if='{{orderItem.orderStates!= null}}'>{{orderItem.orderStates[orderItem.orderStates.length-1].orderType}}</view>
             <view class='bill-info-pay-money'
-                  wx:if='{{orderItem.paymentAmount!= null && userInfo.role != 3}}'>￥{{orderItem.paymentAmount}}</view>
+                  wx:if='{{orderItem.paymentAmount!= null}}'>￥{{orderItem.paymentAmount}}</view>
           </view>
           <!-- 分配人员 -->
           <view class="bill-info-staff"
@@ -313,7 +346,8 @@
         </view>
       </view>
     </view>
-    <view class="end-item">
+    <view class="end-item"
+          wx:if='{{!parse.showEmpty(orderList)}}'>
       <view class="end-item-bg">
         <view class="end-item-bg-line"></view>
       </view>
@@ -323,34 +357,36 @@
         </view>
       </view>
     </view>
+
+    <view class="empty-area"
+          wx:if="{{parse.showEmpty(orderList)}}">
+      <view class="empty-content">
+        <i-icon type="service"
+                size="30"
+                color="#778899">
+        </i-icon>
+        <view class="empty-title">
+        暂无单据数据
+        </view>
+      </view>
+    </view>
   </scroll-view>
   
   
-  <view class="empty-area"
-        wx:if="{{parse.showEmpty(orderList)}}">
-    <view class="empty-content">
-      <i-icon type="service"
-              size="30"
-              color="#778899">
-      </i-icon>
-      <view class="empty-title">
-      暂无单据数据
-      </view>
-    </view>
-  </view>
 
 </view>
 
-<wxs module='parse'>
-  module.exports={
-    showSender: function(orderItem, userInfo) {
-      if (userInfo.role != 3) {
-        return true;
-      } else if (orderItem.orderStates[0].orderType == "待揽件") {
-        return true;
-      }
-      return false;
-    },
+<!-- 
+if (userInfo.role != 3) {
+  return true;
+} else if (orderItem.orderStates[0].orderType == "待揽件") {
+  return true;
+}
+return false;
+ -->
+
+ <!-- 
+ 
     showReceiver: function(orderItem, userInfo) {
       if (userInfo.role != 3) {
         return true;
@@ -358,6 +394,16 @@
         return true;
       }
       return false;
+    },
+  -->
+
+<wxs module='parse'>
+  module.exports={
+    showSender: function(orderItem, userInfo) {
+      return true;
+    },
+    showReceiver: function(orderItem, userInfo) {
+      return true;
     },
     getOperateButtonTitle: function (orderItem) {
       if (orderItem.orderStates[0].orderType == "待入港") {
@@ -427,6 +473,30 @@
       }
       return true;
     },
+		showFilterEndCity: function(orderFilter) {
+			if (orderFilter.endCity == null || orderFilter.endCity.length <= 0) {
+				return false;
+			}
+			return true;
+		},
+		showFilterName: function(orderFilter) {
+			if (orderFilter.name == null || orderFilter.name.length <= 0) {
+				return false;
+			}
+			return true;
+		},
+		showFilterPhone: function(orderFilter) {
+			if (orderFilter.phone == null || orderFilter.phone.length <= 0) {
+				return false;
+			}
+			return true;
+		},
+		showFilterCode: function(orderFilter) {
+			if (orderFilter.code == null || orderFilter.code.length <= 0) {
+				return false;
+			}
+			return true;
+		},
     showFilterOrderDate: function(orderFilter) {
       if (orderFilter.startOrderDate != null 
         && orderFilter.startOrderDate.length > 0 

@@ -19,20 +19,33 @@
             <view class="station-name" catchtap="tapStationName" data-index='{{stationIndex}}'>
               {{stationItem.businessName}}
             </view>
-            <view class="station-business-hours">
-              <i-icon type="time" size='15' color="#b5d7eb">
+            <view class="station-row">
+              <i-icon type="clock" size='35' color="#b5d7eb">
               </i-icon>
-              营业时间：{{parse.parseTime(stationItem.startHours)}}-{{parse.parseTime(stationItem.endHours)}}
+              <view class="station-row-title">
+                营业时间：{{parse.parseTime(stationItem.startHours)}}-{{parse.parseTime(stationItem.endHours)}}
+              </view>
             </view>
-            <view class="station-phone" catchtap="callPhone" data-phonenumber='{{stationItem.contactPhone}}'>
-              <i-icon type="mobilephone" size='15' color="#b5d7eb">
+            <view class="station-row">
+              <i-icon type="phone" size='35' color="#b5d7eb">
               </i-icon>
-              联系电话：{{stationItem.contactPhone}}
+              <view class="station-row-title-underline" catchtap="callPhone" data-phonenumber='{{stationItem.contactPhone}}'>
+                联系电话：{{stationItem.contactPhone}}
+              </view>
             </view>
-            <view class="station-address" catchtap="tapStationAddress" data-index='{{stationIndex}}'>
-              <i-icon type="coordinates" size='15' color="#b5d7eb">
+            <view class="station-row">
+              <i-icon type="location" size='35' color="#b5d7eb">
               </i-icon>
-              地址：{{stationItem.province}}{{stationItem.city}}{{stationItem.area}}{{stationItem.detailAddress}}
+              <view class="station-row-title-underline" catchtap="tapStationAddress" data-index='{{stationIndex}}'>
+                地址：{{stationItem.province}}{{stationItem.city}}{{stationItem.area}}{{stationItem.detailAddress}}
+              </view>
+            </view>
+            <view class="station-row">
+              <i-icon type='qrcode' size="35" color="#b5d7eb">
+              </i-icon>
+              <view class="station-row-title-underline" catchtap="tapWXQRCode" data-index='{{stationIndex}}'>
+                打开商家二维码
+              </view>
             </view>
           </view>
         </view>
