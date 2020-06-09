@@ -139,9 +139,16 @@ Page({
    * 点击流水item
    */
   tapFlowItemAction: function(button) {
-    let orderNo = button.currentTarget.dataset.flow.billNo;
+    let flowItem = button.currentTarget.dataset.flow;
+    let orderNo = flowItem.order.orderNo;
+    let rebate = 0;
+    flowItem.orderFlowDetails.forEach(detailItem => {
+      if (detailItem.flowType == "orderRebate") {
+        rebate = 1;
+      }
+    });
     wx.navigateTo({
-      url: PagePath.Path_Order_Detail + '?orderno=' + orderNo + '&type=1' + "&ablecancelpremium=0" + "&showprice=0",
+      url: PagePath.Path_Order_Detail + '?orderno=' + orderNo + '&type=1' + "&ablecancelpremium=0" + "&showprice=1" + "&rebate=" + rebate,
     })
   },
 

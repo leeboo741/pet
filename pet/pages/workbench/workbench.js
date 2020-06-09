@@ -976,7 +976,7 @@ Page({
           })
         } else if (res.tapIndex == 2) {
           let showPrice = 0;
-          if (that.data.userInfo.role == 1) {
+          if (that.data.userInfo.role != 3) {
             showPrice = 1;
           }
           wx.navigateTo({

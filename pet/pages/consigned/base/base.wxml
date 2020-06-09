@@ -329,9 +329,9 @@
         <view style='float:left;font:36rpx arial,sans-serif;'>{{parse.showJoinPirce(totalPrice)?'客户价格:':'预估金额:'}}</view>
         <view style='text-align: left;font:36rpx arial,sans-serif;  padding-left: 5px;color:red'>¥{{totalPrice==null?'0':parse.showJoinPirce(totalPrice)?totalPrice.retailOrderAmount:totalPrice.orderAmount}}</view>
     </view>
-    <view class="money" wx:if="{{parse.showJoinPirce(totalPrice)}}">
+    <view class="money" wx:if="{{ userInfo != null && (userInfo.role != 0 || userInfo.business != null)}}">
         <view style='float:left;font:36rpx arial,sans-serif;'>合作金额:</view>
-        <view style='text-align: left;font:36rpx arial,sans-serif;  padding-left: 5px;color:red'>¥{{totalPrice.joinOrderAmount}}</view>
+        <view style='text-align: left;font:36rpx arial,sans-serif;  padding-left: 5px;color:red'>¥{{totalPrice.joinOrderAmount==null?0:totalPrice.joinOrderAmount}}</view>
     </view>
    </view>
    <!-- 预订  -->

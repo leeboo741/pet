@@ -19,6 +19,8 @@ Page({
    */
   data: {
 
+    userInfo: null,
+
     storePhone: null, // 获取商家电话
 
     predictPrice: null, // 预估金额
@@ -63,6 +65,7 @@ Page({
    */
   onLoad: function (options) {
     this.setData({
+      userInfo: loginUtil.getUserInfo(),
       startCity: options.start,
       endCity: options.end,
       petCount: parseInt(options.count),

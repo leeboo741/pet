@@ -123,7 +123,7 @@ Page({
   },
 
   /**
-   * 批准员工申请
+   * 批准商家申请
    */
   tapApprovalStationApply: function (e) {
     this.requestApprovalStationApply(e.currentTarget.dataset.index);
@@ -358,46 +358,78 @@ Page({
   },
 
   /**
+   * 选择员工角色
+   * @param {*} index 
+   */
+  chooseStaffRole: function(getRoleCallback) {
+    let role = null;
+    wx.showActionSheet({
+      itemList: ["客服人员", "司机"],
+      success(res) {
+        if (res.tapIndex == 0) {
+          role = config.Role_Staff_Service;
+        } else if (res.tapIndex == 1) {
+          role = config.Role_Staff_Diver;
+        } 
+        if (util.checkIsFunction(getRoleCallback)) {
+          getRoleCallback(role)
+        }
+      }
+    })
+  },
+
+  /**
    * 请求审核员工申请
    */
   requestApprovalStaffApply: function (index) {
     const tempIndex = index;
-    let tempStaffApply = this.data.staffApplyList[tempIndex];
-    wx.showLoading({
-      title: '请稍等...',
-    })
     let that = this;
-    wx.request({
-      url: config.URL_Service + config.URL_ApprovalStaffApply,
-      data: tempStaffApply,
-      method: "PUT",
-      success(res) {
-        wx.hideLoading();
-        console.log("请求审核员工 success: \n" + JSON.stringify(res));
-        if (res.data.code == config.RES_CODE_SUCCESS && res.data.data > 0) {
-          wx.showToast({
-            title: '审核成功',
-          })
-          that.data.staffApplyList.splice(tempIndex,1);
-          that.setData({
-            staffApplyList: that.data.staffApplyList
-          })
-        } else {
-          wx.showToast({
-            title: '审核失败',
-            icon: "none"
-          })
-        }
-      },
-      fail(res) {
-        wx.hideLoading();
-        console.log("请求审核员工 fail: \n" + JSON.stringify(res));
+    let tempStaffApply = this.data.staffApplyList[tempIndex];
+    this.chooseStaffRole(function getRoleCallback(role) {
+      if (role == null) {
         wx.showToast({
-          title: '网络波动，审核失败',
-          icon: "none"
+          title: '请分配员工角色',
+          icon: 'none'
         })
-      },
-      complete(res) {
+        return;
+      } else {
+        tempStaffApply.role = role;
+        wx.showLoading({
+          title: '请稍等...',
+        })
+        wx.request({
+          url: config.URL_Service + config.URL_ApprovalStaffApply,
+          data: tempStaffApply,
+          method: "PUT",
+          success(res) {
+            wx.hideLoading();
+            console.log("请求审核员工 success: \n" + JSON.stringify(res));
+            if (res.data.code == config.RES_CODE_SUCCESS && res.data.data > 0) {
+              wx.showToast({
+                title: '审核成功',
+              })
+              that.data.staffApplyList.splice(tempIndex,1);
+              that.setData({
+                staffApplyList: that.data.staffApplyList
+              })
+            } else {
+              wx.showToast({
+                title: '审核失败',
+                icon: "none"
+              })
+            }
+          },
+          fail(res) {
+            wx.hideLoading();
+            console.log("请求审核员工 fail: \n" + JSON.stringify(res));
+            wx.showToast({
+              title: '网络波动，审核失败',
+              icon: "none"
+            })
+          },
+          complete(res) {
+          }
+        })
       }
     })
   },

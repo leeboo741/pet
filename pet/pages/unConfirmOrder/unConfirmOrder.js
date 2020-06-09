@@ -361,6 +361,7 @@ Page({
     }
     if (orderFilter != null && !util.checkEmpty(orderFilter.endCity)) {
       endCity = orderFilter.endCity;
+    }
     if (orderFilter != null && !util.checkEmpty(orderFilter.name)) {
       name = orderFilter.name;
     }

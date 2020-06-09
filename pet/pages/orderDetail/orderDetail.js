@@ -16,6 +16,7 @@ Page({
   data: {
     orderData: null,
     userInfo: null,
+    userRole: null, // 用户角色
     remarksInput: null,
     type: 0,  // 0 自有单据 1 工作单据
     orderNo: null,
@@ -23,6 +24,7 @@ Page({
     ableCancelPremium: true, // 是否允许取消补价
     showConfirmButton: false, // 是否展示签收按钮
     showPrice: false, // 是否展示价格
+    rebate: 0, // 是否分享返利进入 0 否 1 是
 
     backTimeIntervial: null,
   },
@@ -42,6 +44,7 @@ Page({
       ablePremium: options.ablepremium==1? true: false,
       ableCancelPremium: options.ablecancelpremium==0? false: true,
       showPrice: options.showprice==0? false: true,
+      rebate: options.rebate==null?0:options.rebate,
     })
     this.requestOrderDetail(this.data.orderNo)
     let that = this;

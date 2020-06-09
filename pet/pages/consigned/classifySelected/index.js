@@ -11,13 +11,21 @@ Page({
     searchResultList:[], // 搜索结果列表
     inputTimer: null, // 请求定时器
     searchword: '', // 搜索关键字
+
+    keyboardHeight: 0, // 键盘弹起高度
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
+    let that = this;
+    wx.onKeyboardHeightChange((result) => {
+      console.log(result.height);
+      that.setData({
+        keyboardHeight: result.height
+      })
+    })
   },
 
   /**
@@ -93,7 +101,7 @@ Page({
     let that = this;
     this.data.inputTimer = setTimeout(function(){
       that.requestPetClassifyBySearchword(that.data.inputSearchword);
-    },1000);
+    },250);
   },
 
   /**

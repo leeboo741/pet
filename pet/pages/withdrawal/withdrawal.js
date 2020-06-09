@@ -208,6 +208,12 @@ Page({
       tempData = {
         businessNo: loginUtil.getBusinessNo()
       }
+    } else {
+      wx.showToast({
+        title: '暂无提现权限',
+        icon: 'none'
+      })
+      return;
     }
     let that = this;
     wx.request({

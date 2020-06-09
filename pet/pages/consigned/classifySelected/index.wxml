@@ -17,6 +17,7 @@
 </view>
 
 <view class="front-view" wx:if='{{searchResultList!=null&&searchResultList.length>0}}'>
+  <view style='height:{{keyboardHeight}}px'></view>
   <i-panel title='推荐:'>
     <i-cell-group>
       <i-cell wx:for='{{searchResultList}}'

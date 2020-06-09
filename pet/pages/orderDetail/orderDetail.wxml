@@ -1,7 +1,7 @@
 <!--pages/orderDetail/orderDetail.wxml-->
 <i-panel i-class='panel'
          title='补价信息'
-         wx:if='{{parse.showPremiumList(orderData.orderPremiumList)}}'>
+         wx:if='{{parse.showPremiumList(orderData.orderPremiumList, rebate)}}'>
   <i-cell wx:for='{{orderData.orderPremiumList}}'
           wx:for-item='premiumItem'
           wx:for-index='premiumIndex'
@@ -43,7 +43,7 @@
 </i-panel>
 <i-panel i-class='panel'
          title='提货信息'
-         wx:if='{{parse.showTakerInfo(orderData.orderTakeDetail)}}'>
+         wx:if='{{parse.showTakerInfo(orderData.orderTakeDetail, rebate)}}'>
   <i-cell-group>
     <i-cell title='联系人'
             label='{{orderData.orderTakeDetail.contact}}'
@@ -75,19 +75,19 @@
     <i-cell wx:if='{{orderData.state!=null}}'
             title='订单状态' 
             value='{{orderData.state}}'></i-cell>
-    <i-cell wx:if='{{showPrice}}'
+    <i-cell wx:if='{{showPrice && userData.role != 3 && rebate != 1}}'
             title='订单金额' 
             value='￥{{orderData.paymentAmount}}'></i-cell>
     <i-cell wx:if='{{orderData.transport.station.stationName!=null}}'
             title='物流' 
             value='{{orderData.transport.station.stationName}}'></i-cell>
-    <i-cell wx:if='{{orderData.transport.startCity!=null && orderData.transport.endCity!=null }}'
+    <i-cell wx:if='{{orderData.transport.startCity!=null && orderData.transport.endCity!=null && rebate != 1 }}'
             title='物流区间' 
             value='{{orderData.transport.startCity}}-{{orderData.transport.endCity}}'></i-cell>
-    <i-cell wx:if='{{orderData.orderTransport != null && orderData.orderTransport.transportNum != null}}'
+    <i-cell wx:if='{{orderData.orderTransport != null && orderData.orderTransport.transportNum != null && rebate != 1}}'
             title='航班号/车次号'
             value='{{orderData.orderTransport.transportNum}}'></i-cell>
-    <i-cell wx:if='{{orderData.orderTransport != null && orderData.orderTransport.expressNum != null}}'
+    <i-cell wx:if='{{orderData.orderTransport != null && orderData.orderTransport.expressNum != null && rebate != 1}}'
             title='快递单号'
             value='{{orderData.orderTransport.expressNum}}'></i-cell>
     <i-cell wx:if='{{orderData.transport.transportType!=null}}'
@@ -118,13 +118,13 @@
             label="{{orderData.receiptAddress}}"
             bindtap='tapToNavigation'
             data-address='{{orderData.receiptAddress}}'
-            wx:if='{{parse.showReceipt(orderData, userInfo)}}'></i-cell>
+            wx:if='{{parse.showReceipt(orderData, userInfo, rebate)}}'></i-cell>
     <i-cell title='送宠到家' 
             value='{{(orderData.sendAddress==null||orderData.sendAddress.length<=0)?"否":"是"}}' 
             label="{{orderData.sendAddress}}"
             bindtap='tapToNavigation'
             data-address='{{orderData.sendAddress}}'
-            wx:if='{{parse.showSend(orderData, userInfo)}}'></i-cell>
+            wx:if='{{parse.showSend(orderData, userInfo, rebate)}}'></i-cell>
     <i-cell title='保价' 
             value='{{(orderData.petAmount==null||orderData.petAmount==0)?"否":"是"}}' 
             label="{{(orderData.petAmount==null||orderData.petAmount==0)?'':'￥'+orderData.petAmount}}"></i-cell>
@@ -136,7 +136,7 @@
 </i-panel>
 <i-panel i-class='panel'
          title='临时派送信息'
-         wx:if='{{parse.showTempDeliver(orderData)}}'>
+         wx:if='{{parse.showTempDeliver(orderData, rebate)}}'>
   <i-cell-group>
     <i-cell title='收件人' 
             value='{{parse.getTempDeliverName(orderData)}}'></i-cell>
@@ -157,11 +157,11 @@
             data-address='{{parse.getTempDeliverAddress(orderData)}}'></i-cell>
   </i-cell-group>
 </i-panel>
-<i-panel wx:if='{{orderData.senderName!=null || orderData.senderPhone!=null || orderData.receiverPhone!=null || orderData.receiverName!=null}}'
+<i-panel wx:if='{{(orderData.senderName!=null || orderData.senderPhone!=null || orderData.receiverPhone!=null || orderData.receiverName!=null) && rebate != 1}}'
          i-class="panel" 
          title='收寄人信息'>
   <i-cell-group>
-    <i-cell wx:if='{{parse.showReceipt(orderData, userInfo)}}'
+    <i-cell wx:if='{{parse.showReceipt(orderData, userInfo, rebate)}}'
             title='寄件人' 
             value=''
             label='{{orderData.senderPhone!=null?orderData.senderPhone:""}}'
@@ -174,7 +174,7 @@
       {{orderData.senderName!=null?orderData.senderName:""}}
       </view> 
     </i-cell>
-    <i-cell wx:if='{{parse.showSend(orderData, userInfo)}}'
+    <i-cell wx:if='{{parse.showSend(orderData, userInfo, rebate)}}'
             title='收件人' 
             value='' 
             label='{{orderData.receiverPhone!=null?orderData.receiverPhone:""}}'
@@ -301,10 +301,16 @@ if (userInfo.role != 3) {
  -->
 <wxs module='parse'>
   module.exports={
-    showReceipt: function(orderItem, userInfo) {
+    showReceipt: function(orderItem, userInfo, rebate) {
+      if (rebate == 1) {
+        return false;
+      }
       return true;
     },
-    showSend: function(orderItem, userInfo) {
+    showSend: function(orderItem, userInfo , rebate) {
+      if (rebate == 1) {
+        return false;
+      }
       return true;
     },
     getTempDeliverName: function(order){
@@ -325,7 +331,10 @@ if (userInfo.role != 3) {
       }
       return "";
     },
-    showTempDeliver: function(order){
+    showTempDeliver: function(order, rebate){
+      if (rebate == 1) {
+        return false;
+      }
       if (order.orderTempDelivers != null && order.orderTempDelivers.length > 0 ){
         return true;
       }
@@ -361,13 +370,19 @@ if (userInfo.role != 3) {
       }
       return false;
     },
-    showTakerInfo: function(orderTakeDetail) {
+    showTakerInfo: function(orderTakeDetail, rebate) {
+      if (rebate == 1) {
+        return false;
+      }
       if (orderTakeDetail != null) {
         return true;
       }
       return false;
     },
-    showPremiumList: function(premiumList) {
+    showPremiumList: function(premiumList, rebate) {
+      if (rebate == 1) {
+        return false;
+      }
       if (premiumList == null || premiumList.length <= 0) {
         return false;
       }

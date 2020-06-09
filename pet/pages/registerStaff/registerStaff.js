@@ -330,6 +330,9 @@ Page({
       staffName: this.data.name,
       station: this.data.stationList[this.data.selectStaionIndex],
       verificationCode: this.data.code,
+      customer: {
+        customerNo: loginUtil.getCustomerNo()
+      }
     };
 
     let tempData = {

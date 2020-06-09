@@ -20,12 +20,12 @@ page {
 
 .index-banner-item{
   width: 100%;
-  height:320rpx;
+  height:360rpx;
 }
 
 .index-banner {
   width: 750rpx;
-  height:320rpx;
+  height:360rpx;
   background-color: #ffffff
 }
 

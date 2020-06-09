@@ -21,12 +21,10 @@ const CheckAbleStation_Type_Send = 1;
 
 Page({
   data: {
+    userInfo: null,
     bannerData: [
       { 
         imgPath: 'https://img.taochonghui.com/weapp/banner01.jpg'
-      },
-      { 
-        imgPath: 'https://img.taochonghui.com/weapp/banner02.jpg'
       },
     ], // banner 数据
     storePhone:null, // 商家电话
@@ -189,6 +187,9 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
+    this.setData({
+      userInfo: loginUtil.getUserInfo()
+    })
     if (app.globalData.selectClassifyName != null) {
       this.setData({
         petClassify: app.globalData.selectClassifyName
@@ -613,7 +614,8 @@ Page({
         selectedTransportObj: tempObj
       })
       this.predictPrice();
-      this.checkPetCage();
+      this.checkMaxWeight();
+      this.checkPetCageAble();
     }
   },
 
@@ -849,6 +851,7 @@ Page({
    * 点击预定
    */
   tapTakeOrderAction: function(){
+    this.subscribeMessage();
     if (this.data.beginCity == null) {
       wx.showToast({
         title: '请选择始发城市',
@@ -1301,59 +1304,6 @@ Page({
   },
 
   /**
-   * 请求宠物种类
-   */
-  // requestPetClassify: function (currentType) {
-  //   let that = this;
-  //   wx.showLoading({
-  //     title: '请稍等...',
-  //   })
-  //   let urlstr = config.URL_Service + config.URL_PetClassify;
-  //   // 向服务器请求登陆，返回 本微信 在服务器状态，注册|未注册，
-  //   wx.request({
-  //     url: urlstr, // 服务器地址
-  //     data: {
-  //       "petTypeName": currentType
-  //     },
-  //     success: res => {
-  //       console.log("success => " + JSON.stringify(res));
-  //       if (res.data.code == config.RES_CODE_SUCCESS) {
-  //         if (util.checkEmpty(res.data.data)) {
-  //           wx.showToast({
-  //             title: '没有查到宠物种类数据',
-  //             icon: 'none'
-  //           })
-  //           wx.hideLoading();
-  //           return;
-  //         }
-  //         that.data.petClassifys = res.data.data;
-  //         let tempData = [];
-  //         for (let i = 0; i < res.data.data.length; i++) {
-  //           tempData.push(res.data.data[i].petClassifyName);
-  //         }
-  //         that.setData({
-  //           petClassifys: tempData,
-  //           selectPetClassifyIndex: 0,
-  //           petClassify: tempData[0]
-  //         })
-  //         that.predictPrice();
-  //       } else {
-  //         wx.hideLoading();
-  //       }
-  //     },
-  //     fail(res) {
-  //       wx.showToast({
-  //         title: '查询宠物类型失败',
-  //         icon: 'none',
-  //       })
-  //       wx.hideLoading();
-  //     },
-  //     complete(res) {
-  //     },
-  //   })
-  // },
-
-  /**
    * 输入宠物品种
    */
   petClassifyInput: function (e) {
@@ -1410,9 +1360,49 @@ Page({
   },
 
   /**
-   * 查询宠物箱
+   * 查询宠物箱是否可用
    */
-  checkPetCage: function () {
+  checkPetCageAble: function(){
+    let that = this;
+    wx.request({
+      url: config.URL_Service + config.URL_MaxWeight,
+      data: {
+        startCity: this.data.beginCity,
+        endCity: this.data.endCity,
+        transportType: this.data.selectedTransportObj.transportId,
+      },
+      success(res) {
+        console.log("查询宠物箱是否可用 success:\n" + JSON.stringify(res));
+        if (res.data.data == null || res.data.data == false) {
+          that.data.addServerAirBox.ableUse = false;
+          that.data.addServerAirBox.selected = false;
+          that.setData({
+            addServerAirBox: that.data.addServerAirBox,
+          })
+        } else {
+          that.data.addServerAirBox.ableUse = true;
+          that.setData({
+            addServerAirBox: that.data.addServerAirBox,
+          })
+        }
+      },
+      fail(res) {
+        console.log("查询宠物箱 fail:\n" + JSON.stringify(res));
+        wx.showToast({
+          title: '系统异常',
+          icon: "none"
+        })
+      },
+      complete(res) {
+        console.log("查询宠物箱 complete:\n" + JSON.stringify(res));
+      }
+    })
+  },
+
+  /**
+   * 查询最大重量限制
+   */
+  checkMaxWeight: function () {
     let that = this;
     wx.request({
       url: config.URL_Service + config.URL_AblePetCage,
@@ -1423,17 +1413,9 @@ Page({
       },
       success(res) {
         console.log("查询宠物箱 success:\n" + JSON.stringify(res));
-        if (res.data.data == null) {
-          that.data.addServerAirBox.ableUse = false;
-          that.data.addServerAirBox.selected = false;
-          that.setData({
-            addServerAirBox: that.data.addServerAirBox,
-          })
-        } else {
-          that.data.addServerAirBox.ableUse = true;
+        if (res.data.data != null) {
           that.data.petMaxWeight = res.data.data;
           that.setData({
-            addServerAirBox: that.data.addServerAirBox,
             petMaxWeight: that.data.petMaxWeight,
           })
           that.checkPetWeight();
@@ -1578,5 +1560,130 @@ Page({
         })
       }
     }
+  },
+
+  subscribeMessage: function(sendMessageCallback){
+    let that = this;
+    //需要订阅的消息模板，在微信公众平台手动配置获取模板ID
+    let message = [
+      "i_TmjhoPeu5x7L1OVrZapCcJo0rZKmXN9xjQCE7hBAc",
+      "6uwTclmrk9vYOT2AsWGLqOP5y0ZJsVsYW-stdcEkOSU",
+      "0i3nHNkfOI1FwsuTSMfhAUnmbBzwB0c01R2Ef0Z7TcE"
+    ]
+    //如果总是拒绝（subscriptionsSetting，2.10.1库才支持）
+    if(this.checkVersion('2.10.1')){
+      wx.getSetting({
+        withSubscriptions: true,//是否同时获取用户订阅消息的订阅状态，默认不获取
+        success: (res)=> {
+          console.log(res)
+          if (res.subscriptionsSetting && res.subscriptionsSetting.itemSettings &&
+              res.subscriptionsSetting.itemSettings[message] == "reject"){
+            //打开设置去设置
+            this.openConfirm('需要打开微信消息推送权限，是否去设置打开？')
+          }else {
+            this.sendSubscribeMessage(message, null);
+          }
+        }
+      })
+    }else if(this.checkVersion('2.4.4')){
+      this.recursionSend(message, 0);
+    }
+  },
+
+  recursionSend: function (message, index) {
+    let that = this;
+    if (message.length - 1 >= index) {
+      this.sendSubscribeMessage(message[index], function completeCallback(res) {
+        index = index + 1;
+        that.recursionSend(message, index);
+      })
+    }
+  },
+
+  sendSubscribeMessage: function (message, completeCallback) {
+    if (message == null && typeof message == 'undefined') {
+      return;
+    }
+    let sendMessage = [];
+    let str = typeof message;
+    if (typeof message == 'string') {
+      sendMessage.push(message);
+    } else if (typeof message == 'object') {
+      sendMessage = message;
+    } else {
+      return;
+    }
+    wx.requestSubscribeMessage({
+      tmplIds: sendMessage,
+      success: (res)=> {
+      },
+      fail: (res)=> { 
+        console.info(res) 
+      },
+      complete: (res)=> {
+        if (util.checkIsFunction(completeCallback)) {
+          completeCallback(res);
+        }
+      }
+    })
+  },
+
+  //打开设置
+  openConfirm: function(message) {
+    wx.showModal({
+      content: message,
+      confirmText: "确认",
+      cancelText: "取消",
+      success: (res) => {
+          //点击“确认”时打开设置页面
+          if (res.confirm) {
+              wx.openSetting({
+                  success: (res) => {
+                      console.log(res.authSetting)
+                  },
+                  fail: (error) => {
+                      console.log(error)
+                  }
+              })
+          } else {
+              console.log('用户点击取消')
+          }
+      }
+    });
+  },
+  //基础库版本比较
+  checkVersion(v) {
+    const version = wx.getSystemInfoSync().SDKVersion
+    if (this.compareVersion(version, v) >= 0) {
+        return true
+    } else {
+        return false
+    }
+  },
+
+  compareVersion(v1, v2) {
+    v1 = v1.split('.')
+    v2 = v2.split('.')
+    const len = Math.max(v1.length, v2.length)
+  
+    while (v1.length < len) {
+      v1.push('0')
+    }
+    while (v2.length < len) {
+      v2.push('0')
+    }
+  
+    for (let i = 0; i < len; i++) {
+      const num1 = parseInt(v1[i])
+      const num2 = parseInt(v2[i])
+  
+      if (num1 > num2) {
+        return 1
+      } else if (num1 < num2) {
+        return -1
+      }
+    }
+  
+    return 0
   },
 });
