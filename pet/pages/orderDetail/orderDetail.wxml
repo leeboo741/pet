@@ -1,7 +1,7 @@
 <!--pages/orderDetail/orderDetail.wxml-->
 <i-panel i-class='panel'
          title='补价信息'
-         wx:if='{{parse.showPremiumList(orderData.orderPremiumList, rebate)}}'>
+         wx:if='{{parse.showPremiumList(orderData.orderPremiumList, 0)}}'>
   <i-cell wx:for='{{orderData.orderPremiumList}}'
           wx:for-item='premiumItem'
           wx:for-index='premiumIndex'
@@ -43,7 +43,7 @@
 </i-panel>
 <i-panel i-class='panel'
          title='提货信息'
-         wx:if='{{parse.showTakerInfo(orderData.orderTakeDetail, rebate)}}'>
+         wx:if='{{parse.showTakerInfo(orderData.orderTakeDetail, 0)}}'>
   <i-cell-group>
     <i-cell title='联系人'
             label='{{orderData.orderTakeDetail.contact}}'
@@ -81,13 +81,13 @@
     <i-cell wx:if='{{orderData.transport.station.stationName!=null}}'
             title='物流' 
             value='{{orderData.transport.station.stationName}}'></i-cell>
-    <i-cell wx:if='{{orderData.transport.startCity!=null && orderData.transport.endCity!=null && rebate != 1 }}'
+    <i-cell wx:if='{{orderData.transport.startCity!=null && orderData.transport.endCity!=null}}'
             title='物流区间' 
             value='{{orderData.transport.startCity}}-{{orderData.transport.endCity}}'></i-cell>
-    <i-cell wx:if='{{orderData.orderTransport != null && orderData.orderTransport.transportNum != null && rebate != 1}}'
+    <i-cell wx:if='{{orderData.orderTransport != null && orderData.orderTransport.transportNum != null }}'
             title='航班号/车次号'
             value='{{orderData.orderTransport.transportNum}}'></i-cell>
-    <i-cell wx:if='{{orderData.orderTransport != null && orderData.orderTransport.expressNum != null && rebate != 1}}'
+    <i-cell wx:if='{{orderData.orderTransport != null && orderData.orderTransport.expressNum != null }}'
             title='快递单号'
             value='{{orderData.orderTransport.expressNum}}'></i-cell>
     <i-cell wx:if='{{orderData.transport.transportType!=null}}'
@@ -115,21 +115,19 @@
             label="{{(orderData.addedWeightCage==null|| orderData.addedWeightCage.cagePrice == null ||orderData.addedWeightCage.cagePrice==0)?'':'￥'+orderData.addedWeightCage.cagePrice}}"></i-cell>
     <i-cell title='上门接宠' 
             value='{{(orderData.receiptAddress==null||orderData.receiptAddress.length<=0)?"否":"是"}}' 
-            label="{{orderData.receiptAddress}}"
+            label="{{rebate != 1 ? orderData.receiptAddress : ''}}"
             bindtap='tapToNavigation'
-            data-address='{{orderData.receiptAddress}}'
-            wx:if='{{parse.showReceipt(orderData, userInfo, rebate)}}'></i-cell>
+            data-address='{{rebate != 1 ? orderData.receiptAddress : ""}}'
+            wx:if='{{parse.showReceipt(orderData, userInfo, 0)}}'></i-cell>
     <i-cell title='送宠到家' 
             value='{{(orderData.sendAddress==null||orderData.sendAddress.length<=0)?"否":"是"}}' 
-            label="{{orderData.sendAddress}}"
+            label="{{rebate != 1 ? orderData.sendAddress : ''}}"
             bindtap='tapToNavigation'
-            data-address='{{orderData.sendAddress}}'
-            wx:if='{{parse.showSend(orderData, userInfo, rebate)}}'></i-cell>
+            data-address='{{rebate != 1 ? orderData.sendAddress : ""}}'
+            wx:if='{{parse.showSend(orderData, userInfo, 0)}}'></i-cell>
     <i-cell title='保价' 
             value='{{(orderData.petAmount==null||orderData.petAmount==0)?"否":"是"}}' 
             label="{{(orderData.petAmount==null||orderData.petAmount==0)?'':'￥'+orderData.petAmount}}"></i-cell>
-    <i-cell title='免费营养罐头' 
-            value='{{(orderData.giveFood==null||orderData.giveFood=="否")?"否":"是"}}'></i-cell>
     <i-cell title='中介担保' 
             value='{{(orderData.guarantee==null||orderData.guarantee=="否")?"否":"是"}}'></i-cell>
   </i-cell-group>
