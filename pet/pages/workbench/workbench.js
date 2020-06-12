@@ -61,6 +61,19 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
+    if (app.globalData.orderTakerLocation!=null) {
+      let location = app.globalData.orderTakerLocation;
+      let tempOrder = this.data.orderList[app.globalData.orderTakerIndex];
+      tempOrder.orderTakeDetail.province = location.province;
+      tempOrder.orderTakeDetail.city = location.city;
+      tempOrder.orderTakeDetail.region = location.district;
+      tempOrder.orderTakeDetail.detailAddress = location.detailAddress;
+      this.setData({
+        orderList: this.data.orderList
+      })
+    }
+    app.globalData.orderTakerLocation = null;
+    app.globalData.orderTakerIndex = null;
   },
 
   /**
@@ -1309,6 +1322,15 @@ Page({
     tempOrder.orderTakeDetail.takeTime = e.detail.value;
     this.setData({
       orderList: this.data.orderList
+    })
+  },
+
+  tapOrderTakerAddress: function(e) {
+
+    let index = e.currentTarget.dataset.index;
+    let order = this.data.orderList[index];
+    wx.navigateTo({
+      url: pagePath.Path_Map + "?city=" + order.transport.endCity + "&orderindex=" + index + "&type=ordertaker",
     })
   },
 

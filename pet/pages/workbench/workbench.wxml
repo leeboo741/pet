@@ -253,21 +253,19 @@
 					<input class="in-out-port-info-input text-normal" placeholder="联系人电话" placeholder-class="text-placeholder" bindinput="inputOrderTakerContactPhone" data-index='{{orderIndex}}' value="{{orderItem.orderTakeDetail.phone}}">
 					</input>
 				</view>
-				<view class="in-out-port-info-item">
-					<!-- <picker class="in-out-port-info-input" mode='date' bindchange="selectTakeDate" data-index='{{orderIndex}}'>
-              <view class="in-out-port-info-input-value {{orderItem.orderTakeDetail.takeTime == null || orderItem.orderTakeDetail.takeTime.length <= 0 ? 'text-placeholder':'text-normal'}}">
-                {{orderItem.orderTakeDetail.takeTime == null || orderItem.orderTakeDetail.takeTime.length
-                <=0 ? "请选择提货时间":orderItem.orderTakeDetail.takeTime}} </view>
-            </picker> -->
+				<!-- <view class="in-out-port-info-item">
 					<picker class="in-out-port-info-input" mode='region' bindchange="selectTakeRegion" data-index='{{orderIndex}}'>
 						<view class="in-out-port-info-input-value {{parse.getOrderTakeRegion(orderItem.orderTakeDetail) != null ? 'text-normal':'text-placeholder'}}">
 							{{parse.getOrderTakeRegion(orderItem.orderTakeDetail) != null ? parse.getOrderTakeRegion(orderItem.orderTakeDetail):'选择提货省市区'}}
 						</view>
 					</picker>
-				</view>
+				</view> -->
 				<view class="in-out-port-info-item">
-					<input class="in-out-port-info-input text-normal" placeholder="提货详细地址" placeholder-class="text-placeholder" bindinput="inputOrderTakeDetailAddress" data-index='{{orderIndex}}' value="{{orderItem.orderTakeDetail.detailAddress}}">
-					</input>
+					<view class="in-out-port-info-input {{(orderItem.orderTakeDetail!= null && orderItem.orderTakeDetail.detailAddress != null && orderItem.orderTakeDetail.detailAddress.length > 0) ? 'text-normal':'text-placeholder'}}" bindtap='tapOrderTakerAddress' data-index='{{orderIndex}}'>
+					{{(orderItem.orderTakeDetail!= null && orderItem.orderTakeDetail.detailAddress != null && orderItem.orderTakeDetail.detailAddress.length > 0) ? parse.getOrderTakeRegion(orderItem.orderTakeDetail) + ' ' + orderItem.orderTakeDetail.detailAddress:'请选择提货地址'}}
+					</view>
+					<!-- <input class="in-out-port-info-input text-normal" placeholder="提货详细地址" placeholder-class="text-placeholder" bindinput="inputOrderTakeDetailAddress" data-index='{{orderIndex}}' value="{{orderItem.orderTakeDetail.detailAddress}}">
+					</input> -->
 				</view>
 			</view>
 

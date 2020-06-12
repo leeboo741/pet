@@ -4,8 +4,8 @@
  */
 /** =================================================== */
 const Service_Phone = "4007778889"; // 客服电话
-const Version_Name = "1.5.7"; // 版本名称
-const Version_Code = 95; // 版本编号
+const Version_Name = "1.5.8"; // 版本名称
+const Version_Code = 96; // 版本编号
 
 /** =================================================== */
 /** 
@@ -64,7 +64,6 @@ const URL_AbleStation_Receipt = "/api/consign/onDoorService/get/receipt"; // 上
 const URL_AbleStation_Send = "/api/consign/onDoorService/get/send"; // 送宠上门是否有可用站点
 const URL_MaxWeight = "/api/consign/cage/exists"; // 查询线路最大允许重量
 const URL_AblePetCage = "/api/consign/cage/max"; // 查询宠物箱是否可用
-// const URL_AbleAirBox = "/aip/consign/airBox/listStationAixBox"; // 航空箱是否可用
 const URL_InsureRate = "/api/consign/insure"; // 查询保价费率
 const URL_PredictPrice = "/api/order/getOrderPrice"; // 获取预估价格
 const URL_GetStorePhoneByCityName = "/api/business/getPhoneByCityName"; // 通过城市获取商家电话
@@ -234,7 +233,6 @@ module.exports = {
   URL_AbleStation_Send, // 送宠到家是否有可用站点
   URL_MaxWeight, // 查询线路最大重量
   URL_AblePetCage, // 查询宠物箱是否可用
-  // URL_AbleAirBox, // 航空箱是否可用
   URL_InsureRate, // 查询保价费率
   URL_PredictPrice, // 获取预估价格
   URL_GetStorePhoneByCityName, // 通过城市名称 获取商家电话

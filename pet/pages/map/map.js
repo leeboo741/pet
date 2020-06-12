@@ -12,6 +12,7 @@ const Type_Enum = {
   Receive: "receive", // 接宠
   Send: "send", // 送宠
   TempDeliver: "tempdeliver", // 临派
+  OrderTaker: "ordertaker", // 提货信息
 }
 
 /**
@@ -177,6 +178,9 @@ Page({
     } else if (this.data.type == Type_Enum.TempDeliver) {
       app.globalData.tempDeliverLocation = locationData;
       app.globalData.tempDeliverIndex = this.data.orderIndex;
+    } else if (this.data.type == Type_Enum.OrderTaker) {
+      app.globalData.orderTakerLocation = locationData;
+      app.globalData.orderTakerIndex = this.data.orderIndex;
     }
 
     wx.navigateBack({
