@@ -47,10 +47,12 @@
   <i-cell-group>
     <i-cell title='联系人'
             label='{{orderData.orderTakeDetail.contact}}'
-            value='{{orderData.orderTakeDetail.phone}}'
-            bindtap='callPhone'
-            data-phone='{{orderData.orderTakeDetail.phone}}'
             is-link>
+      <view slot='footer'
+            bindtap='callPhone'
+            data-phone='{{orderData.orderTakeDetail.phone}}'>
+        {{orderData.orderTakeDetail.phone!=null?orderData.orderTakeDetail.phone:""}}
+      </view>  
     </i-cell>
     <i-cell title='提货地址'
             label='{{orderData.orderTakeDetail.province}}{{orderData.orderTakeDetail.city}}{{orderData.orderTakeDetail.region}}'
@@ -160,29 +162,23 @@
          title='收寄人信息'>
   <i-cell-group>
     <i-cell wx:if='{{parse.showReceipt(orderData, userInfo, rebate)}}'
-            title='寄件人' 
-            value=''
-            label='{{orderData.senderPhone!=null?orderData.senderPhone:""}}'
-            bindtap='callPhone'
-            data-phone='{{orderData.senderPhone}}'
+            title='寄件人'
+            label='{{orderData.senderName!=null?orderData.senderName:""}}'
             is-link>
       <view slot='footer'
             bindtap='callPhone'
             data-phone='{{orderData.senderPhone}}'>
-      {{orderData.senderName!=null?orderData.senderName:""}}
+      {{orderData.senderPhone!=null?orderData.senderPhone:""}}
       </view> 
     </i-cell>
     <i-cell wx:if='{{parse.showSend(orderData, userInfo, rebate)}}'
             title='收件人' 
-            value='' 
-            label='{{orderData.receiverPhone!=null?orderData.receiverPhone:""}}'
-            bindtap='callPhone'
-            data-phone='{{orderData.receiverPhone}}'
+            label='{{orderData.receiverName!=null?orderData.receiverName:""}}'
             is-link>
       <view slot='footer'
             bindtap='callPhone'
             data-phone='{{orderData.receiverPhone}}'>
-      {{orderData.receiverName!=null?orderData.receiverName:""}}
+      {{orderData.receiverPhone!=null?orderData.receiverPhone:""}}
       </view>       
     </i-cell>
   </i-cell-group>
