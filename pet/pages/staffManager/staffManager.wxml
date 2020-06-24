@@ -1,0 +1,26 @@
+<!--pages/staffManager/staffManager.wxml-->
+<i-panel i-class='panel'>
+  <i-cell-group>
+    <i-cell wx:for='{{staffList}}' wx:key='index' title='{{item.staffName}}' label='{{parse.getRoleName(item.role)}}'>
+      <view slot='footer' class='button-box' hidden="{{item.role == 1}}">
+        <view class="opt-button" bindtap="tapChangeRole" data-index='{{index}}'>调职</view>
+        <view class="opt-button opt-button-red" bindtap="tapRemove" data-index='{{index}}'>移除</view>
+      </view>
+    </i-cell>
+  </i-cell-group>
+</i-panel>
+
+<wxs module='parse'>
+  module.exports={
+    getRoleName: function (role) {
+      if (role == 1) {
+        return "管理员";
+      } else if (role == 2) {
+        return "客服";
+      } else if (role == 3) {
+        return "司机"
+      }
+      return "未知";
+    }
+  }
+</wxs>

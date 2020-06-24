@@ -46,6 +46,7 @@ const Path_Me_Setting = "/pages/setting/setting"; // 设置
 const Path_Me_Message = "/pages/message/message"; // 站内信
 const Path_Me_Approval = "/pages/approval/approval"; // 审批
 const Path_Me_Balance_Flow = "/pages/balance/balanceFlow"; // 余额流水
+const Path_Me_StaffManager = "/pages/staffManager/staffManager"; // 员工管理
 
 const Path_Apply_Index = "/pages/applyJoin/applyJoin"; // 申请
 const Path_Apply_Register_Station = "/pages/registerStation/registerStation"; // 站点入驻申请
@@ -102,6 +103,7 @@ module.exports = {
   Path_Me_Message: Path_Me_Message, // 站内信
   Path_Me_Approval: Path_Me_Approval, // 审批
   Path_Me_Balance_Flow: Path_Me_Balance_Flow, // 余额流水
+  Path_Me_StaffManager: Path_Me_StaffManager, // 员工管理
 
   Path_Apply_Index: Path_Apply_Index, // 申请
   Path_Apply_Register_Station: Path_Apply_Register_Station, // 站点入驻申请

@@ -1,0 +1,20 @@
+/* pages/staffManager/staffManager.wxss */
+.button-box{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.opt-button{
+  text-align: center;
+  background: #2d8cf0;
+  color: white;
+  border-radius: 15rpx;
+  padding: 8rpx 30rpx;
+  margin-left: 15rpx;
+}
+
+.opt-button-red{
+  background: #ee2c2c;
+}

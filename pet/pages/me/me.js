@@ -679,6 +679,12 @@ Page({
     })
   },
 
+  tapStaffManager: function() {
+    wx.navigateTo({
+      url: pagePath.Path_Me_StaffManager,
+    })
+  },
+
   /**
    * 页面相关事件处理函数--监听用户下拉动作
    */

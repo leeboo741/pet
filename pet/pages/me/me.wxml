@@ -140,6 +140,15 @@
         </i-icon>
         <label>领券</label>
       </view>
+      <view class="btnOper"
+            hidden="{{userInfo.role != 1}}"
+            bindtap="tapStaffManager">
+        <i-icon type='group'
+                color='#F1B000'
+                size="32">
+        </i-icon>
+        <label>员工</label>
+      </view>
       <view class="btnOper" 
             bindtap='gotoWithDrawal'>
         <i-icon type="redpacket"

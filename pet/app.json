@@ -45,7 +45,8 @@
     "pages/registerStation/serviceItemSelect/index",
     "pages/unPayWork/index",
     "pages/station/stationMap/index",
-    "pages/consigned/classifySelected/index"
+    "pages/consigned/classifySelected/index",
+    "pages/staffManager/staffManager"
   ],
   "window": {
     "backgroundTextStyle": "light",
