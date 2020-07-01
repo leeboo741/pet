@@ -1,7 +1,7 @@
 // pages/staffManager/staffManager.js
 
-const config = require("../../utils/config.js");
-const loginUtil = require("../../utils/loginUtils.js");
+const Config = require("../../utils/config.js");
+const LoginUtil = require("../../utils/loginUtils.js");
 
 Page({
 
@@ -22,13 +22,51 @@ Page({
     wx.showActionSheet({
       itemList: ['客服','司机'],
       success(res) {
+        let role = staff.role;
         if (res.tapIndex == 0) {
           // 客服 2
-          console.log(staff.staffName, '调职成客服', config.Role_Staff_Service)
+          console.log(staff.staffName, '调职成客服', Config.Role_Staff_Service)
+          role = Config.Role_Staff_Service;
         } else if (res.tapIndex == 1) {
           // 司机 3
-          console.log(staff.staffName, '调职成司机', config.Role_Staff_Diver)
+          console.log(staff.staffName, '调职成司机', Config.Role_Staff_Diver)
+          role = Config.Role_Staff_Diver;
         }
+        wx.request({
+          url: Config.URL_Service + Config.URL_Edit_Staff,
+          data: {
+            phone: staff.phone,
+            staffSex: staff.sex,
+            staffName: staff.staffName,
+            staffNo: staff.staffNo,
+            role: role
+          },
+          method: 'PUT',
+          header: {
+            'content-type': 'application/x-www-form-urlencoded'
+          },
+          success(res) {
+            console.log(res);
+            if (res.data.code == Config.RES_CODE_SUCCESS) {
+              wx.startPullDownRefresh({
+                success: (res) => {},
+              })
+            } else {
+              wx.showToast({
+                title: '请求失败',
+                icon: 'none'
+              })
+            }
+          },
+          fail(res) {
+            console.log(res);
+            wx.showToast({
+              title: '网络错误',
+              icon: 'none'
+            })
+          }
+
+        })
       }
     })
   },
@@ -41,6 +79,46 @@ Page({
     let index = e.currentTarget.dataset.index;
     let staff = this.data.staffList[index];
     console.log(staff.staffName, "移除");
+    wx.showModal({
+      title:'确定移除?',
+      content: "确定移除员工:" + staff.staffName,
+      confirm: "确定",
+      cancel: "取消",
+      success(res) {
+        if (res.confirm) {
+          wx.request({
+            url: Config.URL_Service + Config.URL_Delete_Staff,
+            data: {
+              staffNo: staff.staffNo
+            },
+            method: "PUT",
+            header: {
+              'content-type': 'application/x-www-form-urlencoded'
+            },
+            success(res) {
+              console.log(res);
+              if (res.data.code == Config.RES_CODE_SUCCESS) {
+                wx.startPullDownRefresh({
+                  success: (res) => {},
+                })
+              } else {
+                wx.showToast({
+                  title: '请求失败',
+                  icon: 'none'
+                })
+              }
+            },
+            fail(res){
+              console.log(res);
+              wx.showToast({
+                title: '网络错误',
+                icon: 'none'
+              })
+            }
+          })
+        }
+      }      
+    })
   },
 
   /**
@@ -52,7 +130,7 @@ Page({
     })
     let that = this;
     wx.request({
-      url: config.URL_Service + config.URL_GetSubStaff + loginUtil.getCustomerNo(),
+      url: Config.URL_Service + Config.URL_GetSubStaff + LoginUtil.getCustomerNo(),
       success(res) {
         wx.hideLoading();
         console.log("请求下属员工 success: \n" + JSON.stringify(res));
@@ -69,6 +147,9 @@ Page({
         })
       },
       complete(res){
+        wx.stopPullDownRefresh({
+          success: (res) => {},
+        })
       }
     })
   },
@@ -77,7 +158,9 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    this.requestStaffList();
+    wx.startPullDownRefresh({
+      success: (res) => {},
+    })
   },
 
   /**
@@ -91,7 +174,6 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
   },
 
   /**
@@ -112,7 +194,7 @@ Page({
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
-
+    this.requestStaffList();
   },
 
   /**

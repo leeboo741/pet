@@ -4,8 +4,8 @@
  */
 /** =================================================== */
 const Service_Phone = "4007778889"; // 客服电话
-const Version_Name = "1.5.8"; // 版本名称
-const Version_Code = 96; // 版本编号
+const Version_Name = "1.5.9"; // 版本名称
+const Version_Code = 99; // 版本编号
 
 /** =================================================== */
 /** 
@@ -14,6 +14,7 @@ const Version_Code = 96; // 版本编号
 /** =================================================== */
 const URL_Service = "https://consign.taochonghui.com"
 // const URL_Service = "http://192.168.3.111:7777"; // 祥林
+// const URL_Service = "http://192.168.3.233:7777"; // 胡吉
 // const URL_Service = "http://192.168.3.188:7777";
 // const URL_Service = "https://test.taochonghui.com"; // 测试服务器
 
@@ -44,6 +45,8 @@ const URL_GetBusinessListByProvince = "/api/business/list/province/"; // 通过�
 
 const URL_Register_Business = "/business/insetBusiness"; // 注册商家
 const URL_Register_Staff = "/api/staff/applyForStaff"; // 注册员工
+const URL_Edit_Staff = "/api/staff/update"; // 编辑员工
+const URL_Delete_Staff = "/api/staff/delete"; // 删除员工
 const URL_GetStationListByLocation = "/api/staff/listByProvinceAndCity"; // 根据省市区获取站点列表
 const URL_GetUnauditedStaff = "/api/staff/listUnauditedStaff"; // 查询待审核员工列表
 const URL_ApprovalStaffApply = "/api/staff/review"; // 审批员工申请
@@ -213,6 +216,8 @@ module.exports = {
 
   URL_Register_Business, // 注册商家
   URL_Register_Staff, // 注册员工
+  URL_Edit_Staff, // 编辑员工
+  URL_Delete_Staff, // 删除员工
   URL_GetStationListByLocation, // 根据位置获取站点列表
   URL_GetUnauditedStaff, // 查询待审核员工列表
   URL_ApprovalStaffApply, // 审批员工申请
