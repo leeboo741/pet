@@ -119,8 +119,9 @@ Page({
    */
   requestPetClassifyBySearchword: function(searchword){
     let that = this;
+    const url = UrlPath.URL_Service + UrlPath.URL_GetPetClassifyListByKeyword + searchword
     wx.request({
-      url: UrlPath.URL_Service + UrlPath.URL_GetPetClassifyListByKeyword + searchword,
+      url: url,
       success(res) {
         if (res.data.code == Config.RES_CODE_SUCCESS) {
           that.setData({
