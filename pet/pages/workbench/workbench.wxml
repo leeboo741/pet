@@ -126,10 +126,10 @@
 				<view class='bill-info-pay'>
 					<view class='bill-info-pay-label' wx:if='{{orderItem.orderStates[0].orderType!= null}}'>状态：</view>
 					<view class='bill-info-pay-info' wx:if='{{orderItem.orderStates[0].orderType!= null}}'>{{orderItem.orderStates[0].orderType}}</view>
-					<view class='bill-info-pay-money' wx:if='{{orderItem.paymentAmount!= null && userInfo.role == 1}}'>￥{{orderItem.paymentAmount}}</view>
+					<view class='bill-info-pay-money' wx:if='{{orderItem.paymentAmount!= null && (userInfo.role == 1 || userInfo.role == 2)}}'>￥{{orderItem.paymentAmount}}</view>
 				</view>
 				<!-- 分配人员 -->
-				<view class="bill-info-staff" wx:if='{{userInfo.role == 1}}'>
+				<view class="bill-info-staff" wx:if='{{userInfo.role == 1 || userInfo.role == 2}}'>
 					<view class="bill-info-staff-title {{orderItem.orderAssignments==null||orderItem.orderAssignments.length<=0?'color-red':'color-normal'}}">
 						{{orderItem.orderAssignments==null||orderItem.orderAssignments.length
             <=0? '暂未分配人员': '已分配人员：'}} </view>
@@ -330,7 +330,7 @@
 			}
 		},
 		showAlloctionBtn: function(order, user) {
-			if (user.role == 1) {
+			if (user.role == 1 || user.role == 2) {
 				return true;
 			}
 			return false;

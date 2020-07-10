@@ -13,13 +13,16 @@
           登陆|注册
           </button>
           <view class="sign-box">
-            <view class="sign-item" hidden='{{userInfo.staff.staffNo==null||userInfo.role!=1}}'>
-            老板
+            <view class="sign-item" wx:if='{{userInfo.staff.staffNo!=null&&userInfo.role==1}}'>
+            管理员
             </view>
-            <view class="sign-item" hidden="{{userInfo.staff.staffNo==null||userInfo.role==1}}">
-            认证员工
+            <view class="sign-item" wx:elif='{{userInfo.staff.staffNo!=null&&userInfo.role==2}}'>
+            客服
             </view>
-            <view class="sign-item" hidden="{{userInfo.business.businessNo==null}}">
+            <view class="sign-item" wx:else='{{userInfo.staff.staffNo!=null&&userInfo.role==3}}'>
+            司机
+            </view>
+            <view class="sign-item" wx:if="{{userInfo.business.businessNo!=null}}">
             认证商家
             </view>
           </view>
@@ -150,6 +153,7 @@
         <label>员工</label>
       </view>
       <view class="btnOper" 
+            hidden="{{userInfo.role != 1}}"
             bindtap='gotoWithDrawal'>
         <i-icon type="redpacket"
                 color="#F1B000"

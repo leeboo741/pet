@@ -155,7 +155,7 @@
         </view>
         <!-- 分配人员 -->
         <view class="bill-info-staff"
-              wx:if='{{userInfo.role == 1}}'>
+              wx:if='{{userInfo.role == 1 || userInfo.role == 2}}'>
           <view class="bill-info-staff-title {{orderItem.orderAssignments==null||orderItem.orderAssignments.length<=0?'color-red':'color-normal'}}">
           {{orderItem.orderAssignments==null||orderItem.orderAssignments.length<=0?'暂未分配人员':'已分配人员：'}}
           </view>

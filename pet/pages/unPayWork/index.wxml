@@ -76,7 +76,7 @@
             <view class='bill-info-pay-info'
                   wx:if='{{orderItem.state!= null}}'>{{orderItem.state}}</view>
             <view class='bill-info-pay-money'
-                  wx:if='{{orderItem.paymentAmount!= null && userInfo.role == 1}}'>￥{{orderItem.paymentAmount}}</view>
+                  wx:if='{{orderItem.paymentAmount!= null && (userInfo.role == 1 || userInfo.role == 2)}}'>￥{{orderItem.paymentAmount}}</view>
           </view>
           
           <!-- 备注信息 -->

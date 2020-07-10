@@ -971,7 +971,7 @@ Page({
    */
   tapMoreOperate: function(e) {
     let itemList = ["打印标签", "补价", "订单详情", "退款"];
-    if (this.data.userInfo.role == 1) {
+    if (this.data.userInfo.role == config.Role_Staff_Manager || this.data.userInfo.role == config.Role_Staff_Service) {
       itemList.push("分配订单")
     }
     let index = e.currentTarget.dataset.tapindex;
