@@ -142,7 +142,7 @@
          增值服务
       </label>
       <view class='addedServer'>
-        <view class='addedServer-item' hidden='{{addServerInsuredPrice.rate==0}}'>
+        <view class='addedServer-item' wx:if='{{false}}' hidden='{{addServerInsuredPrice.rate==0}}'>
           <view class='addServer-info' 
                 bindtap='tapAddServerInsuredPrice'>
             <icon class="iconfont icongouhao gou {{addServerInsuredPrice.selected?'choose':''}}">
