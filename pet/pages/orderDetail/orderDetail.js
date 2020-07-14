@@ -4,6 +4,7 @@ const config = require("../../utils/config.js");
 const loginUtil = require("../../utils/loginUtils.js");
 const util = require("../../utils/util.js");
 const ShareUtil = require("../../utils/shareUtils.js");
+const PayManager = require("../../manager/payManager/payManager");
 
 var QQMapWX = require('../../libs/qqmap-wx-jssdk.min.js');
 var qqmapsdk;
@@ -460,45 +461,14 @@ Page({
    * 请求支付
    */
   requestPayPremium: function(billNo) {
-    wx.showLoading({
-      title: '支付中...',
-    })
     let that = this;
-    wx.request({
-      url: config.URL_Service + config.URL_PayPremium,
-      data: {
-        billNo: billNo,
-        customerNo: loginUtil.getCustomerNo(),
-        appType: loginUtil.getAppType()
-      },
-      success(res) {
-        wx.hideLoading();
-        console.log("支付补价 success: \n" + JSON.stringify(res));
-        wx.requestPayment({
-          timeStamp: res.data.data.timeStamp,
-          nonceStr: res.data.data.nonceStr,
-          package: res.data.data.package,
-          signType: res.data.data.signType,
-          paySign: res.data.data.paySign,
-          success(res) {
-            that.requestOrderDetail(that.data.orderNo)
-          },
-          fail(res) {
-            wx.showToast({
-              title: '支付失败,请稍后重试',
-              icon: 'none'
-            })
-          }
-        })
-      },
-      fail(res) {
-        wx.hideLoading();
-        console.log("支付补价 fail: \n" + JSON.stringify(res));
-        wx.showToast({
-          title: '网络原因,支付失败',
-          icon: 'none'
-        })
-      },
+    PayManager.payPremium(billNo, function(res) {
+      that.requestOrderDetail(that.data.orderNo)
+    }, function() {
+      wx.showToast({
+        title: '支付失败,请稍后重试',
+        icon: 'none'
+      })
     })
   }
 })

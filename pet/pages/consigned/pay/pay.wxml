@@ -51,6 +51,49 @@
       </input>
     </view>
   </view>
+  <!-- 推荐人信息 -->
+  <view class="block-fillet attach-info">
+    <view class="remark-title">推荐人</view>
+    <view class='receiveUserInfo'>
+      <input name='receiveUserName' 
+            class='input-under receiveUserName' 
+            value='{{recommenderName}}' 
+            placeholder="请填写推荐人姓名" 
+            placeholder-class="input-under-placeholder normal"
+            bindinput='inputRecommenderName'>
+      </input>
+      <input name='receiveUserPhone' 
+            type='number' 
+            class='input-under receiveUserPhone' 
+            value='{{recommenderPhone}}' 
+            placeholder="手机"  
+            placeholder-class="input-under-placeholder normal"
+            bindinput='inputRecommenderPhone'>
+      </input>
+    </view>
+  </view>
+  <!-- 支付价格 -->
+  <view class="block-fillet pay-price">
+    <view class="remark-title">支付价格</view>
+    <view class="pay-price-box-section">
+      <view class="pay-price-box-row">
+        <view wx:for='{{payPriceTypeList}}' wx:key='typeId' class="pay-price-select-item" bindtap="selectedPriceTypeAction" data-index='{{index}}'>
+          <icon class="iconfont icongouhao {{payPriceType.typeId===item.typeId?'choose-color':'normal-color'}}"></icon>
+          <view class="pay-price-title {{payPriceType.typeId===item.typeId?'choose-color':'normal-color'}}">{{item.name}}</view>
+        </view>
+      </view>
+      <view class="pay-price-box-row" wx:if='{{payPriceType.typeId===2}}'>
+        <input name='custom-price-input' 
+              type='number' 
+              class='input-under custom-price-input' 
+              value='{{otherPrice}}' 
+              placeholder="自定义价格"  
+              placeholder-class="input-under-placeholder normal"
+              bindinput='inputCustomPrice'>
+        </input>
+      </view>
+    </view>
+  </view>
   <!-- 备注信息 -->
   <view class="block-fillet remark">
     <view class="remark-title">订单备注</view>

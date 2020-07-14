@@ -10,6 +10,7 @@ const config = require("../../utils/config.js");
 const loginUtil = require("../../utils/loginUtils.js");
 const pagePath = require("../../utils/pagePath.js");
 const ShareUtil = require("../../utils/shareUtils.js");
+const PayManager = require("../../manager/payManager/payManager");
 
 Page({
 
@@ -116,38 +117,15 @@ Page({
    * 请求充值
    */
   requestRecharge: function() {
-    wx.showLoading({
-      title: '支付中...',
-    })
-    wx.request({
-      url: config.URL_Service + config.URL_Recharge,
-      data: {
-        customerNo: loginUtil.getCustomerNo(),
-        rechargeAmount: this.data.rechargeAmount,
-        appType: loginUtil.getAppType()
-      },
-      success(res) {
-        wx.hideLoading();
-        console.log("充值 success => \n" + JSON.stringify(res))
-        wx.requestPayment({
-          timeStamp: res.data.data.timeStamp,
-          nonceStr: res.data.data.nonceStr,
-          package: res.data.data.package,
-          signType: res.data.data.signType,
-          paySign: res.data.data.paySign,
-        })
-      },
-      fail(res) {
-        wx.hideLoading();
-        console.log("充值 fail => \n" + JSON.stringify(res))
-        wx.showToast({
-          title: '网络问题，支付失败',
-          icon: 'none'
-        })
-      },
-      complete(res) {
-        console.log("充值 complete => \n" + JSON.stringify(res))
-      },
+    PayManager.payRecharge(this.data.rechargeAmount, function(res){
+      wx.showToast({
+        title: "充值成功"
+      })
+    }, function(){
+      wx.showToast({
+        title: '充值失败',
+        icon: 'none'
+      })
     })
   },
 })

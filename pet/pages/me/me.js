@@ -22,6 +22,7 @@ const loginUtil = require("../../utils/loginUtils.js");
 const util = require("../../utils/util.js");
 const pagePath = require("../../utils/pagePath.js");
 const ShareUtil = require("../../utils/shareUtils.js");
+const PayManager = require('../../manager/payManager/payManager');
 
 const NEW_MESSAGE_LOOP_TIME = 10000;
 
@@ -487,7 +488,7 @@ Page({
     let that = this;
     loginUtil.checkLogin(function alreadyLoginCallback(state) {
       if (state) {
-        that.requestPay(e.currentTarget.dataset.orderno);
+        that.requestPay(e.currentTarget.dataset.amount,e.currentTarget.dataset.orderno);
       } else {
         wx.showModal({
           title: '暂未登录',
@@ -791,46 +792,22 @@ Page({
   /**
    * 支付
    */
-  requestPay: function (orderNo) {
-    wx.showLoading({
-      title: '支付中...',
+  requestPay: function (amount,orderNo) {
+
+    wx.navigateTo({
+      url: pagePath.Path_Order_Pay_SubPay + "?amount=" + amount + "&orderno=" + orderNo + "&customerno=" + loginUtil.getCustomerNo(),
     })
-    wx.request({
-      url: config.URL_Service + config.URL_Payment,
-      data: {
-        orderNo: orderNo,
-        customerNo: loginUtil.getCustomerNo(),
-        appType: loginUtil.getAppType()
-      },
-      success(res) {
-        wx.hideLoading();
-        console.log("支付 success：\n" + JSON.stringify(res));
-        wx.requestPayment({
-          timeStamp: res.data.data.timeStamp,
-          nonceStr: res.data.data.nonceStr,
-          package: res.data.data.package,
-          signType: res.data.data.signType,
-          paySign: res.data.data.paySign,
-          success(res){
-            that.setData({
-              selectedBillType: 1
-            })
-            that.requestBillList(that.data.selectedBillType);
-          }
-        })
-      },
-      fail(res) {
-        wx.hideLoading();
-        console.log("支付 fail：\n" + JSON.stringify(res));
-        wx.showToast({
-          title: '网络原因,支付失败',
-          icon: 'none'
-        })
-      },
-      complete(res) {
-        console.log("支付 complete：\n" + JSON.stringify(res));
-      }
-    })
+    // PayManager.payOrder(orderNo, function(){
+    //   that.setData({
+    //     selectedBillType: 1
+    //   })
+    //   that.requestBillList(that.data.selectedBillType);
+    // }, function(){
+    //   wx.showToast({
+    //     title: '支付失败',
+    //     icon: 'none'
+    //   })
+    // })
   },
 
   /**

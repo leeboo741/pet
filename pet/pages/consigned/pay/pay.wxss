@@ -93,6 +93,13 @@
   margin: 10rpx 30rpx;
 }
 
+.block-fillet{
+  background-color: #ffffff;
+  margin: 5px 5px 5px 5px;  
+  border-radius: 5px;
+  box-shadow: 0px -2px 5px 2px #F4F4F4;
+}
+
 .remark-content{
   padding: 20rpx;
   font-size: 32rpx;
@@ -222,4 +229,47 @@
 
 .normal-color{
   color: #597ED0;
+}
+
+.attach-info{
+  display: flex;
+  flex-direction: column;
+  margin: 10rpx 15rpx;
+}
+
+.pay-price{
+  display: flex;
+  flex-direction: column;
+  margin: 10rpx 15rpx;
+}
+
+.pay-price-box-section{
+  display: flex;
+  flex-direction: column;
+}
+
+.pay-price-box-row{
+  display: flex;
+  flex-direction: row;
+}
+
+.pay-price-select-item{
+  flex-grow: 1;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 50rpx;
+  line-height: 50rpx;
+  font-size: 30rpx;
+  margin: 5rpx 10rpx;
+}
+
+.pay-price-title{
+  line-height: 50rpx;
+  margin-left: 10rpx;
+}
+
+.custom-price-input{
+  margin: 5rpx 10rpx;
+  flex-grow: 1;
 }

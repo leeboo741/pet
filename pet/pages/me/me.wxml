@@ -276,7 +276,8 @@
         <view class='bill-operate-button-complain' 
               bindtap='tapToPay' 
               data-tapindex="{{unpayIndex}}"
-              data-orderno='{{unpayItem.orderNo}}'>
+              data-orderno='{{unpayItem.orderNo}}'
+              data-amount = '{{unpayItem.paymentAmount}}'>
         支付
         </view>
       </view>

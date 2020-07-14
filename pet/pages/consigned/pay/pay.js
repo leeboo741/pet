@@ -11,6 +11,11 @@ const loginUtil = require("../../../utils/loginUtils.js");
 const pagePath = require("../../../utils/pagePath.js");
 const ShareUtil = require("../../../utils/shareUtils.js");
 const Util = require("../../../utils/util.js");
+const PayManager = require("../../../manager/payManager/payManager");
+
+const Pay_Price_Type_Customer = 0; // 价格类型 - 预估价格
+const Pay_Price_Type_Business = 1; // 价格类型 - 合作价格
+const Pay_Price_Type_Other = 2; // 价格类型 - 自定义价
 
 Page({
 
@@ -31,6 +36,26 @@ Page({
     receiveName: '', // 收件人名称
     sendPhone: '', // 寄件人电话
     receivePhone: '', // 收件人电话
+
+    recommenderName: '', //  推荐人名称
+    recommenderPhone: '', // 推荐人电话
+
+    payPriceTypeList: [
+      {
+        name: '预估价格',
+        typeId: Pay_Price_Type_Customer,
+      },
+      {
+        name: '合作价格',
+        typeId: Pay_Price_Type_Business,
+      },
+      {
+        name: '自定义价格',
+        typeId: Pay_Price_Type_Other,
+      },
+    ], // 付款价格类型列表
+    payPriceType: null, // 付款价格类型
+    otherPrice:null, // 自定义价格
 
     remark: "", // 订单备注
 
@@ -75,6 +100,7 @@ Page({
       transport: options.transport,
       leaveDate: options.leavedate,
       petAge: options.age,
+      payPriceType: this.data.payPriceTypeList[0],
     })
     if (options.petcan != null) {
       this.setData({
@@ -145,7 +171,41 @@ Page({
   /* ============================= 页面生命周期 End ============================== */
 
   /* ============================= 页面事件 Start ============================== */
-
+  /**
+   * 输入推荐人名称
+   */
+  inputRecommenderName: function(e) {
+    this.data.recommenderName = e.detail.value;
+  },
+  /**
+   * 输入推荐人电话
+   */
+  inputRecommenderPhone: function(e) {
+    this.data.recommenderPhone = e.detail.value;
+  },
+  /**
+   * 输入自定义价格
+   */
+  inputCustomPrice: function(e) {
+    this.data.otherPrice = e.detail.value;
+  },
+  /**
+   * 支付价格类型选择
+   */
+  selectedPriceTypeAction: function(e){
+    let priceType = this.data.payPriceTypeList[e.currentTarget.dataset.index];
+    if (priceType.typeId === this.data.payPriceType.typeId) {
+      return;
+    }
+    if (priceType.typeId != Pay_Price_Type_Other) {
+      this.setData({
+        otherPrice: null
+      })
+    }
+    this.setData({
+      payPriceType: priceType
+    })
+  },
   /**
    * 订单备注输入
    */
@@ -473,50 +533,16 @@ Page({
    * 支付
    */
   requestPay: function(orderNo){
-    wx.showLoading({
-      title: '支付中...',
-    })
-    wx.request({
-      url: config.URL_Service + config.URL_Payment,
-      data: {
-        orderNo: orderNo,
-        customerNo: loginUtil.getCustomerNo(),
-        appType: loginUtil.getAppType(),
-      },
-      success(res) {
-        wx.hideLoading();
-        console.log("支付 success：\n" + JSON.stringify(res));
-        wx.requestPayment({
-          timeStamp: res.data.data.timeStamp,
-          nonceStr: res.data.data.nonceStr,
-          package: res.data.data.package,
-          signType: res.data.data.signType,
-          paySign: res.data.data.paySign,
-          success(res){
-            app.globalData.showToBeShip = true;
-            wx.switchTab({
-              url: pagePath.Path_Me_Index,
-            })
-          },
-          fail(res){
-            wx.showToast({
-              title: '支付失败,请稍后重试',
-              icon: 'none'
-            })
-          }
-        })
-      },
-      fail(res) {
-        wx.hideLoading();
-        console.log("支付 fail：\n" + JSON.stringify(res));
-        wx.showToast({
-          title: '网络原因,支付失败',
-          icon: 'none'
-        })
-      },
-      complete(res) {
-        console.log("支付 complete：\n" + JSON.stringify(res));
-      }
+    let price = 0;
+    if (this.data.payPriceType.typeId === Pay_Price_Type_Customer) {
+      price = this.data.predictPrice.retailOrderAmount;
+    } else if (this.data.payPriceType.typeId === Pay_Price_Type_Business) {
+      price = this.data.predictPrice.joinOrderAmount;
+    } else {
+      price = this.data.otherPrice;
+    }
+    wx.navigateTo({
+      url: pagePath.Path_Order_Pay_SubPay + "?amount=" + price + "&orderno=" + orderNo + "&customerno=" + loginUtil.getCustomerNo(),
     })
   },
 

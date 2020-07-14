@@ -4,6 +4,21 @@ const app = getApp();
 const Util = require("../utils/util.js");
 
 /**
+ * 分享 代支付
+ * @param {*} orderNo 
+ * @param {*} amount 
+ * @param {*} qrcodePath 
+ */
+function shareToOtherPay(orderNo, amount, qrcodePath){
+  let tempPath = PagePath.Path_Home + '?type=sharetopay' + '&orderno=' + orderNo + '&amount=' + amount + '&customerno=' + LoginUtil.getCustomerNo();
+  return {
+    title: "请你帮忙支付一下",
+    path: tempPath,
+    imageUrl: qrcodePath,
+  }
+}
+
+/**
  * 分享 微信小程序
  */
 function getOnShareAppMessageForShareOpenId(){
@@ -102,4 +117,5 @@ module.exports = {
   getOnShareAppMessageForShareOpenId: getOnShareAppMessageForShareOpenId,
   getOpenIdInShareMessage: getOpenIdInShareMessage,
   getAppOpenData: getAppOpenData,
+  shareToOtherPay: shareToOtherPay,
 }

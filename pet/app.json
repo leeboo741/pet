@@ -46,7 +46,8 @@
     "pages/unPayWork/index",
     "pages/station/stationMap/index",
     "pages/consigned/classifySelected/index",
-    "pages/staffManager/staffManager"
+    "pages/staffManager/staffManager",
+    "pages/consigned/subPay/subPay"
   ],
   "window": {
     "backgroundTextStyle": "light",
