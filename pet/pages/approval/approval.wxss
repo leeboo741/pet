@@ -1,24 +1,17 @@
 /* pages/approval/approval.wxss */
-.page-full-box{
-  width: 100vw;
-  height: 100vh;
-  position: relative;
-  display: flex;
-  flex-direction: column;
+page{
+  background: #fcfdfe;
 }
-
 .page-tabs-box{
-  position: absolute;
+  position: fixed;
   top: 0rpx;
   left: 0rpx;
   width: 100%;
 }
 
 .content-scroll{
-  height: 100%;
   width: 100%;
-  margin-top: 84rpx;
-  margin-bottom: 0rpx;display: flex;
+  display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;

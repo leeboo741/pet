@@ -27,6 +27,7 @@
 
 .register-box{
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   position: fixed;
@@ -43,4 +44,15 @@
   background: rgb(1, 160, 1);
   color: white;
   font-size: 30rpx;
+}
+
+.cancel-register-button{
+  background: white;
+  border-radius: 15rpx;
+  border: 1rpx solid rgb(1, 160, 1);
+  color: rgb(1, 160, 1);
+  font-size: 30rpx;
+  width: 80%;
+  height: 80rpx;
+  margin-top: 40rpx;
 }

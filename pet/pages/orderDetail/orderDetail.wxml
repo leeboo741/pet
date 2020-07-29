@@ -277,6 +277,17 @@
     </view>
   </i-cell>
 </i-panel>
+
+<i-panel i-class='panel'
+         wx:if='{{showPayButton}}'>
+  <i-cell>
+    <view slot='header'
+          class='confirm-button'
+          bindtap="tapPayOrder">
+    确认支付
+    </view>
+  </i-cell>
+</i-panel>
 <!-- showReceipt
 if (userInfo.role != 3) {
         return true;

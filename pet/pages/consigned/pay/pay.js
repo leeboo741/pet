@@ -412,6 +412,14 @@ Page({
       "senderPhone": this.data.sendPhone,
 
       "remarks": this.data.remark,
+
+      "payAmountType" : this.data.payPriceType.typeId,
+      "recommendName" : this.data.recommenderName,
+      "recommendPhone" : this.data.recommenderPhone,
+    }
+
+    if (!Util.checkEmpty(this.data.otherPrice)) {
+      tempOrderObj.defAmount = this.data.otherPrice;
     }
 
     tempOrderObj.shareOpenId = "";

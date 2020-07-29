@@ -19,7 +19,7 @@
             <view class="sign-item" wx:elif='{{userInfo.staff.staffNo!=null&&userInfo.role==2}}'>
             客服
             </view>
-            <view class="sign-item" wx:else='{{userInfo.staff.staffNo!=null&&userInfo.role==3}}'>
+            <view class="sign-item" wx:elif='{{userInfo.staff.staffNo!=null&&userInfo.role==3}}'>
             司机
             </view>
             <view class="sign-item" wx:if="{{userInfo.business.businessNo!=null}}">

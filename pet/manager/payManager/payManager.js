@@ -3,12 +3,59 @@ const Config = require('../../utils/config');
 const Utils = require('../../utils/util');
 
 /**
+ * 支付代支付订单
+ * @param {String} orderNo 
+ * @param {String} customerNo 
+ * @param {Function} paySuccessCallback 
+ * @param {Function} payFailCallback 
+ */
+function payOtherOrder(orderNo, customerNo,paySuccessCallback, payFailCallback ) {
+  wx.showLoading({
+    title: '支付中...',
+  })
+  wx.request({
+    url: Config.URL_Service + Config.URL_OtherPay,
+    data: {
+      orderNo: orderNo,
+      customerNo: customerNo,
+      appType: LoginUtil.getAppType(),
+    },
+    success(res) {
+      wx.hideLoading();
+      console.log("支付 success：\n" + JSON.stringify(res));
+      wx.requestPayment({
+        timeStamp: res.data.data.timeStamp,
+        nonceStr: res.data.data.nonceStr,
+        package: res.data.data.package,
+        signType: res.data.data.signType,
+        paySign: res.data.data.paySign,
+        success(res){
+          if (Utils.checkIsFunction(paySuccessCallback)) {
+            paySuccessCallback(res);
+          }
+        },
+        fail(res){
+          if (Utils.checkIsFunction(payFailCallback)) {
+            payFailCallback(res);
+          }
+        }
+      })
+    },
+    fail(res) {
+      wx.hideLoading();
+      if (Utils.checkIsFunction(payFailCallback)) {
+        payFailCallback(res);
+      }
+    }
+  })
+}
+/**
  * 订单支付
  * @param {String} orderNo 订单编号
  * @param {Function} paySuccessCallback 支付成功 
  * @param {Function} payFailCallback 支付失败
  */
-function payOrder(orderNo, paySuccessCallback, payFailCallback) {
+function payOrder(orderNo,customerNo, paySuccessCallback, payFailCallback) {
   wx.showLoading({
     title: '支付中...',
   })
@@ -16,7 +63,7 @@ function payOrder(orderNo, paySuccessCallback, payFailCallback) {
     url: Config.URL_Service + Config.URL_Payment,
     data: {
       orderNo: orderNo,
-      customerNo: LoginUtil.getCustomerNo(),
+      customerNo: customerNo,
       appType: LoginUtil.getAppType(),
     },
     success(res) {
@@ -145,6 +192,7 @@ function payPremium(billNo, paySuccessCallback, payFailCallback){
 }
 
 module.exports = {
+  payOtherOrder,
   payOrder,
   payRecharge,
   payPremium,

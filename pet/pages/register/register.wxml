@@ -16,4 +16,8 @@
           wx:if="{{loginStep == 1}}">
   登录
   </button>
+  <button class="cancel-register-button"
+          bindtap="cancel">
+  {{loginStep == 0?"暂不授权":"暂不登录"}}        
+  </button>
 </view>

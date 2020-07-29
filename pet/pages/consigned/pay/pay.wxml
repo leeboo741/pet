@@ -52,7 +52,7 @@
     </view>
   </view>
   <!-- 推荐人信息 -->
-  <view class="block-fillet attach-info">
+  <view class="block-fillet attach-info" >
     <view class="remark-title">推荐人</view>
     <view class='receiveUserInfo'>
       <input name='receiveUserName' 
@@ -73,7 +73,7 @@
     </view>
   </view>
   <!-- 支付价格 -->
-  <view class="block-fillet pay-price">
+  <view class="block-fillet pay-price"  wx:if="{{ userInfo != null && (userInfo.role != 0 || userInfo.business != null)}}">
     <view class="remark-title">支付价格</view>
     <view class="pay-price-box-section">
       <view class="pay-price-box-row">

@@ -5,6 +5,8 @@ const loginUtil = require("../../utils/loginUtils.js");
 const util = require("../../utils/util.js");
 const ShareUtil = require("../../utils/shareUtils.js");
 
+const Limit = 30;
+
 Page({
 
   /**
@@ -13,12 +15,16 @@ Page({
   data: {
     tabList:[
       "商家审批",
-      "员工审批"
+      "员工审批",
+      "提现审批"
     ],
     stationApplyList:[],
     staffApplyList:[],
+    withdrawalApplyList:[],
     currentTabIndex: 0,
-    height: null,
+    naviHeight: 0,
+
+    offset: 0,
   },
 
   /**
@@ -26,7 +32,7 @@ Page({
    */
   onLoad: function (options) {
     this.setData({
-      height: app.globalData.pageHeight
+      naviHeight: app.globalData.naviHeight
     })
     this.setCurrentTabIndex(0);
   },
@@ -63,7 +69,46 @@ Page({
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
-
+    let that = this;
+    switch(this.data.currentTabIndex) {
+      case 0: {
+        loginUtil.checkLogin(function alreadyLoginCallback(state) {
+          if (state) {
+            that.requestUnAuditedStationList();
+          } else {
+            wx.stopPullDownRefresh({
+              success: (res) => {},
+            })
+          }
+        })
+      }
+        break;
+      case 1: {
+        loginUtil.checkLogin(function alreadyLoginCallback(state) {
+          if (state) {
+            that.requestUnauditedStaffList();
+          } else {
+            wx.stopPullDownRefresh({
+              success: (res) => {},
+            })
+          }
+        })
+      }
+        break;
+      case 2: {
+        that.data.offset = 0;
+        loginUtil.checkLogin(function alreadyLoginCallback(state) {
+          if (state) {
+            that.requestWithdrawalApplyList();
+          } else {
+            wx.stopPullDownRefresh({
+              success: (res) => {},
+            })
+          }
+        })
+      }
+        break;
+    }
   },
 
   /**
@@ -91,18 +136,20 @@ Page({
     let that = this;
     if (this.data.currentTabIndex == 0) {
       if (util.checkEmpty(this.data.stationApplyList)) {
-        loginUtil.checkLogin(function alreadyLoginCallback(state) {
-          if (state) {
-            that.requestUnAuditedStationList();
-          }
+        wx.startPullDownRefresh({
+          success: (res) => {},
+        })
+      }
+    } else if (this.data.currentTarget == 1){
+      if (util.checkEmpty(this.data.staffApplyList)) {
+        wx.startPullDownRefresh({
+          success: (res) => {},
         })
       }
     } else {
-      if (util.checkEmpty(this.data.staffApplyList)) {
-        loginUtil.checkLogin(function alreadyLoginCallback(state) {
-          if (state) {
-            that.requestUnauditedStaffList();
-          }
+      if (util.checkEmpty(this.data.withdrawalApplyList)) {
+        wx.startPullDownRefresh({
+          success: (res) => {},
         })
       }
     }
@@ -179,6 +226,11 @@ Page({
           icon: 'none'
         })
       },
+      complete(res) {
+        wx.stopPullDownRefresh({
+          success: (res) => {},
+        })
+      }
     })
   },
 
@@ -218,8 +270,18 @@ Page({
         })
       },
       complete(res){
+        wx.stopPullDownRefresh({
+          success: (res) => {},
+        })
       }
     })
+  },
+
+  /**
+   * 查询提现审核列表
+   */
+  requestWithdrawalApplyList: function() {
+    
   },
 
   /**

@@ -63,14 +63,14 @@ function getOpenIdInShareMessage(options) {
 function getAppOpenData(options, getResultCallback) {
   console.log("options :\n" + JSON.stringify(options));
   let type = options.type;
-  if (type == null) {
+  if (type == null) { // 普通二维码 扫码进入
     console.log("options type null");
     if (options.q != null) {
       let tempPath = Util.recoverySpecialChar(options.q);
       console.log("options tempPath :\n" + tempPath);
       let tempParams = Util.getUrlParamDict(tempPath);
       console.log("options tempParams :\n" + JSON.stringify(tempParams))
-      if (tempParams.type == 'scan') {
+      if (tempParams.type == 'scan') { // 扫码签收
         let scanOrderNo = tempParams.orderno;
         if (scanOrderNo != null) {
           app.ShareData.scanOrderNo = scanOrderNo;
@@ -79,7 +79,7 @@ function getAppOpenData(options, getResultCallback) {
             getResultCallback('scan', null);
           }
         }
-      } else if (tempParams.type == "rqimg") {
+      } else if (tempParams.type == "rqimg") { // 商家扫码
         let businessNo = tempParams.businessno;
         if (businessNo != null) {
           app.ShareData.businessNo = businessNo;
@@ -94,9 +94,9 @@ function getAppOpenData(options, getResultCallback) {
         getResultCallback("none", null);
       }
     }
-  } else {
+  } else { // 分享卡片进入
     console.log("options type :\n" + JSON.stringify(options.type));
-    if (options.type == 'share') {
+    if (options.type == 'share') { // 分享卡片
       let shareOpenId = options.shareopenid;
       let shareStationNo = options.stationno;
       let shareBusinessNo = options.businessno;
@@ -108,6 +108,16 @@ function getAppOpenData(options, getResultCallback) {
         if (getResultCallback != null && typeof getResultCallback == 'function') {
           getResultCallback('share', null);
         }
+      }
+    } else if (options.type == 'sharetopay') { // 代支付卡片
+      let orderNo = options.orderno;
+      let amount = options.amount;
+      let customerNo = options.customerno;
+      app.ShareData.payOrderNo = orderNo;
+      app.ShareData.payAmount = amount;
+      app.ShareData.payCustomerNo = customerNo;
+      if (getResultCallback != null && typeof getResultCallback == 'function') {
+        getResultCallback('sharetopay', null);
       }
     }
   }

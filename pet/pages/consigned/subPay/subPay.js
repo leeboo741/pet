@@ -3,6 +3,7 @@ import drawQrcode from '../../../libs/weapp.qrcode.esm.js';
 const Paymanager = require('../../../manager/payManager/payManager');
 const ShareManager = require('../../../utils/shareUtils')
 const app = getApp();
+const PagePath = require('../../../utils/pagePath');
 
 const W = wx.getSystemInfoSync().windowWidth;
 const rate = 750.0 / W;
@@ -22,7 +23,7 @@ Page({
     paymentAmount: 0,
     orderNo: null,
     customerNo: null,
-    imageWidth: null,
+    hiddenOtherPayButton: false
   },
 
   /**
@@ -33,7 +34,7 @@ Page({
       paymentAmount: options.amount,
       orderNo: options.orderno,
       customerNo: options.customerno,
-      imageWidth: qrcode_w,
+      hiddenOtherPayButton: app.ShareData.payOrderNo!=null&&app.ShareData.payOrderNo==options.orderno
     })
 
     this.loadQRCode();
@@ -77,17 +78,34 @@ Page({
    * 点击支付
    */
   tapPay: function(){
-    Paymanager.payOrder(this.data.orderNo, function(){
-      app.globalData.showToBeShip = true;
-      wx.switchTab({
-        url: pagePath.Path_Me_Index,
+    if (app.ShareData.payOrderNo!=null&&app.ShareData.payOrderNo==this.data.orderNo) {
+      Paymanager.payOtherOrder(this.data.orderNo, this.data.customerNo,function(){
+        app.ShareData.payOrderNo = null;
+        app.ShareData.payAmount = null;
+        app.ShareData.payCustomerNo = null;
+        app.globalData.showToBeShip = true;
+        wx.switchTab({
+          url: PagePath.Path_Me_Index,
+        })
+      }, function(){
+        wx.showToast({
+          title: '支付失败',
+          icon: 'none'
+        })
       })
-    }, function(){
-      wx.showToast({
-        title: '支付失败',
-        icon: 'none'
+    } else {
+      Paymanager.payOrder(this.data.orderNo, this.data.customerNo,function(){
+        app.globalData.showToBeShip = true;
+        wx.switchTab({
+          url: PagePath.Path_Me_Index,
+        })
+      }, function(){
+        wx.showToast({
+          title: '支付失败',
+          icon: 'none'
+        })
       })
-    })
+    }
   },
 
   /**

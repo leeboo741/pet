@@ -102,6 +102,8 @@ Page({
               loginUtil.login();
             }
           })
+        } else if (type == 'sharetopay') {
+          
         }
       }
     )
@@ -127,6 +129,33 @@ Page({
           // })
         }
       })
+    } 
+
+    if (app.ShareData.payOrderNo != null) {
+      wx.showModal({
+        title: "有代支付订单",
+        content: "订单:" + app.ShareData.payOrderNo + " 请求代支付",
+        confirmText: "前去支付",
+        cancelText: "拒绝支付",
+        success(res) {
+          if (res.confirm) {
+            loginUtil.checkLogin(function alreadyLoginCallback(state) {
+              if (state) {
+                wx.navigateTo({
+                  url: pagePath.Path_Order_Detail + "?orderno=" + app.ShareData.payOrderNo + "&showpaybutton=1&showPrice=1",
+                })
+              } else {
+                loginUtil.login();
+              }
+            })
+          } else {
+            app.ShareData.payOrderNo = null;
+            app.ShareData.payAmount = null;
+            app.ShareData.payCustomerNo = null;
+          }
+        }
+      })
+      
     }
   },
 

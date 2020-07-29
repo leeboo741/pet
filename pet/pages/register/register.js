@@ -36,6 +36,10 @@ Page({
     console.log(options);
   },
 
+  cancel: function(){
+    wx.navigateBack({})
+  },
+
   getPhoneNumber: function(button){
     LoginUtil.getLogin(this.data.wxUserInfo, button.detail.encryptedData, button.detail.iv, app.ShareData.openId, function loginCallback(result){
       wx.navigateBack({

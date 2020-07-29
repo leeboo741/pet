@@ -5,6 +5,7 @@ const loginUtil = require("../../utils/loginUtils.js");
 const util = require("../../utils/util.js");
 const ShareUtil = require("../../utils/shareUtils.js");
 const PayManager = require("../../manager/payManager/payManager");
+const PagePath = require("../../utils/pagePath");
 
 var QQMapWX = require('../../libs/qqmap-wx-jssdk.min.js');
 var qqmapsdk;
@@ -26,6 +27,9 @@ Page({
     showConfirmButton: false, // 是否展示签收按钮
     showPrice: false, // 是否展示价格
     rebate: 0, // 是否分享返利进入 0 否 1 是
+    showPayButton: false, // 是否允许支付
+
+    otherPayCustomerNo: null,
 
     backTimeIntervial: null,
   },
@@ -46,6 +50,7 @@ Page({
       ableCancelPremium: options.ablecancelpremium==0? false: true,
       showPrice: options.showprice==0? false: true,
       rebate: options.rebate==null?0:options.rebate,
+      showPayButton : (options.showpaybutton == null || options.showpaybutton == 0)?false: true,
     })
     this.requestOrderDetail(this.data.orderNo)
     let that = this;
@@ -469,6 +474,13 @@ Page({
         title: '支付失败,请稍后重试',
         icon: 'none'
       })
+    })
+  },
+
+  tapPayOrder: function() {
+
+    wx.navigateTo({
+      url: PagePath.Path_Order_Pay_SubPay + "?amount=" + app.ShareData.payAmount + "&orderno=" + app.ShareData.payOrderNo + "&customerno=" + loginUtil.getCustomerNo(),
     })
   }
 })

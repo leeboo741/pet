@@ -122,7 +122,7 @@ Page({
     },
     addServerInsuredPrice: {
       name: "声明价值",
-      selected: false,
+      selected: true,
       rate: 0, // 费率
       price: 1000, // 保价金额
       // alert: "最低估价1000元，最高估价6000元", // 
@@ -928,15 +928,15 @@ Page({
         return;
       }
     }
-    // if (this.data.addServerInsuredPrice.selected) {
-    //   if (this.data.addServerInsuredPrice.price == 0) {
-    //     wx.showToast({
-    //       title: '请输入保价金额',
-    //       icon: 'none'
-    //     })
-    //     return;
-    //   }
-    // }
+    if (this.data.addServerInsuredPrice.selected) {
+      if (this.data.addServerInsuredPrice.price == 0) {
+        wx.showToast({
+          title: '请输入保价金额',
+          icon: 'none'
+        })
+        return;
+      }
+    }
     let tempUrl = pagePath.Path_Order_Pay 
                   + '?start=' + this.data.beginCity
                   + '&end=' + this.data.endCity
@@ -1165,17 +1165,17 @@ Page({
       tempData.guarantee = "1";
     }
     tempData.petAmount = 0;
-    // if (this.data.addServerInsuredPrice.selected) {
-    //   if (this.data.addServerInsuredPrice.price == 0) {
-    //     wx.showToast({
-    //       title: '请输入保价金额',
-    //       icon: 'none'
-    //     })
-    //     return;
-    //   } else {
-    //     tempData.petAmount = this.data.addServerInsuredPrice.price;
-    //   }
-    // }
+    if (this.data.addServerInsuredPrice.selected) {
+      if (this.data.addServerInsuredPrice.price == 0) {
+        wx.showToast({
+          title: '请输入保价金额',
+          icon: 'none'
+        })
+        return;
+      } else {
+        tempData.petAmount = this.data.addServerInsuredPrice.price;
+      }
+    }
     let that = this;
     wx.request({
       url: config.URL_Service + config.URL_PredictPrice,

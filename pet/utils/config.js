@@ -4,8 +4,8 @@
  */
 /** =================================================== */
 const Service_Phone = "4007778889"; // 客服电话
-const Version_Name = "1.5.10"; // 版本名称
-const Version_Code = 100; // 版本编号
+const Version_Name = "1.5.12"; // 版本名称
+const Version_Code = 102; // 版本编号
 
 /** =================================================== */
 /** 
@@ -15,6 +15,7 @@ const Version_Code = 100; // 版本编号
 // const URL_Service = "https://consign.taochonghui.com"
 const URL_Service = "http://192.168.3.111:7777"; // 祥林
 // const URL_Service = "http://192.168.3.233:7777"; // 胡吉
+// const URL_Service = "HTTP://192.168.3.40:7777"; // 周晓健
 // const URL_Service = "http://192.168.3.188:7777";
 // const URL_Service = "https://test.taochonghui.com"; // 测试服务器
 
@@ -104,6 +105,7 @@ const URL_Order_Station_All = "/api/order/list/station"; // 查询站点所有�
 
 const URL_GetCouponList = '/aip/coupon/listByOpenId'; // 获取优惠券列表
 
+const URL_OtherPay = "/api/weChat/pay/getOtherOrderPayParam"; // 获取代支付参数
 const URL_Payment = "/api/weChat/pay/getOrderPayParam"; // 获取支付参数
 const URL_Recharge = "/api/weChat/pay/getRechargeParam"; // 获取充值参数
 const URL_PayPremium = "/api/weChat/pay/getOrderPremiumParam"; // 获取补价参数
@@ -269,6 +271,7 @@ module.exports = {
 
   URL_GetCouponList, // 获取优惠券列表
 
+  URL_OtherPay, // 获取代支付参数
   URL_Payment, // 获取支付参数
   URL_Recharge, // 获取充值参数
   URL_PayPremium, // 获取补价参数

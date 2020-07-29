@@ -10,7 +10,7 @@
     </view>
   </view>
   <image wx:if='{{qrcodePath != null}}' class="qrcode-image" style="width:400rpx; height:400rpx" src='{{qrcodePath}}' mode='aspectFit'></image>
-  <button class="other-pay-button" type="primary" open-type='share'>找人代付</button>
+  <button class="other-pay-button" type="primary" open-type='share' hidden="{{hiddenOtherPayButton}}">找人代付</button>
   <button class="pay-button" type='primary' bindtap="tapPay">立即支付</button>
 </view>
 

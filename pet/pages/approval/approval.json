@@ -5,5 +5,6 @@
     "i-tab": "/dist/tab/index",
     "i-icon": "/dist/icon/index"
     },
-  "navigationBarTitleText": "审批"
+  "navigationBarTitleText": "审批",
+  "enablePullDownRefresh": true
 }
