@@ -878,7 +878,7 @@ Page({
         customerNo: loginUtil.getCustomerNo(),
         orderNo: orderNo
       },
-      method: "PUT",
+      method: "POST",
       header: {
         'content-type': "application/x-www-form-urlencoded"
       },
