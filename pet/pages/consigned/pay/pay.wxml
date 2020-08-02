@@ -84,7 +84,7 @@
       </view>
       <view class="pay-price-box-row" wx:if='{{payPriceType.typeId===2}}'>
         <input name='custom-price-input' 
-              type='number' 
+              type='digit' 
               class='input-under custom-price-input' 
               value='{{otherPrice}}' 
               placeholder="自定义价格"  

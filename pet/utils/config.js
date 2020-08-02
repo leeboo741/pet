@@ -4,8 +4,8 @@
  */
 /** =================================================== */
 const Service_Phone = "4007778889"; // 客服电话
-const Version_Name = "1.5.12"; // 版本名称
-const Version_Code = 102; // 版本编号
+const Version_Name = "1.5.13"; // 版本名称
+const Version_Code = 104; // 版本编号
 
 /** =================================================== */
 /** 
@@ -13,9 +13,9 @@ const Version_Code = 102; // 版本编号
  */
 /** =================================================== */
 // const URL_Service = "https://consign.taochonghui.com"
-const URL_Service = "http://192.168.3.111:7777"; // 祥林
+// const URL_Service = "http://192.168.3.111:7777"; // 祥林
 // const URL_Service = "http://192.168.3.233:7777"; // 胡吉
-// const URL_Service = "HTTP://192.168.3.40:7777"; // 周晓健
+const URL_Service = "HTTP://192.168.3.40:7777"; // 周晓健
 // const URL_Service = "http://192.168.3.188:7777";
 // const URL_Service = "https://test.taochonghui.com"; // 测试服务器
 

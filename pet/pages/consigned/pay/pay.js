@@ -419,7 +419,7 @@ Page({
     }
 
     if (!Util.checkEmpty(this.data.otherPrice)) {
-      tempOrderObj.defAmount = this.data.otherPrice;
+      tempOrderObj.customPrice = this.data.otherPrice;
     }
 
     tempOrderObj.shareOpenId = "";
