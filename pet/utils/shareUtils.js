@@ -2,6 +2,7 @@ const LoginUtil = require("../utils/loginUtils.js");
 const PagePath = require("../utils/pagePath.js");
 const app = getApp();
 const Util = require("../utils/util.js");
+const loginUtils = require("../utils/loginUtils.js");
 
 /**
  * 分享 代支付
@@ -10,7 +11,7 @@ const Util = require("../utils/util.js");
  * @param {*} qrcodePath 
  */
 function shareToOtherPay(orderNo, amount, qrcodePath){
-  let tempPath = PagePath.Path_Home + '?type=sharetopay' + '&orderno=' + orderNo + '&amount=' + amount + '&customerno=' + LoginUtil.getCustomerNo();
+  let tempPath = PagePath.Path_Home + '?type=sharetopay' + '&orderno=' + orderNo + '&amount=' + amount + '&customerno=' + LoginUtil.getCustomerNo() + "&shareopenid=" + loginUtils.getOpenId();
   return {
     title: "请你帮忙支付一下",
     path: tempPath,
@@ -113,6 +114,8 @@ function getAppOpenData(options, getResultCallback) {
       let orderNo = options.orderno;
       let amount = options.amount;
       let customerNo = options.customerno;
+      let shareOpenId = options.shareopenid;
+      app.ShareData.openId = shareOpenId;
       app.ShareData.payOrderNo = orderNo;
       app.ShareData.payAmount = amount;
       app.ShareData.payCustomerNo = customerNo;

@@ -1,7 +1,7 @@
 // pages/registerStation/serviceItemSelect/index.js
 const app = getApp();
 const Util = require("../../../utils/util.js");
-
+const ShareUtil = require("../../../utils/shareUtils");
 Page({
 
   /**
@@ -108,6 +108,7 @@ Page({
    */
   onShareAppMessage: function () {
 
+    return ShareUtil.getOnShareAppMessageForShareOpenId();
   },
 
   /**

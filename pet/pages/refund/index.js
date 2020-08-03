@@ -2,7 +2,7 @@
 
 const Config = require("../../utils/config.js");
 const LoginUtil = require("../../utils/loginUtils.js");
-
+const ShareUtil = require("../../utils/shareUtils");
 Page({
 
   /**
@@ -76,6 +76,7 @@ Page({
    */
   onShareAppMessage: function () {
 
+    return ShareUtil.getOnShareAppMessageForShareOpenId();
   },
 
   /**

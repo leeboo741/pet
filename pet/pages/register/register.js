@@ -118,5 +118,6 @@ Page({
    */
   onShareAppMessage: function () {
     
+    return ShareUtil.getOnShareAppMessageForShareOpenId();
   }
 })
