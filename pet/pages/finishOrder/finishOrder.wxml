@@ -143,6 +143,30 @@
                   bindtap="callPhone"
                   data-phone="{{orderItem.receiverPhone}}">{{orderItem.receiverPhone}}</view>
           </view>
+
+          <block wx:if='{{parse.showRecommend(orderItem, userInfo)}}'>
+            <block wx:if='{{(orderItem.recommendName!=null&&orderItem.recommendName.length>0) || (orderItem.recommendPhone!=null&&orderItem.recommendPhone.length>0)}}'>
+              <view class="bill-info-person">
+                <block wx:if='{{orderItem.recommendName!=null&&orderItem.recommendName.length>0}}'>
+                  <view class="bill-info-person-label">推荐人:</view>
+                  <view class="bill-info-person-name">{{orderItem.recommendName}}</view>
+                </block>
+                <block wx:if='{{orderItem.recommendPhone!=null&&orderItem.recommendPhone.length>0}}'>
+                  <view class="bill-info-person-label">推荐电话：</view>
+                  <view class="bill-info-person-phone" bindtap="callPhone" data-phone="{{orderItem.recommendPhone}}">{{orderItem.recommendPhone}}</view>
+                </block>
+              </view>
+            </block>
+            <block wx:if='{{orderItem.recommendRemarks!=null&&orderItem.recommendRemarks.length>0}}'>
+              <view class="bill-info-person">
+                <view class="bill-info-person-label">推荐备注:</view>
+              </view>
+              <view class="bill-info-person">
+                <view class="bill-info-person-remark">{{orderItem.recommendRemarks}}</view>
+              </view>
+            </block>
+          </block>
+
           <view class='bill-info-pay'>
             <view class='bill-info-pay-label'
                   wx:if='{{orderItem.orderStates!= null}}'>状态：</view>
@@ -405,6 +429,15 @@ return false;
     showReceiver: function(orderItem, userInfo) {
       return true;
     },
+
+		showRecommend: function(orderItem, userInfo) {
+			if ((orderItem.recommendName!=null&&orderItem.recommendName.length>0) 
+			|| (orderItem.recommendPhone!=null&&orderItem.recommendPhone.length>0)
+			|| (orderItem.recommendRemarks!=null&&orderItem.recommendRemarks.length>0)) {
+				return true;
+			} 
+			return false;
+		},
     getOperateButtonTitle: function (orderItem) {
       if (orderItem.orderStates[0].orderType == "待入港") {
         return '入港';

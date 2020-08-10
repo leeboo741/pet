@@ -205,6 +205,14 @@ page {
   font-size: 32rpx;
 }
 
+.bill-info-person-remark{
+  width: 100%;
+  font-size: 28rpx;
+  color: gray;
+  font-family: sans-serif;
+  flex-wrap: wrap;
+}
+
 .bill-info-person-phone{
   flex-grow: 1;
   margin-left: 20rpx;

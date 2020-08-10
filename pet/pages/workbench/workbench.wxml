@@ -123,6 +123,30 @@
 					<view class="bill-info-person-label">电话：</view>
 					<view class="bill-info-person-phone" bindtap="callPhone" data-phone="{{orderItem.receiverPhone}}">{{orderItem.receiverPhone}}</view>
 				</view>
+				
+				<block wx:if='{{parse.showRecommend(orderItem, userInfo)}}'>
+					<block wx:if='{{(orderItem.recommendName!=null&&orderItem.recommendName.length>0) || (orderItem.recommendPhone!=null&&orderItem.recommendPhone.length>0)}}'>
+						<view class="bill-info-person">
+							<block wx:if='{{orderItem.recommendName!=null&&orderItem.recommendName.length>0}}'>
+								<view class="bill-info-person-label">推荐人:</view>
+								<view class="bill-info-person-name">{{orderItem.recommendName}}</view>
+							</block>
+							<block wx:if='{{orderItem.recommendPhone!=null&&orderItem.recommendPhone.length>0}}'>
+								<view class="bill-info-person-label">推荐电话：</view>
+								<view class="bill-info-person-phone" bindtap="callPhone" data-phone="{{orderItem.recommendPhone}}">{{orderItem.recommendPhone}}</view>
+							</block>
+						</view>
+					</block>
+					<block wx:if='{{orderItem.recommendRemarks!=null&&orderItem.recommendRemarks.length>0}}'>
+						<view class="bill-info-person">
+							<view class="bill-info-person-label">推荐备注:</view>
+						</view>
+						<view class="bill-info-person">
+							<view class="bill-info-person-remark">{{orderItem.recommendRemarks}}</view>
+						</view>
+					</block>
+				</block>
+				
 				<view class='bill-info-pay'>
 					<view class='bill-info-pay-label' wx:if='{{orderItem.orderStates[0].orderType!= null}}'>状态：</view>
 					<view class='bill-info-pay-info' wx:if='{{orderItem.orderStates[0].orderType!= null}}'>{{orderItem.orderStates[0].orderType}}</view>
@@ -253,19 +277,10 @@
 					<input class="in-out-port-info-input text-normal" placeholder="联系人电话" placeholder-class="text-placeholder" bindinput="inputOrderTakerContactPhone" data-index='{{orderIndex}}' value="{{orderItem.orderTakeDetail.phone}}">
 					</input>
 				</view>
-				<!-- <view class="in-out-port-info-item">
-					<picker class="in-out-port-info-input" mode='region' bindchange="selectTakeRegion" data-index='{{orderIndex}}'>
-						<view class="in-out-port-info-input-value {{parse.getOrderTakeRegion(orderItem.orderTakeDetail) != null ? 'text-normal':'text-placeholder'}}">
-							{{parse.getOrderTakeRegion(orderItem.orderTakeDetail) != null ? parse.getOrderTakeRegion(orderItem.orderTakeDetail):'选择提货省市区'}}
-						</view>
-					</picker>
-				</view> -->
 				<view class="in-out-port-info-item">
 					<view class="in-out-port-info-input {{(orderItem.orderTakeDetail!= null && orderItem.orderTakeDetail.detailAddress != null && orderItem.orderTakeDetail.detailAddress.length > 0) ? 'text-normal':'text-placeholder'}}" bindtap='tapOrderTakerAddress' data-index='{{orderIndex}}'>
 					{{(orderItem.orderTakeDetail!= null && orderItem.orderTakeDetail.detailAddress != null && orderItem.orderTakeDetail.detailAddress.length > 0) ? parse.getOrderTakeRegion(orderItem.orderTakeDetail) + ' ' + orderItem.orderTakeDetail.detailAddress:'请选择提货地址'}}
 					</view>
-					<!-- <input class="in-out-port-info-input text-normal" placeholder="提货详细地址" placeholder-class="text-placeholder" bindinput="inputOrderTakeDetailAddress" data-index='{{orderIndex}}' value="{{orderItem.orderTakeDetail.detailAddress}}">
-					</input> -->
 				</view>
 			</view>
 
@@ -317,6 +332,14 @@
 		},
 		showReceiver: function(orderItem, userInfo) {
 			return true;
+		},
+		showRecommend: function(orderItem, userInfo) {
+			if ((orderItem.recommendName!=null&&orderItem.recommendName.length>0) 
+			|| (orderItem.recommendPhone!=null&&orderItem.recommendPhone.length>0)
+			|| (orderItem.recommendRemarks!=null&&orderItem.recommendRemarks.length>0)) {
+				return true;
+			} 
+			return false;
 		},
 		getOperateButtonTitle: function(orderItem) {
 			if (orderItem.orderStates[0].orderType == "待入港") {

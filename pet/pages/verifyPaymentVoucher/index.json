@@ -1,0 +1,8 @@
+{
+  "usingComponents": {
+    "i-cell": "/dist/cell/index",
+    "i-cell-group": "/dist/cell-group/index",
+    "i-panel": "/dist/panel/index"
+  },
+  "navigationBarTitleText": "审核付款凭证"
+}

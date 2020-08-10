@@ -194,7 +194,6 @@ page {
   flex-shrink: 0;
   word-wrap: break-word;
   word-break: break-all;
-
   max-width: 50%;
 }
 
@@ -212,6 +211,15 @@ page {
   font-size: 32rpx;
   color: #2d8cf0;
   text-decoration: underline;
+}
+
+.bill-info-person-remark{
+  width: 100%;
+  font-size: 28rpx;
+  color: gray;
+  font-family: sans-serif;
+  flex-wrap: wrap;
+  
 }
 
 .bill-info-pay {

@@ -215,6 +215,14 @@ page {
   text-decoration: underline;
 }
 
+.bill-info-person-remark{
+  width: 100%;
+  font-size: 28rpx;
+  color: gray;
+  font-family: sans-serif;
+  flex-wrap: wrap;
+}
+
 .bill-info-pay {
   width: 100%;
   margin-bottom: 20rpx;

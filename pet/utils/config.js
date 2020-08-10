@@ -4,18 +4,18 @@
  */
 /** =================================================== */
 const Service_Phone = "4007778889"; // 客服电话
-const Version_Name = "1.5.14"; // 版本名称
-const Version_Code = 105; // 版本编号
+const Version_Name = "1.5.15"; // 版本名称
+const Version_Code = 106; // 版本编号
 
 /** =================================================== */
 /** 
  *                      网络请求
  */
 /** =================================================== */
-const URL_Service = "https://consign.taochonghui.com"
+// const URL_Service = "https://consign.taochonghui.com"
 // const URL_Service = "http://192.168.3.111:7777"; // 祥林
 // const URL_Service = "http://192.168.3.233:7777"; // 胡吉
-// const URL_Service = "HTTP://192.168.3.40:7777"; // 周晓健
+const URL_Service = "HTTP://192.168.3.40:7777"; // 周晓健
 // const URL_Service = "http://192.168.3.188:7777";
 // const URL_Service = "https://test.taochonghui.com"; // 测试服务器
 
@@ -87,6 +87,9 @@ const URL_CancelOrder = "/api/order/cancelOrder"; // 取消订单
 const URL_GetOrderListByOrderStatus = "/api/order/listOrderList"; // 根据订单类型查询订单列表
 const URL_GetStationAllOrder = "/api/consign/port/list/Complete"; // 获取当前站点所有订单 包含已完成
 const URL_OrderDetail = "/api/order/orderDetail"; // 查询订单详情
+function URL_OrderInfo(orderNo){
+  return "/api/order/" + orderNo;
+}
 const URL_GetOrderNoByOrderNo = "/api/consign/order-no/auto"; // 通过单号模糊查询单号
 const URL_ConfirmOrder = "/api/order/confirmOrder"; // 确认收货
 const URL_GetUnConfirmOrderList = "/api/order/listUncertainty"; // 获取未确认收货订单
@@ -109,14 +112,20 @@ const URL_OtherPay = "/api/weChat/pay/getOtherOrderPayParam"; // 获取代支付
 const URL_Payment = "/api/weChat/pay/getOrderPayParam"; // 获取支付参数
 const URL_Recharge = "/api/weChat/pay/getRechargeParam"; // 获取充值参数
 const URL_PayPremium = "/api/weChat/pay/getOrderPremiumParam"; // 获取补价参数
+const URL_CompletePay = "/station/api/completePayment"; // 完成支付操作
 
 const URL_GetInOrOutHarbourList = "/api/consign/port/listByLikeOrderNo"; // 获取出入港单据列表
 const URL_ConfirmInOutHarbour = "/api/consign/orderState/inOrOutPort"; // 确认出入港
 
 const URL_UploadFile = "/api/consign/orderState/uploadMediaFiles"; // 上传文件
+const URL_UploadStationQRCode = "/station/api/uploadQR"; // 上传站点二维码
+const URL_Upload = "/file/upload"; // 文件上传
 
 const URL_Get_Message = "/api/message/customer/"; // 获取站内信
 const URL_Get_New_Message = "/api/message/push/"; // 获取最新站内信
+
+const URL_Add_PaymentVoucher = "/api/order/uploadPaymentVoucher"; // 新增付款凭证
+const URL_Verify_PaymentVoucher = "/api/order/api/order/examinePaymentVoucher"; // 审核付款凭证
 
 /** =================================================== */
 /** 
@@ -137,6 +146,7 @@ const Role_Staff_Service = 2; // 客服
 const Role_Staff_Diver = 3; // 司机
 
 const Order_State_ToPay = "待付款";  
+const Order_State_ToVerify = "待审核";
 const Order_State_ToPack = "待揽件";
 const Order_State_ToInPort = "待入港";
 const Order_State_InPort = "已入港";
@@ -182,7 +192,7 @@ const Key_QQ_Map = "K5JBZ-QM7KP-Z54D5-LIMBQ-AFFNS-7ABT6"; // 腾讯地图 app_ke
 
 /** =================================================== */
 /** 
- *                      Key
+ *                      Value
  */
 /** =================================================== */
 
@@ -253,6 +263,7 @@ module.exports = {
   URL_GetOrderListByOrderStatus, // 根据订单类型查询订单列表
   URL_GetStationAllOrder, // 获取当前站点所有订单 包含已完成
   URL_OrderDetail, // 查询订单详情
+  URL_OrderInfo, // 查询订单信息
   URL_GetOrderNoByOrderNo, // 通过单号模糊查询单号
   URL_ConfirmOrder, // 确认收货
   URL_GetUnConfirmOrderList, // 获取未确认收货订单列表
@@ -275,14 +286,20 @@ module.exports = {
   URL_Payment, // 获取支付参数
   URL_Recharge, // 获取充值参数
   URL_PayPremium, // 获取补价参数
+  URL_CompletePay, // 完成支付操作
 
   URL_GetInOrOutHarbourList, // 获取出入港单据列表
   URL_ConfirmInOutHarbour, // 确认出入港
 
   URL_UploadFile, // 上传文件
+  URL_UploadStationQRCode, // 上传站点收款码
+  URL_Upload, // 文件上传
 
   URL_Get_Message, // 获取站内信
   URL_Get_New_Message, // 获取最新站内信
+
+  URL_Add_PaymentVoucher, // 新增付款凭证
+  URL_Verify_PaymentVoucher, // 审核付款凭证
 
   Prompt_Success, // 成功标识
   Prompt_Error, // 错误标识
@@ -297,6 +314,7 @@ module.exports = {
   Role_Staff_Diver, // 司机
 
   Order_State_ToPay, // 待付款
+  Order_State_ToVerify, // 待审核
   Order_State_ToPack, // 待揽件
   Order_State_ToInPort, // 待入港
   Order_State_InPort, // 已入港

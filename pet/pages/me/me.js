@@ -299,6 +299,15 @@ Page({
   },
 
   /**
+   * 点击收款码
+   */
+  tapCollectionQRCode: function(e) {
+    wx.navigateTo({
+      url: pagePath.Path_Me_StationSetting,
+    })
+  },
+
+  /**
    * 确认收货
    */
   tapReceive: function (e) {
@@ -332,7 +341,7 @@ Page({
    * 点击待付款更多
    */
   tapUnpayMore: function (e) {
-    let itemList = ["订单详情", "修改订单", "取消订单"];
+    let itemList = ["订单详情", "修改订单", "取消订单", "上传付款凭证"];
     let index = e.currentTarget.dataset.tapindex;
     let orderNo = e.currentTarget.dataset.orderno;
     let that = this;
@@ -345,6 +354,10 @@ Page({
           that.tapEditOrder(e, true);
         } else if (res.tapIndex == 2) { // 取消订单
           that.tapCancelOrder(e);
+        } else if (res.tapIndex == 3) { // 上传付款凭证
+          wx.navigateTo({
+            url: pagePath.Path_Me_PaymentVoucher + "?orderno=" + orderNo,
+          })
         }
       },
     })

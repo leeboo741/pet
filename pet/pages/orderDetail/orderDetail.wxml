@@ -183,6 +183,21 @@
     </i-cell>
   </i-cell-group>
 </i-panel>
+<i-panel i-class='panel'
+         title='推荐人信息'
+         wx:if='{{userInfo.role != 0 && type != 0}}'>
+  <i-cell-group>
+    <i-cell title='{{orderData.recommendName}}'
+            label='{{orderData.recommendRemarks}}'
+            is-link>
+      <view slot='footer'
+            bindtap="callPhone"
+            data-phone='{{orderData.recommendPhone}}'>
+        {{orderData.recommendPhone!=null&&orderData.recommendPhone.length>0?orderData.recommendPhone:""}}
+      </view>
+    </i-cell>
+  </i-cell-group>
+</i-panel>
 <i-panel i-class="panel" 
          title='备注'
          wx:if="{{(orderData.remarks!=null && orderData.remarks.length > 0) || (orderData.orderRemarksList!=null && orderData.orderRemarksList.length > 0) }}">
@@ -279,31 +294,68 @@
 </i-panel>
 
 <i-panel i-class='panel'
-         wx:if='{{showPayButton}}'>
-  <i-cell>
-    <view slot='header'
-          class='confirm-button'
-          bindtap="tapPayOrder">
-    确认支付
-    </view>
-  </i-cell>
+         wx:if='{{showPayButton && orderData.state == "待付款"}}'
+         title='支付'>
+  <i-cell-group>
+    <i-cell>
+      <view slot='header'
+            class="pay-condition-box"
+            bindtap="tapCondition"
+            data-index='0'>
+        <view class="pay-condition-title">
+          <i-icon type='success'
+                  size='20'
+                  color='{{conditionOneAgreement?"#ee2c2c":""}}'>
+          </i-icon>
+          <view class="pay-condition-title" style='color:{{conditionOneAgreement?"#ee2c2c":""}}'>
+          已确认宠物符合以下条件
+          </view>
+        </view>
+        <view class="pay-condition-item-box">
+          <view class="pay-condition-item">
+            1、处于未妊娠期
+          </view>
+          <view class="pay-condition-item">
+            2、48小时以内未进行过任何手术或分娩
+          </view>
+          <view class="pay-condition-item">
+            3、宠物年龄不小于两个月
+          </view>
+          <view class="pay-condition-item">
+            4、不患有任何疾病
+          </view>
+        </view>
+      </view>
+    </i-cell>
+    <i-cell>
+      <view slot='header'
+            class="pay-condition-box"
+            bindtap="tapCondition"
+            data-index='1'>
+        <view class="pay-condition-item" style="font-size: 24rpx">
+        下单后会有专人联系您以确定发运航班
+        </view>
+        <view class="pay-condition-title">
+          <i-icon type='success'
+                  size='20'
+                  color='{{conditionTwoAgreement?"#ee2c2c":""}}'>
+          </i-icon>
+          <view class="pay-condition-title" style='color:{{conditionTwoAgreement?"#ee2c2c":""}}'>
+          已阅读并同意《宠物托运交易条款》
+          </view>
+        </view>
+      </view>
+    </i-cell>
+    <i-cell>
+      <view slot='header'
+            class='confirm-button'
+            bindtap="tapPayOrder">
+      确认支付
+      </view>
+    </i-cell>
+  </i-cell-group>
 </i-panel>
-<!-- showReceipt
-if (userInfo.role != 3) {
-        return true;
-      } else if (orderItem.orderStates[orderItem.orderStates.length-1].orderType == "待揽件") {
-        return true;
-      }
-      return false; -->
-<!-- showSend
- if (userInfo.role != 3) {
-        return true;
-      } else if (orderItem.orderStates[orderItem.orderStates.length-1].orderType == "派送中") {
-        return true;
-      }
-      return false;-->
-<!-- showTempDeliver
- -->
+
 <wxs module='parse'>
   module.exports={
     showReceipt: function(orderItem, userInfo, rebate) {

@@ -1,0 +1,20 @@
+<!--pages/stationSetting/index.wxml-->
+<i-panel title='收款码'
+         i-class='panel'>
+  <i-cell>
+    <view slot='header'
+          class="collectionqrcode-box">
+      <view class="qrcode-content" wx:if='{{qrcodePath != null && qrcodePath.length > 0}}'>
+        <block>
+          <image class="qrcode-image" mode='widthFix' src='{{qrcodePath}}'>
+          </image>
+        </block>
+      </view>
+      <button size='mini' type='primary' class="select-newcode-button" bindtap="tapSelectNewQRCode">选择上传收款码</button>
+    </view>
+  </i-cell>
+</i-panel>
+
+<view style='heigh: 100rpx; width: 100%'></view>
+
+<!-- <view style='position: fixed; bottom: 0; left: 0; right: 0; height: 90rpx; text-align: center; line-height: 90rpx; background: #ee2c2c; color: white; font-size: 32rpx;'>提交</view> -->

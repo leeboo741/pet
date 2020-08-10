@@ -47,7 +47,10 @@
     "pages/station/stationMap/index",
     "pages/consigned/classifySelected/index",
     "pages/staffManager/staffManager",
-    "pages/consigned/subPay/subPay"
+    "pages/consigned/subPay/subPay",
+    "pages/stationSetting/index",
+    "pages/paymentVoucher/index",
+    "pages/verifyPaymentVoucher/index"
   ],
   "window": {
     "backgroundTextStyle": "light",

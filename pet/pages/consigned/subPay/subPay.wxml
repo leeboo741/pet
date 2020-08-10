@@ -1,17 +1,69 @@
 <!--pages/consigned/subPay/subPay.wxml-->
 
 <view class="pay-info-box">
+  <view class="row" style="margin-top: 100rpx;">
+    <view class="title">
+    订单编号:
+    </view>
+    <view class="value">
+    {{orderInfo.orderNo}}
+    </view>
+  </view>
   <view class="row">
     <view class="title">
     支付金额：
     </view>
     <view class="pay-info-amount">
-    ￥ {{paymentAmount}}
+    ￥ {{orderInfo.paymentAmount}}
     </view>
   </view>
-  <image wx:if='{{qrcodePath != null}}' class="qrcode-image" style="width:400rpx; height:400rpx" src='{{qrcodePath}}' mode='aspectFit'></image>
-  <button class="other-pay-button" type="primary" open-type='share' hidden="{{hiddenOtherPayButton}}">找人代付</button>
-  <button class="pay-button" type='primary' bindtap="tapPay">立即支付</button>
+  <!-- 直接进入支付页面 -->
+  <block wx:if='{{ableOtherPay}}'>
+    <!-- 普通客户 只能支付给平台 -->
+    <block wx:if='{{userRole == 0}}'>
+      <!-- 托运 logo 因为不知道放什么填充一下合适 -->
+      <image class="qrcode-image" style="width:400rpx; height:400rpx" src='{{logoUrl}}' mode='aspectFit' wx:if="{{logoUrl != null}}"></image>
+      <!-- 找人代付 默认平台 -->
+      <button class="other-pay-button" type="primary" open-type='share'>找人代付</button>
+      <!-- 立即支付 默认平台 -->
+      <button class="pay-button" type='primary' bindtap="tapPay">立即支付</button>
+    </block>
+    <!-- 站点员工 -->
+    <block wx:else>
+      <!-- 订单所属站点 的收款码 -->
+      <image class="qrcode-image" style="width:400rpx; height:400rpx" src='{{orderInfo.station.collectionQRCode}}' mode='aspectFit' wx:if="{{orderInfo.station.collectionQRCode != null}}"></image>
+      <!-- 订单支付方式 选择栏 默认平台 -->
+      <view class="other-pay-button-box">
+        <view class='other-pay-type-box' wx:if="{{orderInfo.station.collectionQRCode != null}}">
+          <view class='other-pay-type-item'
+                wx:for='{{otherPayType}}'
+                wx:key='typeId'
+                bindtap="selectOtherPayType"
+                data-index='{{index}}'>
+            <i-icon type="success"
+                    size='20'
+                    color='{{item.typeId==currentOtherPayType.typeId?"#439057":"#dbdbdb"}}'>
+            </i-icon>
+            <view style='color:{{item.typeId==currentOtherPayType.typeId?"#439057":"#dbdbdb"}}'>{{item.typeName}}</view>
+          </view>
+        </view>
+        <!-- 分享给客户支付 -->
+        <button class="other-pay-button" type="primary" open-type='share'>客户支付</button>
+        <!-- 直接完成支付流程 -->
+        <button class="pay-button" type='primary' bindtap="tapCompletePay">完成支付</button>
+      </view>
+    </block>
+  </block>
+  <!-- 代支付分享进入支付页面 -->
+  <block wx:else>
+    <!-- 分享订单支付方式 -- 支付给平台 -->
+    <block wx:if='{{shareOtherPayType==0}}'>
+      <button class="pay-button" type='primary' bindtap="tapPayForOther">立即支付</button>
+    </block>
+    <!-- 分享订单支付方式 -- 支付给商家 -->
+    <block wx:else>
+      <image class="qrcode-image" style="width:400rpx; height:400rpx" src='{{orderInfo.station.collectionQRCode}}' mode='aspectFit'></image>
+      <button class="other-pay-button" type="primary" bindtap="tapSaveQRCode" data-path='{{orderInfo.station.collectionQRCode}}'>保存商家收款码</button>
+    </block>
+  </block>
 </view>
-
-<canvas canvas-id="canvas" style="width:200px; height:200px; position:fixed; top:9999px"/>

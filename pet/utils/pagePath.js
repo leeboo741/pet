@@ -31,6 +31,7 @@ const Path_Order_Edit = "/pages/editOrder/editOrder"; // 编辑订单
 const Path_Order_Premium = "/pages/premium/premium"; // 补差价
 const Path_Order_Refund = "/pages/refund/index"; // 申请退款
 const Path_Order_Evaluate = "/pages/evaluate/order/index"; // 评价订单
+const Path_Order_VerifyPaymentVoucher = "/pages/verifyPaymentVoucher/index"; // 审核待审核订单
 
 const Path_Station = "/pages/station/station";  // 驿站
 const Path_Station_ServiceItemSelect = "/pages/registerStation/serviceItemSelect/index"; // 驿站服务内容选择
@@ -48,6 +49,8 @@ const Path_Me_Message = "/pages/message/message"; // 站内信
 const Path_Me_Approval = "/pages/approval/approval"; // 审批
 const Path_Me_Balance_Flow = "/pages/balance/balanceFlow"; // 余额流水
 const Path_Me_StaffManager = "/pages/staffManager/staffManager"; // 员工管理
+const Path_Me_StationSetting = "/pages/stationSetting/index"; // 站点设置
+const Path_Me_PaymentVoucher = "/pages/paymentVoucher/index"; // 上传付款凭证
 
 const Path_Apply_Index = "/pages/applyJoin/applyJoin"; // 申请
 const Path_Apply_Register_Station = "/pages/registerStation/registerStation"; // 站点入驻申请
@@ -89,6 +92,7 @@ module.exports = {
   Path_Order_Premium: Path_Order_Premium, // 补差价
   Path_Order_Refund: Path_Order_Refund, // 申请退款
   Path_Order_Evaluate: Path_Order_Evaluate, // 订单评价
+  Path_Order_VerifyPaymentVoucher: Path_Order_VerifyPaymentVoucher, // 审核待审核订单
 
   Path_Station: Path_Station,  // 驿站
   Path_Station_ServiceItemSelect: Path_Station_ServiceItemSelect, // 驿站服务内容选择
@@ -106,6 +110,8 @@ module.exports = {
   Path_Me_Approval: Path_Me_Approval, // 审批
   Path_Me_Balance_Flow: Path_Me_Balance_Flow, // 余额流水
   Path_Me_StaffManager: Path_Me_StaffManager, // 员工管理
+  Path_Me_StationSetting: Path_Me_StationSetting, // 站点设置
+  Path_Me_PaymentVoucher: Path_Me_PaymentVoucher, // 上传付款凭证
 
   Path_Apply_Index: Path_Apply_Index, // 申请
   Path_Apply_Register_Station: Path_Apply_Register_Station, // 站点入驻申请

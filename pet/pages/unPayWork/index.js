@@ -20,6 +20,12 @@ Page({
     loadMoreLoading: false,
     loadMoreTip: "暂无数据",
     offset: 0,
+    keyword: null,
+    orderDate: null,
+    orderStateList: [
+      config.Order_State_ToPay, // 待付款
+      config.Order_State_ToVerify // 待审核
+    ], // 订单状态列表
   },
 
   /**
@@ -27,7 +33,6 @@ Page({
    */
   onLoad: function (options) {
 
-    wx.startPullDownRefresh();
   },
 
   /**
@@ -41,7 +46,8 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    app.globalData.verifyPaymentVoucherOrder = null;
+    wx.startPullDownRefresh();
   },
 
   /**
@@ -69,7 +75,7 @@ Page({
       loadMoreLoading: true,
       loadMoreTip: "数据加载中"
     })
-    this.getOrderData(this.data.offset,
+    this.getOrderData(this.data.offset, this.data.keyword, this.data.orderDate,
       function getDataCallback(data){
         that.setData({
           orderList: data
@@ -109,7 +115,7 @@ Page({
       loadMoreTip: "数据加载中",
     })
     let that = this;
-    this.getOrderData(this.data.offset,
+    this.getOrderData(this.data.offset, this.data.keyword, this.data.orderDate,
       function getDataCallback(data){
         let tempList = that.data.orderList.concat(data);
         that.setData({
@@ -143,7 +149,7 @@ Page({
   /**
    * 获取数据
    */
-  getOrderData: function (offset, getDataCallback) {
+  getOrderData: function (offset, keyword, orderDate, getDataCallback) {
     let that = this;
     loginUtil.checkLogin(function alreadyLoginCallback(state) {
       if (state) {
@@ -152,7 +158,7 @@ Page({
             userInfo: loginUtil.getUserInfo()
           })
         }
-        that.requestOrderList(offset,
+        that.requestOrderList(offset, keyword, orderDate,
           function callback(data) {
             if (getDataCallback && typeof getDataCallback == "function") {
               getDataCallback(data);
@@ -166,15 +172,17 @@ Page({
   /**
    * 请求单据
    */
-  requestOrderList: function (offset, getOrderDataCallback) {
+  requestOrderList: function (offset, keyword, orderDate, getOrderDataCallback) {
     let that = this;
     wx.request({
       url: config.URL_Service + config.URL_Order_Station_All,
       data: {
         stationNo: loginUtil.getStationNo(),
-        state: config.Order_State_ToPay,
+        state: this.data.orderStateList,
         offset: offset,
-        limit: Limit
+        limit: Limit,
+        keyword: keyword,
+        orderDate: orderDate
       },
       success(res) {
         console.log("请求未付单据 success：\n" + JSON.stringify(res));
@@ -224,6 +232,18 @@ Page({
 
     wx.navigateTo({
       url: pagePath.Path_Order_Detail + '?orderno=' + e.currentTarget.dataset.orderno + '&type=1',
+    })
+  },
+
+  /**
+   * 审核待审核
+   * @param {*} e 
+   */
+  tapVerify: function(e) {
+    let index = e.currentTarget.dataset.tapindex;
+    app.globalData.verifyPaymentVoucherOrder = this.data.orderList[index];
+    wx.navigateTo({
+      url: pagePath.Path_Order_VerifyPaymentVoucher,
     })
   },
 
@@ -296,6 +316,5 @@ Page({
         }
       }
     })
-    
   }
 })

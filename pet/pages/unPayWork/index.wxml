@@ -70,6 +70,28 @@
                   bindtap="callPhone"
                   data-phone="{{orderItem.receiverPhone}}">{{orderItem.receiverPhone}}</view>
           </view>
+          <block wx:if='{{parse.showRecommend(orderItem, userInfo)}}'>
+            <block wx:if='{{(orderItem.recommendName!=null&&orderItem.recommendName.length>0) || (orderItem.recommendPhone!=null&&orderItem.recommendPhone.length>0)}}'>
+              <view class="bill-info-person">
+                <block wx:if='{{orderItem.recommendName!=null&&orderItem.recommendName.length>0}}'>
+                  <view class="bill-info-person-label">推荐人:</view>
+                  <view class="bill-info-person-name">{{orderItem.recommendName}}</view>
+                </block>
+                <block wx:if='{{orderItem.recommendPhone!=null&&orderItem.recommendPhone.length>0}}'>
+                  <view class="bill-info-person-label">推荐电话：</view>
+                  <view class="bill-info-person-phone" bindtap="callPhone" data-phone="{{orderItem.recommendPhone}}">{{orderItem.recommendPhone}}</view>
+                </block>
+              </view>
+            </block>
+            <block wx:if='{{orderItem.recommendRemarks!=null&&orderItem.recommendRemarks.length>0}}'>
+              <view class="bill-info-person">
+                <view class="bill-info-person-label">推荐备注:</view>
+              </view>
+              <view class="bill-info-person">
+                <view class="bill-info-person-remark">{{orderItem.recommendRemarks}}</view>
+              </view>
+            </block>
+          </block>
           <view class='bill-info-pay'>
             <view class='bill-info-pay-label'
                   wx:if='{{orderItem.state!= null}}'>状态：</view>
@@ -109,7 +131,7 @@
             </view>
           </view>
         </view>
-        <view class="in-out-port-info-area">
+        <view class="in-out-port-info-area" wx:if='{{orderItem.state=="待付款"}}'>
           <view class="in-out-port-info-item">
             <input class="in-out-port-info-input"
                   placeholder="请输入金额"
@@ -134,6 +156,13 @@
                 data-tapindex="{{orderIndex}}"
                 data-orderno='{{orderItem.orderNo}}'>
           订单详情
+          </view>
+          <view class="bill-operate-button"
+                bindtap="tapVerify"
+                data-tapindex='{{orderIndex}}'
+                data-orderno='{{orderItem.orderNo}}'
+                wx:if='{{orderItem.state=="待审核"}}'>
+          付款审核      
           </view>
         </view>
       </view>
@@ -168,6 +197,14 @@ showReceiver: function(orderItem, userInfo) {
     showReceiver: function(orderItem, userInfo) {
       return true;
     },
+		showRecommend: function(orderItem, userInfo) {
+			if ((orderItem.recommendName!=null&&orderItem.recommendName.length>0) 
+			|| (orderItem.recommendPhone!=null&&orderItem.recommendPhone.length>0)
+			|| (orderItem.recommendRemarks!=null&&orderItem.recommendRemarks.length>0)) {
+				return true;
+			} 
+			return false;
+		},
     getTransportType: function(type){
       if (type == 1) {
         return "专车";

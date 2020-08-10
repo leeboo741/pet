@@ -175,3 +175,27 @@
   line-height: 80rpx;
   text-align: center;
 }
+
+.pay-condition-box{
+  display: flex;
+  flex-direction: column;
+  color: #2d8bf0cb
+}
+
+.pay-condition-title{
+  display: flex;
+  flex-direction: row;
+  font-size: 32rpx;
+  font-weight: bold;
+}
+
+.pay-condition-item-box{
+  display: flex;
+  flex-direction: column;
+}
+
+.pay-condition-item{
+  font-size: 28rpx;
+  color: rgb(170, 170, 170);
+  margin: 8rpx 15rpx;
+}

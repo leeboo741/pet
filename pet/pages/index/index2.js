@@ -152,6 +152,8 @@ Page({
             app.ShareData.payOrderNo = null;
             app.ShareData.payAmount = null;
             app.ShareData.payCustomerNo = null;
+            app.ShareData.shareQRCodePath = null;
+            app.ShareData.shareOtherPayType = null;
           }
         }
       })

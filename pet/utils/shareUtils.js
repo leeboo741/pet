@@ -4,19 +4,28 @@ const app = getApp();
 const Util = require("../utils/util.js");
 const loginUtils = require("../utils/loginUtils.js");
 
+const ShareOtherPayType_Platform = 0;
+const ShareOtherPayType_Business = 1;
+
 /**
  * 分享 代支付
  * @param {*} orderNo 
  * @param {*} amount 
  * @param {*} qrcodePath 
+ * @param {*} otherPayType
  */
-function shareToOtherPay(orderNo, amount, qrcodePath){
-  let tempPath = PagePath.Path_Home + '?type=sharetopay' + '&orderno=' + orderNo + '&amount=' + amount + '&customerno=' + LoginUtil.getCustomerNo() + "&shareopenid=" + loginUtils.getOpenId();
-  return {
-    title: "请你帮忙支付一下",
-    path: tempPath,
-    imageUrl: qrcodePath,
-  }
+function shareToOtherPay(orderNo, amount, qrcodePath, otherPayType){
+  let tempPath = PagePath.Path_Home + '?type=sharetopay' + '&orderno=' + orderNo + '&amount=' + amount + '&customerno=' + LoginUtil.getCustomerNo() + "&shareopenid=" + loginUtils.getOpenId() + "&otherpaytype=" + otherPayType;
+  let data = {
+    title: "请你帮忙支付一下"
+  };
+  if (otherPayType == ShareOtherPayType_Business) {
+    let tempqrcodepath = encodeURIComponent(qrcodePath)
+    tempPath = tempPath + "&shareqrcodepath=" + tempqrcodepath;
+    data.imageUrl = qrcodePath;
+  } 
+  data.path = tempPath;
+  return data;
 }
 
 /**
@@ -115,10 +124,14 @@ function getAppOpenData(options, getResultCallback) {
       let amount = options.amount;
       let customerNo = options.customerno;
       let shareOpenId = options.shareopenid;
+      let shareQRCodePath = decodeURIComponent(options.shareqrcodepath);
+      let shareOtherPayType = options.otherpaytype;
       app.ShareData.openId = shareOpenId;
       app.ShareData.payOrderNo = orderNo;
       app.ShareData.payAmount = amount;
       app.ShareData.payCustomerNo = customerNo;
+      app.ShareData.shareQRCodePath = shareQRCodePath;
+      app.ShareData.shareOtherPayType = shareOtherPayType;
       if (getResultCallback != null && typeof getResultCallback == 'function') {
         getResultCallback('sharetopay', null);
       }
@@ -131,4 +144,6 @@ module.exports = {
   getOpenIdInShareMessage: getOpenIdInShareMessage,
   getAppOpenData: getAppOpenData,
   shareToOtherPay: shareToOtherPay,
+  ShareOtherPayType_Platform,
+  ShareOtherPayType_Business,
 }

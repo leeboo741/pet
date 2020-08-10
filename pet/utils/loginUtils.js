@@ -96,12 +96,26 @@ function getUserInfo() {
   }
 }
 
+/**
+ * 获取员工信息
+ */
 function getStaffInfo() {
   let userInfo = getUserInfo();
   if (userInfo == null) {
     return null;
   }
   return userInfo.staff;
+}
+
+/**
+ * 获取站点信息
+ */
+function getStationInfo() {
+  let staff = getStaffInfo();
+  if (staff == null) {
+    return null;
+  }
+  return staff.station;
 }
 
 /**
@@ -450,6 +464,7 @@ module.exports = {
   saveUserInfo: saveUserInfo,
   getUserInfo: getUserInfo,
   getStaffInfo: getStaffInfo,
+  getStationInfo: getStationInfo,
   deleteUserInfo: deleteUserInfo,
   isLogin: isLogin,
   getPhone: getPhone,

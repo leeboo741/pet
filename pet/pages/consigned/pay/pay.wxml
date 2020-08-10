@@ -52,7 +52,7 @@
     </view>
   </view>
   <!-- 推荐人信息 -->
-  <view class="block-fillet attach-info" >
+  <view class="block-fillet attach-info"  wx:if="{{ userInfo != null && (userInfo.role != 0 || userInfo.business != null)}}">
     <view class="remark-title">推荐人</view>
     <view class='receiveUserInfo'>
       <input name='receiveUserName' 
@@ -71,6 +71,16 @@
             bindinput='inputRecommenderPhone'>
       </input>
     </view>
+    <view class="receiveUserInfo">
+      <input name='custom-price-input'
+            class='input-under custom-price-input' 
+            style="margin: 10rpx 25rpx;"
+            value='{{recommenderRemark}}' 
+            placeholder="推荐人备注"  
+            placeholder-class="input-under-placeholder normal"
+            bindinput='inputRecommenderRemark'>
+      </input>
+    </view>
   </view>
   <!-- 支付价格 -->
   <view class="block-fillet pay-price"  wx:if="{{ userInfo != null && (userInfo.role != 0 || userInfo.business != null)}}">
@@ -86,6 +96,7 @@
         <input name='custom-price-input' 
               type='digit' 
               class='input-under custom-price-input' 
+              style="margin: 10rpx 25rpx;"
               value='{{otherPrice}}' 
               placeholder="自定义价格"  
               placeholder-class="input-under-placeholder normal"
@@ -132,10 +143,10 @@
   <!-- 确认条款 -->
   <view class='block-fillet clause'>
     <view class='clause'>
-      <label class='equity' style='margin-left:25rpx;'>下单后会有专人联系您以确定发运航班，如未发运，全额退款</label>
+      <label class='equity' style='margin-left:25rpx;'>下单后会有专人联系您以确定发运航班</label>
       <view >
         <icon bindtap='checkClauseDetail' class="iconfont icongouhao  {{confirmClause?'choose-color':'normal-color'}}" style='margin-left:25rpx;'></icon>
-        <label bindtap='checkClauseDetail' class="{{confirmClause?'choose-color':'normal-color'}}" style='margin-left:10rpx;font-size:32rpx;'>已阅读并同意《宠物托运交易条款》</label>
+        <label bindtap='checkClauseDetail' class="{{confirmClause?'choose-color':'normal-color'}}" style='margin-left:10rpx;font-size:32rpx;font-weight: bold;'>已阅读并同意《宠物托运交易条款》</label>
       </view>
     </view>
   </view>

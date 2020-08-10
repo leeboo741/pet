@@ -32,6 +32,9 @@ Page({
     otherPayCustomerNo: null,
 
     backTimeIntervial: null,
+
+    conditionOneAgreement: false, // 条件1是否同意
+    conditionTwoAgreement: false, // 条件2是否同意
   },
 
   /**
@@ -153,7 +156,12 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    if (app.globalData.agreeTrasportCondition != null) {
+      this.setData({
+        conditionTwoAgreement: app.globalData.agreeTrasportCondition
+      })
+      app.globalData.agreeTrasportCondition = null;
+    }
   },
 
   /**
@@ -477,10 +485,41 @@ Page({
     })
   },
 
+  /**
+   * 点击支付
+   */
   tapPayOrder: function() {
-
+    if (!this.data.conditionOneAgreement) {
+      wx.showToast({
+        title: '请确认宠物是否符合条件！',
+        icon: 'none'
+      })
+      return;
+    }
+    if(!this.data.conditionTwoAgreement) {
+      wx.showToast({
+        title: '请查看并同意交易条款后支付！',
+        icon: 'none'
+      })
+      return;
+    }
     wx.navigateTo({
       url: PagePath.Path_Order_Pay_SubPay + "?amount=" + app.ShareData.payAmount + "&orderno=" + app.ShareData.payOrderNo + "&customerno=" + loginUtil.getCustomerNo(),
     })
+  },
+
+  /**
+   * 点击条款
+   */
+  tapCondition: function(e){
+    if (e.currentTarget.dataset.index == '0') {
+      this.setData({
+        conditionOneAgreement: !this.data.conditionOneAgreement
+      })
+    } else if (e.currentTarget.dataset.index == "1") {
+      wx.navigateTo({
+        url: PagePath.Path_Order_Text,
+      })
+    }
   }
 })

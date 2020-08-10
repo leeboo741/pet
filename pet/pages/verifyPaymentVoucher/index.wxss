@@ -1,0 +1,52 @@
+/* pages/verifyPaymentVoucher/index.wxss */
+.payment-voucher-box{
+  width:100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.payment-voucher-content{
+  width: 400rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 30rpx;
+}
+
+.payment-voucher-image{
+  width: 350rpx;
+}
+
+.bottom-button-box{
+  position: fixed; 
+  bottom: 0; 
+  left: 0; 
+  right: 0; 
+  height: 90rpx; 
+  text-align: center; 
+  line-height: 90rpx; 
+  background: #ee2c2c; 
+  color: white; 
+  font-size: 32rpx; 
+  display: flex; 
+  flex-direction: row;
+}
+
+.bottom-button-left{
+  line-height: 90rpx;
+  height: 100%; 
+  flex-grow: 1; 
+  border: 1rpx solid #ee2c2c;
+  background: white; 
+  color: #ee2c2c;
+}
+
+.bottom-button-right{
+  height: 100%; 
+  flex-grow: 1; 
+  background: #ee2c2c; 
+  color: white;
+  line-height: 90rpx;
+}

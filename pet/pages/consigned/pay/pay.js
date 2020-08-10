@@ -39,6 +39,7 @@ Page({
 
     recommenderName: '', //  推荐人名称
     recommenderPhone: '', // 推荐人电话
+    recommenderRemark: '', // 推荐人备注
 
     payPriceTypeList: [
       {
@@ -182,6 +183,12 @@ Page({
    */
   inputRecommenderPhone: function(e) {
     this.data.recommenderPhone = e.detail.value;
+  },
+  /**
+   * 输入推荐人备注
+   */
+  inputRecommenderRemark: function(e) {
+    this.data.recommenderRemark = e.detail.value;
   },
   /**
    * 输入自定义价格
@@ -414,8 +421,18 @@ Page({
       "remarks": this.data.remark,
 
       "payAmountType" : this.data.payPriceType.typeId,
-      "recommendName" : this.data.recommenderName,
-      "recommendPhone" : this.data.recommenderPhone,
+    }
+
+    if (!Util.checkEmpty(this.data.recommenderName)) {
+      tempOrderObj.recommendName = this.data.recommenderName;
+    }
+
+    if (!Util.checkEmpty(this.data.recommenderPhone)) {
+      tempOrderObj.recommendPhone = this.data.recommenderPhone;
+    }
+
+    if (!Util.checkEmpty(this.data.recommenderRemark)) {
+      tempOrderObj.recommendRemarks = this.data.recommenderRemark;
     }
 
     if (!Util.checkEmpty(this.data.otherPrice)) {

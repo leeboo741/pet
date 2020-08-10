@@ -42,7 +42,13 @@ const formatNumber = n => {
 }
 
 function checkEmpty(obj) {
-  if (obj == null || obj.length <= 0) {
+  if (obj == null || obj==undefined) {
+    return true;
+  }
+  if ((typeof obj == 'string' || obj instanceof Array) && obj.length <= 0) {
+    return true;
+  } 
+  if (typeof obj == 'object' && Object.keys(obj).length <= 0) {
     return true;
   }
   return false;

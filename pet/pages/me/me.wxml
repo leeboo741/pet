@@ -170,6 +170,15 @@
         </i-icon>
         <label>申请</label>
       </view>
+      <view class="btnOper"
+            bindtap="tapCollectionQRCode"
+            wx:if='{{userInfo.role == 1}}'>
+        <i-icon type='picture'
+                color='#F1B000'
+                size="32">
+        </i-icon>
+        <label>收款码</label>
+      </view>
     </view>
   </view>
   <!--订单信息-->

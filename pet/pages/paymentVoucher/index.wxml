@@ -1,0 +1,25 @@
+<!--pages/paymentVoucher/index.wxml-->
+<i-panel i-class='panel'>
+  <i-cell title='订单编号'
+          value='{{orderNo}}'>
+  </i-cell>
+</i-panel>
+<i-panel title='付款凭证'
+         i-class='panel'>
+  <i-cell>
+    <view slot='header'
+          class="paymentvoucher-box">
+      <view class="paymentvoucher-content" wx:if='{{paymentVoucher != null && paymentVoucher.length > 0}}'>
+        <block>
+          <image class="paymentvoucher-image" mode='widthFix' src='{{paymentVoucher}}'>
+          </image>
+        </block>
+      </view>
+      <button size='mini' type='primary' class="select-paymentvoucher-button" bindtap="tapSelectPaymentVoucher">选择上传付款凭证</button>
+    </view>
+  </i-cell>
+</i-panel>
+
+<view style='heigh: 100rpx; width: 100%'></view>
+
+<view style='position: fixed; bottom: 0; left: 0; right: 0; height: 90rpx; text-align: center; line-height: 90rpx; background: #ee2c2c; color: white; font-size: 32rpx;' bindtap="tapCommit">提交</view>

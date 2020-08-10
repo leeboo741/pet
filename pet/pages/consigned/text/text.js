@@ -2,6 +2,7 @@
 
 const ShareUtil = require("../../../utils/shareUtils.js"); 
 var WxParse = require("../../../libs/wxParse/wxParse.js");
+const app = getApp();
 Page({
 
   /**
@@ -79,6 +80,7 @@ Page({
     prevPage.setData({
       confirmClause: false,
     })
+    app.globalData.agreeTrasportCondition = false;
     wx.navigateBack({
       
     })
@@ -90,6 +92,7 @@ Page({
     prevPage.setData({
       confirmClause: true,
     })
+    app.globalData.agreeTrasportCondition = true;
     wx.navigateBack({
 
     })

@@ -1,29 +1,80 @@
 // pages/consigned/subPay/subPay.js
-import drawQrcode from '../../../libs/weapp.qrcode.esm.js';
+import loginUtils from '../../../utils/loginUtils';
+import util from '../../../utils/util.js';
+import { RES_CODE_SUCCESS } from '../../../utils/config';
 const Paymanager = require('../../../manager/payManager/payManager');
-const ShareManager = require('../../../utils/shareUtils')
+const ShareManager = require('../../../utils/shareUtils');
 const app = getApp();
 const PagePath = require('../../../utils/pagePath');
 
-const W = wx.getSystemInfoSync().windowWidth;
-const rate = 750.0 / W;
-// 300rpx 在6s上为 150px
-const qrcode_w = 440 / rate;
-const qrcode_image_w = 80 / rate;
-const qrcode_image_dx = 180 / rate;
-const qrcode_padding = 12 / rate;
-qrcode_w: qrcode_w,
+const Config = require("../../../utils/config");
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-    qrcodePath: null,
-    paymentAmount: 0,
-    orderNo: null,
-    customerNo: null,
-    hiddenOtherPayButton: false
+    logoUrl: null,
+
+    userRole: null, // 当前用户角色
+
+    orderInfo: null, // 订单详情
+    orderStationQrcodePath: null, // 当前订单所属站点的微信支付二维码
+
+    orderNo: null, // 支付订单号
+
+    shareOtherPayQRPath: null, // 分享人分享订单所属站点的微信支付二维码
+    shareOtherPayType: null, // 分享人选择的支付类型 平台/商家
+
+    ableOtherPay: false, // 是否允许代支付 (代支付进入不能二次代支付, 只有自己生成的订单才能发起代支付)
+
+    otherPayType: [
+      {
+        typeName: '平台账户',
+        typeId: ShareManager.ShareOtherPayType_Platform,
+      },
+      {
+        typeName: '商户账户',
+        typeId: ShareManager.ShareOtherPayType_Business,
+      }
+    ], // 代支付类型列表
+    currentOtherPayType: null, // 选中代支付类型
+  },
+
+  /**
+   * 
+   * @param {*} options 
+   */
+  getOrderDetail: function() {
+    let that = this;
+    wx.showLoading({
+      title: '请稍等...',
+    })
+    wx.request({
+      url: Config.URL_Service + Config.URL_OrderInfo(this.data.orderNo),
+      success(res) {
+        console.log(res);
+        wx.hideLoading()
+        let qrcodePath = res.data.data.station.collectionQRCode;
+        if (res.data.code == RES_CODE_SUCCESS) {
+          that.setData({
+            orderInfo: res.data.data,
+          })
+        } else {
+          wx.showToast({
+            title: '获取订单失败',
+            icon: 'none'
+          })
+        }
+      },
+      fail(res) {
+        wx.hideLoading()
+        wx.showToast({
+          title: '查询订单失败',
+          icon: 'none'
+        })
+      },
+    })
   },
 
   /**
@@ -31,46 +82,64 @@ Page({
    */
   onLoad: function (options) {
     this.setData({
-      paymentAmount: options.amount,
+      userRole: loginUtils.getUserInfo().role,
+      currentOtherPayType: this.data.otherPayType[0],
       orderNo: options.orderno,
-      customerNo: options.customerno,
-      hiddenOtherPayButton: app.ShareData.payOrderNo!=null&&app.ShareData.payOrderNo==options.orderno
+      ableOtherPay: !(app.ShareData.payOrderNo!=null&&app.ShareData.payOrderNo==options.orderno),
+      shareOtherPayType: app.ShareData.shareOtherPayType
     })
-
-    this.loadQRCode();
+    this.getOrderDetail();
   },
 
   /**
-   * 加载二维码
+   * 点击完成支付
    */
-  loadQRCode: function () {
-    let codeStr = "?orderno=" + this.data.orderNo + "&customerno=" + this.data.customerNo + "&paymentamount=" + this.data.paymentAmount;
-    let that = this;
-    drawQrcode({
-      width: 200,
-      height: 200,
-      canvasId: 'canvas',
-      text: codeStr,
-      image: {
-        dx: qrcode_image_dx,
-        dy: qrcode_image_dx,
-        dWidth: qrcode_image_w,
-        dHeight: qrcode_image_w,
-      },
-      callback: () => {
-        //将生成好的图片保存到本地，需要延迟一会，绘制期间耗时
-        setTimeout(function () {
-          wx.canvasToTempFilePath({
-            canvasId: 'canvas',
-            success: function (res) {
-              var tempFilePath = res.tempFilePath;
-              that.setData({
-                qrcodePath: tempFilePath
-              })
-            }
-          },that);
-        }, 0);
-      },
+  tapCompletePay: function() {
+    wx.showLoading({
+      title: '处理中...',
+    })
+    Paymanager.completePay(this.data.orderInfo.orderNo, function(res){
+      wx.hideLoading()
+      if (res.code == RES_CODE_SUCCESS) {
+        wx.navigateBack()
+      } else {
+        wx.showToast({
+          title: '支付失败',
+          icon: 'none'
+        })
+      }
+    },function(res){
+      wx.hideLoading()
+      wx.showToast({
+        title: '支付失败',
+        icon: 'none'
+      })
+    })
+  },
+
+  /**
+   * 点击代支付
+   */
+  tapPayForOther: function() {
+    wx.showLoading({
+      title: '支付中...',
+    })
+    Paymanager.payOtherOrder(this.data.orderInfo.orderNo, loginUtils.getCustomerNo(),function(){
+      wx.hideLoading()
+      app.ShareData.payOrderNo = null;
+      app.ShareData.payAmount = null;
+      app.ShareData.payCustomerNo = null;
+      app.ShareData.shareQRCodePath = null;
+      app.ShareData.shareOtherPayType = null;
+      app.globalData.showToBeShip = true;
+      wx.switchTab({
+        url: PagePath.Path_Me_Index,
+      })
+    }, function(){
+      wx.showToast({
+        title: '支付失败',
+        icon: 'none'
+      })
     })
   },
 
@@ -78,36 +147,95 @@ Page({
    * 点击支付
    */
   tapPay: function(){
-    if (app.ShareData.payOrderNo!=null&&app.ShareData.payOrderNo==this.data.orderNo) {
-      Paymanager.payOtherOrder(this.data.orderNo, this.data.customerNo,function(){
-        app.ShareData.payOrderNo = null;
-        app.ShareData.payAmount = null;
-        app.ShareData.payCustomerNo = null;
-        app.globalData.showToBeShip = true;
-        wx.switchTab({
-          url: PagePath.Path_Me_Index,
-        })
-      }, function(){
-        wx.showToast({
-          title: '支付失败',
-          icon: 'none'
-        })
+    wx.showLoading({
+      title: '支付中...',
+    })
+    Paymanager.payOrder(this.data.orderInfo.orderNo, loginUtils.getCustomerNo(),function(){
+      wx.hideLoading()
+      app.globalData.showToBeShip = true;
+      wx.switchTab({
+        url: PagePath.Path_Me_Index,
       })
-    } else {
-      Paymanager.payOrder(this.data.orderNo, this.data.customerNo,function(){
-        app.globalData.showToBeShip = true;
-        wx.switchTab({
-          url: PagePath.Path_Me_Index,
-        })
-      }, function(){
-        wx.showToast({
-          title: '支付失败',
-          icon: 'none'
-        })
+    }, function(){
+      wx.showToast({
+        title: '支付失败',
+        icon: 'none'
       })
-    }
+    })
+  },
+  /**
+   * 选择代支付类型
+   * @param {*} e 
+   */
+  selectOtherPayType: function(e) {
+    this.setData({
+      currentOtherPayType: this.data.otherPayType[e.currentTarget.dataset.index]
+    })
   },
 
+  /**
+   * 保存商家收款码
+   * @param {*} path 收款码地址
+   * @param {*} saveSuccessCallback 保存成功回调
+   */
+  saveQRCode: function(path, saveSuccessCallback) {
+    let that = this;
+    wx.showLoading({
+      title: '保存中...',
+    })
+    wx.downloadFile({
+      url: path,
+      success(res) {
+        if (res.statusCode == 200) {
+          wx.saveImageToPhotosAlbum({
+            filePath: res.tempFilePath,
+            success(saveRes) {
+              wx.showModal({
+                title:'保存完成,请前往支付',
+                content: '请打开微信扫一扫 -> 选择商家收款码 -> 支付 -> 截图 -> 订单列表选择上传截图',
+                showCancel: false,
+                success(res) {
+                  if (res.confirm) {
+                    if (util.checkIsFunction(saveSuccessCallback)) {
+                      saveSuccessCallback(res)
+                    }
+                  }
+                }
+              })
+            },
+            complete(saveRes){
+              wx.hideLoading()
+            }
+          })
+        }
+      },
+      fail(res){
+        wx.hideLoading()
+        wx.showToast({
+          title: '下载付款码失败',
+          icon:'none'
+        })
+      },
+    })
+  },
+
+  /**
+   * 点击保存商家收款码
+   */
+  tapSaveQRCode: function(e) {
+    console.log('保存商家收款码')
+    this.saveQRCode(e.currentTarget.dataset.path, function(res){
+      app.ShareData.payOrderNo = null;
+      app.ShareData.payAmount = null;
+      app.ShareData.payCustomerNo = null;
+      app.ShareData.shareQRCodePath = null;
+      app.ShareData.shareOtherPayType = null;
+      wx.switchTab({
+        url: PagePath.Path_Me_Index,
+      })
+    })
+  },
+  
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
@@ -154,6 +282,7 @@ Page({
    * 用户点击右上角分享
    */
   onShareAppMessage: function () {
-    return ShareManager.shareToOtherPay(this.data.orderNo, this.data.paymentAmount, this.data.qrcodePath);
-  }
+    console.log('shareAppMessage');
+    return ShareManager.shareToOtherPay(this.data.orderInfo.orderNo, this.data.orderInfo.paymentAmount, this.data.orderInfo.station.collectionQRCode, this.data.currentOtherPayType.typeId);
+  },
 })

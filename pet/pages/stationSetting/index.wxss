@@ -1,0 +1,24 @@
+/* pages/stationSetting/index.wxss */
+.collectionqrcode-box{
+  width:100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.qrcode-content{
+  width: 400rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 30rpx;
+}
+
+.qrcode-image{
+  width: 350rpx;
+}
+
+.select-newcode-button{
+  width: 60%;
+}

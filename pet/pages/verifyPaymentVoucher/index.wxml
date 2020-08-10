@@ -1,0 +1,35 @@
+<!--pages/verifyPaymentVoucher/index.wxml-->
+<i-panel title='买家上传付款凭证'
+         i-class='panel'>
+  <i-cell-group>
+    <i-cell>
+      <view slot='header'
+            class="payment-voucher-box">
+        <view class="payment-voucher-content">
+          <block>
+            <image class="payment-voucher-image" mode='widthFix' src='{{order.paymentVoucher}}'>
+            </image>
+          </block>
+        </view>
+      </view>
+    </i-cell>
+    <i-cell title='说明:'>
+      <view slot='footer'
+            style='width: 60%; display: flex; flex-direction: row; justify-content: flex-end;'>
+        <input placeholder="请输入说明"
+               bindinput="inputFeedback"
+               style='width: 100%'>
+
+        </input>
+      </view>
+    </i-cell>
+  </i-cell-group>
+</i-panel>
+
+
+<view style='heigh: 100rpx; width: 100%'></view>
+
+<view class='bottom-button-box'>
+  <view class="bottom-button-left" bindtap="tapReject">拒绝</view>
+  <view class="bottom-button-right" bindtap="tapVerify">通过</view>
+</view>

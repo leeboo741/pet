@@ -1,6 +1,7 @@
 const LoginUtil = require('../../utils/loginUtils');
 const Config = require('../../utils/config');
 const Utils = require('../../utils/util');
+const loginUtils = require('../../utils/loginUtils');
 
 /**
  * 支付代支付订单
@@ -191,9 +192,70 @@ function payPremium(billNo, paySuccessCallback, payFailCallback){
   })
 }
 
+/**
+ * 完成支付操作
+ * @param {*} orderNo 
+ * @param {*} paySuccessCallback 
+ * @param {*} payFailCallback 
+ */
+function completePay(orderNo, paySuccessCallback, payFailCallback) {
+  wx.request({
+    url: Config.URL_Service + Config.URL_CompletePay,
+    data: {
+      orderNo: orderNo,
+      customerNo: loginUtils.getCustomerNo()
+    },
+    success(res) {
+      console.log(res);
+      if (Utils.checkIsFunction(paySuccessCallback)) {
+        paySuccessCallback(res.data);
+      }
+    },
+    fail(res) {
+      console.log(res)
+      if (Utils.checkIsFunction(payFailCallback)) {
+        payFailCallback(res);
+      }
+    }
+  })
+}
+
+/**
+ * 审核付款凭证
+ * @param {string} orderNo 订单编号
+ * @param {boolean} result 是否审核通过
+ * @param {string} feedback 反馈
+ * @param {function} successCallback 成功回调
+ * @param {function} failCallback 失败回调
+ */
+function verifyPaymentVoucher(orderNo, result, feedback, successCallback, failCallback) {
+  wx.request({
+    url: Config.URL_Service + Config.URL_Verify_PaymentVoucher,
+    data: {
+      orderNo: orderNo,
+      result: result,
+      feedback: feedback
+    },
+    success(res) {
+      console.log(res)
+      if (Utils.checkIsFunction(successCallback)) {
+        successCallback(res.data)
+      }
+    },
+    fail(res) {
+      console.log(res)
+      if (Utils.checkIsFunction(failCallback)) {
+        failCallback(res);
+      }
+    }
+  })
+}
+
 module.exports = {
   payOtherOrder,
   payOrder,
   payRecharge,
   payPremium,
+  completePay,
+  verifyPaymentVoucher,
 }
