@@ -7,5 +7,6 @@
     "i-icon": "/lee-components/leeIcon/index",
     "i-load-foot-item": "/lee-components/leeLoadingFootItem/index"
   },
-  "navigationBarTitleText": "网点"
+  "navigationBarTitleText": "网点",
+  "enablePullDownRefresh": true
 }

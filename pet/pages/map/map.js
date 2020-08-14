@@ -221,7 +221,7 @@ Page({
       function reGeocoderCallback(res) {
         // 如果解析出来的城市 和 当前城市相同，设置中心标注点
         // 如果不同，提醒超出范围
-        if (res.address_component.city == that.data.city) {
+        if (res.address_component.city.indexOf(that.data.city) != -1 || that.data.city.indexOf(res.address_component.city) != -1) {
           that.setData({
             address: res.address,
             province: res.address_component.province,

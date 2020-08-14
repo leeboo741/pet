@@ -5,6 +5,7 @@ const LoginUtil = require("../../../utils/loginUtils.js");
 const Util = require("../../../utils/util.js");
 const Config = require("../../../utils/config.js");
 const ShareUtil = require("../../../utils/shareUtils.js");
+const withdrawManager = require("../../../manager/withdrawManager/withdrawManager.js");
 
 Page({
 
@@ -145,50 +146,37 @@ Page({
   * @param getDataCallback
   */
   requestData: function (offset, getDataCallback) {
-    let tempUrl = "";
-    let tempData = {};
+    let type = null;
     if (LoginUtil.getStationNo() != null) {
-      tempUrl = Config.URL_Service + Config.URL_WithdrawFlow_Station;
-      tempData = {
-        stationNo: LoginUtil.getStationNo(),
-        offset: offset,
-        limit: Limit
-      }
+      type = 0;
     } else if (LoginUtil.getBusinessNo() != null) {
-      tempUrl = Config.URL_Service + Config.URL_WithdrawFlow_Business;
-      tempData = {
-        businessNo : LoginUtil.getBusinessNo(),
-        offset : offset,
-        limit : Limit
-      }
+      type = 1;
     }
-    wx.request({
-      url: tempUrl,
-      data: tempData,
-      success(res) {
-        console.log("提现流水 success： \n" + JSON.stringify(res));
-        if (res.data.code == Config.RES_CODE_SUCCESS) {
-          if (Util.checkIsFunction(getDataCallback)) {
-            getDataCallback(res.data.data)
-          }
-        } else {
-          let msg = res.data.message;
-          if (msg == null) {
-            msg = "获取流水失败";
-          }
-          wx.showToast({
-            title: msg,
-            icon: 'none'
-          })
+    this.getWithdrawFlow(type, offset, function(success, data) {
+      if (success) {
+        if (Util.checkIsFunction(getDataCallback)) {
+          getDataCallback(res.data.data)
         }
-      },
-      fail(res) {
-        console.log("提现流水 fail \n" + JSON.stringify(res));
+      } else {
         wx.showToast({
-          title: '系统异常',
+          title: '获取提现流水失败',
           icon: 'none'
         })
-      },
+      }
     })
+  },
+
+  /**
+   * 请求提现流水数据
+   * @param {number} type 0 station 1 business
+   * @param {number} offset 
+   * @param {function(boolean, object)} callback 
+   */
+  getWithdrawFlow: function(type, offset, callback) {
+    if (type == 0) {
+      withdrawManager.getStationWithdrawFlow(offset, callback);
+    } else {
+      withdrawManager.getBusinessWithdrawFlow(offset, callback);
+    }
   }
 })

@@ -8,6 +8,8 @@ const Config = require("../../../utils/config.js");
 const ShareUtil = require("../../../utils/shareUtils.js");
 var QQMapWX = require('../../../libs/qqmap-wx-jssdk.min.js');
 const LoadFootItemState = require("../../../lee-components/leeLoadingFootItem/loadFootObj.js");
+const stationManager = require("../../../manager/stationManager/stationManager.js");
+const util = require("../../../utils/util.js");
 
 const Limit = 20;
 
@@ -42,17 +44,7 @@ Page({
     qqmapsdk = new QQMapWX({
       key: Config.Key_QQ_Map
     });
-    let that = this;
-    this.requestLocation(function getLocationCallback(res){
-      // 将经纬度交给 globalData 保管
-      const latitude = res.latitude;
-      const longitude = res.longitude;
-      that.data.currentLocation = {};
-      that.data.currentLocation.latitude = latitude;
-      that.data.currentLocation.longitude = longitude;
-      that.setMapCenter(that.data.currentLocation);
-      that.requestStation(that.data.currentLocation);
-    });
+    wx.startPullDownRefresh();
   },
 
   /**
@@ -89,7 +81,18 @@ Page({
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
-
+    let that = this;
+    that.data.pageIndex = 0;
+    this.requestLocation(function getLocationCallback(res){
+      // 将经纬度交给 globalData 保管
+      const latitude = res.latitude;
+      const longitude = res.longitude;
+      that.data.currentLocation = {};
+      that.data.currentLocation.latitude = latitude;
+      that.data.currentLocation.longitude = longitude;
+      that.setMapCenter(that.data.currentLocation);
+      that.requestStation(that.data.currentLocation, that.data.pageIndex);
+    });
   },
 
   /**
@@ -103,7 +106,7 @@ Page({
     this.setData({
       loadState: LoadFootItemState.Loading_State_Loading,
     })
-    this.requestStation(this.data.currentLocation);
+    this.requestStation(this.data.currentLocation, this.data.pageIndex);
   },
 
   /**
@@ -156,17 +159,17 @@ Page({
   /**
    * 组装marker列表
    */
-  createMarkerListByBusinessList: function (businessList, showCityName, markerListCallback) {
+  createMarkerListByStationList: function (stationList, showCityName, markerListCallback) {
     let that = this;
     let markerList = [];
-    for (var index = 0; index < businessList.length; index++) {
-      var businessObj = businessList[index];
-      let businessLocation = {
-        latitude: businessObj.latitude,
-        longitude: businessObj.longitude
+    for (var index = 0; index < stationList.length; index++) {
+      var stationObj = stationList[index];
+      let stationLocation = {
+        latitude: stationObj.lat,
+        longitude: stationObj.lng
       }
-      let businessName = showCityName ? "" : businessObj.businessName;
-      markerList.push(that.createMarker(index, businessLocation, businessName, businessObj));
+      let stationName = showCityName ? "" : stationObj.stationName;
+      markerList.push(that.createMarker(index, stationLocation, stationName, stationObj));
     }
     if (markerListCallback && typeof markerListCallback == 'function') {
       markerListCallback(markerList);
@@ -187,7 +190,7 @@ Page({
       iconPath: "/resource/location_marker.png",
       width: "60rpx",
       height: "60rpx",
-      businessObj:obj
+      stationObj:obj
     }
     if (name!=null&&name.length > 0) {
       marker.label = {
@@ -300,8 +303,8 @@ Page({
     let tempStation = this.data.allStationList[e.currentTarget.dataset.index];
     this.setMapScale(Detail_Scale);
     this.setMapCenter({
-      latitude: tempStation.latitude,
-      longitude: tempStation.longitude
+      latitude: tempStation.lat,
+      longitude: tempStation.lng
     })
   },
 
@@ -310,7 +313,7 @@ Page({
    */
   tapStationName: function (e) {
     let tempStation = this.data.allStationList[e.currentTarget.dataset.index];
-    console.log("点击驿站名称: " + tempStation.businessName + " | 驿站编号: " + tempStation.businessNo);
+    console.log("点击驿站名称: " + tempStation.stationName + " | 驿站编号: " + tempStation.stationNo);
   },
 
   /**
@@ -319,8 +322,8 @@ Page({
   tapStationAddress: function (e) {
     let tempStation = this.data.allStationList[e.currentTarget.dataset.index];
     wx.openLocation({
-      latitude: tempStation.latitude,
-      longitude: tempStation.longitude
+      latitude: tempStation.lat,
+      longitude: tempStation.lng
     })
   },
 
@@ -339,7 +342,7 @@ Page({
   tapWXQRCode: function(e) {
     let tempStation = this.data.allStationList[e.currentTarget.dataset.index];
     wx.previewImage({
-      urls: [tempStation.weChatImg],
+      urls: [tempStation.collectionQRCode],
     })
   },
 
@@ -352,8 +355,8 @@ Page({
    */
   tapMarker: function (e) {
     let index = e.markerId;
-    let businessObj = this.data.mapMarkers[index].businessObj;
-    console.log('点击商家标注: ' + JSON.stringify(businessObj));
+    let stationObj = this.data.mapMarkers[index].stationObj;
+    console.log('点击商家标注: ' + JSON.stringify(stationObj));
   },
 
   /**
@@ -399,8 +402,8 @@ Page({
     let that = this;
     if (scale <= Province_Scale) {
       this.data.province = null;
-      this.requestCityGroup(function getCityDataCallback(dataSource){
-        that.createMarkerListByBusinessList(dataSource,true, function getMarkerListCallback(markers){
+      this.requestCityGroup(function(dataSource){
+        that.createMarkerListByStationList(dataSource,true, function(markers){
           that.setData({
             mapMarkers: markers
           })
@@ -414,8 +417,8 @@ Page({
           // 如果不同，提醒超出范围
           if (res.address_component.province != that.data.province) {
             that.data.province = res.address_component.province;
-            that.requestBusinessListByProvince(that.data.province, function getBusinessListCallback(dataSource){
-              that.createMarkerListByBusinessList(dataSource, false, function createMarkersCallback(markers){
+            that.requestStationListByProvince(that.data.province, function(dataSource){
+              that.createMarkerListByStationList(dataSource, false, function(markers){
                 that.setData({
                   mapMarkers: markers
                 })
@@ -433,21 +436,12 @@ Page({
    * @param getCityGroupCallback
    */
   requestCityGroup: function(getCityGroupCallback) {
-    wx.request({
-      url: Config.URL_Service + Config.URL_GetBusinessCityGroup,
-      success(res) {
-        if (res.data.code == Config.RES_CODE_SUCCESS) {
-          if (getCityGroupCallback && typeof getCityGroupCallback == 'function') {
-            getCityGroupCallback(res.data.data);
-          }
-        } else {
-          wx.showToast({
-            title: '请求失败:' + res.data.code,
-            icon: 'none'
-          })
+    stationManager.getStationCityGroup(function(success, data) {
+      if (success) {
+        if (util.checkIsFunction(getCityGroupCallback)) {
+          getCityGroupCallback(data);
         }
-      },
-      fail(res) {
+      } else {
         wx.showToast({
           title: '请求失败',
           icon:'none'
@@ -459,22 +453,13 @@ Page({
   /**
    * 获取省份商铺信息
    */
-  requestBusinessListByProvince: function(province, getBusinessByProvinceCallback){
-    wx.request({
-      url: Config.URL_Service + Config.URL_GetBusinessListByProvince + province,
-      success(res) {
-        if (res.data.code == Config.RES_CODE_SUCCESS) {
-          if (getBusinessByProvinceCallback && typeof getBusinessByProvinceCallback == 'function') {
-            getBusinessByProvinceCallback(res.data.data);
-          }
-        } else {
-          wx.showToast({
-            title: '请求失败:' + res.data.code,
-            icon: 'none'
-          })
+  requestStationListByProvince: function(province, getBusinessByProvinceCallback){
+    stationManager.getStationListByProvince(province, function(success, data) {
+      if (success) {
+        if (util.checkIsFunction(getBusinessByProvinceCallback)) {
+          getBusinessByProvinceCallback(data);
         }
-      },
-      fail(res) {
+      } else {
         wx.showToast({
           title: '请求失败',
           icon: 'none'
@@ -485,54 +470,42 @@ Page({
   /**
    * 请求数据
    */
-  requestStation: function (location) {
+  requestStation: function (location, offset) {
     let that = this;
-    wx.request({
-      url: Config.URL_Service + Config.URL_GetBusinessByPosition,
-      data: {
-        latitude: location.latitude,
-        longitude: location.longitude,
-        offset: this.data.pageIndex,
-        limit: Limit
-      },
-      success(res) {
-        console.log("获取周边商家列表 success: \n" + JSON.stringify(res));
-        if (res.data.code != Config.RES_CODE_SUCCESS) {
-          wx.showToast({
-            title: '获取周边商家列表错误',
-            icon: 'none'
-          })
+    stationManager.getStaionByPosition(location, offset, Limit, function(success, data) {
+      if (offset == 0) {
+        wx.stopPullDownRefresh({
+          success: (res) => {},
+        })
+      }
+      if (success) {
+        that.data.pageIndex = that.data.pageIndex + Limit;
+        let tempData = that.data.allStationList;
+        let tempLoadState = LoadFootItemState.Loading_State_Normal;
+        if (offset == 0) {
+          tempData = data;
+          tempLoadState = LoadFootItemState.Loading_State_Normal;
         } else {
-          if (that.data.pageIndex == 0) {
-            that.setData({
-              allStationList: res.data.data,
-              pageIndex: that.data.pageIndex + Limit,
-              loadState: LoadFootItemState.Loading_State_Normal
-            })
+          tempData = that.data.allStationList.concat(data);
+          if (data.length < Limit) {
+            tempLoadState = LoadFootItemState.Loading_State_End;
           } else {
-            let tempData = that.data.allStationList.concat(res.data.data);
-            that.data.pageIndex = that.data.pageIndex + Limit;
-            if (res.data.data.length < Limit) {
-              that.setData({
-                allStationList: tempData,
-                loadState: LoadFootItemState.Loading_State_End
-              })
-            } else {
-              that.setData({
-                allStationList: tempData,
-                loadState: LoadFootItemState.Loading_State_Normal
-              })
-            }
+            tempLoadState = LoadFootItemState.Loading_State_Normal;
           }
         }
-      },
-      fail(res) {
-        console.log("获取周边商家列表 fail: \n" + JSON.stringify(res));
+        that.setData({
+          allStationList: tempData,
+          loadState: tempLoadState
+        })
+      } else {
         wx.showToast({
-          title: '获取周边商家列表失败',
+          title: '获取站点列表失败',
           icon: 'none'
         })
-      },
+        that.setData({
+          loadState: LoadFootItemState.Loading_State_Normal
+        })
+      }
     })
   },
 })

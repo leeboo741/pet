@@ -9,6 +9,7 @@ const config = require("../../utils/config.js");
 const loginUtil = require("../../utils/loginUtils.js");
 const pagePath = require("../../utils/pagePath.js");
 const ShareUtil = require("../../utils/shareUtils.js");
+const withdrawManager = require("../../manager/withdrawManager/withdrawManager.js");
 
 Page({
 
@@ -125,68 +126,49 @@ Page({
       title: '请稍等...',
     })
     let that = this;
-
-    let tempUrl = "";
-    let tempData = {};
-    
+    let type = null;
     if (loginUtil.getStationNo() != null) {
-      tempUrl = config.URL_Service + config.URL_Withdraw_Station;
-      tempData = {
-        customerNo: loginUtil.getCustomerNo(),
-        amount: this.data.withdrawalAmount
-      }
+      type = 0;
     } else if (loginUtil.getBusinessNo() != null) {
-      tempUrl = config.URL_Service + config.URL_Withdraw_Business;
-      tempData = {
-        businessNo: loginUtil.getBusinessNo(),
-        amount: this.data.withdrawalAmount
-      }
+      type = 1;
     }
-
-    wx.request({
-      url: tempUrl,
-      data: tempData,
-      header: {
-        'content-type': 'application/x-www-form-urlencoded'
-      },
-      method: "POST", // 请求方式
-      success(res) {
-        wx.hideLoading();
-        console.log("提现 success : \n" + JSON.stringify(res));
-        if (res.data.code == config.RES_CODE_SUCCESS && res.data.data > 0) {
-          wx.showModal({
-            title: '提现申请已经提交',
-            content: '请耐心等待...',
-            showCancel: false,
-            success(res) {
-              if (res.confirm) {
-                that.setData({
-                  withdrawalAmount: null
-                })
-                that.checkBalanceBuffer();
-              }
+    this.withdraw(type, this.data.withdrawalAmount, function(success, data) {
+      wx.hideLoading();
+      if (success) {
+        wx.showModal({
+          title: '提现申请已经提交',
+          content: '请耐心等待...',
+          showCancel: false,
+          success(res) {
+            if (res.confirm) {
+              that.setData({
+                withdrawalAmount: null
+              })
+              that.checkBalanceBuffer();
             }
-          })
-        } else {
-          wx.showToast({
-            title: '提现失败',
-            icon: 'none'
-          })
-        }
-        
-      },
-      fail(res) {
-        wx.hideLoading();
-        console.log("提现 fail : \n" + JSON.stringify(res));
-        wx.showToast({
-          title: '系统异常',
-          icon: "none"
+          }
         })
-      },
-      complete(res) {
-        console.log("提现 complete : \n" + JSON.stringify(res));
-      },
+      } else {
+        wx.showToast({
+          title: '提现失败',
+          icon: 'none'
+        })
+      }
     })
+  },
+
+  /**
+   * 请求提现接口
+   * @param {number} type 0 station 1 business
+   * @param {number} amount 提现金额
+   * @param {function(boolean, object)} callback 回调
+   */
+  withdraw: function(type, amount, callback) {
+    if (type == 0) {
+      withdrawManager.stationWithdraw(amount, callback);
+    } else if (type == 1){
+      withdrawManager.businessWithdraw(amount, callback);
+    }
   },
 
   /**

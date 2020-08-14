@@ -25,8 +25,10 @@
         bindtap="tapWithdrawal">
   提现
   </view>
+  <view style='color: #ee2c2c; font-size: 28rpx; margin-top: 10rpx; text-decoration: underline;'>微信提现将扣除 1% 提现手续费</view>
   <view class="withdrawal-flow"
         bindtap="checkWithdrawalFlow">
   提现流水查询
   </view>
 </view>
+

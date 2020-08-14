@@ -5,7 +5,7 @@ const config = require("../../utils/config.js");
 const loginUtil = require("../../utils/loginUtils.js");
 const pagePath = require("../../utils/pagePath.js");
 const ShareUtil = require("../../utils/shareUtils.js");
-const WorkOrderManager = require("../../manager/orderManager/workOrder.js");
+const commonOrderManager = require("../../manager/orderManager/commonOrderManager.js");
 
 const app = getApp();
 const maxVideoLength = 10; // 最大视频长度限制
@@ -509,42 +509,25 @@ Page({
     wx.showLoading({
       title: '请稍等',
     })
-    wx.request({
-      url: config.URL_Service + config.URL_UnPayPremiumCount,
-      data: {
-        orderNo: order.orderNo
-      },
-      success(res) {
-        console.log("未支付补价单数量 sucess: \n" + JSON.stringify(res));
-        if (res.data.code == config.RES_CODE_SUCCESS) {
-          if (res.data.data > 0) {
-            wx.hideLoading();
-            wx.showModal({
-              title: '还有未支付补价单',
-              content: '完成补价后再执行该操作',
-              showCancel: false
-            })
-          } else {
-            that.requestPostTransportInfo(tempIndex);
-          }
-        } else {
-          wx.hideLoading();
-          wx.showToast({
-            title: '查询未完成补价单失败',
-            icon: 'none'
+    commonOrderManager.checkUnpayPremiumCount(order.orderNo, function(success, data){
+      wx.hideLoading();
+      if (success) {
+        if (data > 0) {
+          wx.showModal({
+            title: '还有未支付补价单',
+            content: '完成补价后再执行该操作',
+            showCancel: false
           })
+        } else {
+          that.requestPostTransportInfo(tempIndex);
         }
-      },
-      fail(res) {
-        console.log("未支付补价单数量 fail: \n" + JSON.stringify(res));
-        wx.hideLoading();
+      } else {
         wx.showToast({
-          title: '系统异常',
+          title: '查询未完成补价单失败',
           icon: 'none'
         })
       }
     })
-
   },
 
   /**
@@ -737,11 +720,11 @@ Page({
       // if (util.checkEmpty(orderTakeDetail.takeTime)) {
       //   orderTakeDetailInputState = OrderTakeDetailInputState_UnComplete;
       // }
-      if (util.checkEmpty(orderTakeDetail.province)
-        || util.checkEmpty(orderTakeDetail.city)
-        || util.checkEmpty(orderTakeDetail.region)) {
-        orderTakeDetailInputState = OrderTakeDetailInputState_UnComplete;
-      }
+      // if (util.checkEmpty(orderTakeDetail.province)
+      //   || util.checkEmpty(orderTakeDetail.city)
+      //   || util.checkEmpty(orderTakeDetail.region)) {
+      //   orderTakeDetailInputState = OrderTakeDetailInputState_UnComplete;
+      // }
       if (util.checkEmpty(orderTakeDetail.detailAddress)) {
         orderTakeDetailInputState = OrderTakeDetailInputState_UnComplete;
       }

@@ -1,5 +1,13 @@
 <!--pages/unPayWork/index.wxml-->
 <view class='container'>
+
+  <view class='block-fillet' style="flex-direction: row; align-items: center;">
+    <input class='input-under' placeholder='单据号/手机号' confirm-type="search" bindconfirm='searchOrder' bindinput="searchInput">
+    </input>
+    <view class="filter-button" bindtap="tapStateFilter">
+    {{currentOrderState}}
+    </view>
+  </view>
   <view class="empty-area"
         wx:if="{{parse.showEmpty(orderList)}}">
     <view class="empty-content">
@@ -151,6 +159,14 @@
         </view>
         <!-- 按钮区域 -->
         <view class='bill-operate-box'>
+          <view class="bill-operate-button"
+                style='background: #ee2c2c'
+                wx:if='{{userInfo.role == 1}}'
+                data-tapindex="{{orderIndex}}"
+                data-orderno='{{orderItem.orderNo}}'
+                bindtap="tapDeleteOrder">
+          删除订单
+          </view>
           <view class='bill-operate-button'
                 bindtap='tapOrderDetail' 
                 data-tapindex="{{orderIndex}}"

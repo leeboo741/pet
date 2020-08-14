@@ -40,7 +40,7 @@ Page({
         icon: '../../resource/index_business_abroad.png',
         name: '宠物商城',
         target: "pages/index/index?source=mini_app_transport&target=mall",
-        data: 'wxca35493268376086',
+        data: config.MINI_PROGRAME_APPID_PETMALL,
         actionType: BUSINESS_ACTION_TYPE_MINIPROGRAME,
       },
       {
@@ -59,7 +59,7 @@ Page({
         icon: '../../resource/index_business_check_order.png',
         name: '商城积分',
         target: "pages/index/index?source=mini_app_transport&target=pointexchange",
-        data: 'wxca35493268376086',
+        data: config.MINI_PROGRAME_APPID_PETMALL,
         actionType: BUSINESS_ACTION_TYPE_MINIPROGRAME,
       },
     ]
@@ -213,13 +213,7 @@ Page({
       wx.navigateToMiniProgram({
         appId: e.currentTarget.dataset.data,
         path: e.currentTarget.dataset.target,
-        envVersion: 'develop',
-        success(res) {
-          console.log('跳转小程序成功:' + JSON.stringify(res));
-        },
-        fail(res) {
-          console.log('跳转小程序失败:' + JSON.stringify(res));
-        }
+        envVersion: config.ENV_CURRENT,
       })
     } else {
 

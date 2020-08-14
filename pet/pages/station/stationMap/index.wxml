@@ -6,45 +6,45 @@
 </view>
 <i-panel i-class='panel'>
   <i-cell-group>
-    <i-cell wx:for='{{allStationList}}' wx:for-item='stationItem' wx:for-index='stationIndex' wx:key='businessNo'>
-      <view slot='header' class="station-item" bindtap="tapStationItem" data-stationno='{{stationItem.businessNo}}' data-index='{{stationIndex}}'>
+    <i-cell wx:for='{{allStationList}}' wx:for-item='stationItem' wx:for-index='stationIndex' wx:key='stationNo'>
+      <view slot='header' class="station-item" bindtap="tapStationItem" data-stationno='{{stationItem.stationNo}}' data-index='{{stationIndex}}'>
         <view class="station-item-head">
         </view>
         <view class="station-item-content">
-          <view class="station-logo-box">
+          <view class="station-logo-box" wx:if='{{false}}'>
             <i-image i-class="station-logo" imageSrc="{{stationItem.headImg}}" contentStyle='round'>
             </i-image>
           </view>
           <view class="station-info-box">
             <view class="station-name" catchtap="tapStationName" data-index='{{stationIndex}}'>
-              {{stationItem.businessName}}
+              {{stationItem.stationName}}
             </view>
             <view class="station-row">
-              <i-icon type="clock" size='35' color="#b5d7eb">
+              <i-icon type="user" size='35' color="#b5d7eb">
               </i-icon>
               <view class="station-row-title">
-                营业时间：{{parse.parseTime(stationItem.startHours)}}-{{parse.parseTime(stationItem.endHours)}}
+                联系人: {{stationItem.contact}}
               </view>
             </view>
             <view class="station-row">
               <i-icon type="phone" size='35' color="#b5d7eb">
               </i-icon>
-              <view class="station-row-title-underline" catchtap="callPhone" data-phonenumber='{{stationItem.contactPhone}}'>
-                联系电话：{{stationItem.contactPhone}}
+              <view class="station-row-title-underline" catchtap="callPhone" data-phonenumber='{{stationItem.phone}}'>
+                联系电话：{{stationItem.phone}}
               </view>
             </view>
             <view class="station-row">
               <i-icon type="location" size='35' color="#b5d7eb">
               </i-icon>
               <view class="station-row-title-underline" catchtap="tapStationAddress" data-index='{{stationIndex}}'>
-                地址：{{stationItem.province}}{{stationItem.city}}{{stationItem.area}}{{stationItem.detailAddress}}
+                地址：{{stationItem.province!=null?stationItem.province:''}}{{stationItem.city!=null?stationItem.city:''}}{{stationItem.district!=null?stationItem.district:''}}{{stationItem.address!=null?stationItem.address:''}}
               </view>
             </view>
-            <view class="station-row">
+            <view class="station-row" wx:if='{{stationItem.collectionQRCode}}'>
               <i-icon type='qrcode' size="35" color="#b5d7eb">
               </i-icon>
               <view class="station-row-title-underline" catchtap="tapWXQRCode" data-index='{{stationIndex}}'>
-                打开商家二维码
+                站点收款码
               </view>
             </view>
           </view>

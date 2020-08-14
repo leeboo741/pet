@@ -7,19 +7,37 @@ const Service_Phone = "4007778889"; // 客服电话
 const Version_Name = "1.5.15"; // 版本名称
 const Version_Code = 106; // 版本编号
 
+const ENV_DEV = 'develop'; // 开发环境
+const ENV_TRIAL = 'trial'; // 体验环境
+const ENV_RELEASE = 'release'; // 生产环境
+
+const ENV_CURRENT = ENV_DEV; // 当前环境
+
+const MINI_PROGRAME_APPID_PETMALL = 'wxca35493268376086'; // 商城小程序 appid
+
+const PRINT_ABLE = ENV_CURRENT != ENV_RELEASE
+
 /** =================================================== */
 /** 
  *                      网络请求
  */
 /** =================================================== */
-// const URL_Service = "https://consign.taochonghui.com"
-// const URL_Service = "http://192.168.3.111:7777"; // 祥林
-// const URL_Service = "http://192.168.3.233:7777"; // 胡吉
-const URL_Service = "HTTP://192.168.3.40:7777"; // 周晓健
-// const URL_Service = "http://192.168.3.188:7777";
-// const URL_Service = "https://test.taochonghui.com"; // 测试服务器
+let URL_Service = "";
+switch(ENV_CURRENT) {
+  case ENV_DEV:
+    URL_Service = "http://192.168.3.40:7777"; // 周晓健
+    break;
+  case ENV_TRIAL:
+    URL_Service = "https://consign.taochonghui.com";
+    break;
+  case ENV_RELEASE:
+    URL_Service = "https://consign.taochonghui.com";
+    break;
+  default:
+    URL_Service = "https://consign.taochonghui.com";
+    break;
+}
 
-const URL_Register = "/api/customer/"; // 注册
 const URL_GetUserInfoByCode = "/api/wechat/userinfo/open"; // 通过WXCode 获取 信息
 const URL_GetUserInfoByBaseInfo = "/api/wechat/userinfo/union"; // 通过基本信息获取用户信息
 const URL_LoginWithUnionId = "/api/oAuth/unionId"; // 通过unionID 更新用户信息
@@ -39,10 +57,15 @@ function URL_BalanceFlow_Business(businessNo, offset, limit) {
 const URL_BalanceBuffer_Station = "/api/balance/buffer/station"; // 站点 可用余额 和 冻结余额
 const URL_BalanceBuffer_Business = "/api/balance/buffer/business"; // 商家 可用余额 和 冻结余额
 const URL_GetCode = "/business/VerificationCode/"; // 获取短信验证码
+const URL_CheckHaveNewGiftBagOnPetMall = "/aip/coupon/getNewGiftBag"; // 查询是否有商城新客大礼包
 
 const URL_GetBusinessByPosition = "/api/business/listByPosition"; // 根据坐标获取周边商家
 const URL_GetBusinessCityGroup = "/api/business/list/city/group"; // 查询商家数据的城市分组
 const URL_GetBusinessListByProvince = "/api/business/list/province/"; // 通过省份查询商家列表
+
+const URL_GetStationListByPosition = "/station/api/listByPosition"; // 获取定位周边站点
+const URL_GetStationCityGroup = "/station/api/listGroupByCity"; // 查询商家数据的城市分组
+const URL_GetStationListByProvince = "/station/api/listByProvince"; // 通过省份查询商家列表
 
 const URL_Register_Business = "/business/insetBusiness"; // 注册商家
 const URL_Register_Staff = "/api/staff/applyForStaff"; // 注册员工
@@ -90,6 +113,7 @@ const URL_OrderDetail = "/api/order/orderDetail"; // 查询订单详情
 function URL_OrderInfo(orderNo){
   return "/api/order/" + orderNo;
 }
+const URL_DeleteOrder = "/api/order/deleteOrder"; // 删除订单
 const URL_GetOrderNoByOrderNo = "/api/consign/order-no/auto"; // 通过单号模糊查询单号
 const URL_ConfirmOrder = "/api/order/confirmOrder"; // 确认收货
 const URL_GetUnConfirmOrderList = "/api/order/listUncertainty"; // 获取未确认收货订单
@@ -180,21 +204,11 @@ const Order_State_SHIPPED = "待发货";
 const Order_State_RECEIVING = "待收货";
 const Order_State_COMPLETED = "已完成";
 const Order_State_REFUND = "已退款";
-/** =================================================== */
-/**  
- *                      Key
- */
-/** =================================================== */
+
 
 const Key_LastGetMessageTime = "LastGetMessageTime"; // 最后获取站内信时间
 
 const Key_QQ_Map = "K5JBZ-QM7KP-Z54D5-LIMBQ-AFFNS-7ABT6"; // 腾讯地图 app_key
-
-/** =================================================== */
-/** 
- *                      Value
- */
-/** =================================================== */
 
 const Value_Default_LastGetMessageTime = "1990-01-01 00:00:00"; 
 
@@ -205,7 +219,6 @@ module.exports = {
 
   URL_Service, // 请求路径
 
-  URL_Register, // 注册
   URL_GetUserInfoByCode, // 通过CODE获取用户信息
   URL_GetUserInfoByBaseInfo, // 通过基本信息获取用户信息
   URL_Login, // 登陆
@@ -221,10 +234,15 @@ module.exports = {
   URL_BalanceBuffer_Station, // 站点 冻结余额 和 可用余额
   URL_BalanceBuffer_Business, // 商家 冻结余额 和 可用余额
   URL_GetCode, // 获取短信验证码
+  URL_CheckHaveNewGiftBagOnPetMall, // 查询是否有商城新客大礼包
 
   URL_GetBusinessByPosition, // 根据坐标获取周边商家
   URL_GetBusinessCityGroup, // 查询商家数据的城市分组
   URL_GetBusinessListByProvince, // 通过省份查询商家列表
+
+  URL_GetStationListByPosition, // 获取定位周边站点
+  URL_GetStationCityGroup, // 查询站点数据的城市分组
+  URL_GetStationListByProvince, // 通过省份查询站点列表
 
   URL_Register_Business, // 注册商家
   URL_Register_Staff, // 注册员工
@@ -263,6 +281,7 @@ module.exports = {
   URL_GetOrderListByOrderStatus, // 根据订单类型查询订单列表
   URL_GetStationAllOrder, // 获取当前站点所有订单 包含已完成
   URL_OrderDetail, // 查询订单详情
+  URL_DeleteOrder, // 删除订单
   URL_OrderInfo, // 查询订单信息
   URL_GetOrderNoByOrderNo, // 通过单号模糊查询单号
   URL_ConfirmOrder, // 确认收货
@@ -339,4 +358,13 @@ module.exports = {
   Key_QQ_Map, // 腾讯地图appkey
 
   Value_Default_LastGetMessageTime,
+
+  ENV_DEV,
+  ENV_TRIAL,
+  ENV_RELEASE,
+  ENV_CURRENT,
+
+  MINI_PROGRAME_APPID_PETMALL,
+
+  PRINT_ABLE,
 }

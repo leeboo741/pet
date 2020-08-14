@@ -73,6 +73,16 @@ Page({
   },
 
   /**
+   * 点击预览图片
+   * @param {*} e 
+   */
+  tapPreview: function(e) {
+    wx.previewImage({
+      urls: [e.currentTarget.dataset.path],
+    })
+  },
+
+  /**
    * 输入feedback
    * @param {input}} e 
    */

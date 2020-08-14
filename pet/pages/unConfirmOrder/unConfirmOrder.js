@@ -4,6 +4,7 @@ const config = require("../../utils/config.js");
 const loginUtil = require("../../utils/loginUtils.js");
 const pagePath = require("../../utils/pagePath.js");
 const ShareUtil = require("../../utils/shareUtils.js");
+const commonOrderManager = require("../../manager/orderManager/commonOrderManager.js");
 
 const app = getApp();
 const maxVideoLength = 10; // 最大视频长度限制
@@ -473,50 +474,33 @@ Page({
     wx.showLoading({
       title: '请稍等',
     })
-    wx.request({
-      url: config.URL_Service + config.URL_UnPayPremiumCount,
-      data: {
-        orderNo: order.orderNo
-      },
-      success(res) {
-        console.log("未支付补价单数量 sucess: \n" + JSON.stringify(res));
-        if (res.data.code == config.RES_CODE_SUCCESS) {
-          if (res.data.data > 0) {
-            wx.hideLoading();
-            wx.showModal({
-              title: '还有未支付补价单',
-              content: '完成补价后再执行该操作',
-              showCancel: false
-            })
-          } else {
-            wx.showModal({
-              title: '确认签收',
-              content: '是否确认签收' + order.orderNo,
-              success(res) {
-                if (res.confirm) {
-                  that.requestReceiveOrder(tempIndex);
-                }
-              }
-            })
-          }
+    commonOrderManager.checkUnpayPremiumCount(order.orderNo, function(success, data) {
+      wx.hideLoading()
+      if (success) {
+        if (data > 0) {
+          wx.showModal({
+            title: '还有未支付补价单',
+            content: '完成补价后再执行该操作',
+            showCancel: false
+          })
         } else {
-          wx.hideLoading();
-          wx.showToast({
-            title: '查询未完成补价单失败',
-            icon: 'none'
+          wx.showModal({
+            title: '确认签收',
+            content: '是否确认签收' + order.orderNo,
+            success(res) {
+              if (res.confirm) {
+                that.requestReceiveOrder(tempIndex);
+              }
+            }
           })
         }
-      },
-      fail(res) {
-        console.log("未支付补价单数量 fail: \n" + JSON.stringify(res));
-        wx.hideLoading();
+      } else {
         wx.showToast({
           title: '系统异常',
           icon: 'none'
         })
       }
     })
-
   },
 
   /**
@@ -625,48 +609,39 @@ Page({
       }
     }
     let that = this;
-    wx.request({
-      url: config.URL_Service + config.URL_ConfirmOrder,
-      header: {
-        'content-type': 'application/x-www-form-urlencoded'
-      },
-      method: "POST", // 请求方式
-      data: {
-        fileList: fileList,
-        orderNo: order.orderNo,
-        customerNo: loginUtil.getCustomerNo()
-      },
-      success(res) {
-        wx.hideLoading();
-        console.log("确认收货 success: \n" + JSON.stringify(res));
-        if (res.data.code == config.RES_CODE_SUCCESS) {
-          wx.showToast({
-            title: '收货成功',
+    commonOrderManager.checkUnpayPremiumCount(order.orderNo, function(success, data) {
+      wx.hideLoading()
+      if(success) {
+        if (data > 0) {
+          wx.showModal({
+            title: '无法确认收货!',
+            content: '该订单尚有补价单未支付,请提醒支付!',
+            showCancel: false,
           })
-          // that.data.orderList.splice(orderIndex, 1);
-          // that.setData({
-          //   orderList: that.data.orderList
-          // })
-          wx.startPullDownRefresh();
         } else {
-          wx.showToast({
-            title: '收货失败',
-            icon: 'none'
+          commonOrderManager.confirmOrderReceiving(order.orderNo, fileList, function(success, data) {
+            wx.hideLoading()
+            if (success) {
+              wx.showToast({
+                title: '收货成功',
+              })
+              wx.startPullDownRefresh();
+            } else {
+              wx.showToast({
+                title: '收货失败',
+                icon: 'none'
+              })
+            }
           })
         }
-      },
-      fail(res) {
-        wx.hideLoading();
-        console.log("确认收货 fail: \n" + JSON.stringify(res));
+      } else {
         wx.showToast({
-          title: '失败,网络波动',
-          icon:'none'
+          title: '查询补价单失败',
+          icon: 'none'
         })
-      },
-      complete(res) {
-        console.log("确认收货 complete: \n" + JSON.stringify(res));
-      },
+      }
     })
+    
   },
 
   /**

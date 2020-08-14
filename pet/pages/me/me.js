@@ -23,6 +23,8 @@ const util = require("../../utils/util.js");
 const pagePath = require("../../utils/pagePath.js");
 const ShareUtil = require("../../utils/shareUtils.js");
 const PayManager = require('../../manager/payManager/payManager');
+const commonOrderManager = require("../../manager/orderManager/commonOrderManager.js");
+const userManager = require("../../manager/userManager/userManager.js");
 
 const NEW_MESSAGE_LOOP_TIME = 10000;
 
@@ -732,43 +734,74 @@ Page({
     wx.showLoading({
       title: '请稍等...',
     })
-    wx.request({
-      url: config.URL_Service + config.URL_ConfirmOrder,
-      header: {
-        'content-type': 'application/x-www-form-urlencoded'
-      },
-      method: "POST", // 请求方式
-      data: {
-        orderNo: orderNo,
-        customerNo: loginUtil.getCustomerNo()
-      },
-      success(res) {
-        wx.hideLoading();
-        console.log ("确认收货 success: \n" + JSON.stringify(res));
-        if (res.data.code == config.RES_CODE_SUCCESS) {
-          wx.showToast({
-            title: '收货成功',
+    commonOrderManager.checkUnpayPremiumCount(orderNo, function(success, data) {
+      wx.hideLoading();
+      if (success) {
+        if (data > 0) {
+          wx.showModal({
+            title: '无法确认收货!',
+            content: '还有未支付补价单,不能进行收货操作!',
+            confirmText: '前往补价',
+            cancelText: '暂不收货',
+            success(res) {
+              if (res.confirm) {
+                wx.navigateTo({
+                  url: pagePath.Path_Order_Detail + '?orderno=' + orderNo + '&type=0' + '&ablepremium=1' + "&ablecancelpremium=0" + "&showprice=" + showPrice,
+                })
+              }
+            }
           })
-          if (orderIndex >=  0) {
-            that.data.unreceiveList.splice(orderIndex, 1);
-            that.setData({
-              unreceiveList: that.data.unreceiveList
-            })
-          }
+        } else {
+          wx.showLoading({
+            title: '请稍等...',
+          })
+          commonOrderManager.confirmOrderReceiving(orderNo, null, function(success, data) {
+            wx.hideLoading();
+            if (success) {
+              wx.showToast({
+                title: '收货成功',
+              })
+              if (orderIndex >=  0) {
+                that.data.unreceiveList.splice(orderIndex, 1);
+                that.setData({
+                  unreceiveList: that.data.unreceiveList
+                })
+              }
+              userManager.checkHaveNewGiftBagOnPetMall(function(success, data) {
+                if (success) {
+                  if (data) {
+                    wx.showModal({
+                      title: '您有大礼包待领取',
+                      content: '您有一个商城大礼包待领取,是否前往领取?',
+                      confirmText: '前往领取',
+                      cancelText: '下次再说',
+                      success(res) {
+                        if (res.confirm) {
+                          wx.navigateToMiniProgram({
+                            appId: config.MINI_PROGRAME_APPID_PETMALL,
+                            path: "pages/index/index?source=mini_app_transport&target=getnewgiftbag",
+                            envVersion: config.ENV_CURRENT,
+                          })
+                        }
+                      }
+                    })
+                  }
+                }
+              })
+            } else {
+              wx.showToast({
+                title: '收货失败',
+                icon: "none"
+              })
+            }
+          })
         }
-      },
-      fail(res) {
-        wx.hideLoading();
-        console.log("确认收货 fail: \n" + JSON.stringify(res));
+      } else {
         wx.showToast({
-          title: '系统异常',
-          icon: "none"
+          title: '查询补价单失败!',
+          icon:'none'
         })
-      },
-      complete(res) {
-        console.log("确认收货 complete: \n" + JSON.stringify(res));
-      },
-
+      }
     })
   },
 

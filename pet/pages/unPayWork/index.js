@@ -4,6 +4,7 @@ const config = require("../../utils/config.js");
 const loginUtil = require("../../utils/loginUtils.js");
 const pagePath = require("../../utils/pagePath.js");
 const ShareUtil = require("../../utils/shareUtils.js");
+const workOrderManager = require("../../manager/orderManager/workOrderManager.js");
 
 const app = getApp();
 
@@ -26,6 +27,7 @@ Page({
       config.Order_State_ToPay, // 待付款
       config.Order_State_ToVerify // 待审核
     ], // 订单状态列表
+    currentOrderState: "全部", // 当前订单状态
   },
 
   /**
@@ -75,7 +77,7 @@ Page({
       loadMoreLoading: true,
       loadMoreTip: "数据加载中"
     })
-    this.getOrderData(this.data.offset, this.data.keyword, this.data.orderDate,
+    this.getOrderData(this.data.offset,
       function getDataCallback(data){
         that.setData({
           orderList: data
@@ -115,7 +117,7 @@ Page({
       loadMoreTip: "数据加载中",
     })
     let that = this;
-    this.getOrderData(this.data.offset, this.data.keyword, this.data.orderDate,
+    this.getOrderData(this.data.offset,
       function getDataCallback(data){
         let tempList = that.data.orderList.concat(data);
         that.setData({
@@ -147,9 +149,62 @@ Page({
   },
 
   /**
+   * 输入关键字
+   */
+  searchInput: function(e) {
+
+  },
+
+  /**
+   * 点击确认输入搜索
+   * @param {*}} e 
+   */
+  searchOrder: function(e) {
+    this.data.keyword = e.detail.value;
+    wx.startPullDownRefresh();
+  },
+
+  /**
+   * 点击选择状态
+   */
+  tapStateFilter: function() {
+    let that = this;
+    wx.showActionSheet({
+      itemList: ['全部','待付款','待审核'],
+      success(res) {
+        if (res.tapIndex == 0) {
+          that.changeCurrentOrderState("全部");
+        } else if (res.tapIndex == 1) {
+          that.changeCurrentOrderState(config.Order_State_ToPay);
+        } else if (res.tapIndex == 2) {
+          that.changeCurrentOrderState(config.Order_State_ToVerify);
+        }
+      }
+    })
+  },
+
+  /**
+   * 更改当前订单状态
+   */
+  changeCurrentOrderState: function(state) {
+    this.setData({
+      currentOrderState : state
+    })
+    if (state != config.Order_State_ToPay && state != config.Order_State_ToVerify) {
+      this.data.orderStateList = [
+        config.Order_State_ToPay,
+        config.Order_State_ToVerify
+      ];
+    } else {
+      this.data.orderStateList = [state];
+    }
+    wx.startPullDownRefresh();
+  },
+
+  /**
    * 获取数据
    */
-  getOrderData: function (offset, keyword, orderDate, getDataCallback) {
+  getOrderData: function (offset, getDataCallback) {
     let that = this;
     loginUtil.checkLogin(function alreadyLoginCallback(state) {
       if (state) {
@@ -158,7 +213,7 @@ Page({
             userInfo: loginUtil.getUserInfo()
           })
         }
-        that.requestOrderList(offset, keyword, orderDate,
+        that.requestOrderList(offset,
           function callback(data) {
             if (getDataCallback && typeof getDataCallback == "function") {
               getDataCallback(data);
@@ -172,7 +227,7 @@ Page({
   /**
    * 请求单据
    */
-  requestOrderList: function (offset, keyword, orderDate, getOrderDataCallback) {
+  requestOrderList: function (offset, getOrderDataCallback) {
     let that = this;
     wx.request({
       url: config.URL_Service + config.URL_Order_Station_All,
@@ -181,8 +236,8 @@ Page({
         state: this.data.orderStateList,
         offset: offset,
         limit: Limit,
-        keyword: keyword,
-        orderDate: orderDate
+        keyword: this.data.keyword,
+        orderDate: this.data.orderDate
       },
       success(res) {
         console.log("请求未付单据 success：\n" + JSON.stringify(res));
@@ -222,6 +277,44 @@ Page({
     }
     wx.makePhoneCall({
       phoneNumber: phoneNumber,
+    })
+  },
+
+  /**
+   * 点击删除订单
+   * @param {*} e 
+   */
+  tapDeleteOrder: function(e) {
+    let that = this;
+    wx.showModal({
+      title: '删除订单',
+      content: '确认删除订单:' + e.currentTarget.dataset.orderno,
+      confirmText: '删除',
+      cancelText: '放弃',
+      success(res) {
+        if (res.confirm) {
+          wx.showLoading({
+            title: '请稍等...',
+          })
+          workOrderManager.deleteOrder(e.currentTarget.dataset.orderno, function(success, data) {
+            wx.hideLoading()
+            if (success) {
+              wx.showToast({
+                title: '删除成功',
+              })
+              that.data.orderList.splice(e.currentTarget.dataset.tapindex, 1);
+              that.setData({
+                orderList: that.data.orderList
+              })
+            } else {
+              wx.showToast({
+                title: '删除失败',
+                icon: 'none'
+              })
+            }
+          })
+        }
+      }
     })
   },
 

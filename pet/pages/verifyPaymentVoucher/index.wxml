@@ -7,7 +7,7 @@
             class="payment-voucher-box">
         <view class="payment-voucher-content">
           <block>
-            <image class="payment-voucher-image" mode='widthFix' src='{{order.paymentVoucher}}'>
+            <image class="payment-voucher-image" mode='widthFix' src='{{order.paymentVoucher}}' bindtap="tapPreview" data-path='{{order.paymentVoucher}}'>
             </image>
           </block>
         </view>

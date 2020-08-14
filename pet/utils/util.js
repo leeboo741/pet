@@ -1,3 +1,5 @@
+const config = require("./config")
+
 const formatTime = date => {
   const year = date.getFullYear()
   const month = date.getMonth() + 1
@@ -161,6 +163,16 @@ function checkObjectIsEmpty(obj) {
   return true;
 }
 
+/**
+ * 打印
+ * @param  {...any} args 
+ */
+function printLog(...args) {
+  if (config.PRINT_ABLE) {
+    console.log(...args);
+  }
+}
+
 module.exports = {
   formatTime: formatTime,
   dateLater: dateLater,
@@ -173,5 +185,6 @@ module.exports = {
   getUrlParamDict: getUrlParamDict,
   checkIsFunction: checkIsFunction,
   checkIsObject: checkIsObject,
-  checkObjectIsEmpty: checkObjectIsEmpty
+  checkObjectIsEmpty: checkObjectIsEmpty,
+  printLog: printLog,
 }
