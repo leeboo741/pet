@@ -12,6 +12,7 @@ const pagePath = require("../../../utils/pagePath.js");
 const ShareUtil = require("../../../utils/shareUtils.js");
 const Util = require("../../../utils/util.js");
 const PayManager = require("../../../manager/payManager/payManager");
+const orderManager = require("../../../manager/orderManager/orderManager.js");
 
 const Pay_Price_Type_Customer = 0; // 价格类型 - 预估价格
 const Pay_Price_Type_Business = 1; // 价格类型 - 合作价格
@@ -152,7 +153,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    app.globalData.agreeTrasportCondition = null;
   },
 
   /**
@@ -483,74 +484,52 @@ Page({
     }
 
     let that = this;
-    wx.request({
-      url: config.URL_Service + config.URL_Order,
-      method: "POST",
-      data: tempOrderObj,
-      success(res) {
-        console.log("提交订单 success => \n" + JSON.stringify(res));
-        wx.hideLoading();
-        if (res.data.code == config.RES_CODE_SUCCESS) {
-          that.setData({
-            orderNo: res.data.data
-          })
-          let tempOrderNo = res.data.data;
-          wx.showModal({
-            title: '订单:' + res.data.data + '提交成功',
-            content: '是否立即支付',
-            cancelText: '稍后支付',
-            confirmText: '立即付款',
-            success(res) {
-              if (res.confirm) {
-                console.log('用户点击立即付款')
-                loginUtil.checkLogin(function alreadyLoginCallback(state) {
-                  if (state) {
-                    that.requestPay(tempOrderNo);
-                  } else {
-                    wx.showModal({
-                      title: '暂未登录',
-                      content: '请先登录后付款',
-                      success(res) {
-                        if (res.confirm) {
-                          loginUtil.login();
-                        }
+    orderManager.order(tempOrderObj, function(success, data){
+      wx.hideLoading({
+        success: (res) => {},
+      })
+      if (success) {
+        that.setData({
+          orderNo: data
+        })
+        let tempOrderNo = data;
+        wx.showModal({
+          title: '订单:' + data + '提交成功',
+          content: '是否立即支付',
+          cancelText: '稍后支付',
+          confirmText: '立即付款',
+          success(res) {
+            if (res.confirm) {
+              console.log('用户点击立即付款')
+              loginUtil.checkLogin(function alreadyLoginCallback(state) {
+                if (state) {
+                  that.requestPay(tempOrderNo);
+                } else {
+                  wx.showModal({
+                    title: '暂未登录',
+                    content: '请先登录后付款',
+                    success(res) {
+                      if (res.confirm) {
+                        loginUtil.login();
                       }
-                    })
-                  }
-                })
-              } else if (res.cancel) {
-                console.log('用户点击稍后支付')
-                wx.switchTab({
-                  url: pagePath.Path_Home,
-                })
-              }
+                    }
+                  })
+                }
+              })
+            } else if (res.cancel) {
+              console.log('用户点击稍后支付')
+              wx.switchTab({
+                url: pagePath.Path_Home,
+              })
             }
-          })
-        } else {
-          if (res.data.message != null) {
-            wx.showToast({
-              title: res.data.message,
-              icon: 'none'
-            })
-          } else {
-            wx.showToast({
-              title: "提交订单失败，请稍后再试",
-              icon: 'none'
-            })
           }
-        }
-      },
-      fail(res) {
-        wx.hideLoading();
-        console.log("提交订单 fail => \n" + JSON.stringify(res));
+        })
+      } else {
         wx.showToast({
-          title: '提交订单失败，请稍后再试',
+          title: "提交订单失败，请稍后再试",
           icon: 'none'
         })
-      },
-      complete(res) {
-        console.log("提交订单 complete => \n" + JSON.stringify(res));
-      },
+      }
     })
   },
 
@@ -622,34 +601,20 @@ Page({
     }
 
     let that = this;
-    wx.request({
-      url: config.URL_Service + config.URL_PredictPrice,
-      data: tempData,
-      method: "POST",
-      success(res) {
-        wx.hideLoading();
-        console.log("获取预估价格 success => \n" + JSON.stringify(res));
-        if (res.data.code == config.RES_CODE_SUCCESS) {
-          that.setData({
-            predictPrice: res.data.data
-          })
-        } else {
-          wx.showToast({
-            title: res.data.message,
-            icon: 'none'
-          })
-        }
-      },
-      fail(res) {
-        wx.hideLoading();
-        console.log("获取预估价格 fail => \n" + JSON.stringify(res));
+    orderManager.getPredictPrice(tempData, function(success, data){
+      wx.hideLoading({
+        success: (res) => {},
+      })
+      if (success) {
+        that.setData({
+          predictPrice: data
+        })
+      } else {
         wx.showToast({
           title: '获取预估价格失败',
           icon: 'none'
         })
-      },
-      complete(res) {
-      },
+      }
     })
   },
 
@@ -658,27 +623,17 @@ Page({
    */
   requestStroePhoneByCityName: function (cityName) {
     let that = this;
-    wx.request({
-      url: config.URL_Service + config.URL_GetStorePhoneByCityName,
-      data: {
-        cityName: cityName
-      },
-      success(res) {
-        console.log("获取商家电话 城市（" + cityName + "） success => \n" + JSON.stringify(res));
+    orderManager.getStorePhoneByCityName(cityName, function(success, data){
+      if (success) {
         that.setData({
-          storePhone: res.data.data
+          storePhone: data
         })
-      },
-      fail(res) {
-        console.log("获取商家电话 城市（" + cityName + "） fail => \n" + JSON.stringify(res));
+      } else {
         wx.showToast({
-          title: '网络原因，获取客服电话失败',
+          title: '获取客服电话失败',
           icon: 'none'
         })
-      },
-      complete(res) {
-        console.log("获取商家电话 城市（" + cityName + "） complete => \n" + JSON.stringify(res));
-      },
+      }
     })
   },
 

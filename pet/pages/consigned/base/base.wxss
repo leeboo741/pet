@@ -449,3 +449,10 @@ page {
   /* text-decoration: underline;
   text-decoration-color: rgb(0, 110, 255); */
 }
+
+.pet-can-contract-video{
+  position:  fixed;
+  top: -200rpx;
+  width: 100rpx;
+  height: 100rpx;
+}

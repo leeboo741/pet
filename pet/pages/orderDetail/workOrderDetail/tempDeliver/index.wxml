@@ -1,0 +1,30 @@
+<!--pages/orderDetail/workOrderDetail/tempDeliver/index.wxml-->
+<i-panel i-class='panel' title='订单信息'>
+	<i-cell title='订单号' value='{{order.orderNo}}'>
+	</i-cell>
+</i-panel>
+
+<i-panel i-class='panel' title='临时派送信息填写'>
+	<i-cell-group>
+		<i-cell title='收货人'>
+			<input slot='footer' placeholder="请填写收件人名称" value='{{receiverName}}' bindinput="inputReceiverName"></input>
+		</i-cell>
+		<i-cell title='联系电话'>
+			<input slot='footer' placeholder="请填写收件人电话" value='{{receiverPhone}}' bindinput="inputReceiverPhone"></input>
+		</i-cell>
+		<i-cell>
+			<view slot='header'
+						class="box">
+				<view class='title'>
+				地址
+				</view>
+				<view class="address {{receiverAddress == null || receiverAddress.length <= 0? 'text-placeholder':'text-normal'}}" bindtap="selectedReceiverAddress">
+					{{receiverAddress == null || receiverAddress <= 0? '请选择临时派送地址':receiverAddress}}
+				</view>
+			</view>
+		</i-cell>
+    <i-cell>
+      <button slot='header' type="warn" bindtap="tapSubmit">确认提交</button>
+    </i-cell>
+	</i-cell-group>
+</i-panel>

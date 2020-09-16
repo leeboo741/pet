@@ -31,10 +31,11 @@
     <!-- 站点员工 -->
     <block wx:else>
       <!-- 订单所属站点 的收款码 -->
-      <image class="qrcode-image" style="width:400rpx; height:400rpx" src='{{orderInfo.station.collectionQRCode}}' mode='aspectFit' wx:if="{{orderInfo.station.collectionQRCode != null}}"></image>
+      <!-- <image class="qrcode-image" style="width:400rpx; height:400rpx" src='{{orderInfo.station.collectionQRCode}}' mode='aspectFit' wx:if="{{orderInfo.station.collectionQRCode != null}}"></image> -->
+      <image class="qrcode-image" style="width:400rpx; height:400rpx" src='{{logoUrl}}' mode='aspectFit' wx:if="{{logoUrl != null}}"></image>
       <!-- 订单支付方式 选择栏 默认平台 -->
       <view class="other-pay-button-box">
-        <view class='other-pay-type-box' wx:if="{{orderInfo.station.collectionQRCode != null}}">
+        <view class='other-pay-type-box'>
           <view class='other-pay-type-item'
                 wx:for='{{otherPayType}}'
                 wx:key='typeId'
@@ -48,9 +49,20 @@
           </view>
         </view>
         <!-- 分享给客户支付 -->
-        <button class="other-pay-button" type="primary" open-type='share'>客户支付</button>
+        <button class="other-pay-button" type="primary" open-type='share'>{{currentOtherPayType.buttonName}}</button>
+        <view style='margin-top: 10rpx; margin-bottom: 20rpx; width: 90%; font-size: 24rpx; color: #ee2c2c;' wx:if='{{currentOtherPayType.typeId == 0}}'>
+        选择'付款至平台'，发送至客户后，客户将直接付款至平台账户，后续可通过提现，提现至站点账户。
+        </view>
+        <view style='margin-top: 10rpx; margin-bottom: 20rpx; width: 90%; font-size: 24rpx; color: #ee2c2c;' wx:else>
+        选择'线下支付'，发送至客户后，需客户确认条款并在线下和站点完成支付。站点确认收款后在未付单据列表中上传付款凭证，完成订单支付流程，该订单不计入余额流水。
+        </view>
         <!-- 直接完成支付流程 -->
-        <button class="pay-button" type='primary' bindtap="tapCompletePay">完成支付</button>
+        <block wx:if='{{false}}'>
+          <button class="pay-button" type='primary' bindtap="tapCompletePay">直接完成支付</button>
+          <view style='margin-top: 10rpx; margin-bottom: 20rpx; width: 90%; font-size: 24rpx; color: #ee2c2c;'>
+          请先确认已收到客户款项，点击直接完成支付按钮，将直接完成订单的支付流程，该订单不计入余额流水。
+          </view>
+        </block>
       </view>
     </block>
   </block>

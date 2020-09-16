@@ -31,7 +31,7 @@ function stationWithdraw(amount, callback) {
     },
     fail(res) {
       if (util.checkIsFunction(callback)) {
-        callback(false, null);
+        callback(false, res);
       }
     }
   })
@@ -64,7 +64,7 @@ function businessWithdraw(amount, callback) {
     },
     fail(res) {
       if (util.checkIsFunction(callback)) {
-        callback(false, null);
+        callback(false, res);
       }
     }
   })
@@ -97,7 +97,7 @@ function getStationWithdrawFlow(offset, limit, callback) {
     },
     fail(res) {
       if (util.checkIsFunction(callback)) {
-        callback(false, null)
+        callback(false, res)
       }
     }
   })
@@ -130,7 +130,7 @@ function getBusinessWithdrawFlow(offset, limit, callback) {
     },
     fail(res) {
       if (util.checkIsFunction(callback)) {
-        callback(false, null)
+        callback(false, res)
       }
     }
   })

@@ -2,6 +2,9 @@
 <i-panel i-class="panel" 
          title='新增补价单'>
   <i-cell-group>
+    <i-cell title='订单编号'
+            value='{{orderNo}}'>
+    </i-cell>
     <i-cell title='补价金额'>
       <input slot='footer'
              placeholder="补价金额"

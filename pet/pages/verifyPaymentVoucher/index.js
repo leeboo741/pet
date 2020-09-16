@@ -1,6 +1,7 @@
 const payManager = require("../../manager/payManager/payManager")
 const util = require("../../utils/util")
 const { RES_CODE_SUCCESS } = require("../../utils/config")
+const shareUtils = require("../../utils/shareUtils")
 
 // pages/verifyPaymentVoucher/index.js
 const app = getApp()
@@ -69,7 +70,7 @@ Page({
    * 用户点击右上角分享
    */
   onShareAppMessage: function () {
-
+    return shareUtils.getOnShareAppMessageForShareOpenId();
   },
 
   /**

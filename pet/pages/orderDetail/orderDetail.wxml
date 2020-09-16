@@ -319,7 +319,7 @@
             2、48小时以内未进行过任何手术或分娩
           </view>
           <view class="pay-condition-item">
-            3、宠物年龄不小于两个月
+            3、宠物年龄不小于三个月
           </view>
           <view class="pay-condition-item">
             4、不患有任何疾病
@@ -349,8 +349,15 @@
     <i-cell>
       <view slot='header'
             class='confirm-button'
-            bindtap="tapPayOrder">
-      确认支付
+            bindtap="tapPayOrder"
+            wx:if='{{shareOtherPayType==0}}'>
+      前往支付订单
+      </view>
+      <view slot='header'
+            class="confirm-button"
+            bindtap="tapConfirmCondition"
+            wx:else>
+      已确认并同意以上条款
       </view>
     </i-cell>
   </i-cell-group>

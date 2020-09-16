@@ -1,0 +1,21 @@
+/* pages/orderDetail/workOrderDetail/tempDeliver/index.wxss */
+.text-placeholder{
+  color: lightgray;
+}
+.text-normal{
+
+}
+.box{
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+.address{
+  width: 60%;
+  word-wrap: break-word;
+  text-align: right;
+}
+.title{
+  width: 40%;
+}

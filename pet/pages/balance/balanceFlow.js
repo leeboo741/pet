@@ -66,28 +66,31 @@ Page({
       loadMoreTip: "数据加载中"
     })
     this.requestData(this.data.offset,
-      function getDataCallback(data) {
-        console.log("获取余额流水： \n" + JSON.stringify(data));
-        that.setData({
-          dataSource: data,
-        })
+      function getDataCallback(success,data) {
+        wx.stopPullDownRefresh();
         that.setData({
           loadMoreLoading: false,
+          loadMoreTip: "上拉加载数据"
         })
-        if (data.length >= Limit) {
+        if (success) {
+          console.log("获取余额流水： \n" + JSON.stringify(data));
           that.setData({
-            loadMoreTip: "上拉加载数据"
+            dataSource: data,
           })
-        } else if (data.length < Limit && data.length > 0) {
-          that.setData({
-            loadMoreTip: "已经到底了"
-          })
-        } else {
-          that.setData({
-            loadMoreTip: "暂无数据"
-          })
+          if (data.length >= Limit) {
+            that.setData({
+              loadMoreTip: "上拉加载数据"
+            })
+          } else if (data.length < Limit && data.length > 0) {
+            that.setData({
+              loadMoreTip: "已经到底了"
+            })
+          } else {
+            that.setData({
+              loadMoreTip: "暂无数据"
+            })
+          }
         }
-        wx.stopPullDownRefresh();
       }
     )
   },
@@ -102,27 +105,32 @@ Page({
       return;
     }
     this.setData({
+      loadMoreLoading: true,
       loadMoreTip: "数据加载中",
     })
     let that = this;
     this.requestData(this.data.offset,
-      function getDataCallback(data) {
-        console.log("获取已发货订单： \n" + JSON.stringify(data));
-        let tempList = that.data.dataSource.concat(data);
-        that.setData({
-          dataSource: tempList
-        })
+      function getDataCallback(success,data) {
+        wx.stopPullDownRefresh();
         that.setData({
           loadMoreLoading: false,
+          loadMoreTip: "上拉加载数据"
         })
-        if (data.length >= Limit) {
+        if (success) {
+          console.log("获取已发货订单： \n" + JSON.stringify(data));
+          let tempList = that.data.dataSource.concat(data);
           that.setData({
-            loadMoreTip: "上拉加载数据"
+            dataSource: tempList
           })
-        } else {
-          that.setData({
-            loadMoreTip: "已经到底了"
-          })
+          if (data.length >= Limit) {
+            that.setData({
+              loadMoreTip: "上拉加载数据"
+            })
+          } else {
+            that.setData({
+              loadMoreTip: "已经到底了"
+            })
+          }
         }
       }
     )
@@ -157,70 +165,43 @@ Page({
    */
   /**
   * 请求数据
-  * @param offset
-  * @param getDataCallback
+  * @param {number} offset 偏移量
+  * @param {function(boolean, object)}getDataCallback
   */
-  requestData: function (offset, getDataCallback, getFailCallback) {
+  requestData: function (offset, getDataCallback) {
     let that = this;
     if (LoginUtil.getStationNo() != null) {
-      BalanceManager.getStationBalanceFlow(LoginUtil.getStationNo(), offset, Limit, function getFlowCallback(res){
-        console.log("余额流水 success： \n" + JSON.stringify(res));
-        if (res.data.code == Config.RES_CODE_SUCCESS) {
+      BalanceManager.getStationBalanceFlow(LoginUtil.getStationNo(), offset, Limit, function(success, data){
+        if (success) {
           that.data.offset = that.data.offset + Limit;
           if (Util.checkIsFunction(getDataCallback)) {
-            getDataCallback(res.data.data)
+            getDataCallback(true, data)
           }
         } else {
-          let msg = res.data.message;
-          if (msg == null) {
-            msg = "获取流水失败";
-          }
           wx.showToast({
-            title: msg,
+            title: "获取流水失败",
             icon: 'none'
           })
-          if (Util.checkIsFunction(getFailCallback)) {
-            getFailCallback(res)
+          if (Util.checkIsFunction(getDataCallback)) {
+            getDataCallback(false, null)
           }
-        }
-      }, function failCallback(res) {
-        console.log("余额流水 fail \n" + JSON.stringify(res));
-        wx.showToast({
-          title: '系统异常',
-          icon: 'none'
-        })
-        if (Util.checkIsFunction(getFailCallback)) {
-          getFailCallback(res)
         }
       })
     } else if (LoginUtil.getBusinessNo() != null) {
-      BalanceManager.getBusinessBalanceFlow(LoginUtil.getBusinessNo(), offset, Limit, function getFlowCallback(res){
-        console.log("余额流水 success： \n" + JSON.stringify(res));
-        if (res.data.code == Config.RES_CODE_SUCCESS) {
+      BalanceManager.getBusinessBalanceFlow(LoginUtil.getBusinessNo(), offset, Limit, function(suscces, data) {
+        if (suscces) {
+          that.data.offset = that.data.offset + Limit;
           if (Util.checkIsFunction(getDataCallback)) {
-            getDataCallback(res.data.data)
+            getDataCallback(true, data)
           }
         } else {
-          let msg = res.data.message;
-          if (msg == null) {
-            msg = "获取流水失败";
-          }
           wx.showToast({
-            title: msg,
+            title: "获取流水失败",
             icon: 'none'
           })
-          if (Util.checkIsFunction(getFailCallback)) {
-            getFailCallback(res)
+          if (Util.checkIsFunction(getDataCallback)) {
+            getDataCallback(false, null)
           }
-        }
-      }, function failCallback(res){
-        console.log("余额流水 fail \n" + JSON.stringify(res));
-        wx.showToast({
-          title: '系统异常',
-          icon: 'none'
-        })
-        if (Util.checkIsFunction(getFailCallback)) {
-          getFailCallback(res)
         }
       })
     }

@@ -5,6 +5,8 @@ const loginUtil = require("../../utils/loginUtils.js");
 const app = getApp();
 const util = require("../../utils/util.js");
 const ShareUtil = require("../../utils/shareUtils.js");
+const notificationCenter = require("../../manager/notificationCenter.js");
+const { WORKORDER_ALLOCATION } = require("../../static/notificationName.js");
 
 Page({
 
@@ -196,8 +198,11 @@ Page({
                   //上一个页面实例对象
                   var prePage = pages[pages.length - 2];
                   //关键在这里，调用上一页的函数
-                  prePage.startRefresh()
+                  if (util.checkIsFunction(prePage.startRefresh)) {
+                    prePage.startRefresh()
+                  }
                 }
+                notificationCenter.postNotification(WORKORDER_ALLOCATION);
                 wx.navigateBack({})
               }
             }

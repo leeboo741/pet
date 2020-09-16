@@ -183,7 +183,8 @@ Page({
     if (loginUtil.getStationNo() != null) {
       tempUrl = config.URL_Service + config.URL_BalanceBuffer_Station;
       tempData = {
-        stationNo: loginUtil.getStationNo() 
+        stationNo: loginUtil.getStationNo(),
+        customerNo: loginUtil.getCustomerNo(),
       }
     } else if (loginUtil.getBusinessNo() != null) {
       tempUrl = config.URL_Service + config.URL_BalanceBuffer_Business;

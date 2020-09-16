@@ -1,11 +1,15 @@
 //app.js
 const config = require("/utils/config.js");
+const appUpdateManager = require("./manager/appUpdateManager/appUpdateManager");
 App({
   onLaunch: function () {
+    appUpdateManager.checkNewVersionAndUpdate();
     this.globalData.sysinfo = wx.getSystemInfoSync()
 
-    console.log("当前路径：" + config.URL_Service);
-    console.log("当前版本: " + config.Version_Name + "  code: " + config.Version_Code);
+    console.log("当前路径：" , config.URL_Service);
+    console.log("当前版本号: " , config.Version_Name);
+    console.log("当前构建号: ", config.Version_Code);
+    console.log("当前分支名: ", config.Branch_Name);
     let menuButtonObject = wx.getMenuButtonBoundingClientRect();
     let naviTop = menuButtonObject.top; //胶囊按钮与顶部的距离
     let menuHeight = menuButtonObject.height; // 胶囊高度

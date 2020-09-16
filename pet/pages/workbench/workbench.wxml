@@ -76,7 +76,7 @@
 	</view>
 
 	<!-- 单据信息 -->
-	<view class="bill-item" wx:for='{{orderList}}' wx:for-item='orderItem' wx:for-index='orderIndex' wx:key='{{orderIndex}}'>
+	<view class="bill-item" wx:for='{{orderList}}' wx:for-item='orderItem' wx:for-index='orderIndex' wx:key='{{orderIndex}}' bindtap="tapOrderDetail" data-orderno='{{orderItem.orderNo}}'>
 		<view class='block-fillet bill-info-box'>
 			<view class='bill-info-icon'>
 				<icon class='iconfont iconfeiji1'></icon>
@@ -115,13 +115,13 @@
 					<view class="bill-info-person-label">寄件人：</view>
 					<view class="bill-info-person-name">{{orderItem.senderName}}</view>
 					<view class="bill-info-person-label">电话：</view>
-					<view class="bill-info-person-phone" bindtap="callPhone" data-phone="{{orderItem.senderPhone}}">{{orderItem.senderPhone}}</view>
+					<view class="bill-info-person-phone" catchtap="callPhone" data-phone="{{orderItem.senderPhone}}">{{orderItem.senderPhone}}</view>
 				</view>
 				<view class="bill-info-person" wx:if='{{parse.showReceiver(orderItem, userInfo)}}'>
 					<view class="bill-info-person-label">收件人：</view>
 					<view class="bill-info-person-name">{{orderItem.receiverName}}</view>
 					<view class="bill-info-person-label">电话：</view>
-					<view class="bill-info-person-phone" bindtap="callPhone" data-phone="{{orderItem.receiverPhone}}">{{orderItem.receiverPhone}}</view>
+					<view class="bill-info-person-phone" catchtap="callPhone" data-phone="{{orderItem.receiverPhone}}">{{orderItem.receiverPhone}}</view>
 				</view>
 				
 				<block wx:if='{{parse.showRecommend(orderItem, userInfo)}}'>
@@ -133,7 +133,7 @@
 							</block>
 							<block wx:if='{{orderItem.recommendPhone!=null&&orderItem.recommendPhone.length>0}}'>
 								<view class="bill-info-person-label">推荐电话：</view>
-								<view class="bill-info-person-phone" bindtap="callPhone" data-phone="{{orderItem.recommendPhone}}">{{orderItem.recommendPhone}}</view>
+								<view class="bill-info-person-phone" catchtap="callPhone" data-phone="{{orderItem.recommendPhone}}">{{orderItem.recommendPhone}}</view>
 							</block>
 						</view>
 					</block>
@@ -186,117 +186,24 @@
 					</view>
 				</view>
 			</view>
-			<!-- 等待入港 -->
 			<view class="bill-image-area" wx:if='{{parse.showWaitImageArea(orderItem)}}'>
-				<!-- 单据内已经上传的图片 -->
+				<!-- 当前节点的图片 -->
 				<view class="bill-image-box" wx:for='{{orderItem.orderStates[0].pictureList}}' wx:for-item='orderImageItem' wx:for-index='orderImageIndex' wx:key='{{orderImageIndex}}'>
-					<image class="bill-image" src="{{orderImageItem.viewAddress}}" lazy-load="{{true}}" mode="scaleToFit" bindtap="tapImage" data-orderindex='{{orderIndex}}' data-imageurl='{{orderImageItem.viewAddress}}'>
+					<image class="bill-image" src="{{orderImageItem.viewAddress}}" lazy-load="{{true}}" mode="scaleToFit" catchtap="tapImage" data-orderindex='{{orderIndex}}' data-imageurl='{{orderImageItem.viewAddress}}'>
 					</image>
 				</view>
 			</view>
 			<view class="bill-video-area" wx:if='{{parse.showWaitVideoArea(orderItem)}}'>
-				<!-- 单据内已经上传的视频 -->
+				<!-- 当前节点的视频 -->
 				<view class="bill-video-box" wx:for='{{orderItem.orderStates[0].videoList}}' wx:for-item='orderVideoItem' wx:for-index='orderVideoIndex' wx:key='{{orderVideoIndex}}'>
-					<video src="{{orderVideoItem.viewAddress}}" class='video' objectFit='contain' controls>
+					<video src="{{orderVideoItem.viewAddress}}" id='video-{{orderIndex}}-{{orderVideoIndex}}'
+               bindended='playEnd' class='video' objectFit='contain' controls>
 					</video>
-				</view>
-			</view>
-			<view style='border-bottom: 1rpx solid red; margin: 15rpx; width: 100%;'></view>
-			<!-- 照片 -->
-			<view class="bill-image-area" wx:if='{{parse.showImageArea(orderItem)}}'>
-				<!-- 单据内本次上传的图片 -->
-				<view class="bill-image-box" wx:for='{{orderItem.currentUploadImages}}' wx:for-item='orderImageItem' wx:for-index='orderImageIndex' wx:key='{{orderImageIndex}}'>
-					<image class="bill-image" src="{{orderImageItem.viewAddress}}" lazy-load="{{true}}" mode="scaleToFit" bindtap="tapImage" data-orderindex='{{orderIndex}}' data-imageurl='{{orderImageItem.viewAddress}}'>
-					</image>
-				</view>
-				<!-- 单据内将要上传的图片 -->
-				<view class="bill-image-box" wx:for='{{orderItem.uploadImages}}' wx:for-item='orderImageItem' wx:for-index='orderImageIndex' wx:key='{{orderImageIndex}}'>
-					<image class="bill-image" src="{{orderImageItem}}" lazy-load="{{true}}" mode="scaleToFit" bindtap="tapImage" data-orderindex='{{orderIndex}}' data-imageurl='{{orderImageItem}}'>
-					</image>
-					<image class="bill-image-delete" src="/resource/delete.png" bindtap="deleteUploadImage" data-tapindex="{{orderIndex}}" data-imageindex="{{orderImageIndex}}">
-					</image>
-				</view>
-			</view>
-			<!-- 视频 -->
-			<view class="bill-video-area" wx:if='{{parse.showVideoArea(orderItem)}}'>
-				<!-- 单据内本次上传的视频 -->
-				<view class="bill-video-box" wx:for='{{orderItem.currentUploadVideos}}' wx:for-item='orderVideoItem' wx:for-index='orderVideoIndex' wx:key='{{orderVideoIndex}}'>
-					<video src="{{orderVideoItem.viewAddress}}" class='video' objectFit='contain' controls>
-					</video>
-				</view>
-				<!-- 单据内将要上传的视频 -->
-				<view class="bill-video-box" wx:for='{{orderItem.uploadVideos}}' wx:for-item='orderVideoItem' wx:for-index='orderVideoIndex' wx:key='{{orderVideoIndex}}'>
-					<video src="{{orderVideoItem}}" class='video' objectFit='contain' controls>
-					</video>
-					<image class="bill-image-delete" src="/resource/delete.png" bindtap="deleteUploadVideo" data-tapindex="{{orderIndex}}" data-videoindex='{{orderVideoIndex}}'>
-					</image>
-				</view>
-			</view>
-
-			<view style='border-bottom: 1rpx solid lightgray; margin: 15rpx; width: 100%;'></view>
-
-			<view class="in-out-port-info-area" wx:if='{{orderItem.orderStates[0].orderType != "待出港"}}'>
-				<view class="in-out-port-info-item">
-					<input class="in-out-port-info-input" placeholder="请输入备注" bindinput="inputOrderRemark" data-index='{{orderIndex}}' value="{{orderItem.remarkInput}}">
-
-					</input>
-					<view class="in-out-port-info-button" bindtap="tapRemark" data-index='{{orderIndex}}'>
-						备注
+					<view class="video-tap-box"
+								catchtap="tapVideoItem"
+								data-src='{{orderVideoItem.viewAddress}}'
+								data-id='video-{{orderIndex}}-{{orderVideoIndex}}'>
 					</view>
-				</view>
-			</view>
-
-			<view class="in-out-port-info-area" wx:if='{{orderItem.orderStates[0].orderType == "待出港" && orderItem.readyToInHarbour}}'>
-				<view class="in-out-port-info-item">
-					<input class="in-out-port-info-input" placeholder="请输入航班号/车次号" placeholder-class="text-placeholder" bindinput="inputOrderTransportNum" data-index='{{orderIndex}}' value="{{orderItem.outTransportInfo.transportNum}}" bindblur="orderTransoportNumLostFocus">
-					</input>
-				</view>
-				<block wx:if="{{parse.getTransportType(orderItem.transport.transportType)=='单飞'||parse.getTransportType(orderItem.transport.transportType)=='随机'}}">
-					<view class="in-out-port-info-item">
-						<input class="in-out-port-info-input text-normal" placeholder="始发机场三字码" placeholder-class="text-placeholder" bindinput="inputStartCityCode" data-index='{{orderIndex}}' value="{{orderItem.outTransportInfo.startCityCode}}">
-						</input>
-						<input class="in-out-port-info-input text-normal" placeholder="目的机场三字码" placeholder-class="text-placeholder" bindinput="inputEndCityCode" data-index='{{orderIndex}}' value="{{orderItem.outTransportInfo.endCityCode}}">
-						</input>
-					</view>
-				</block>
-				<view class="in-out-port-info-item">
-					<picker class="in-out-port-info-input" mode='date' bindchange="selectDepartureDate" data-index='{{orderIndex}}'>
-						<view class="in-out-port-info-input-value {{orderItem.outTransportInfo.departureDate == null || orderItem.outTransportInfo.departureDate.length <= 0 ? 'text-placeholder':'text-normal'}}">
-							{{orderItem.outTransportInfo.departureDate == null || orderItem.outTransportInfo.departureDate.length
-                <=0 ? "请选择出发时间":orderItem.outTransportInfo.departureDate}} </view>
-					</picker>
-				</view>
-				<view class="in-out-port-info-item">
-					<input class="in-out-port-info-input text-normal" placeholder="请输入快递单号" placeholder-class="text-placeholder" bindinput="inputOrderExpressNum" data-index='{{orderIndex}}' value="{{orderItem.outTransportInfo.expressNum}}">
-					</input>
-				</view>
-
-				<view class="in-out-port-info-item">
-					<input class="in-out-port-info-input text-normal" placeholder="提货处联系人" placeholder-class="text-placeholder" bindinput="inputOrderTakerContact" data-index='{{orderIndex}}' value="{{orderItem.orderTakeDetail.contact}}">
-					</input>
-					<input class="in-out-port-info-input text-normal" placeholder="联系人电话" placeholder-class="text-placeholder" bindinput="inputOrderTakerContactPhone" data-index='{{orderIndex}}' value="{{orderItem.orderTakeDetail.phone}}">
-					</input>
-				</view>
-				<view class="in-out-port-info-item">
-					<view class="in-out-port-info-input {{(orderItem.orderTakeDetail!= null && orderItem.orderTakeDetail.detailAddress != null && orderItem.orderTakeDetail.detailAddress.length > 0) ? 'text-normal':'text-placeholder'}}" bindtap='tapOrderTakerAddress' data-index='{{orderIndex}}'>
-					{{(orderItem.orderTakeDetail!= null && orderItem.orderTakeDetail.detailAddress != null && orderItem.orderTakeDetail.detailAddress.length > 0) ? parse.getOrderTakeRegion(orderItem.orderTakeDetail) + ' ' + orderItem.orderTakeDetail.detailAddress:'请选择提货地址'}}
-					</view>
-				</view>
-			</view>
-
-			<!-- 按钮区域 -->
-			<view class='bill-operate-box'>
-				<view class='bill-operate-button' bindtap='tapMoreOperate' data-tapindex="{{orderIndex}}" data-orderno='{{orderItem.orderNo}}'>
-					更多
-				</view>
-				<view class='bill-operate-button' bindtap='tapConfirmUpload' data-tapindex="{{orderIndex}}" wx:if='{{orderItem.readyToUpload}}'>
-					上传
-				</view>
-				<view class='bill-operate-button' bindtap='tapUpload' data-tapindex="{{orderIndex}}">
-					拍摄
-				</view>
-				<view class='bill-operate-button-complain' bindtap='tapInHarbour' data-tapindex="{{orderIndex}}" hidden="{{!orderItem.readyToInHarbour}}">
-					{{parse.getOperateButtonTitle(orderItem)}}
 				</view>
 			</view>
 		</view>
@@ -316,17 +223,6 @@
 
 <wxs module='parse'>
 	module.exports = {
-		getOrderTakeRegion: function(takeDetail) {
-			if ((takeDetail.province == null || takeDetail.province.length <= 0) &&
-				(takeDetail.city == null || takeDetail.city.length <= 0) &&
-				(takeDetail.region == null || takeDetail.region.length <= 0)) {
-				return null;
-			}
-			var province = (takeDetail.province != null && takeDetail.province.length > 0 ? takeDetail.province : "");
-			var city = (takeDetail.city != null && takeDetail.city.length > 0 ? takeDetail.city : "");
-			var region = (takeDetail.region != null && takeDetail.region.length > 0 ? takeDetail.region : "");
-			return province + '/' + city + '/' + region;
-		},
 		showSender: function(orderItem, userInfo) {
 			return true;
 		},
@@ -339,23 +235,6 @@
 			|| (orderItem.recommendRemarks!=null&&orderItem.recommendRemarks.length>0)) {
 				return true;
 			} 
-			return false;
-		},
-		getOperateButtonTitle: function(orderItem) {
-			if (orderItem.orderStates[0].orderType == "待入港") {
-				return '入港';
-			} else if (orderItem.orderStates[0].orderType == "待出港") {
-				return '出港';
-			} else if (orderItem.orderStates[0].orderType == "待揽件") {
-				return '揽件';
-			} else {
-				return '未知';
-			}
-		},
-		showAlloctionBtn: function(order, user) {
-			if (user.role == 1 || user.role == 2) {
-				return true;
-			}
 			return false;
 		},
 		getTransportType: function(type) {

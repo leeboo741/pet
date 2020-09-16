@@ -303,32 +303,36 @@ function RequestUploadFile(uploadFileParam) {
     header: uploadFileParam.header,
     formData: uploadFileParam.formData,
     success(res) {
-      ResponseHandler.handleResponse(res,
-        function handleSuccessCallback(root, total, header, cookies) {
+      if (res.statusCode == 200) {
+        let data = res.data;
+        if (typeof data == 'string') {
+          data = JSON.parse(data);
+        }
+        if (data.code == 200) {
           if (typeof uploadFileParam.success == "function" && uploadFileParam.success) {
             let requestSuccessObj = new RequestSuccessObj(
               {
-                "root": root,
-                "total": total,
-                "header": header,
-                "cookies": cookies
+                "root": data.data,
               }
             )
             uploadFileParam.success(requestSuccessObj);
           }
-        },
-        function handleFailCallback(code, errMsg, header, cookies) {
+        } else {
           if (typeof uploadFileParam.fail == "function" && uploadFileParam.fail) {
             let requestFailObj = new RequestFailObj({
-              "code": code,
-              "header": header,
-              "cookies": cookies,
-              "errMsg": errMsg
+              "code": data.code,
             })
             uploadFileParam.fail(requestFailObj);
           }
-        },
-      )
+        }
+      } else {
+        if (typeof uploadFileParam.fail == "function" && uploadFileParam.fail) {
+          let requestFailObj = new RequestFailObj({
+            "code": res.statusCode,
+          })
+          uploadFileParam.fail(requestFailObj);
+        }
+      }
     },
     fail(res) {
       if (uploadFileParam.fail != null && typeof uploadFileParam.fail == "function") {

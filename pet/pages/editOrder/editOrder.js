@@ -5,6 +5,8 @@ const Config = require("../../utils/config.js");
 const LoginUtil = require("../../utils/loginUtils.js");
 const ShareUtil = require("../../utils/shareUtils.js");
 const Util = require("../../utils/util.js");
+const commonOrderManager = require("../../manager/orderManager/commonOrderManager.js");
+const orderManager = require("../../manager/orderManager/orderManager.js");
 
 Page({
 
@@ -95,36 +97,21 @@ Page({
       title: '请稍等...',
     })
     let that = this;
-    wx.request({
-      url: Config.URL_Service + Config.URL_OrderDetail,
-      data: {
-        "orderNo": orderNo,
-        "customerNo": LoginUtil.getCustomerNo()
-      },
-      success(res) {
-        wx.hideLoading();
-        console.log("获取订单详情 success：\n" + JSON.stringify(res));
-        if (res.data.data != null && res.data.code == Config.RES_CODE_SUCCESS) {
-          that.setData({
-            orderData: res.data.data
-          })
-          that.requestStationPhone(that.data.orderData.orderStates[0].station.stationNo)
-        } else {
-
-        }
-      },
-      fail(res) {
-        wx.hideLoading();
-        console.log("获取订单详情 fail：\n" + JSON.stringify(res));
+    commonOrderManager.getOrderDetail(orderNo, function(success, data) {
+      wx.hideLoading({
+        success: (res) => {},
+      })
+      if (success && data != null) {
+        that.setData({
+          orderData: data
+        })
+        that.requestStationPhone(that.data.orderData.orderStates[0].station.stationNo)
+      } else {
         wx.showToast({
-          title: '系统异常',
+          title: '获取详情失败',
           icon: "none"
         })
-      },
-      complete(res) {
-        console.log("获取订单详情 complete：\n" + JSON.stringify(res));
-      },
-
+      }
     })
   },
 
@@ -140,29 +127,19 @@ Page({
     wx.showLoading({
       title: '请稍等...',
     })
-    wx.request({
-      url: Config.URL_Service + Config.URL_GetStationPhone,
-      data: {
-        stationNo: stationNo
-      },
-      success(res) {
-        wx.hideLoading();
-        console.log("获取站点电话 success：\n" + JSON.stringify(res));
-        if (res.data.code == config.RES_CODE_SUCCESS) {
-          that.setData({
-            stationPhone: res.data.data
-          })
-        }
-      },
-      fail(res) {
-        wx.hideLoading();
-        console.log("获取站点电话 fail\n" + JSON.stringify(res));
+    orderManager.getStationPhone(stationNo, function(success, data){
+      wx.hideLoading({
+        success: (res) => {},
+      })
+      if (success) {
+        that.setData({
+          stationPhone: data
+        })
+      } else {
         wx.showToast({
-          title: '系统异常',
+          title: '获取站点电话失败',
           icon: "none"
         })
-      },
-      complete(res) {
       }
     })
   },
@@ -198,40 +175,23 @@ Page({
     if (!Util.checkEmpty(this.data.editReceiverPhone)) {
       tempData.receiverPhone = this.data.editReceiverPhone;
     }
-    
-    wx.request({
-      url: Config.URL_Service + Config.URL_EditOrderContacts,
-      data: tempData,
-      method: "PUT",
-      success(res) {
-        wx.hideLoading();
-        console.log("修改订单联系人 success: \n" + JSON.stringify(res));
-        if (res.data.code == config.RES_CODE_SUCCESS && res.data.data > 0) {
-          wx.showToast({
-            title: '更新成功',
-            duration: 1000,
-          })
-          that.data.timeOutID = setTimeout(function () {
-            wx.navigateBack({
-
-            })
-          }, 1000)
-        } else {
-          wx.showToast({
-            title: res.data.message,
-            icon: 'none'
-          })
-        }
-      },
-      fail(res) {
-        wx.hideLoading();
-        console.log("修改订单联系人 fail: \n" + JSON.stringify(res)); 
+    orderManager.editOrderContacts(tempData, function(success, data){
+      wx.hideLoading({
+        success: (res) => {},
+      })
+      if (success) {
         wx.showToast({
-          title: '更新失败！',
+          title: '更新成功',
+          duration: 1000,
+        })
+        that.data.timeOutID = setTimeout(function () {
+          wx.navigateBack()
+        }, 1000)
+      } else {
+        wx.showToast({
+          title: '更新联系人失败！',
           icon: 'none'
         })
-      },
-      complete(res) {
       }
     })
   },

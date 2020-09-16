@@ -5,6 +5,8 @@ const loginUtil = require("../../utils/loginUtils.js");
 const pagePath = require("../../utils/pagePath.js");
 const ShareUtil = require("../../utils/shareUtils.js");
 const workOrderManager = require("../../manager/orderManager/workOrderManager.js");
+const notificationCenter = require("../../manager/notificationCenter.js");
+const { WORKORDER_DELETE, WORKORDER_ADD_REMARK, WORKORDER_CHANGE_PRICE, WORKORDER_UPLOAD_PAYMENT_VOUCHER, WORKORDER_ADD_TEMPDELIVER } = require("../../static/notificationName.js");
 
 const app = getApp();
 
@@ -38,10 +40,16 @@ Page({
   },
 
   /**
+   * 生命周期函数--监听页面卸载
+   */
+  onUnload: function () {
+    
+  },
+
+  /**
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-
   },
 
   /**
@@ -59,18 +67,7 @@ Page({
 
   },
 
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-
-    console.log("/unpaywork/index 销毁")
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
+  startRefresh: function(){
     this.data.offset = 0;
     let that = this; 
     this.setData({
@@ -99,9 +96,15 @@ Page({
             loadMoreTip: "暂无数据"
           })
         }
-        wx.stopPullDownRefresh();
       }
     );
+  },
+
+  /**
+   * 页面相关事件处理函数--监听用户下拉动作
+   */
+  onPullDownRefresh: function () {
+    this.startRefresh();
   },
 
   /**
@@ -144,15 +147,7 @@ Page({
    * 用户点击右上角分享
    */
   onShareAppMessage: function () {
-
     return ShareUtil.getOnShareAppMessageForShareOpenId();
-  },
-
-  /**
-   * 输入关键字
-   */
-  searchInput: function(e) {
-
   },
 
   /**
@@ -229,41 +224,19 @@ Page({
    */
   requestOrderList: function (offset, getOrderDataCallback) {
     let that = this;
-    wx.request({
-      url: config.URL_Service + config.URL_Order_Station_All,
-      data: {
-        stationNo: loginUtil.getStationNo(),
-        state: this.data.orderStateList,
-        offset: offset,
-        limit: Limit,
-        keyword: this.data.keyword,
-        orderDate: this.data.orderDate
-      },
-      success(res) {
-        console.log("请求未付单据 success：\n" + JSON.stringify(res));
-        if (res.data.code == config.RES_CODE_SUCCESS) {
-          wx.hideLoading();
-          if (getOrderDataCallback && typeof getOrderDataCallback == "function") {
-            getOrderDataCallback(res.data.data);
-          } 
-        } else {
-          wx.showToast({
-            title: res.data.message,
-            icon: 'none'
-          })
-        }
-      },
-      fail(res) {
-        console.log("请求未付单据 fail：\n" + JSON.stringify(res));
+    workOrderManager.getOrderList_1(this.data.orderStateList, offset, Limit, this.data.keyword, this.data.orderDate, function(success, data) {
+      wx.stopPullDownRefresh();
+      wx.hideLoading();
+      if (success) {
+        if (util.checkIsFunction(getOrderDataCallback)) {
+          getOrderDataCallback(data);
+        } 
+      } else {
         wx.showToast({
-          title: "系统异常",
+          title: '获取订单列表失败',
           icon: 'none'
         })
-      },
-      complete(res) {
-        console.log("请求未付单据 complete：\n" + JSON.stringify(res));
-        wx.stopPullDownRefresh();
-      },
+      }
     })
   },
 
@@ -281,133 +254,11 @@ Page({
   },
 
   /**
-   * 点击删除订单
-   * @param {*} e 
-   */
-  tapDeleteOrder: function(e) {
-    let that = this;
-    wx.showModal({
-      title: '删除订单',
-      content: '确认删除订单:' + e.currentTarget.dataset.orderno,
-      confirmText: '删除',
-      cancelText: '放弃',
-      success(res) {
-        if (res.confirm) {
-          wx.showLoading({
-            title: '请稍等...',
-          })
-          workOrderManager.deleteOrder(e.currentTarget.dataset.orderno, function(success, data) {
-            wx.hideLoading()
-            if (success) {
-              wx.showToast({
-                title: '删除成功',
-              })
-              that.data.orderList.splice(e.currentTarget.dataset.tapindex, 1);
-              that.setData({
-                orderList: that.data.orderList
-              })
-            } else {
-              wx.showToast({
-                title: '删除失败',
-                icon: 'none'
-              })
-            }
-          })
-        }
-      }
-    })
-  },
-
-  /**
    * 点击订单详情
    */
   tapOrderDetail: function(e) {
-
     wx.navigateTo({
-      url: pagePath.Path_Order_Detail + '?orderno=' + e.currentTarget.dataset.orderno + '&type=1',
+      url: '/pages/orderDetail/workOrderDetail/index' + "?orderno=" + e.currentTarget.dataset.orderno,
     })
   },
-
-  /**
-   * 审核待审核
-   * @param {*} e 
-   */
-  tapVerify: function(e) {
-    let index = e.currentTarget.dataset.tapindex;
-    app.globalData.verifyPaymentVoucherOrder = this.data.orderList[index];
-    wx.navigateTo({
-      url: pagePath.Path_Order_VerifyPaymentVoucher,
-    })
-  },
-
-  /**
-   * 输入金额
-   */
-  inputTargetAmount: function(e) {
-    let tempOrder = this.data.orderList[e.currentTarget.dataset.index];
-    tempOrder.targetAmount = e.detail.value
-  },
-
-  /**
-   * 确认改价
-   */
-  tapChangeAmount: function(e) {
-    let tempOrder = this.data.orderList[e.currentTarget.dataset.index];
-    let targetAmount = tempOrder.targetAmount;
-    if (util.checkEmpty(targetAmount)) {
-      wx.showToast({
-        title: '请输入金额',
-        icon: 'none'
-      })
-      return;
-    }
-    let targetOrderNo = tempOrder.orderNo;
-    let that = this;
-    wx.showModal({
-      title: '确认修改',
-      content: '确认修改订单：'+targetOrderNo+"价格",
-      success(res){
-        if (res.confirm) {
-          
-          wx.showLoading({
-            title: '请稍等',
-          })
-          wx.request({
-            url: config.URL_Service + config.URL_ChangeOrderPrice,
-            data: {
-              orderNo: targetOrderNo,
-              paymentAmount: targetAmount
-            },
-            method: "PUT",
-            success(res) {
-              console.log("确认改价 success: \n" + JSON.stringify(res));
-              if (res.data.code == config.RES_CODE_SUCCESS && res.data.data > 0) {
-                tempOrder.paymentAmount = targetAmount;
-                tempOrder.targetAmount = null;
-                that.setData({
-                  orderList: that.data.orderList
-                })
-                wx.showToast({
-                  title: '改价成功',
-                  duration: 1500
-                })
-              } else {
-                wx.showToast({
-                  title: '改价失败',
-                  icon: 'none'
-                })
-              }
-            },
-            fail(res) {
-              console.log("确认改价 fail: \n" + JSON.stringify(res));
-              wx.showToast({
-                title: '系统异常',
-                icon: 'none'
-              })
-            }
-          })
-        }
-      }
-    })
-  }
 })

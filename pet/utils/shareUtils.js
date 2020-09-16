@@ -17,9 +17,9 @@ const ShareOtherPayType_Business = 1;
 function shareToOtherPay(orderNo, amount, qrcodePath, otherPayType){
   let tempPath = PagePath.Path_Home + '?type=sharetopay' + '&orderno=' + orderNo + '&amount=' + amount + '&customerno=' + LoginUtil.getCustomerNo() + "&shareopenid=" + loginUtils.getOpenId() + "&otherpaytype=" + otherPayType;
   let data = {
-    title: "请你帮忙支付一下"
+    title: "请查看并确认订单"
   };
-  if (otherPayType == ShareOtherPayType_Business) {
+  if (otherPayType == ShareOtherPayType_Business && qrcodePath != null) {
     let tempqrcodepath = encodeURIComponent(qrcodePath)
     tempPath = tempPath + "&shareqrcodepath=" + tempqrcodepath;
     data.imageUrl = qrcodePath;

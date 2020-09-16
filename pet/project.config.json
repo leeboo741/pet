@@ -4,7 +4,7 @@
 		"ignore": []
 	},
 	"setting": {
-		"urlCheck": true,
+		"urlCheck": false,
 		"es6": true,
 		"enhance": false,
 		"postcss": true,
@@ -75,7 +75,7 @@
 					"id": 1,
 					"name": "扫码签收",
 					"pathName": "pages/index/index2",
-					"query": "orderno=20191026nc001&type=scan",
+					"query": "q=https%3A%2F%2Fwww.taochonghui.com%2Fweapp%2Fjump%2Fconfirm%2Forder%3Ftype%3Dscan%26orderno%3D20200910nc001",
 					"scene": 1011
 				},
 				{

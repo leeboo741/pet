@@ -155,7 +155,7 @@ Page({
     this.getWithdrawFlow(type, offset, function(success, data) {
       if (success) {
         if (Util.checkIsFunction(getDataCallback)) {
-          getDataCallback(res.data.data)
+          getDataCallback(data)
         }
       } else {
         wx.showToast({
@@ -174,9 +174,9 @@ Page({
    */
   getWithdrawFlow: function(type, offset, callback) {
     if (type == 0) {
-      withdrawManager.getStationWithdrawFlow(offset, callback);
+      withdrawManager.getStationWithdrawFlow(offset,Limit, callback);
     } else {
-      withdrawManager.getBusinessWithdrawFlow(offset, callback);
+      withdrawManager.getBusinessWithdrawFlow(offset, Limit, callback);
     }
   }
 })

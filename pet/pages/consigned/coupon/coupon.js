@@ -5,6 +5,7 @@ const config = require("../../../utils/config.js");
 const loginUtil = require("../../../utils/loginUtils.js");
 const pagePath = require("../../../utils/pagePath.js");
 const ShareUtil = require("../../../utils/shareUtils.js");
+const couponManager = require("../../../manager/couponManager/couponManager.js");
 
 Page({
 
@@ -81,26 +82,16 @@ Page({
    */
   requestCouponList: function() {
     let that = this;
-    wx.request({
-      url: config.URL_Service + config.URL_GetCouponList,
-      data: {
-        openId: loginUtil.getOpenId()
-      },
-      success(res){
-        console.log("获取优惠券 success => \n" + JSON.stringify(res));
+    couponManager.getCouponList(function(success, data){
+      if (success) {
         that.setData({
-          couponList: res.data.data
+          couponList: data
         })
-      },
-      fail(res) {
-        console.log("获取优惠券 fail => \n" + JSON.stringify(res));
+      } else {
         wx.showToast({
-          title: '系统异常',
+          title: '获取优惠券失败',
           icon: "none"
         })
-      },
-      complete(res) {
-        console.log("获取优惠券 complete => \n" + JSON.stringify(res));
       }
     })
   },

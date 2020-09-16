@@ -1,6 +1,7 @@
 const config = require("../../utils/config");
 const util = require("../../utils/util");
 const loginUtils = require("../../utils/loginUtils");
+const { RES_CODE_SUCCESS } = require("../../utils/config");
 
 /**
  * 检查 未支付 补价单数量
@@ -27,7 +28,7 @@ function checkUnpayPremiumCount(orderNo, callback) {
     },
     fail(res) {
       if (util.checkIsFunction(callback)) {
-        callback(false, null);
+        callback(false, res);
       }
     }
   })
@@ -67,7 +68,65 @@ function confirmOrderReceiving(orderNo, fileList, callback) {
     },
     fail(res) {
       if (util.checkIsFunction(callback)) {
-        callback(false, null);
+        callback(false, res);
+      }
+    }
+  })
+}
+
+/**
+ * 获取订单详情
+ * @param {string} orderNo 订单编号
+ * @param {function(boolean, object)} callback 回调
+ */
+function getOrderInfo(orderNo, callback) {
+  wx.request({
+    url: config.URL_Service + config.URL_OrderInfo(orderNo),
+    success(res) {
+      if (res.data.code == RES_CODE_SUCCESS) {
+        if (util.checkIsFunction(callback)) {
+          callback(true, res.data.data);
+        }
+      } else {
+        if (util.checkIsFunction(callback)) {
+          callback(false, res);
+        }
+      }
+    },
+    fail(res) {
+      if (util.checkIsFunction(callback)) {
+        callback(false, res);
+      }
+    },
+  })
+}
+
+/**
+ * 订单详情
+ * @param {string} orderNo 订单编号
+ * @param {function(boolean, object)} callback 回调
+ */
+function getOrderDetail(orderNo, callback) {
+  wx.request({
+    url: config.URL_Service + config.URL_OrderDetail,
+    data: {
+      "orderNo": orderNo,
+      "customerNo": loginUtils.getCustomerNo()
+    },
+    success(res) {
+      if (res.data.code == RES_CODE_SUCCESS) {
+        if (util.checkIsFunction(callback)) {
+          callback(true, res.data.data);
+        }
+      } else {
+        if (util.checkIsFunction(callback)) {
+          callback(false, res);
+        }
+      }
+    },
+    fail(res) {
+      if (util.checkIsFunction(callback)) {
+        callback(false, res);
       }
     }
   })
@@ -76,4 +135,6 @@ function confirmOrderReceiving(orderNo, fileList, callback) {
 module.exports = {
   checkUnpayPremiumCount, // 检查 未支付 补价单数量
   confirmOrderReceiving, // 确认收货
+  getOrderInfo, // 获取订单详情
+  getOrderDetail, // 获取订单详情
 }

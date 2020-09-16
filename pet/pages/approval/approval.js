@@ -4,6 +4,7 @@ const config = require("../../utils/config.js");
 const loginUtil = require("../../utils/loginUtils.js");
 const util = require("../../utils/util.js");
 const ShareUtil = require("../../utils/shareUtils.js");
+const approvalManager = require("../../manager/approvalManager/approvalManager.js");
 
 const Limit = 30;
 
@@ -194,41 +195,25 @@ Page({
    * 查询待审核商户列表
    */
   requestUnAuditedStationList: function () {
-    
     wx.showLoading({
       title: '请稍等...',
     })
     let that = this;
-    wx.request({
-      url: config.URL_Service + config.URL_GetUnauditedStation,
-      data: {
-        customerNo: loginUtil.getCustomerNo()
-      },
-      success(res) {
-        wx.hideLoading();
-        console.log("获取待审核商户 success: \n" + JSON.stringify(res));
-        if (res.data.code == config.RES_CODE_SUCCESS) {
-          that.setData({
-            stationApplyList: res.data.data
-          })
-        } else {
-          wx.showToast({
-            title: '获取待审商户失败',
-            icon: 'none'
-          })
-        }
-      },
-      fail(res) {
-        wx.hideLoading();
-        console.log("获取待审核商户 fail: \n" + JSON.stringify(res));
+    approvalManager.getUnauditedBusinessList(function(success, data) {
+      wx.hideLoading({
+        success: (res) => {},
+      })
+      wx.stopPullDownRefresh({
+        success: (res) => {},
+      })
+      if (success) {
+        that.setData({
+          stationApplyList: data
+        })
+      } else {
         wx.showToast({
           title: '获取待审商户失败',
           icon: 'none'
-        })
-      },
-      complete(res) {
-        wx.stopPullDownRefresh({
-          success: (res) => {},
         })
       }
     })
@@ -242,36 +227,21 @@ Page({
       title: '请稍等...',
     })
     let that = this;
-    wx.request({
-      url: config.URL_Service + config.URL_GetUnauditedStaff,
-      data: {
-        phone: loginUtil.getPhone()
-      },
-      success(res) {
-        wx.hideLoading();
-        console.log("获取待审核员工 success: \n" + JSON.stringify(res));
-        if (res.data.code == config.RES_CODE_SUCCESS) {
-          that.setData({
-            staffApplyList: res.data.data
-          })
-        } else {
-          wx.showToast({
-            title: '获取待审员工失败',
-            icon: 'none'
-          })
-        }
-      },
-      fail(res) {
-        wx.hideLoading();
-        console.log("获取待审核员工 fail: \n" + JSON.stringify(res));
+    approvalManager.getUnauditedStaffList(function(success, data) {
+      wx.hideLoading({
+        success: (res) => {},
+      })
+      wx.stopPullDownRefresh({
+        success: (res) => {},
+      })
+      if (success) {
+        that.setData({
+          staffApplyList: data
+        })
+      } else {
         wx.showToast({
           title: '获取待审员工失败',
           icon: 'none'
-        })
-      },
-      complete(res){
-        wx.stopPullDownRefresh({
-          success: (res) => {},
         })
       }
     })
@@ -294,37 +264,23 @@ Page({
       title: '请稍等...',
     })
     let that = this;
-    wx.request({
-      url: config.URL_Service + config.URL_RejectStationApply,
-      data: tempStationApply,
-      method: "PUT",
-      success(res) {
-        wx.hideLoading();
-        console.log("请求驳回商家 success: \n" + JSON.stringify(res));
-        if (res.data.code == config.RES_CODE_SUCCESS && res.data.data > 0) {
-          wx.showToast({
-            title: '驳回成功',
-          })
-          that.data.stationApplyList.splice(tempIndex, 1);
-          that.setData({
-            stationApplyList: that.data.stationApplyList
-          })
-        } else {
-          wx.showToast({
-            title: '驳回失败',
-            icon: "none"
-          })
-        }
-      },
-      fail(res) {
-        wx.hideLoading();
-        console.log("请求驳回商家 fail: \n" + JSON.stringify(res));
+    approvalManager.rejectBusinessApply(tempStationApply, function(success, data) {
+      wx.hideLoading({
+        success: (res) => {},
+      })
+      if (success) {
         wx.showToast({
-          title: '网络波动，驳回失败',
+          title: '驳回成功',
+        })
+        that.data.stationApplyList.splice(tempIndex, 1);
+        that.setData({
+          stationApplyList: that.data.stationApplyList
+        })
+      } else {
+        wx.showToast({
+          title: '驳回失败',
           icon: "none"
         })
-      },
-      complete(res) {
       }
     })
   },
@@ -339,37 +295,23 @@ Page({
       title: '请稍等...',
     })
     let that = this;
-    wx.request({
-      url: config.URL_Service + config.URL_ApprovalStationApply,
-      data: tempStationApply,
-      method: "PUT",
-      success(res) {
-        wx.hideLoading();
-        console.log("请求审核商家 success: \n" + JSON.stringify(res));
-        if (res.data.code == config.RES_CODE_SUCCESS && res.data.data > 0) {
-          wx.showToast({
-            title: '审核成功',
-          })
-          that.data.stationApplyList.splice(tempIndex, 1);
-          that.setData({
-            stationApplyList: that.data.stationApplyList
-          })
-        } else {
-          wx.showToast({
-            title: '审核失败',
-            icon: "none"
-          })
-        }
-      },
-      fail(res) {
-        wx.hideLoading();
-        console.log("请求审核商家 fail: \n" + JSON.stringify(res));
+    approvalManager.approvalBusinessApply(tempStationApply, function(success, data) {
+      wx.hideLoading({
+        success: (res) => {},
+      })
+      if (success) {
         wx.showToast({
-          title: '网络波动，审核失败',
+          title: '审核成功',
+        })
+        that.data.stationApplyList.splice(tempIndex, 1);
+        that.setData({
+          stationApplyList: that.data.stationApplyList
+        })
+      } else {
+        wx.showToast({
+          title: '审核失败',
           icon: "none"
         })
-      },
-      complete(res) {
       }
     })
   },
@@ -384,37 +326,23 @@ Page({
       title: '请稍等...',
     })
     let that = this;
-    wx.request({
-      url: config.URL_Service + config.URL_RejectStaffApply,
-      data: tempStaffApply,
-      method: "PUT",
-      success(res) {
-        wx.hideLoading();
-        console.log("请求驳回员工 success: \n" + JSON.stringify(res));
-        if (res.data.code == config.RES_CODE_SUCCESS && res.data.data > 0) {
-          wx.showToast({
-            title: '驳回成功',
-          })
-          that.data.staffApplyList.splice(tempIndex, 1);
-          that.setData({
-            staffApplyList: that.data.staffApplyList
-          })
-        } else {
-          wx.showToast({
-            title: '驳回失败',
-            icon: "none"
-          })
-        }
-      },
-      fail(res) {
-        wx.hideLoading();
-        console.log("请求驳回员工 fail: \n" + JSON.stringify(res));
+    approvalManager.rejectStaffApply(tempStaffApply, function(success, data) {
+      wx.hideLoading({
+        success: (res) => {},
+      })
+      if (success) {
         wx.showToast({
-          title: '网络波动，驳回失败',
+          title: '驳回成功',
+        })
+        that.data.staffApplyList.splice(tempIndex, 1);
+        that.setData({
+          staffApplyList: that.data.staffApplyList
+        })
+      } else {
+        wx.showToast({
+          title: '驳回失败',
           icon: "none"
         })
-      },
-      complete(res) {
       }
     })
   },
@@ -459,37 +387,23 @@ Page({
         wx.showLoading({
           title: '请稍等...',
         })
-        wx.request({
-          url: config.URL_Service + config.URL_ApprovalStaffApply,
-          data: tempStaffApply,
-          method: "PUT",
-          success(res) {
-            wx.hideLoading();
-            console.log("请求审核员工 success: \n" + JSON.stringify(res));
-            if (res.data.code == config.RES_CODE_SUCCESS && res.data.data > 0) {
-              wx.showToast({
-                title: '审核成功',
-              })
-              that.data.staffApplyList.splice(tempIndex,1);
-              that.setData({
-                staffApplyList: that.data.staffApplyList
-              })
-            } else {
-              wx.showToast({
-                title: '审核失败',
-                icon: "none"
-              })
-            }
-          },
-          fail(res) {
-            wx.hideLoading();
-            console.log("请求审核员工 fail: \n" + JSON.stringify(res));
+        approvalManager.approvalStaffApply(tempStaffApply, function(success, data) {
+          wx.hideLoading({
+            success: (res) => {},
+          })
+          if (success) {
             wx.showToast({
-              title: '网络波动，审核失败',
+              title: '审核成功',
+            })
+            that.data.staffApplyList.splice(tempIndex,1);
+            that.setData({
+              staffApplyList: that.data.staffApplyList
+            })
+          } else {
+            wx.showToast({
+              title: '审核失败',
               icon: "none"
             })
-          },
-          complete(res) {
           }
         })
       }

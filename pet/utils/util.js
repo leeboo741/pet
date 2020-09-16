@@ -142,6 +142,17 @@ function checkIsFunction(functionName) {
 }
 
 /**
+ * 检查是否是数字
+ * @param {*} number 
+ */
+function checkIsNumber(number) {
+  if (number != null && typeof number == 'number') {
+    return true;
+  } 
+  return false;
+}
+
+/**
  * 是否是 object 对象
  * @return true 是 false 非
  */
@@ -186,5 +197,6 @@ module.exports = {
   checkIsFunction: checkIsFunction,
   checkIsObject: checkIsObject,
   checkObjectIsEmpty: checkObjectIsEmpty,
+  checkIsNumber: checkIsNumber,
   printLog: printLog,
 }

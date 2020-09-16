@@ -7,23 +7,23 @@
           wx:for-index='uploadImageIndex'
           wx:key='{{uploadImageIndex}}'>
       <i-image wx:if='{{!parse.isVideo(uploadImageItem)}}'
-               imageSrc='{{uploadImageItem.resource}}'
+               imageSrc='{{parse.getSrcPath(uploadImageItem)}}'
                i-class='upload-image-item-image'
                catchtap="tapImageItem"
                data-index='{{uploadImageIndex}}'
-               data-src='{{uploadImageItem.resource}}'>
+               data-src='{{uploadImageItem}}'>
       </i-image>
       <block wx:else>
         <video class='upload-image-item-image'
-               src="{{uploadImageItem.resource}}"
-               id='{{uploadImageItem.resource}}'
+               src="{{parse.getSrcPath(uploadImageItem)}}"
+               id='video{{uploadImageIndex}}'
                bindended='playEnd'>
         </video>
         <view class="video-tap-box"
               catchtap="tapVideoItem"
               data-index='{{uploadImageIndex}}'
-              data-src='{{uploadImageItem.resource}}'
-              data-id='{{uploadImageItem.resource}}'>
+              data-src='{{parse.getSrcPath(uploadImageItem)}}'
+              data-id='video{{uploadImageIndex}}'>
         </view>
       </block>
       <view class="progress-box"
@@ -35,7 +35,7 @@
             wx:if='{{ableDelete}}'
             catchtap="deleteImageAction"
             data-index='{{uploadImageIndex}}'
-            data-imagepath='{{uploadImageItem.resource}}'>
+            data-imagepath='{{uploadImageItem}}'>
         <i-image imageSrc='../leeImageUpload/delete.png'
                  i-class='delete-image'>
         </i-image>
@@ -65,8 +65,39 @@
       }
       return true;
     },
+    getSrcPath: function(path) {
+      if (path != null && typeof path == "string") {
+        return path;
+      } else if (path != null && typeof path == "object") {
+        return path.fileAddress?path.fileAddress:path.coverAddress;
+      }
+      return "";
+    },
     isVideo: function(path) {
-      return path.type == "VIDEO";
+      if (path != null && typeof path == "string") {
+        var index = path.lastIndexOf(".");
+        var suffix = path.substring(index + 1);
+        if (suffix == "mp4" ||
+          suffix == "mov" ||
+          suffix == "m4v" ||
+          suffix == "3gp" ||
+          suffix == "avi" ||
+          suffix == "m3u8" ||
+          suffix == "webm") {
+          return true;
+        }
+        return false;
+      } else if (path != null && typeof path == "object"){
+        var type = path.fileType;
+        if (path.fileType == "视频") {
+          return true;
+        }
+        return false;
+      }
+      return false;
+    },
+    getVideoId: function(path) {
+      return path;
     }
   }
 </wxs>

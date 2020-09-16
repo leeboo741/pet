@@ -1,0 +1,17 @@
+<!--pages/orderDetail/workOrderDetail/changeOrderPrice/index.wxml-->
+<i-panel i-class='panel' title='修改订单价格'>
+  <i-cell-group>
+    <i-cell title='订单编号'
+            value='{{order.orderNo}}'>
+    </i-cell>
+    <i-cell title='当前价格'
+            value='￥{{order.paymentAmount}}'>
+    </i-cell>
+    <i-cell title='新价格'>
+      <input slot='footer' value='{{newPrice}}' placeholder='请输入新价格' bindinput='inputNewPrice'></input>
+    </i-cell>
+    <i-cell>
+      <button slot='header' type="warn" bindtap="tapChangePrice">确定修改</button>
+    </i-cell>
+  </i-cell-group>
+</i-panel>

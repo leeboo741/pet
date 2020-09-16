@@ -2,6 +2,7 @@
 import loginUtils from '../../../utils/loginUtils';
 import util from '../../../utils/util.js';
 import { RES_CODE_SUCCESS } from '../../../utils/config';
+import commonOrderManager from '../../../manager/orderManager/commonOrderManager';
 const Paymanager = require('../../../manager/payManager/payManager');
 const ShareManager = require('../../../utils/shareUtils');
 const app = getApp();
@@ -30,12 +31,14 @@ Page({
 
     otherPayType: [
       {
-        typeName: '平台账户',
+        typeName: '付款至平台',
         typeId: ShareManager.ShareOtherPayType_Platform,
+        buttonName: '发送至客户支付',
       },
       {
-        typeName: '商户账户',
+        typeName: '线下付款',
         typeId: ShareManager.ShareOtherPayType_Business,
+        buttonName: '发送至客户确认'
       }
     ], // 代支付类型列表
     currentOtherPayType: null, // 选中代支付类型
@@ -50,30 +53,20 @@ Page({
     wx.showLoading({
       title: '请稍等...',
     })
-    wx.request({
-      url: Config.URL_Service + Config.URL_OrderInfo(this.data.orderNo),
-      success(res) {
-        console.log(res);
-        wx.hideLoading()
-        let qrcodePath = res.data.data.station.collectionQRCode;
-        if (res.data.code == RES_CODE_SUCCESS) {
-          that.setData({
-            orderInfo: res.data.data,
-          })
-        } else {
-          wx.showToast({
-            title: '获取订单失败',
-            icon: 'none'
-          })
-        }
-      },
-      fail(res) {
-        wx.hideLoading()
+    commonOrderManager.getOrderInfo(this.data.orderNo, function(success, data) {
+      wx.hideLoading({
+        success: (res) => {},
+      })
+      if (success) {
+        that.setData({
+          orderInfo: data,
+        })
+      } else {
         wx.showToast({
-          title: '查询订单失败',
+          title: '获取订单失败',
           icon: 'none'
         })
-      },
+      }
     })
   },
 
@@ -95,25 +88,20 @@ Page({
    * 点击完成支付
    */
   tapCompletePay: function() {
-    wx.showLoading({
-      title: '处理中...',
-    })
-    Paymanager.completePay(this.data.orderInfo.orderNo, function(res){
-      wx.hideLoading()
-      if (res.code == RES_CODE_SUCCESS) {
-        wx.navigateBack()
-      } else {
-        wx.showToast({
-          title: '支付失败',
-          icon: 'none'
-        })
+    let that = this;
+    wx.showModal({
+      title: '是否确认完成支付',
+      content: '请确认客户是否已经支付到您的账户，该订单金额将不会进入余额流水！',
+      confirmText: '确认完成',
+      cancelText: '稍后确认',
+      confirmColor: '#ee2c2c',
+      success(res) {
+        if (res.confirm) {
+          wx.navigateTo({
+            url: PagePath.Path_Me_PaymentVoucher + "?orderno=" + that.data.orderInfo.orderNo,
+          })
+        } 
       }
-    },function(res){
-      wx.hideLoading()
-      wx.showToast({
-        title: '支付失败',
-        icon: 'none'
-      })
     })
   },
 
@@ -247,7 +235,14 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    if (app.globalData.paymentVoucherBackFlag) {
+      if (app.globalData.paymentVoucherBackFlag == 'toTop') {
+        wx.switchTab({
+          url: PagePath.Path_Me_Index,
+        })
+        app.globalData.paymentVoucherBackFlag = null;
+      }
+    }
   },
 
   /**

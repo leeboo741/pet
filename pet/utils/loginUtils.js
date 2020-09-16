@@ -359,7 +359,7 @@ function updateCustomer(updateCallback) {
     url: UrlPath.URL_Service + UrlPath.URL_UpdateCustomer + this.getCustomerNo(),
     success(res) {
       if (res.data.code == config.RES_CODE_SUCCESS) {
-        console.log("更新用户信息: " + JSON.stringify(res));
+        Util.printLog("更新用户信息: " + JSON.stringify(res));
         that.saveUserInfo(res.data.data);
         if (Util.checkIsFunction(updateCallback)) {
           updateCallback(true);

@@ -1,0 +1,10 @@
+{
+  "usingComponents": {
+    "i-panel": "/dist/panel/index",
+    "i-cell-group": "/dist/cell-group/index",
+    "i-cell": "/dist/cell/index",
+    "i-imageUpload": "/lee-components/leeImageUpload/index",
+    "i-icon": "/dist/icon/index"
+  },
+  "navigationBarTitleText": "上传订单文件"
+}

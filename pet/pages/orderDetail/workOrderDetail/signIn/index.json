@@ -1,0 +1,9 @@
+{
+  "usingComponents": {
+    "i-panel": "/dist/panel/index",
+    "i-cell-group": "/dist/cell-group/index",
+    "i-cell": "/dist/cell/index",
+    "i-imageUpload": "/lee-components/leeImageUpload/index"
+  },
+  "navigationBarTitleText": "签收"
+}

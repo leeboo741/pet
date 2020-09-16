@@ -1,0 +1,9 @@
+/* pages/orderDetail/workOrderDetail/newRemark/index.wxss */
+.remark-input{
+  width: 90%;
+  min-height: 150rpx;
+  border-radius: 8rpx;
+  border: 1rpx solid gray;
+  padding: 10rpx;
+  margin: auto;
+}

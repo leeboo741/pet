@@ -1,0 +1,69 @@
+<!--pages/orderDetail/workOrderDetail/outport/index.wxml-->
+<i-panel i-class='panel' title='订单信息'>
+	<i-cell title='订单编号' value='{{order.orderNo}}'>
+	</i-cell>
+</i-panel>
+<i-panel i-class='panel'
+				 title='物流信息'>
+	<i-cell-group>
+		<i-cell title='航班/车次号'>
+			<input slot='footer' placeholder="请填写航班/车次号" value='{{transportNum}}' bindinput="inputTransportNum" bindblur="inputTransportNumLoseFost"></input>
+		</i-cell>
+		<block wx:if='{{order.transport.transportType == 3 || order.transport.transportType == 4}}'>
+			<i-cell title='始发机场三字码'>
+				<input slot='footer' placeholder="请填写三字码" value='{{startCityCode}}' bindinput="inputStartCityCode"></input>
+			</i-cell>
+			<i-cell title='目的机场三字码'>
+				<input slot='footer' placeholder="请填写三字码" value='{{endCityCode}}' bindinput="inputEndCityCode"></input>
+			</i-cell>
+		</block>
+    <i-cell title='出发时间'>
+      <picker slot='footer'
+              class="picker"
+              mode='date'
+              bindchange="changeDepartureDate">
+        <view class="{{departureDate==null?'text-placeholder':'text-normal'}}">
+        {{departureDate==null?'请选择出发时间':departureDate}}
+        </view>      
+      </picker>       
+    </i-cell>
+		<i-cell title='快递单号'>
+			<input slot='footer' placeholder="请填写快递单号" value='{{expressNum}}' bindinput="inputExpressNum"></input>
+		</i-cell>
+	</i-cell-group>
+</i-panel>
+<i-panel i-class='panel'
+				 title='提货信息'>
+	<i-cell-group>
+		<i-cell title='联系人'>
+			<input slot='footer' placeholder="请填写联系人名称" value='{{orderTaker.contact}}' bindinput="inputOrderTakerContact"></input>
+		</i-cell>
+		<i-cell title='联系电话'>
+			<input slot='footer' placeholder="请填写联系电话" value='{{orderTaker.phone}}' bindinput="inputOrderTakerPhone"></input>
+		</i-cell>
+		<i-cell>
+			<view slot='header'
+						class="box">
+				<view class='title'>
+				地址
+				</view>
+				<view class="address {{orderTaker.detailAddress == null || orderTaker.detailAddress.length <= 0? 'text-placeholder':'text-normal'}}" bindtap="selectedOrderTakerAddress">
+					{{orderTaker.detailAddress == null || orderTaker.detailAddress <= 0? '请选择提货地址':orderTaker.detailAddress}}
+				</view>
+			</view>
+		</i-cell>
+	</i-cell-group>
+</i-panel>
+<i-panel i-class='panel' title='图片&视频'>
+	<i-cell-group>
+		<i-cell title='前往资源库选择图片' isLink wx:if='{{false}}'>
+		</i-cell>
+			<i-cell>
+				<i-imageUpload slot='header' uploadUrl='{{uploadUrl}}' formData='{{formData}}' name='multipartFiles' startUpload='{{false}}' autoUpload='{{true}}' bind:upload-complete='uploadComplete' bind:delete-image='deleteImage' bind:addnew='addNewImage' ableDelete='{{true}}' selectMode='append' maxImageCount='{{9}}' videoMaxLength='{{20}}' imageSourceType="{{['album', 'camera']}}" videoSourceType="{{['album', 'camera']}}" showAddNewButton='{{true}}' ableVideo="{{true}}" imagePathList='{{imagePathList}}'>
+				</i-imageUpload>
+			</i-cell>
+			<i-cell>
+				<button slot='header' type="warn" bindtap="tapOutport" disabled="{{outportDisable}}" loading="{{outportLoading}}">出港</button>
+			</i-cell>
+	</i-cell-group>
+</i-panel>

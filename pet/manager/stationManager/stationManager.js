@@ -33,7 +33,7 @@ function getStaionByPosition(location, offset, limit, callback) {
     fail(res) {
       util.printLog('getStaionByPosition:\n', JSON.stringify(res));
       if (util.checkIsFunction(callback)) {
-        callback(false, null);
+        callback(false, res);
       }
     }
   })
@@ -65,7 +65,7 @@ function getStationListByProvince(province, callback) {
     fail(res) {
       util.printLog("getStationListByProvince:\n", JSON.stringify(res));
       if (util.checkIsFunction(callback)) {
-        callback(false, null);
+        callback(false, res);
       }
     }
   })
@@ -93,7 +93,7 @@ function getStationCityGroup(callback){
     fail(res) {
       util.printLog("getStationCityGroup:\n", JSON.stringify(res));
       if (util.checkIsFunction(callback)) {
-        callback(false, null);
+        callback(false, res);
       }
     }
   })

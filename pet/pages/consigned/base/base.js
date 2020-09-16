@@ -14,6 +14,7 @@ const ShareUtil = require("../../../utils/shareUtils.js");
 const AddressUtil = require("../../../utils/addressUtil.js");
 
 var QQMapWX = require('../../../libs/qqmap-wx-jssdk.min.js');
+const orderManager = require("../../../manager/orderManager/orderManager.js");
 var qqmapsdk;
 
 const CheckAbleStation_Type_Receipt = 0;
@@ -125,15 +126,16 @@ Page({
       selected: true,
       rate: 0, // 费率
       price: 1000, // 保价金额
-      // alert: "最低估价1000元，最高估价6000元", // 
+      // alert: "最低估价1000元，最高估价10000元", // 
       contract: "《须知》"
     },
     addServerPetCan: {
       ableUse: false,
-      name: "免费旅行餐", // 名称
+      name: "猫咪旅行套餐", // 名称
       selected: false, // 是否选中
-      alert: "免费旅行餐由比瑞吉公司赠送。非必要选择。产品质量由比瑞吉公司把关，与斑马速运无关！",
-      contract: "《旅行餐说明》"
+      alert: "",
+      contract: "《猫咪旅行套餐》",
+      videoPath: "https://img.taochonghui.com/weapp/video01.mp4"
     },
     addGuarantee: {
       name: "中介担保", // 增值服务名称
@@ -195,6 +197,25 @@ Page({
         petClassify: app.globalData.selectClassifyName
       })
       app.globalData.selectClassifyName = null;
+    }
+    if (app.globalData.selectSortName != null) {
+      let petType = app.globalData.selectSortName;
+      let typeIndex = 0;
+      this.data.petTypes.forEach((item,index) => {
+        if (item == petType) {
+          typeIndex = index
+        }
+      });
+      this.data.addServerPetCan.ableUse = petType=="猫猫";
+      if (!this.data.addServerPetCan.ableUse) {
+        this.data.addServerPetCan.selected = false;
+      }
+      this.setData({
+        selectPetTypeIndex: typeIndex,
+        petType: petType,
+        addServerPetCan: this.data.addServerPetCan
+      })
+      app.globalData.selectSortName = null;
     }
 
     // 接受 城市选择页面 返回数据
@@ -332,19 +353,17 @@ Page({
    */
   requestStartCityData: function (getStartCityDataCallback) {
     let that = this;
-    wx.request({
-      url: config.URL_Service + config.URL_StartCity,
-      success(res) {
+    orderManager.getStartCityData(function(success, data) {
+      if (success) {
         if (util.checkIsFunction(getStartCityDataCallback)) {
-          getStartCityDataCallback(res.data.data.bodys);
+          getStartCityDataCallback(data.bodys);
         }
-      },
-      fail(res) {
+      } else {
         wx.showToast({
           title: '获取始发城市列表失败',
           icon: 'none'
         })
-      },
+      }
     })
   },
 
@@ -461,11 +480,29 @@ Page({
   /**
    * 点击 旅行餐 说明
    */
-  tapPetCanContract: function () {
-    console.log("点击 旅行餐 说明");
-    wx.navigateTo({
-      url: pagePath.Path_Contract_petCan,
-    })
+  tapPetCanContract: function (e) {
+     let context = wx.createVideoContext(e.currentTarget.dataset.id, this);
+     context.requestFullScreen();
+     context.play();
+  },
+  
+  /**
+   * 播放到最后
+   */
+  playEnd: function (e) {
+    let videoContext = wx.createVideoContext(e.currentTarget.id, this);
+    videoContext.exitFullScreen();
+  },
+
+  /**
+   * 退出和进入全屏
+   */
+  fullScreenChange: function(e) {
+    util.printLog(e);
+    if (e.detail.fullScreen == false) {
+      let videoContext = wx.createVideoContext(e.currentTarget.id, this);
+      videoContext.stop();
+    }
   },
 
   /**
@@ -506,6 +543,7 @@ Page({
     this.setData({
       addServerPetCan: this.data.addServerPetCan
     })
+    this.predictPrice();
   },
 
   /**
@@ -516,6 +554,7 @@ Page({
     this.setData({
       addGuarantee: this.data.addGuarantee
     })
+    this.predictPrice();
   },
 
   /**
@@ -665,46 +704,18 @@ Page({
     if (e.detail.value == this.data.selectPetTypeIndex) {
       return;
     }
+    let index= e.detail.value;
+    let petType = this.data.petTypes[index];
+    this.data.addServerPetCan.ableUse = petType=="猫猫";
+    if (!this.data.addServerPetCan.ableUse) {
+      this.data.addServerPetCan.selected = false;
+    }
     this.setData({
       selectPetTypeIndex: e.detail.value,
-      petType: this.data.petTypes[e.detail.value]
+      petType: this.data.petTypes[e.detail.value],
+      addServerPetCan: this.data.addServerPetCan
     })
-    // this.requestPetClassify(this.data.petType);
   },
-
-  /**
-   * 选择宠物种类
-   */
-  // selectPetClassify: function (e) {
-  //   if (e.detail.value == this.data.selectPetClassifyIndex) {
-  //     return;
-  //   }
-  //   this.setData({
-  //     selectPetClassifyIndex: e.detail.value,
-  //     petClassify: this.data.petClassifys[e.detail.value]
-  //   })
-  //   this.predictPrice();
-  // },
-
-  /**
-   * 点击宠物种类
-   */
-  // tapPetClassify: function () {
-  //   if (util.checkEmpty(this.data.petType)) {
-  //     wx.showToast({
-  //       title: '请先选择宠物类型',
-  //       icon: 'none'
-  //     })
-  //     return;
-  //   }
-  //   if (util.checkEmpty(this.data.petClassifys)) {
-  //     wx.showToast({
-  //       title: '暂无宠物种类数据',
-  //       icon: 'none'
-  //     })
-  //     return;
-  //   }
-  // },
 
   /**
    * 输入数量
@@ -812,18 +823,20 @@ Page({
    */
   insuredPriceOutFocus: function () {
     let tempInput = this.data.addServerInsuredPrice.price;
-    if (!(tempInput < 6000 && tempInput > 1000)) {
+    if (!(tempInput < 10000 && tempInput > 1000)) {
       if (tempInput < 1000) {
         wx.showToast({
           title: '最低1000元',
+          icon: 'none'
         })
         tempInput = 1000;
       }
-      if (tempInput > 6000) {
+      if (tempInput > 10000) {
         wx.showToast({
-          title: '最高6000元',
+          title: '最高10000元',
+          icon: 'none'
         })
-        tempInput = 6000;
+        tempInput = 10000;
       }
       this.data.addServerInsuredPrice.price = tempInput
       this.setData({
@@ -1069,16 +1082,13 @@ Page({
       title: '请稍等...',
     })
     let that = this;
-    wx.request({
-      url: config.URL_Service + config.URL_InsureRate,
-      data: {
-        "startCity": cityName
-      },
-      success(res) {
-        wx.hideLoading();
-        console.log("查询保价费率 success => \n" + JSON.stringify(res))
-        if (res.data.data != null) {
-          that.data.addServerInsuredPrice.rate = res.data.data.rate * 100;
+    orderManager.getInsurePriceRate(cityName, function(success, data) {
+      wx.hideLoading({
+        success: (res) => {},
+      })
+      if (success) {
+        if (data != null) {
+          that.data.addServerInsuredPrice.rate = data.rate * 100;
         } else {
           that.data.addServerInsuredPrice.rate = 0;
           that.data.addServerInsuredPrice.selected = false;
@@ -1087,18 +1097,12 @@ Page({
         that.setData({
           addServerInsuredPrice: that.data.addServerInsuredPrice
         })
-      },
-      fail(res) {
-        wx.hideLoading();
-        console.log("查询保价费率 fail => \n" + JSON.stringify(res))
+      } else {
         wx.showToast({
           title: '查询保价费率失败',
           icon: 'none'
         })
-      },
-      complete(res) {
-        console.log("查询保价费率 complete => \n" + JSON.stringify(res))
-      },
+      }
     })
   },
 
@@ -1177,36 +1181,20 @@ Page({
       }
     }
     let that = this;
-    wx.request({
-      url: config.URL_Service + config.URL_PredictPrice,
-      data: tempData,
-      method: "POST",
-      success(res) {
-        wx.hideLoading();
-        console.log("获取预估价格 success => \n" + JSON.stringify(res));
-        if (res.data.code == config.RES_CODE_SUCCESS) {
-          that.setData({
-            totalPrice: res.data.data
-          })
-        } else {
-          let msg = res.data.message;
-          if (msg == null) {
-            msg = "系统异常"
-          }
-          wx.showToast({
-            title: msg,
-            icon: 'none'
-          })
-        }
-      },
-      fail(res) {
-        wx.hideLoading();
-        console.log("获取预估价格 fail => \n" + JSON.stringify(res));
+    orderManager.getPredictPrice(tempData, function(success, data) {
+      wx.hideLoading({
+        success: (res) => {},
+      })
+      if (success) {
+        that.setData({
+          totalPrice: data
+        })
+      } else {
         wx.showToast({
           title: '获取预估价格失败',
           icon: 'none'
         })
-      },
+      }
     })
   },
 
@@ -1220,19 +1208,14 @@ Page({
   checkAbleTransportType: function () {
     let that = this;
     wx.showLoading({
-      title: '请稍等...',
-      icon: 'none'
+      title: '请稍等...'
     })
-    wx.request({
-      url: config.URL_Service + config.URL_AbleTransportType,
-      data: {
-        "startCity" : this.data.beginCity,
-        "endCity" : this.data.endCity,
-      },
-      success(res) {
-        wx.hideLoading();
-        console.log("获取可用运输方式 success => \n" + JSON.stringify(res));
-        let ableList = res.data.data;
+    orderManager.getAbleTransportType(this.data.beginCity, this.data.endCity, function(success, data){
+      wx.hideLoading({
+        success: (res) => {},
+      })
+      if (success) {
+        let ableList = data;
         for (let i = 0; i < that.data.transportTypes.length; i++) {
           that.data.transportTypes[i].disable = true;
         }
@@ -1243,17 +1226,12 @@ Page({
         that.setData({
           transportTypes: that.data.transportTypes
         })
-      },
-      fail(res) {
-        wx.hideLoading();
-        console.log("获取可用运输方式 fail => \n" + JSON.stringify(res));
+      } else {
         wx.showToast({
           title: '获取可用运输方式失败',
           icon: 'none'
         })
-      },
-      complete(res) {
-      },
+      }
     })
   },
 
@@ -1265,54 +1243,33 @@ Page({
     wx.showLoading({
       title: '请稍等...',
     })
-    let urlstr = config.URL_Service + config.URL_PetType;
-    // 向服务器请求登陆，返回 本微信 在服务器状态，注册|未注册，
-    wx.request({
-      url: urlstr, // 服务器地址
-      success: res => {
-        wx.hideLoading();
-        console.log("success => " + JSON.stringify(res));
-        if (res.data.code == config.RES_CODE_SUCCESS) {
-          if (util.checkEmpty(res.data.data)) {
-            wx.showToast({
-              title: '没有查到宠物类型数据',
-              icon: 'none'
-            })
-            return;
-          }
-          that.setData({
-            petTypes: res.data.data,
-            // petClassifys: null,
-            selectPetTypeIndex: 0,
-            // selectPetClassifyIndex: 0,
-            petType: res.data.data[0],
-            petClassify: null
+    orderManager.getPetType(function(success, data){
+      wx.hideLoading({
+        success: (res) => {},
+      })
+      if (success) {
+        if (util.checkEmpty(data)) {
+          wx.showToast({
+            title: '没有查到宠物类型数据',
+            icon: 'none'
           })
-          // that.requestPetClassify(that.data.petType);
+          return;
         }
-      },
-      fail(res) {
-        wx.hideLoading();
-        wx.showToast({
-          title: '查询宠物类型失败',
-          icon: 'none',
+        that.setData({
+          petTypes: data,
+          // petClassifys: null,
+          selectPetTypeIndex: 0,
+          // selectPetClassifyIndex: 0,
+          petType: data[0],
+          petClassify: null
         })
-      },
-      complete(res) {
-      },
-    })
-  },
-
-  /**
-   * 输入宠物品种
-   */
-  petClassifyInput: function (e) {
-    let tempClassify = e.detail.value;
-    if (util.checkEmpty(tempClassify)) {
-      tempClassify = null;
-    }
-    this.setData({
-      petClassify: tempClassify
+        // that.requestPetClassify(that.data.petType);
+      } else {
+        wx.showToast({
+          title: '获取宠物类型失败',
+          icon:'none'
+        })
+      }
     })
   },
 
@@ -1364,16 +1321,9 @@ Page({
    */
   checkPetCageAble: function(){
     let that = this;
-    wx.request({
-      url: config.URL_Service + config.URL_MaxWeight,
-      data: {
-        startCity: this.data.beginCity,
-        endCity: this.data.endCity,
-        transportType: this.data.selectedTransportObj.transportId,
-      },
-      success(res) {
-        console.log("查询宠物箱是否可用 success:\n" + JSON.stringify(res));
-        if (res.data.data == null || res.data.data == false) {
+    orderManager.checkPetCageAble(this.data.beginCity, this.data.endCity, this.data.selectedTransportObj.transportId, function(success, data) {
+      if (success) {
+        if (data == null || data == false) {
           that.data.addServerAirBox.ableUse = false;
           that.data.addServerAirBox.selected = false;
           that.setData({
@@ -1385,16 +1335,11 @@ Page({
             addServerAirBox: that.data.addServerAirBox,
           })
         }
-      },
-      fail(res) {
-        console.log("查询宠物箱 fail:\n" + JSON.stringify(res));
+      } else {
         wx.showToast({
-          title: '系统异常',
+          title: '查询是否可用宠物箱失败',
           icon: "none"
         })
-      },
-      complete(res) {
-        console.log("查询宠物箱 complete:\n" + JSON.stringify(res));
       }
     })
   },
@@ -1404,32 +1349,20 @@ Page({
    */
   checkMaxWeight: function () {
     let that = this;
-    wx.request({
-      url: config.URL_Service + config.URL_AblePetCage,
-      data: {
-        startCity: this.data.beginCity,
-        endCity: this.data.endCity,
-        transportType: this.data.selectedTransportObj.transportId,
-      },
-      success(res) {
-        console.log("查询宠物箱 success:\n" + JSON.stringify(res));
-        if (res.data.data != null) {
-          that.data.petMaxWeight = res.data.data;
+    orderManager.getMaxWeight(this.data.beginCity, this.data.endCity, this.data.selectedTransportObj.transportId, function(success, data) {
+      if (success) {
+        if (data != null) {
+          that.data.petMaxWeight = data;
           that.setData({
             petMaxWeight: that.data.petMaxWeight,
           })
           that.checkPetWeight();
         }
-      },
-      fail(res) {
-        console.log("查询宠物箱 fail:\n" + JSON.stringify(res));
+      } else {
         wx.showToast({
-          title: '系统异常',
+          title: '查询最大重量失败',
           icon: "none"
         })
-      },
-      complete(res) {
-        console.log("查询宠物箱 complete:\n" + JSON.stringify(res));
       }
     })
   },
@@ -1440,19 +1373,9 @@ Page({
    * @param type 查询类型 0 接宠 1 送宠
    */
   checkAbleStation: function (cityName, type) {
-    let urlStr = config.URL_Service + config.URL_AbleStation_Receipt;
-    if (type == CheckAbleStation_Type_Send) {
-      urlStr = config.URL_Service + config.URL_AbleStation_Send;
-    }
-    let that = this;
-    wx.request({
-      url: urlStr,
-      data: {
-        "cityName": cityName 
-      },
-      success(res) {
-        console.log("查询送宠|接宠可用站点 success => \n" + JSON.stringify(res));
-        if (res.data.data == null || res.data.data.length <= 0) {
+    orderManager.checkAbleStation(cityName, type, function(success, data){
+      if (success) {
+        if (data == null || data.length <= 0) {
           if (type == CheckAbleStation_Type_Receipt) {
             that.data.addServerReceivePet.haveAbleStation = false;
             that.data.addServerReceivePet.selected = false;
@@ -1476,10 +1399,7 @@ Page({
             addServerSendPet: that.data.addServerSendPet
           })
         }
-      },
-      fail(res) {
-        console.log("查询送宠|接宠可用站点 fail => \n" + JSON.stringify(res));
-
+      } else {
         if (type == CheckAbleStation_Type_Receipt) {
           wx.showToast({
             title: '查询接宠可用站点失败',
@@ -1491,9 +1411,6 @@ Page({
             icon: 'none'
           })
         }
-      },
-      complete(res) {
-
       }
     })
   },
@@ -1503,27 +1420,17 @@ Page({
    */
   requestStroePhoneByCityName: function(cityName) {
     let that = this;
-    wx.request({
-      url: config.URL_Service + config.URL_GetStorePhoneByCityName,
-      data: {
-        cityName: cityName
-      },
-      success(res){
-        console.log("获取商家电话 城市（" + cityName + "） success => \n" + JSON.stringify(res));
+    orderManager.getStorePhoneByCityName(cityName, function(success, data) {
+      if (success) {
         that.setData({
-          storePhone: res.data.data
+          storePhone: data
         })
-      },
-      fail(res) {
-        console.log("获取商家电话 城市（" + cityName + "） fail => \n" + JSON.stringify(res));
+      } else {
         wx.showToast({
-          title: '网络原因，获取客服电话失败',
+          title: '获取客服电话失败',
           icon: 'none'
         })
-      },
-      complete(res) {
-        console.log("获取商家电话 城市（" + cityName + "） complete => \n" + JSON.stringify(res));
-      },
+      }
     })
   },
 

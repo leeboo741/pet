@@ -1,0 +1,63 @@
+/* pages/orderDetail/workOrderDetail/uploadFile/index.wxss */
+
+.image-content-header{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.image-content-node{
+  width: 40%;
+  background: rgb(245, 245, 245);
+  border-radius: 8rpx;
+  padding: 8rpx 10rpx;
+}
+
+.image-content-time{
+  width: 40%;
+  background: rgb(245, 245, 245);
+  border-radius: 8rpx;
+  padding: 8rpx 10rpx;
+}
+
+.image-content-delete-box{
+  width: 50rpx;
+  height: 50rpx;
+  line-height: 50rpx;
+  text-align: center;
+  border-radius: 8rpx;
+  background-color: #ee2c2c;
+}
+
+.remark-input{
+  padding: 15rpx;
+  border: 1rpx solid lightgray;
+  min-height: 100rpx;
+  margin: auto;
+}
+
+.add-button{
+  background: #2d8cf0;
+  color: white;
+  height: 80rpx;
+  width: 80%;
+  line-height: 80rpx;
+  font-size: 30rpx;
+}
+
+.submit-button{
+  position: fixed; 
+  bottom: 0; 
+  left: 0; 
+  right: 0; 
+  height: 100rpx; 
+  width: 100%; 
+  text-align: center; 
+  line-height: 100rpx; 
+  background: #ee2c2c; 
+  color: white; 
+  font-size: 36rpx;
+  z-index:999;
+}

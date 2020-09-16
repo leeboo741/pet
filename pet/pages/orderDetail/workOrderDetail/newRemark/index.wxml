@@ -1,0 +1,12 @@
+<!--pages/orderDetail/workOrderDetail/newRemark/index.wxml-->
+<i-panel i-class='panel' title='添加备注'>
+  <i-cell-group>
+    <i-cell>
+      <textarea slot='header' class='remark-input' value='{{remark}}' placeholder='请输入备注' maxlength="{{-1}}" auto-focus='{{true}}' auto-height='{{true}}' selection-start='{{remark.length-1}}' selection-end='{{remark.length-1}}' bindinput='inputRemark'>
+      </textarea>
+    </i-cell>
+    <i-cell>
+      <button slot='header' type="warn" bindtap="tapAdd">确定添加</button>
+    </i-cell>
+  </i-cell-group>
+</i-panel>

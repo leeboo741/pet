@@ -2,7 +2,6 @@
 /**，
  * 小程序支持的蓝牙为低功耗蓝牙（BLE），数据量大需分包发送
  */
-
 var app = getApp();
 var tsc = require("../../libs/tsc.js");
 var esc = require("../../libs/esc.js");
@@ -93,7 +92,6 @@ Page({
     command.setGap(0)
     command.setCls()
 
-    // command.setText(0, 0,"TSS24.BF2",1,1,"+++++++++++++");
     command.setText(50, 256, "TSS48.BF2", 1, 1, app.globalData.printOrder.transport.startCity);
     let transportTypeStr = "";
     let type = app.globalData.printOrder.transport.transportType;
@@ -119,32 +117,6 @@ Page({
     command.setText(186, 1384, "TSS32.BF2", 1, 1,app.globalData.printOrder.orderNo);
     command.setQR(350, 637, "L", 5, "A", "https://www.taochonghui.com/weapp/jump/confirm/order?type=scan&orderno=" + app.globalData.printOrder.orderNo);
     command.setQR(350, 1074, "L", 7, "A", "https://www.taochonghui.com/weapp/jump/index");
-
-
-    // command.setSize(75, 60)
-    // command.setGap(0)
-    // command.setCls()
-    // command.setText(0, 0, "TSS24.BF2", 1, 1, "+");
-    // command.setText(20, 30, "TSS48.BF2", 1, 1, app.globalData.printOrder.transport.startCity + "-" + app.globalData.printOrder.transport.endCity);
-    // command.setText(20, 150, "TSS24.BF2", 1, 1, "订单编号：" + app.globalData.printOrder.orderNo);
-    // command.setText(20, 210, "TSS24.BF2", 1, 1, "下单时间：" + app.globalData.printOrder.orderDate + " " + app.globalData.printOrder.orderTime);
-    // command.setText(20, 270, "TSS24.BF2", 1, 1, "出发时间：" + app.globalData.printOrder.leaveDate);
-    // let transportTypeStr = "";
-    // let type = app.globalData.printOrder.transport.transportType;
-    // if (type == 1) {
-    //   transportTypeStr = "专车";
-    // } else if (type == 2) {
-    //   transportTypeStr = "铁路";
-    // } else if (type == 3) {
-    //   transportTypeStr = "单飞";
-    // } else if (type == 4) {
-    //   transportTypeStr = "随机";
-    // } else {
-    //   transportTypeStr = "大巴";
-    // }
-    // command.setText(20, 330, "TSS24.BF2", 1, 1, "运输方式：" + transportTypeStr);
-    // command.setText(20, 390, "TSS24.BF2", 1, 1, "宠物：" + app.globalData.printOrder.petSort.petSortName + " -- " + app.globalData.printOrder.petGenre.petGenreName);
-    // command.setQR(380, 150, "L", 8, "A", app.globalData.printOrder.orderNo);
 
     this.data.timeOutIntervel = setTimeout(function(){
       var printThis = this;
@@ -260,9 +232,7 @@ Page({
         }
       }
     })
-
   },
-
 
   /**
    * 生命周期函数--监听页面初次渲染完成
@@ -284,23 +254,6 @@ Page({
       printNum: numList,
       printerNum: numList[0]
     })
-
-    // var that = this
-    // wx.getImageInfo({
-    //   src: that.data.imageSrc,
-    //   success(res) {
-    //     console.log(res.width)
-    //     console.log(res.height)
-    //     that.setData({
-    //       canvasWidth: res.width,
-    //       canvasHeight: res.height
-    //     })
-    //   }
-    // })
-    // that.setData({
-    //   canvasWidth: width,
-    //   canvasHeight: height
-    // })
   },
 
   /**
@@ -325,10 +278,6 @@ Page({
       }
     })
     const ctx = wx.createCanvasContext("edit_area_canvas", this);
-    // if (app.globalData.platform == "android") {
-    //   ctx.translate(width, height)
-    //   ctx.rotate(180 * Math.PI / 180)
-    // }
     ctx.drawImage(this.data.imageSrc, 0, 0, width, height);
     ctx.draw();
   },

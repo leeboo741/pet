@@ -1,0 +1,20 @@
+<!--pages/orderDetail/workOrderDetail/inport/index.wxml-->
+<i-panel i-class='panel' title='订单信息'>
+	<i-cell title='订单编号' value='{{order.orderNo}}'>
+	</i-cell>
+</i-panel>
+<i-panel i-class='panel' title='图片&视频'>
+	<i-cell-group>
+		<i-cell title='前往资源库选择图片' isLink wx:if='{{false}}'>
+		</i-cell>
+                <i-cell>
+                        <i-imageUpload slot='header' uploadUrl='{{uploadUrl}}' formData='{{formData}}' name='multipartFiles' startUpload='{{false}}' autoUpload='{{true}}' bind:upload-complete='uploadComplete' bind:delete-image='deleteImage' bind:addnew='addNewImage' ableDelete='{{true}}' selectMode='append' maxImageCount='{{9}}' videoMaxLength='{{20}}' imageSourceType="{{['album', 'camera']}}" videoSourceType="{{['album', 'camera']}}" showAddNewButton='{{true}}' ableVideo="{{true}}" imagePathList='{{imagePathList}}'>
+                        </i-imageUpload>
+                </i-cell>
+                <i-cell>
+		        <button slot='header' type="warn" bindtap="tapInport" disabled="{{inportDisable}}" loading="{{inportLoading}}">{{title}}</button>
+                </i-cell>
+	</i-cell-group>
+	<i-cell-group>
+	</i-cell-group>
+</i-panel>

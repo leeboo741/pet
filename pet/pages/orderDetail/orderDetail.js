@@ -9,6 +9,10 @@ const PagePath = require("../../utils/pagePath");
 
 var QQMapWX = require('../../libs/qqmap-wx-jssdk.min.js');
 const commonOrderManager = require("../../manager/orderManager/commonOrderManager.js");
+const { RES_CODE_SUCCESS } = require("../../utils/config.js");
+const workOrderManager = require("../../manager/orderManager/workOrderManager.js");
+const orderManager = require("../../manager/orderManager/orderManager.js");
+const { order } = require("../../manager/orderManager/orderManager.js");
 var qqmapsdk;
 
 Page({
@@ -36,6 +40,8 @@ Page({
 
     conditionOneAgreement: false, // 条件1是否同意
     conditionTwoAgreement: false, // 条件2是否同意
+
+    shareOtherPayType: null,
   },
 
   /**
@@ -55,6 +61,7 @@ Page({
       showPrice: options.showprice==0? false: true,
       rebate: options.rebate==null?0:options.rebate,
       showPayButton : (options.showpaybutton == null || options.showpaybutton == 0)?false: true,
+      shareOtherPayType: app.ShareData.shareOtherPayType
     })
     this.requestOrderDetail(this.data.orderNo)
     let that = this;
@@ -244,35 +251,20 @@ Page({
       title: '请稍等...',
     })
     let that = this;
-    wx.request({
-      url: config.URL_Service + config.URL_OrderDetail,
-      data: {
-        "orderNo": orderNo,
-        "customerNo": loginUtil.getCustomerNo()
-      },
-      success(res) {
-        wx.hideLoading();
-        console.log("获取订单详情 success：\n" + JSON.stringify(res));
-        if (res.data.data != null && res.data.code == config.RES_CODE_SUCCESS) {
-          that.setData({
-            orderData: res.data.data
-          })
-        } else {
-
-        }
-      },
-      fail(res) {
-        wx.hideLoading();
-        console.log("获取订单详情 fail：\n" + JSON.stringify(res));
+    commonOrderManager.getOrderDetail(orderNo, function(success, data) {
+      wx.hideLoading({
+        success: (res) => {},
+      })
+      if (success) {
+        that.setData({
+          orderData: data
+        })
+      } else {
         wx.showToast({
-          title: '系统异常',
+          title: '获取详情失败',
           icon: "none"
         })
-      },
-      complete(res) {
-        console.log("获取订单详情 complete：\n" + JSON.stringify(res));
-      },
-
+      }
     })
   },
 
@@ -284,48 +276,27 @@ Page({
     wx.showLoading({
       title: '请稍等',
     })
-    wx.request({
-      url: config.URL_Service + config.URL_PostOrderRemark,
-      data: {
-        order: {
-          orderNo: this.data.orderData.orderNo
-        },
-        staff: loginUtil.getStaffInfo(),
-        remarks: remark
-      },
-      method: 'POST',
-      success(res) {
-        wx.hideLoading();
-        console.log("新增备注 success:\n" + JSON.stringify(res));
-        if (res.data.code == config.RES_CODE_SUCCESS && res.data.data > 0) {
-          wx.showToast({
-            title: '新增成功',
-          })
-          if (that.data.orderData.orderRemarksList == null) {
-            that.data.orderData.orderRemarksList = [];
-          }
-          that.data.orderData.orderRemarksList.push({remarks: remark})
-          that.setData({
-            orderData: that.data.orderData,
-            remarksInput: null
-          })
-        } else {
-
-          wx.showToast({
-            title: '新增备注失败',
-            icon: 'none'
-          })
-        }
-      }, 
-      fail(res) {
-        wx.hideLoading();
-        console.log("新增备注 fail:\n" + JSON.stringify(res));
+    workOrderManager.addOrderRemark(this.data.orderData.orderNo, remark, function(success, data){
+      wx.hideLoading({
+        success: (res) => {},
+      })
+      if (success) {
         wx.showToast({
-          title: '网络波动，新增备注失败',
-          icon:'none'
+          title: '新增成功',
         })
-      },
-      complete(res){
+        if (that.data.orderData.orderRemarksList == null) {
+          that.data.orderData.orderRemarksList = [];
+        }
+        that.data.orderData.orderRemarksList.push({remarks: remark})
+        that.setData({
+          orderData: that.data.orderData,
+          remarksInput: null
+        })
+      } else {
+        wx.showToast({
+          title: '新增备注失败',
+          icon: 'none'
+        })
       }
     })
   },
@@ -334,30 +305,17 @@ Page({
    * 查询是否可以收货
    */
   requestCheckConfirm: function (orderNo, customerNo, getResultCallback) {
-    wx.request({
-      url: config.URL_Service + config.URL_CheckConfirm,
-      data: {
-        orderNo: orderNo,
-        customerNo: customerNo
-      },
-      success(res) {
-        if (res.data.code == config.RES_CODE_SUCCESS) {
-          if (getResultCallback != null && typeof getResultCallback == 'function') {
-            getResultCallback(res.data.data)
-          }
-        } else {
-          wx.showToast({
-            title: res.errMsg,
-            icon: 'none'
-          })
+    orderManager.checkOrderConfirmReceiveAble(orderNo,customerNo, function(success, data){
+      if (success) {
+        if (util.checkIsFunction(getResultCallback)) {
+          getResultCallback(data)
         }
-      },
-      fail(res) {
+      } else {
         wx.showToast({
-          title: '系统异常',
+          title: '检查失败',
           icon: 'none'
         })
-      },
+      }
     })
   },
 
@@ -461,27 +419,15 @@ Page({
       title: '取消中',
     })
     let that = this;
-    wx.request({
-      url: config.URL_Service + config.URL_CancelPremium,
-      data: billNo,
-      method:"PUT",
-      success(res) {
-        wx.hideLoading();
-        console.log("取消补价单 success:\n" + JSON.stringify(res));
-        if (res.data.code != config.RES_CODE_SUCCESS){
-          wx.showToast({
-            title: '取消补价单失败',
-            icon: 'none'
-          })
-        } else {
-          that.requestOrderDetail(that.data.orderNo)
-        }
-      },
-      fail(res) {
-        wx.hideLoading();
-        console.log("取消补价单 fail:\n" + JSON.stringify(res));
+    workOrderManager.cancelPremium(billNo, function(success, data) {
+      wx.hideLoading({
+        success: (res) => {},
+      })
+      if (success) {
+        that.requestOrderDetail(that.data.orderNo)
+      } else {
         wx.showToast({
-          title: '系统异常',
+          title: '取消补价单失败',
           icon: 'none'
         })
       }
@@ -523,6 +469,56 @@ Page({
     }
     wx.navigateTo({
       url: PagePath.Path_Order_Pay_SubPay + "?amount=" + app.ShareData.payAmount + "&orderno=" + app.ShareData.payOrderNo + "&customerno=" + loginUtil.getCustomerNo(),
+    })
+  },
+
+  /**
+   * 点击确认条款
+   */
+  tapConfirmCondition: function() {
+    if (!this.data.conditionOneAgreement) {
+      wx.showToast({
+        title: '请确认宠物是否符合条件！',
+        icon: 'none'
+      })
+      return;
+    }
+    if(!this.data.conditionTwoAgreement) {
+      wx.showToast({
+        title: '请查看并同意交易条款后支付！',
+        icon: 'none'
+      })
+      return;
+    }
+    wx.showLoading({
+      title: '请稍等...',
+    })
+    orderManager.confirmOrderCondition(this.data.orderData.orderNo, function(success, data) {
+      wx.hideLoading({
+        success: (res) => {},
+      })
+      if (success) {
+        wx.showModal({
+          title: '已确认条款',
+          content: '请联系站点线下支付订单',
+          showCancel: false,
+          success(res) {
+            if (res.confirm) {
+              app.ShareData.payOrderNo = null;
+              app.ShareData.payAmount = null;
+              app.ShareData.payCustomerNo = null;
+              app.ShareData.shareQRCodePath = null;
+              app.ShareData.shareOtherPayType = null;
+              wx.navigateBack();
+            }
+          }
+        })
+      } else {
+        wx.showToast({
+          title: '确认失败',
+          icon: 'none'
+        })
+      }
     })
   },
 

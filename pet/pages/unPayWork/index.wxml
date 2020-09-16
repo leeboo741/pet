@@ -27,11 +27,12 @@
           wx:for='{{orderList}}'
           wx:for-item='orderItem'
           wx:for-index='orderIndex'
-          wx:key='{{orderIndex}}'>
+          wx:key='{{orderIndex}}'
+          bindtap="tapOrderDetail"
+          data-orderno='{{orderItem.orderNo}}'>
       <view class='block-fillet bill-info-box'>
         <view class='bill-info-icon'><icon class='iconfont iconfeiji1'></icon></view>
         <view class='bill-info-billNo'>{{orderItem.orderNo}}</view>
-        <!-- <view class='bill-info-time'>{{orderItem.transport.station.stationName}}</view> -->
         <view class='block-fillet bill-info-split-line'></view>
         <view class='block-fillet bill-info-content'>
           <view class='bill-info-way'>
@@ -66,7 +67,7 @@
             <view class="bill-info-person-name">{{orderItem.senderName}}</view>
             <view class="bill-info-person-label">电话：</view>
             <view class="bill-info-person-phone"
-                  bindtap="callPhone"
+                  catchtap="callPhone"
                   data-phone="{{orderItem.senderPhone}}">{{orderItem.senderPhone}}</view>
           </view>
           <view class="bill-info-person"
@@ -75,7 +76,7 @@
             <view class="bill-info-person-name">{{orderItem.receiverName}}</view>
             <view class="bill-info-person-label">电话：</view>
             <view class="bill-info-person-phone"
-                  bindtap="callPhone"
+                  catchtap="callPhone"
                   data-phone="{{orderItem.receiverPhone}}">{{orderItem.receiverPhone}}</view>
           </view>
           <block wx:if='{{parse.showRecommend(orderItem, userInfo)}}'>
@@ -87,7 +88,7 @@
                 </block>
                 <block wx:if='{{orderItem.recommendPhone!=null&&orderItem.recommendPhone.length>0}}'>
                   <view class="bill-info-person-label">推荐电话：</view>
-                  <view class="bill-info-person-phone" bindtap="callPhone" data-phone="{{orderItem.recommendPhone}}">{{orderItem.recommendPhone}}</view>
+                  <view class="bill-info-person-phone" catchtap="callPhone" data-phone="{{orderItem.recommendPhone}}">{{orderItem.recommendPhone}}</view>
                 </block>
               </view>
             </block>
@@ -139,72 +140,11 @@
             </view>
           </view>
         </view>
-        <view class="in-out-port-info-area" wx:if='{{orderItem.state=="待付款"}}'>
-          <view class="in-out-port-info-item">
-            <input class="in-out-port-info-input"
-                  placeholder="请输入金额"
-                  bindinput="inputTargetAmount"
-                  data-index='{{orderIndex}}'
-                  value="{{orderItem.targetAmount}}"
-                  type="digit">
-            
-            </input>
-            <view class="in-out-port-info-button"
-                  bindtap="tapChangeAmount"
-                  data-index='{{orderIndex}}'
-                  data-orderno='{{orderItem.orderNo}}'>
-            改价
-            </view>
-          </view>
-        </view>
-        <!-- 按钮区域 -->
-        <view class='bill-operate-box'>
-          <view class="bill-operate-button"
-                style='background: #ee2c2c'
-                wx:if='{{userInfo.role == 1}}'
-                data-tapindex="{{orderIndex}}"
-                data-orderno='{{orderItem.orderNo}}'
-                bindtap="tapDeleteOrder">
-          删除订单
-          </view>
-          <view class='bill-operate-button'
-                bindtap='tapOrderDetail' 
-                data-tapindex="{{orderIndex}}"
-                data-orderno='{{orderItem.orderNo}}'>
-          订单详情
-          </view>
-          <view class="bill-operate-button"
-                bindtap="tapVerify"
-                data-tapindex='{{orderIndex}}'
-                data-orderno='{{orderItem.orderNo}}'
-                wx:if='{{orderItem.state=="待审核"}}'>
-          付款审核      
-          </view>
-        </view>
       </view>
     </view>
     <i-load-more style='width:100%' tip="{{loadMoreTip}}" loading="{{loadMoreLoading}}" />
   </block>
 </view>
-<!-- 
-
-showSender: function(orderItem, userInfo) {
-  if (userInfo.role != 3) {
-    return true;
-  } else if (orderItem.orderStates[0].orderType == "待揽件") {
-    return true;
-  }
-  return false;
-},
-showReceiver: function(orderItem, userInfo) {
-  if (userInfo.role != 3) {
-    return true;
-  } else if (orderItem.orderStates[0].orderType != "待揽件") {
-    return true;
-  }
-  return false;
-},
- -->
 <wxs module='parse'>
   module.exports={
     showSender: function(orderItem, userInfo) {

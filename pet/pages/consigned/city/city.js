@@ -6,6 +6,7 @@
 const app = getApp()
 const config = require("../../../utils/config.js")
 const ShareUtil = require("../../../utils/shareUtils.js");
+const orderManager = require("../../../manager/orderManager/orderManager.js");
 Page({
   /**
    * 生命周期函数--监听页面加载
@@ -36,27 +37,23 @@ Page({
     wx.showLoading({
       title: '请稍等...',
     })
-    wx.request({
-      url: config.URL_Service + config.URL_StartCity,
-      success(res) {
-        wx.hideLoading();
-        console.log(res);
-        that.data.citys = res.data.data.bodys;
-        that.data.cityAZ = res.data.data.headers;
+    orderManager.getStartCityData(function(success, data){
+      wx.hideLoading({
+        success: (res) => {},
+      })
+      if (success) {
+        that.data.citys = data.bodys;
+        that.data.cityAZ = data.headers;
         that.setData({
           cityAZ: that.data.cityAZ,
           citys : that.data.citys,
           cityResults: that.data.citys,
         })
-      },
-      fail(res) {
-        wx.hideLoading();
+      } else {
         wx.showToast({
           title: '获取城市列表失败',
           icon: 'none'
         })
-      },
-      complete(res) {
       }
     })
   },
@@ -68,30 +65,17 @@ Page({
     wx.showLoading({
       title: '请稍等...',
     })
-    wx.request({
-      url: config.URL_Service + config.URL_EndCity,
-      data: {
-        "startCity": this.data.startCity
-      },
-      success(res) {
-        wx.hideLoading();
-        that.data.citys = res.data.data.bodys;
-        that.data.cityAZ = res.data.data.headers;
-        that.setData({
-          cityAZ: that.data.cityAZ,
-          citys: that.data.citys,
-          cityResults: that.data.citys,
-        })
-      },
-      fail(res) {
-        wx.hideLoading();
-        wx.showToast({
-          title: '获取城市列表失败',
-          icon: 'none'
-        })
-      },
-      complete(res) {
-      }
+    orderManager.getEndCityData(this.data.startCity, function(success, data){
+      wx.hideLoading({
+        success: (res) => {},
+      })
+      that.data.citys = data.bodys;
+      that.data.cityAZ = data.headers;
+      that.setData({
+        cityAZ: that.data.cityAZ,
+        citys: that.data.citys,
+        cityResults: that.data.citys,
+      })
     })
   },
   bindAZ: function (e) {

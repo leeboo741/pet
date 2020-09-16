@@ -4,6 +4,7 @@ const Config = require("../../../utils/config.js");
 const LoginUtil = require("../../../utils/loginUtils.js");
 const Util = require("../../../utils/util.js");
 const ShareUtil = require("../../../utils/shareUtils");
+const orderManager = require("../../../manager/orderManager/orderManager.js");
 Page({
 
   /**
@@ -116,40 +117,27 @@ Page({
     }
     let that = this;
     console.log("提交评价：\n" + JSON.stringify(submitData));
-    wx.request({
-      url: Config.URL_Service + Config.URL_Order_Evalueate,
-      data: submitData,
-      method: "POST",
-      success(res) {
-        console.log("提交评价 success: \n" + JSON.stringify(res));
-        wx.hideLoading();
-        if (res.data.code == Config.RES_CODE_SUCCESS && res.data.data > 0) {
-          wx.showToast({
-            title: '提交成功',
-            duration: 1500
-          })
-          that.data.backtimeout = setTimeout(
-            function () {
-              wx.navigateBack({
-                
-              })
-            },
-            1550
-          )
-        } else {
-          wx.showToast({
-            title: '提交失败',
-            icon: 'none'
-          })
-        }
-      },
-      fail(res) {
-        console.log("提交评价 fail: \n" + JSON.stringify(res));
+    orderManager.submitOrderEvaluate(submitData, function(success, data) {
+      wx.hideLoading({
+        success: (res) => {},
+      })
+      if (success && data > 0)  {
         wx.showToast({
-          title: '系统异常',
+          title: '提交成功',
+          duration: 1500
+        })
+        that.data.backtimeout = setTimeout(
+          function () {
+            wx.navigateBack()
+          },
+          1550
+        )
+      } else {
+        wx.showToast({
+          title: '提交评价失败',
           icon: 'none'
         })
-      },
+      }
     })
   },
 })

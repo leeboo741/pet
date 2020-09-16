@@ -80,15 +80,6 @@
               bindtap='petClassifyFocus'>
         {{petClassify==null||petClassify.length<=0?'品种':petClassify}}
         </view>
-        <!-- <input class='input-under petKg input-right {{classifyInputFocus?"input-focus":""}}'
-               style="flex-grow: 1;"
-               placeholder-class='input-normal-placeholder' 
-               placeholder='品种'  
-               value='{{petClassify==null||petClassify.length<=0?null:petClassify}}' 
-               bindinput='petClassifyInput'
-               bindfocus='petClassifyFocus'
-               bindblur='petClassifyOutFocus'>
-        </input> -->
         <input name='petKg'
                type='digit'
                class='input-under petKg input-right {{weightInpuFocus?"input-focus":""}}'
@@ -280,9 +271,15 @@
             {{addServerPetCan.name}}
             </label>
             <view class="contract"
-                  catchtap="tapPetCanContract">
+                  catchtap="tapPetCanContract"
+                  data-id='petCanContractVideo'>
             {{addServerPetCan.contract}}
             </view>
+            <video class="pet-can-contract-video" 
+                   src="{{addServerPetCan.videoPath}}"
+                   id='petCanContractVideo'
+                   bindended='playEnd'
+                   bindfullscreenchange='fullScreenChange'></video>
           </view>
           <view class='addServer-append-info'>
             <view class='air-box-info'>

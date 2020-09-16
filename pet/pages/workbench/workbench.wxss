@@ -80,6 +80,7 @@ page {
   align-items: center;
   justify-content: center;
   width: 100%;
+  margin: 30rpx 0rpx;
 }
 
 .block-fillet {
@@ -522,6 +523,16 @@ page {
 .bill-video-box{
   position: relative;
   margin: 10rpx auto;
+}
+
+.video-tap-box{
+  z-index: 2;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0rpx;
+  left: 0rpx;
+  background: rgba(255, 255,255, 0.01);
 }
 
 .video{

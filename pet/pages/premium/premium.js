@@ -1,9 +1,11 @@
 // pages/premium/premium.js
 const app = getApp();
-const Config = require("../../utils/config.js");
 const LoginUtil = require("../../utils/loginUtils.js");
 const ShareUtil = require("../../utils/shareUtils.js");
 const Util = require("../../utils/util.js");
+const workOrderManager = require("../../manager/orderManager/workOrderManager.js");
+const notificationCenter = require("../../manager/notificationCenter.js");
+const { WORKORDER_ADD_PREMIUM } = require("../../static/notificationName.js");
 Page({
 
   /**
@@ -20,7 +22,9 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    this.data.orderNo = options.orderno;
+    this.setData({
+      orderNo: options.orderno
+    })
   },
 
   /**
@@ -127,38 +131,23 @@ Page({
       title: '请稍等...',
     })
     let that = this;
-    wx.request({
-      url: Config.URL_Service + Config.URL_Premium,
-      data: requestData,
-      method: "POST",
-      success(res) {
-        wx.hideLoading();
-        console.log("新增补价单 success:\n" + JSON.stringify(res));
-        if (res.data.code == Config.RES_CODE_SUCCESS && res.data.data > 0) {
-          wx.showToast({
-            title: '补价成功',
-          },1000)
-          that.data.timeOutID = setTimeout(function () {
-            wx.navigateBack({
-
-            })
-          }, 1000)
-        } else {
-          wx.showToast({
-            title: '补价失败',
-            icon: 'none'
-          })
-        }
-      },
-      fail(res) {
-        wx.hideLoading();
-        console.log("新增补价单 fail:\n" + JSON.stringify(res));
+    workOrderManager.addNewPremium(requestData, function(success, data) {
+      wx.hideLoading({
+        success: (res) => {},
+      })
+      if (success && data > 0) {
+        wx.showToast({
+          title: '补价成功',
+        },1000)
+        notificationCenter.postNotification(WORKORDER_ADD_PREMIUM);
+        that.data.timeOutID = setTimeout(function () {
+          wx.navigateBack();
+        }, 1000)
+      } else {
         wx.showToast({
           title: '补价失败',
           icon: 'none'
         })
-      },
-      complete(res){
       }
     })
   }

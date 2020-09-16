@@ -28,7 +28,7 @@ function checkHaveNewGiftBagOnPetMall(callback) {
     fail(res) {
       console.log(res);
       if (util.checkIsFunction(callback)) {
-        callback(false, null);
+        callback(false, res);
       }
     }
   })

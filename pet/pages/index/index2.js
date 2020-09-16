@@ -5,6 +5,7 @@ const config = require("../../utils/config.js");
 const loginUtil = require("../../utils/loginUtils.js");
 const pagePath = require("../../utils/pagePath.js");
 const ShareUtil = require("../../utils/shareUtils.js");
+const orderManager = require("../../manager/orderManager/orderManager.js");
 
 const BUSINESS_ACTION_TYPE_NAVIGATE = 0;
 const BUSINESS_ACTION_TYPE_SWITCH = 1;
@@ -88,16 +89,25 @@ Page({
         } else if (type == 'share') {
 
         } else if (type == 'scan') {
-          wx.switchTab({
-            url: pagePath.Path_Me_Index,
+          wx.showLoading({
+            title: '请稍等...',
+          })
+          loginUtil.checkLogin(function alreadyLoginCallback(isLogin) {
+            if (isLogin && loginUtil.getStaffNo != null) {
+              wx.navigateTo({
+                url: '/pages/orderDetail/workOrderDetail/index' + "?orderno=" + app.ShareData.scanOrderNo,
+              })
+            } else {
+              wx.switchTab({
+                url: pagePath.Path_Me_Index,
+              })
+            }
           })
         } else if (type == "rqimg") {
           loginUtil.checkLogin(function alreadyLoginCallback(state) {
             wx.hideLoading();
             if (state) {
-              // wx.navigateTo({
-              //   url: pagePath.Path_Station_Detail + "?stationno=" + app.ShareData.businessNo,
-              // })
+              
             } else {
               loginUtil.login();
             }
@@ -134,9 +144,10 @@ Page({
     if (app.ShareData.payOrderNo != null) {
       wx.showModal({
         title: "有代支付订单",
-        content: "订单:" + app.ShareData.payOrderNo + " 请求代支付",
-        confirmText: "前去支付",
-        cancelText: "拒绝支付",
+        content: "订单:" + app.ShareData.payOrderNo + " 请查看详情",
+        confirmColor: "#EE2C2C",
+        confirmText: "查看详情",
+        cancelText: "返回首页",
         success(res) {
           if (res.confirm) {
             loginUtil.checkLogin(function alreadyLoginCallback(state) {
@@ -250,37 +261,27 @@ Page({
       title: '请稍等...',
     })
     let that = this;
-    let openId = loginUtil.getOpenId();
-    wx.request({
-      url: config.URL_Service + config.URL_GetOrderNoByOrderNo,
-      data: {
-        openId: openId,
-        orderNo: inputOrderNo
-      },
-      success(res) {
-        console.log("查单 success：\n" + JSON.stringify(res));
-        if (res.data.data != null && res.data.code == config.RES_CODE_SUCCESS) {
+    orderManager.getOrderByOrderNo(inputOrderNo, function(success, data){
+      wx.hideLoading({
+        success: (res) => {},
+      })
+      if (success) {
+        if (data != null) {
           wx.navigateTo({
-            url: pagePath.Path_Order_Detail + '?orderno=' + res.data.data + '&type=0' + "&showprice=0",
+            url: pagePath.Path_Order_Detail + '?orderno=' + data + '&type=0' + "&showprice=0",
           })
-
         } else {
           wx.showToast({
-            title: '未能查到相应单据！',
-            icon: "none"
+            title: '未能查到相应单据',
+            icon:'none'
           })
         }
-      },
-      fail(res) {
-        console.log("查单 fail：\n" + JSON.stringify(res));
+      } else {
         wx.showToast({
-          title: '系统异常',
-          icon: "none"
+          title: '查询失败',
+          icon: 'none'
         })
-      },
-      complete(res) {
-        console.log("查单 complete：\n" + JSON.stringify(res));
-      },
+      }
     })
   },
 })

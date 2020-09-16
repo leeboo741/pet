@@ -153,7 +153,7 @@
         <label>员工</label>
       </view>
       <view class="btnOper" 
-            hidden="{{userInfo.role != 1}}"
+            hidden="{{!parse.widthdrawRight(userInfo)}}"
             bindtap='gotoWithDrawal'>
         <i-icon type="redpacket"
                 color="#F1B000"
@@ -172,7 +172,8 @@
       </view>
       <view class="btnOper"
             bindtap="tapCollectionQRCode"
-            wx:if='{{userInfo.role == 1}}'>
+            wx:if='{{userInfo.role == 1}}'
+            hidden>
         <i-icon type='picture'
                 color='#F1B000'
                 size="32">
@@ -586,6 +587,12 @@
 
 <wxs module='parse'>
   module.exports={
+    widthdrawRight: function(userInfo) {
+      if (userInfo.staff != null && userInfo.staff.staffNo != null) {
+        return userInfo.role == 1;
+      }
+      return userInfo.business.businessNo!=null;
+    }, 
     getTransportType: function(type){
       if (type == 1) {
         return "专车";

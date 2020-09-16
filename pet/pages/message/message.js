@@ -5,6 +5,7 @@ const loginUtil = require("../../utils/loginUtils.js");
 const util = require("../../utils/util.js");
 const ShareUtil = require("../../utils/shareUtils.js");
 const PagePath = require("../../utils/pagePath.js");
+const messageManager = require("../../manager/messageManager/messageManager.js");
 
 const NEW_MESSAGE_LOOP_TIME = 10000;
 
@@ -100,47 +101,34 @@ Page({
   requestMessageData: function (startIndex) {
     this.closeGetNewMessageInterval();
     let that = this;
-    wx.request({
-      url: config.URL_Service + config.URL_Get_Message,
-      data: {
-        customerNo: loginUtil.getCustomerNo(),
-        offset: startIndex,
-        limit: this.data.pageSize
-      },
-      success(res){
-        console.log("获取站内信 success:\n" + JSON.stringify(res));
-        if (res.data.code == config.RES_CODE_SUCCESS) {
-          if (util.checkEmpty(res.data.data)) {
-            that.setData({
-              isEnd: true,
-              messageList: that.data.messageList
-            })
-            return;
-          }
-          that.data.messageList = that.data.messageList.concat(res.data.data);
-          let isEnd = false;
-          if (res.data.data.length < that.data.pageSize) {
-            isEnd = true;
-          }
+    messageManager.getMessageList(startIndex,this.data.pageSize, function(success, data) {
+      wx.stopPullDownRefresh({
+        success: (res) => {},
+      })
+      if (success) {
+        if (util.checkEmpty(data)) {
           that.setData({
-            messageList: that.data.messageList,
-            isEnd: isEnd,
-            startIndex: startIndex + that.data.pageSize
+            isEnd: true,
+            messageList: that.data.messageList
           })
-          that.setLastGetMessageTime(util.formatTime(new Date()));
-          that.startGetNewMessageInterval();
+          return;
         }
-      },
-      fail(res) {
-        console.log("获取站内信 fail:\n" + JSON.stringify(res));
+        that.data.messageList = that.data.messageList.concat(data);
+        let isEnd = false;
+        if (data.length < that.data.pageSize) {
+          isEnd = true;
+        }
+        that.setData({
+          messageList: that.data.messageList,
+          isEnd: isEnd,
+          startIndex: startIndex + that.data.pageSize
+        })
+        that.startGetNewMessageInterval();
+      } else {
         wx.showToast({
-          title: '系统异常',
+          title: '查询失败',
           icon: "none"
         })
-      },
-      complete(res) {
-        console.log("获取站内信 complete:\n" + JSON.stringify(res));
-        wx.stopPullDownRefresh();
       }
     })
   },
@@ -149,20 +137,13 @@ Page({
    * 查询 更新站内信
    */
   requestNewMessage: function () {
-    let lastGetMessageTime = this.getLastGetMessageTime();
     let that = this;
-    wx.request({
-      url: config.URL_Service + config.URL_Get_New_Message,
-      data: {
-        customerNo: loginUtil.getCustomerNo(),
-        lastModifyTime: lastGetMessageTime
-      },
-      success(res) {
-        console.log("获取最新站内信 success:\n" + JSON.stringify(res));
-        if (res.data.code == config.RES_CODE_SUCCESS && res.data.data > 0) {
+    messageManager.getNewMessage(function(success, data){
+      if (success) {
+        if (data > 0) {
           wx.showModal({
             title: '有新消息',
-            content: '您有新的站内信，可以刷新页面查看',
+            content: '您有新的站内信，刷新页面查看',
             showCancel: false,
             success(res){
               if(res.confirm) {
@@ -170,18 +151,12 @@ Page({
               }
             }
           })
-          that.setLastGetMessageTime(util.formatTime(new Date()));
         }
-      },
-      fail(res) {
-        console.log("获取最新站内信 fail:\n" + JSON.stringify(res));
+      } else {
         wx.showToast({
-          title: '系统异常',
+          title: '查询异常',
           icon: "none"
         })
-      },
-      complete(res) {
-        console.log("获取最新站内信 complete:\n" + JSON.stringify(res));
       }
     })
   },

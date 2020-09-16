@@ -25,6 +25,9 @@ const ShareUtil = require("../../utils/shareUtils.js");
 const PayManager = require('../../manager/payManager/payManager');
 const commonOrderManager = require("../../manager/orderManager/commonOrderManager.js");
 const userManager = require("../../manager/userManager/userManager.js");
+const balanceManager = require("../../manager/balanceManager/balanceManager.js");
+const orderManager = require("../../manager/orderManager/orderManager.js");
+const messageManager = require("../../manager/messageManager/messageManager.js");
 
 const NEW_MESSAGE_LOOP_TIME = 10000;
 
@@ -343,7 +346,7 @@ Page({
    * 点击待付款更多
    */
   tapUnpayMore: function (e) {
-    let itemList = ["订单详情", "修改订单", "取消订单", "上传付款凭证"];
+    let itemList = ["订单详情", "修改订单", "取消订单"];
     let index = e.currentTarget.dataset.tapindex;
     let orderNo = e.currentTarget.dataset.orderno;
     let that = this;
@@ -356,10 +359,6 @@ Page({
           that.tapEditOrder(e, true);
         } else if (res.tapIndex == 2) { // 取消订单
           that.tapCancelOrder(e);
-        } else if (res.tapIndex == 3) { // 上传付款凭证
-          wx.navigateTo({
-            url: pagePath.Path_Me_PaymentVoucher + "?orderno=" + orderNo,
-          })
         }
       },
     })
@@ -550,6 +549,8 @@ Page({
             if (isLogin) {
               loginUtil.updateCustomer(function updateCallback(isSuccess){
                 if (isSuccess) {
+                  
+                  loginUtil.resetBalance(data);
                   that.setData({
                     userInfo: loginUtil.getUserInfo()
                   })
@@ -810,27 +811,17 @@ Page({
    */
   requestBalance: function(){
     let that = this;
-    wx.request({
-      url: config.URL_Service + config.URL_CheckBalance,
-      data: {
-        customerNo: loginUtil.getCustomerNo()
-      },
-      success(res){
-        console.log("查询余额 success => \n" + JSON.stringify(res));
-        loginUtil.resetBalance(res.data.data);
+    balanceManager.getBalance(function(success, data) {
+      if (success) {
+        loginUtil.resetBalance(data);
         that.setData({
           userInfo: loginUtil.getUserInfo()
         })
-      },
-      fail(res) {
-        console.log("查询余额 fail => \n" + JSON.stringify(res));
+      } else {
         wx.showToast({
           title: '查询余额失败',
           icon: 'none'
         })
-      },
-      complete(res) {
-        console.log("查询余额 complete => \n" + JSON.stringify(res));
       }
     })
   },
@@ -843,17 +834,6 @@ Page({
     wx.navigateTo({
       url: pagePath.Path_Order_Pay_SubPay + "?amount=" + amount + "&orderno=" + orderNo + "&customerno=" + loginUtil.getCustomerNo(),
     })
-    // PayManager.payOrder(orderNo, function(){
-    //   that.setData({
-    //     selectedBillType: 1
-    //   })
-    //   that.requestBillList(that.data.selectedBillType);
-    // }, function(){
-    //   wx.showToast({
-    //     title: '支付失败',
-    //     icon: 'none'
-    //   })
-    // })
   },
 
   /**
@@ -864,44 +844,25 @@ Page({
       title: '请稍等...',
     })
     let that = this;
-    wx.request({
-      url: config.URL_Service + config.URL_GetOrderNoByOrderNo,
-      data: {
-        customerNo: loginUtil.getCustomerNo(),
-        orderNo: inputOrderNo
-      },
-      success(res) {
-        wx.hideLoading();
-        console.log("查单 success：\n" + JSON.stringify(res));
-        if (res.data.data != null && res.data.code == config.RES_CODE_SUCCESS) {
+    orderManager.getOrderByOrderNo(inputOrderNo, function(success, data){
+      wx.hideLoading({
+        success: (res) => {},
+      })
+      if (success) {
+        if (data != null) {
           that.hiddenPopMask();
           wx.navigateTo({
-            url: pagePath.Path_Order_Detail + '?orderno=' + res.data.data + '&type=0' + "&ablecancelpremium=0" + "&showprice=0",
+            url: pagePath.Path_Order_Detail + '?orderno=' + data + '&type=0' + "&ablecancelpremium=0" + "&showprice=0",
           })
         } else {
-          if (res.data.data == null) {
-            wx.showToast({
-              title: '没有查到相应单据',
-              icon: 'none'
-            })
-          } else if (res.data.message != null) {
-            wx.showToast({
-              title: res.data.message,
-              icon: 'none'
-            })
-          } else {
-            wx.showToast({
-              title: '未能查到相应单据！',
-              icon: "none"
-            })
-          }
+          wx.showToast({
+            title: '没有查到相应单据',
+            icon: 'none'
+          })
         }
-      },
-      fail(res) {
-        wx.hideLoading();
-        console.log("查单 fail：\n" + JSON.stringify(res));
+      } else {
         wx.showToast({
-          title: '系统异常',
+          title: '查询失败',
           icon: "none"
         })
       }
@@ -918,69 +879,41 @@ Page({
     const tempType = this.data.selectedBillType;
     const tempIndex = orderIndex;
     let that = this;
-    wx.request({
-      url: config.URL_Service + config.URL_CancelOrder,
-      data: {
-        customerNo: loginUtil.getCustomerNo(),
-        orderNo: orderNo
-      },
-      method: "POST",
-      header: {
-        'content-type': "application/x-www-form-urlencoded"
-      },
-      success(res) {
-        wx.hideLoading();
-        console.log("取消订单 success：\n" + JSON.stringify(res));
-        if (res.data.data != null && res.data.code == config.RES_CODE_SUCCESS) {
-          if (tempType == 0) {
-            that.data.unpayList.splice(tempIndex, 1);
-            that.setData({
-              unpayList: that.data.unpayList
-            })
-          } else if (tempType == 1) {
-            that.data.unsendList.splice(tempIndex, 1)
-            that.setData({
-              unsendList: that.data.unsendList
-            })
-          } else if (tempType == 2) {
-            that.data.unreceiveList.splice(tempIndex, 1)
-            that.setData({
-              unreceiveList: that.data.unreceiveList
-            })
-          } else {
-            that.data.completeList.splice(tempIndex, 1)
-            that.setData({
-              completeList: that.data.completeList
-            })
-          }
-          wx.showToast({
-            title: '取消订单成功！'
+    orderManager.cancelOrder(orderNo, function(success, data){
+      wx.hideLoading({
+        success: (res) => {},
+      })
+      if (success) {
+        if (tempType == 0) {
+          that.data.unpayList.splice(tempIndex, 1);
+          that.setData({
+            unpayList: that.data.unpayList
+          })
+        } else if (tempType == 1) {
+          that.data.unsendList.splice(tempIndex, 1)
+          that.setData({
+            unsendList: that.data.unsendList
+          })
+        } else if (tempType == 2) {
+          that.data.unreceiveList.splice(tempIndex, 1)
+          that.setData({
+            unreceiveList: that.data.unreceiveList
           })
         } else {
-          if (res.data.message != null) {
-            wx.showToast({
-              title: res.data.message,
-              icon: 'none'
-            })
-          } else {
-            wx.showToast({
-              title: '取消订单失败！',
-              icon: "none"
-            })
-          }
+          that.data.completeList.splice(tempIndex, 1)
+          that.setData({
+            completeList: that.data.completeList
+          })
         }
-      },
-      fail(res) {
-        wx.hideLoading();
-        console.log("取消订单 fail：\n" + JSON.stringify(res));
         wx.showToast({
-          title: '取消订单失败',
-          icon: 'none'
+          title: '取消订单成功！'
         })
-      },
-      complete(res) {
-        console.log("取消订单 complete：\n" + JSON.stringify(res));
-      },
+      } else {
+        wx.showToast({
+          title: '取消订单失败！',
+          icon: "none"
+        })
+      }
     })
   },
 
@@ -993,44 +926,34 @@ Page({
     })
     const tempType = billType;
     let that = this;
-    wx.request({
-      url: config.URL_Service + config.URL_GetOrderListByOrderStatus,
-      data: {
-        "orderStatus": this.getSendBillType(tempType),
-        "customerNo": loginUtil.getCustomerNo()
-      },
-      success(res) {
-        wx.hideLoading();
-        console.log("请求单据列表 success => \n" + JSON.stringify(res))
+    orderManager.getCustomerOrderList(this.getSendBillType(tempType), function(success, data){
+      wx.hideLoading({
+        success: (res) => {},
+      })
+      if (success) {
         if (tempType == 0) {
           that.setData({
-            unpayList: res.data.data
+            unpayList: data
           })
         } else if (tempType == 1) {
           that.setData({
-            unsendList: res.data.data
+            unsendList: data
           })
         } else if (tempType == 2) {
           that.setData({
-            unreceiveList: res.data.data
+            unreceiveList: data
           })
         } else {
           that.setData({
-            completeList: res.data.data
+            completeList: data
           })
         }
-      },
-      fail(res) {
-        wx.hideLoading();
-        console.log("请求单据列表 fail => \n" + JSON.stringify(res))
+      } else {
         wx.showToast({
-          title: '系统异常',
+          title: '获取订单列表失败',
           icon: "none"
         })
-      },
-      complete(res) {
-        console.log("请求单据列表 complete => \n" + JSON.stringify(res))
-      },
+      }
     })
   },
 
@@ -1038,32 +961,17 @@ Page({
    * 查询 更新站内信
    */
   requestNewMessage: function () {
-    let lastGetMessageTime = this.getLastGetMessageTime();
     let that = this;
-    wx.request({
-      url: config.URL_Service + config.URL_Get_New_Message,
-      data: {
-        customerNo: loginUtil.getCustomerNo(),
-        lastModifyTime: lastGetMessageTime
-      },
-      success(res) {
-        console.log("获取最新站内信 success:\n" + JSON.stringify(res));
-        if (res.data.code == config.RES_CODE_SUCCESS && res.data.data > 0) {
-          that.setData({
-            haveNewMessage: true
-          })
-          that.setLastGetMessageTime(util.formatTime(new Date()));
-        }
-      },
-      fail(res) {
-        console.log("获取最新站内信 fail:\n" + JSON.stringify(res));
+    messageManager.getNewMessage(function(success, data){
+      if (success) {
+        that.setData({
+          haveNewMessage: data > 0
+        })
+      } else {
         wx.showToast({
-          title: '系统异常',
+          title: '获取最新站内信失败',
           icon: "none"
         })
-      },
-      complete(res) {
-        console.log("获取最新站内信 complete:\n" + JSON.stringify(res));
       }
     })
   },
@@ -1072,32 +980,16 @@ Page({
    * 查询是否可以收货
    */
   requestCheckConfirm: function (orderNo, customerNo, getResultCallback) {
-    wx.request({
-      url: config.URL_Service + config.URL_CheckConfirm,
-      data: {
-        orderNo : orderNo,
-        customerNo: customerNo 
-      },
-      success (res) {
-        if (res.data.code == config.RES_CODE_SUCCESS) {
-          if (getResultCallback != null && typeof getResultCallback == 'function') {
-            getResultCallback(res.data.data)
-          }
-        } else {
-          wx.showToast({
-            title: res.errMsg,
-            icon: 'none'
-          })
+    orderManager.checkOrderConfirmReceiveAble(orderNo, customerNo, function(success, data){
+      if (success) {
+        if (getResultCallback != null && typeof getResultCallback == 'function') {
+          getResultCallback(data)
         }
-      },
-      fail (res) {
+      } else {
         wx.showToast({
-          title: '系统异常',
+          title: '查询失败',
           icon: 'none'
         })
-      },
-      complete(res) {
-      
       }
     })
   },

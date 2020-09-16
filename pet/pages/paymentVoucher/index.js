@@ -3,6 +3,11 @@
 const Config = require("../../utils/config");
 const { RES_CODE_SUCCESS } = require("../../utils/config");
 const util = require("../../utils/util");
+const workOrderManager = require("../../manager/orderManager/workOrderManager");
+const notificationCenter = require("../../manager/notificationCenter");
+const { WORKORDER_UPLOAD_PAYMENT_VOUCHER } = require("../../static/notificationName");
+const shareUtils = require("../../utils/shareUtils");
+const app = getApp();
 
 Page({
 
@@ -69,7 +74,7 @@ Page({
    * 用户点击右上角分享
    */
   onShareAppMessage: function () {
-
+    return shareUtils.getOnShareAppMessageForShareOpenId();
   },
 
   /**
@@ -103,14 +108,21 @@ Page({
       url: Config.URL_Service + Config.URL_Upload,
       header: { "Content-Type": "multipart/form-data" },
       success(res) {
+        wx.hideLoading()
         console.log(res);
         if (typeof res.data == 'string') {
           res.data = JSON.parse(res.data);
         }
-        that.setData({
-          paymentVoucher: res.data.root[0].fileAddress
-        })
-        wx.hideLoading()
+        if (res.data.code == 10000) {
+          that.setData({
+            paymentVoucher: res.data.root[0].fileAddress
+          })
+        } else {
+          wx.showToast({
+            title: '上传失败 ' + res.data.code,
+            icon: 'none'
+          })
+        }
       },
       fail(res) {
         console.log(res);
@@ -133,28 +145,17 @@ Page({
     wx.showLoading({
       title: '提交中...',
     })
-    wx.request({
-      url: Config.URL_Service + Config.URL_Add_PaymentVoucher,
-      data: {
-        orderNo: this.data.orderNo,
-        paymentVoucher: this.data.paymentVoucher
-      },
-      success(res) {
-        console.log(res);
-        wx.hideLoading()
-        if (res.data.code == RES_CODE_SUCCESS && res.data.data == 1) {
-          wx.navigateBack()
-        } else {
-          wx.showToast({
-            title: '提交失败',
-            icon: 'none'
-          })
-        }
-      },
-      fail(res) {
-        wx.hideLoading()
+    workOrderManager.submitPaymentVoucher(this.data.orderNo, this.data.paymentVoucher, function(success, data) {
+      wx.hideLoading({
+        success: (res) => {},
+      })
+      if (success && data > 0) {
+        app.globalData.paymentVoucherBackFlag = 'toTop'
+        wx.navigateBack()
+        notificationCenter.postNotification(WORKORDER_UPLOAD_PAYMENT_VOUCHER);
+      } else {
         wx.showToast({
-          title: '链接失败',
+          title: '提交失败',
           icon: 'none'
         })
       }

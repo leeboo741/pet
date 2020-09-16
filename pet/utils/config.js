@@ -4,8 +4,15 @@
  */
 /** =================================================== */
 const Service_Phone = "4007778889"; // 客服电话
-const Version_Name = "1.5.15"; // 版本名称
-const Version_Code = 106; // 版本编号
+/**
+ * 上一版本 1.6.1
+ * 上一版本时间 2020.09.15
+ * 新版本说明
+ * 1. 添加自动更新
+ */
+const Version_Name = "1.6.2"; // 版本名称
+const Version_Code = 4; // 版本编号
+const Branch_Name = "develop"; // 分支名称
 
 const ENV_DEV = 'develop'; // 开发环境
 const ENV_TRIAL = 'trial'; // 体验环境
@@ -15,7 +22,8 @@ const ENV_CURRENT = ENV_DEV; // 当前环境
 
 const MINI_PROGRAME_APPID_PETMALL = 'wxca35493268376086'; // 商城小程序 appid
 
-const PRINT_ABLE = ENV_CURRENT != ENV_RELEASE
+const PRINT_ABLE_FOLLOW_ENV = true; // 打印权限是否跟随 环境设置
+const PRINT_ABLE = PRINT_ABLE_FOLLOW_ENV?(ENV_CURRENT != ENV_RELEASE): false; // 打印权限 跟随环境设置(当不等于线上环境时允许打印日志) 不跟随环境限制(允许打印)
 
 /** =================================================== */
 /** 
@@ -26,6 +34,7 @@ let URL_Service = "";
 switch(ENV_CURRENT) {
   case ENV_DEV:
     URL_Service = "http://192.168.3.40:7777"; // 周晓健
+    // URL_Service = "http://192.168.3.110:7777"; // 
     break;
   case ENV_TRIAL:
     URL_Service = "https://consign.taochonghui.com";
@@ -129,6 +138,7 @@ const URL_OrderRefund = "/api/order/refund"; // 订单退款
 const URL_ChangeOrderPrice = "/api/order/update/price"; // 修改订单价格
 const URL_Order_Evalueate = "/api/order/evaluate"; // 订单评价
 const URL_Order_Station_All = "/api/order/list/station"; // 查询站点所有订单
+const URL_Order_Confirm_Condition = '/api/order/confirmRegulation'; // 确认订单条款
 
 const URL_GetCouponList = '/aip/coupon/listByOpenId'; // 获取优惠券列表
 
@@ -216,6 +226,7 @@ module.exports = {
   Service_Phone, // 客服电话
   Version_Name, // 版本名称
   Version_Code, // 版本编号
+  Branch_Name, // 分支名称
 
   URL_Service, // 请求路径
 
@@ -298,6 +309,7 @@ module.exports = {
   URL_ChangeOrderPrice, // 订单改价
   URL_Order_Evalueate, // 订单评价
   URL_Order_Station_All, // 查询站点所有订单
+  URL_Order_Confirm_Condition, // 确认订单条款
 
   URL_GetCouponList, // 获取优惠券列表
 

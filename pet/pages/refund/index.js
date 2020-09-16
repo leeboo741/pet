@@ -1,8 +1,9 @@
 // pages/refund/index.js
 
-const Config = require("../../utils/config.js");
-const LoginUtil = require("../../utils/loginUtils.js");
 const ShareUtil = require("../../utils/shareUtils");
+const workOrderManager = require("../../manager/orderManager/workOrderManager.js");
+const notificationCenter = require("../../manager/notificationCenter");
+const { WORKORDER_REFUND } = require("../../static/notificationName");
 Page({
 
   /**
@@ -101,6 +102,9 @@ Page({
    * 点击提交
    */
   tapSubmit: function() {
+    if (this.data.submiting) {
+      return;
+    }
     this.requestSubmit();
   },
 
@@ -112,53 +116,17 @@ Page({
       submiting: true
     })
     let that = this;
-    wx.request({
-      url: Config.URL_Service + Config.URL_OrderRefund,
-      data: {
-        order: {
-          orderNo: this.data.orderNo,
-        },
-        staff: {
-          staffNo: LoginUtil.getStaffNo(),
-        },
-        serviceFeeAmount: this.data.serviceAmount==null?0:this.data.serviceAmount,
-        refundReason: this.data.refundReason
-      },
-      method: "POST",
-      success(res) {
-        console.log("申请退款 success: \n" + JSON.stringify(res));
-
-        if (res.data.code == Config.RES_CODE_SUCCESS) {
-          if (res.data.data > 0) {
-
-            wx.navigateBack({
-
-            })
-            // wx.showToast({
-            //   title: '提交成功',
-            //   duration: 1500,
-            // })
-            // that.data.backTimeout = setTimeout(
-            //   function (res) {
-            //     wx.navigateBack({
-                  
-            //     })
-            //   },
-            //   1550
-            // )
-          }
-        }
-      },
-      fail(res) {
-        console.log("申请退款 fail: \n" + JSON.stringify(res));
+    workOrderManager.submitRefund(this.data.orderNo, this.data.serviceAmount, this.data.refundReason, function(success, data) {
+      that.setData({
+        submiting: false
+      })
+      if (success && data > 0) {
+        notificationCenter.postNotification(WORKORDER_REFUND);
+        wx.navigateBack()
+      } else {
         wx.showToast({
-          title: '系统异常',
+          title: '申请退款失败',
           icon: 'none'
-        })
-      },
-      complete(res) {
-        that.setData({
-          submiting: false
         })
       }
     })

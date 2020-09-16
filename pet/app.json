@@ -50,7 +50,15 @@
     "pages/consigned/subPay/subPay",
     "pages/stationSetting/index",
     "pages/paymentVoucher/index",
-    "pages/verifyPaymentVoucher/index"
+    "pages/verifyPaymentVoucher/index",
+    "pages/orderDetail/workOrderDetail/index",
+    "pages/orderDetail/workOrderDetail/newRemark/index",
+    "pages/orderDetail/workOrderDetail/changeOrderPrice/index",
+    "pages/orderDetail/workOrderDetail/tempDeliver/index",
+    "pages/orderDetail/workOrderDetail/inport/index",
+    "pages/orderDetail/workOrderDetail/outport/index",
+    "pages/orderDetail/workOrderDetail/signIn/index",
+    "pages/orderDetail/workOrderDetail/uploadFile/index"
   ],
   "window": {
     "backgroundTextStyle": "light",

@@ -3,6 +3,7 @@ const UrlPath = require("../../../utils/config.js");
 const Config = require("../../../utils/config.js");
 const app = getApp();
 const ShareUtil = require("../../../utils/shareUtils");
+const orderManager = require("../../../manager/orderManager/orderManager.js");
 Page({
 
   /**
@@ -86,6 +87,7 @@ Page({
     let index = classifyItem.currentTarget.dataset.index;
     let classify = this.data.searchResultList[index];
     app.globalData.selectClassifyName = classify.petGenreName;
+    app.globalData.selectSortName = classify.petSort.petSortName;
     wx.navigateBack({
       
     })
@@ -120,16 +122,17 @@ Page({
    */
   requestPetClassifyBySearchword: function(searchword){
     let that = this;
-    const url = UrlPath.URL_Service + UrlPath.URL_GetPetClassifyListByKeyword + searchword
-    wx.request({
-      url: url,
-      success(res) {
-        if (res.data.code == Config.RES_CODE_SUCCESS) {
-          that.setData({
-            searchResultList: res.data.data
-          })
-        }
-      },
+    orderManager.getPetClassify(searchword, function(success, data){
+      if (success) {
+        that.setData({
+          searchResultList: data
+        })
+      } else {
+        wx.showToast({
+          title: '获取宠物品种失败',
+          icon: 'none'
+        })
+      }
     })
   }
 })

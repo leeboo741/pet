@@ -80,6 +80,7 @@ page {
   align-items: center;
   justify-content: center;
   width: 100%;
+  margin: 30rpx 0rpx;
 }
 
 .block-fillet {

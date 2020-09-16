@@ -4,6 +4,7 @@ const loginUtils = require("../../utils/loginUtils");
 const Config = require("../../utils/config");
 const { RES_CODE_SUCCESS } = require("../../utils/config");
 const util = require("../../utils/util");
+const shareUtils = require("../../utils/shareUtils");
 Page({
 
   /**
@@ -68,7 +69,7 @@ Page({
    * 用户点击右上角分享
    */
   onShareAppMessage: function () {
-
+    return shareUtils.getOnShareAppMessageForShareOpenId();
   },
 
   tapSelectNewQRCode: function() {
