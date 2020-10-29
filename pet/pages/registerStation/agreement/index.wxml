@@ -1,0 +1,69 @@
+<!--pages/registerStation/agreement/index.wxml-->
+
+<view wx:if="{{titleNameType==0}}">
+  <view class="headTrip">
+    亲爱的“淘宠惠宠物一站式服务中心”卖家，为保证销售宠物的资金安全和健康保障，请仔细阅读本协议，当您通过“淘宠惠宠物一站式服务中心”提交卖家认证申请，平台将视为您同意接受本协议，并将本协议作为宠物担保交易期间权利和义务的重要依据。
+无论在销售宠物期间发生任何问题，您均可以电话联系“淘宠惠宠物一站式服务中心”客服获取协助和支持（400-777-8889），必要情况下淘宠惠宠物一站式服务中心也将提供专业的法律顾问协助您解决争议和纠纷。
+  </view>
+
+  <view wx:for='{{fuwuxieyi}}' wx:for-item="item" wx:key="index"
+        style="padding-left: 2%;padding-right: 2%;margin-bottom:2%;">
+    <view class="text-head">
+      {{item.title}}
+    </view>
+    <view class="text-context">
+      <view class="text-context-one">
+        {{item.concat}}
+      </view>
+      <view class="text-context-one"
+            wx:for='{{item.showConcatNR}}' wx:for-item="itemshwoNR" wx:key="index">
+          <view>
+            {{itemshwoNR}}
+          </view>
+      </view>
+      <view>
+        {{item.showConcatNRbottom}}
+      </view>
+      <view wx:for='{{item.showConcatNRbottomNR}}' wx:for-item="itemRnr" wx:key="index">
+        <view style="font-weight:bold;font-size: 28rpx;">{{itemRnr.show}}</view>
+        <view wx:for='{{itemRnr.showifn}}' wx:for-item="itemRnrtt" wx:key="index"
+              style="padding-left:2%;font-size:26rpx;">{{itemRnrtt}}</view>
+      </view>
+    </view>
+  </view>
+  
+  <view style="margin-bottom:2%">
+    <view class="text-head" style="padding-left:2%;margin-bottom">
+      六、担保交易免责条款
+    </view>
+    <view wx:for='{{fuwuxieyiSix}}' wx:for-item="item" wx:key="index" style="padding-left:2%;padding-right:2%;">
+      <view style="font-weight:bold;">{{item.titleName}}</view>
+      <view style="font-size: 26rpx;#4C4040;">{{item.content}}</view>
+    </view>
+  </view>
+  
+  <view style="margin-bottom:2%">
+    <view class="text-head" style="padding-left:2%;">七、特别约定</view>
+    <view wx:for='{{fuwuxieyiSeven}}' wx:for-item="item" wx:key="index" style="padding-left: 2%;padding-right: 2%;font-size:28rpx;#4C4040;">
+      {{item}}
+    </view>
+  </view>
+</view>
+
+<view wx:if="{{titleNameType==1}}">
+  <view wx:for='{{sjgf}}' wx:for-item="item" wx:key="index" wx:for-index="{{sjindex}}" style="margin-bottom:2%;">
+    <view class="text-head" style="padding-left: 2%">{{item.title}}</view>
+    <view class="sjgf-head">{{item.head}}</view>
+    <view wx:for='{{item.box}}' wx:for-item="itemBox" wx:for-index="{{itemBoxIndex}}" wx:key="index">
+      <view class="boxHead-sty">{{itemBox.boxHead}}</view>
+      <view wx:for='{{itemBox.boxContent}}' wx:for-item="itemBoxCon" wx:key="index"
+            wx:for-index="{{itemBoxConIndex}}"
+            class="boxcontent-sty">
+              {{itemBoxCon}}
+      </view>
+    </view>
+  </view>
+  <view class="boxcontent-sty" style="font-weight:bold;">
+    {{showSk}}
+  </view>
+</view>

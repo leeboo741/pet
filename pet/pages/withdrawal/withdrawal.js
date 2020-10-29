@@ -204,7 +204,6 @@ Page({
       data: tempData,
       success(res) {
         wx.hideLoading();
-        console.log("查询可用和冻结金额 success: \n" + JSON.stringify(res));
         if (res.data.code == config.RES_CODE_SUCCESS) {
           that.setData({
             ableBalance: res.data.data.usable,
@@ -218,7 +217,6 @@ Page({
         }
       },
       fail(res) {
-        console.log("查询可用和冻结金额 fail: \n" + JSON.stringify(res));
         wx.showToast({
           title: '系统异常',
           icon:'none'

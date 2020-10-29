@@ -93,7 +93,7 @@ Page({
             title: '请稍等...',
           })
           loginUtil.checkLogin(function alreadyLoginCallback(isLogin) {
-            if (isLogin && loginUtil.getStaffNo != null) {
+            if (isLogin && loginUtil.getStaffNo() != null) {
               wx.navigateTo({
                 url: '/pages/orderDetail/workOrderDetail/index' + "?orderno=" + app.ShareData.scanOrderNo,
               })
@@ -220,7 +220,6 @@ Page({
         url: e.currentTarget.dataset.target,
       })
     } else if (e.currentTarget.dataset.actiontype == BUSINESS_ACTION_TYPE_MINIPROGRAME) {
-      console.log('跳转小程序AppId:' + e.currentTarget.dataset.data + '/nPath:' + e.currentTarget.dataset.target);
       wx.navigateToMiniProgram({
         appId: e.currentTarget.dataset.data,
         path: e.currentTarget.dataset.target,

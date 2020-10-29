@@ -33,7 +33,6 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    console.log(options);
   },
 
   cancel: function(){
@@ -54,7 +53,6 @@ Page({
       title: '请稍等...',
     })
     LoginUtil.getWXUserInfo(function callback(wxUserInfo) {
-      console.log("WXUserInfo:" + JSON.stringify(wxUserInfo));
       wx.hideLoading();
       wx.showModal({
         title: '请前往登录',

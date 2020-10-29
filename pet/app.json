@@ -21,7 +21,6 @@
     "pages/selectorStaff/selectorStaff",
     "pages/approval/approval",
     "pages/applyJoin/applyJoin",
-    "pages/registerStation/registerStation",
     "pages/registerStaff/registerStaff",
     "pages/bluetooth/search",
     "pages/bluetooth/print",
@@ -58,7 +57,10 @@
     "pages/orderDetail/workOrderDetail/inport/index",
     "pages/orderDetail/workOrderDetail/outport/index",
     "pages/orderDetail/workOrderDetail/signIn/index",
-    "pages/orderDetail/workOrderDetail/uploadFile/index"
+    "pages/orderDetail/workOrderDetail/uploadFile/index",
+    "pages/registerStation/index",
+    "pages/registerStation/completionInfo/index",
+    "pages/registerStation/agreement/index"
   ],
   "window": {
     "backgroundTextStyle": "light",

@@ -13,6 +13,7 @@ const { RES_CODE_SUCCESS } = require("../../utils/config.js");
 const workOrderManager = require("../../manager/orderManager/workOrderManager.js");
 const orderManager = require("../../manager/orderManager/orderManager.js");
 const { order } = require("../../manager/orderManager/orderManager.js");
+const userManager = require("../../manager/userManager/userManager");
 var qqmapsdk;
 
 Page({
@@ -67,7 +68,6 @@ Page({
     let that = this;
     this.requestCheckConfirm(this.data.orderNo, loginUtil.getCustomerNo(),
       function getResultCallback(data) {
-        console.log("是否可以确认签收 :\n" + JSON.stringify(data));
         if (data == 0) {
           
         } else {
@@ -200,7 +200,6 @@ Page({
    * 生命周期函数--监听页面卸载
    */
   onUnload: function () {
-    console.log("/orderdetail/orderdetail 销毁")
     clearTimeout(this.data.backTimeIntervial);
     this.data.backTimeIntervial = null;
   },
@@ -375,7 +374,6 @@ Page({
       //获取表单传入地址
       address: targetAddress, //地址参数，例：固定地址，address: '北京市海淀区彩和坊路海淀西大街74号'
       success: function (res) {//成功后的回调
-        console.log(res);
         var res = res.result;
         var latitude = res.location.lat;
         var longitude = res.location.lng;
@@ -389,7 +387,6 @@ Page({
         console.error(error);
       },
       complete: function (res) {
-        console.log(res);
         wx.hideLoading();
       }
     })

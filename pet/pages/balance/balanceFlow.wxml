@@ -11,13 +11,21 @@
             data-index='{{index}}'
             data-flow='{{item}}'>
         <view class="item-header">
-          <view class="item-no">
-            单号:{{item.order.orderNo}}
+          <view style='display: flex; flex-direction: row; algin-items: center;'>
+            <view class="item-no">
+              单号:{{item.order.orderNo}} 
+            </view>
+            <view style="color: red; font-size: 28rpx; margin-left: 15rpx">{{item.order.offlinePaymentLogo==1?"(线下工单)":""}}</view>
+          </view>
+          <view class="item-payment" style='font-size: 28rpx; color: blue' wx:if='{{item.order.staff != null}}'>
+          制单人:{{item.order.staff.staffName}}/{{item.order.staff.phone}}
           </view>
           <view class="item-payment">
             订单金额:￥{{item.order.paymentAmount}}
           </view>
         </view>
+        <i-imageUpload wx:if='{{item.order.paymentVoucher!=null}}' imagePathList='{{[item.order.paymentVoucher]}}' showAddNewButton='{{false}}'>
+        </i-imageUpload>
         <view class="detail-box">
           <view class="detail-item"
                 wx:for='{{item.orderFlowDetails}}'

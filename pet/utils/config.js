@@ -5,24 +5,24 @@
 /** =================================================== */
 const Service_Phone = "4007778889"; // 客服电话
 /**
- * 上一版本 1.6.1
- * 上一版本时间 2020.09.15
+ * 上一版本 1.6.10
+ * 上一版本时间 2020.10.24
  * 新版本说明
- * 1. 添加自动更新
+ * 1. 修复 客户订单详情 收货 一直loading 的bug
  */
-const Version_Name = "1.6.2"; // 版本名称
-const Version_Code = 4; // 版本编号
-const Branch_Name = "develop"; // 分支名称
+const Version_Name = "1.6.10"; // 版本名称
+const Version_Code = 12; // 版本编号
+const Branch_Name = "master"; // 分支名称
 
 const ENV_DEV = 'develop'; // 开发环境
 const ENV_TRIAL = 'trial'; // 体验环境
 const ENV_RELEASE = 'release'; // 生产环境
 
-const ENV_CURRENT = ENV_DEV; // 当前环境
+const ENV_CURRENT = ENV_RELEASE; // 当前环境
 
 const MINI_PROGRAME_APPID_PETMALL = 'wxca35493268376086'; // 商城小程序 appid
 
-const PRINT_ABLE_FOLLOW_ENV = true; // 打印权限是否跟随 环境设置
+const PRINT_ABLE_FOLLOW_ENV = false; // 打印权限是否跟随 环境设置
 const PRINT_ABLE = PRINT_ABLE_FOLLOW_ENV?(ENV_CURRENT != ENV_RELEASE): false; // 打印权限 跟随环境设置(当不等于线上环境时允许打印日志) 不跟随环境限制(允许打印)
 
 /** =================================================== */
@@ -33,8 +33,8 @@ const PRINT_ABLE = PRINT_ABLE_FOLLOW_ENV?(ENV_CURRENT != ENV_RELEASE): false; //
 let URL_Service = "";
 switch(ENV_CURRENT) {
   case ENV_DEV:
-    URL_Service = "http://192.168.3.40:7777"; // 周晓健
-    // URL_Service = "http://192.168.3.110:7777"; // 
+    URL_Service = "http://192.168.3.44:7777"; // 周晓健
+    // URL_Service = "http://192.168.3.110:7777"; // =
     break;
   case ENV_TRIAL:
     URL_Service = "https://consign.taochonghui.com";
@@ -52,6 +52,11 @@ const URL_GetUserInfoByBaseInfo = "/api/wechat/userinfo/union"; // 通过基本�
 const URL_LoginWithUnionId = "/api/oAuth/unionId"; // 通过unionID 更新用户信息
 const URL_Login = "/api/oAuth/we-Chat"; // 登陆
 const URL_UpdateCustomer = "/api/oAuth/customer-no/"; // 更新用户
+const URL_CompletionBusinessInfo = "/api/business/update"; // 完善商家信息
+const URL_AuthBusiness = "/api/business/insetBusiness"; // 认证商家
+function URL_GetBusinessAuthInfo(businessNo) {
+  return "/api/business/" + businessNo;
+} // 获取商家认证信息
 const URL_CheckBalance = "/api/balance"; // 查询余额
 const URL_Withdraw_Station ="/api/withdraw/station"; // 站点提现
 const URL_Withdraw_Business = "/api/withdraw/business"; // 商家提现
@@ -235,6 +240,9 @@ module.exports = {
   URL_Login, // 登陆
   URL_LoginWithUnionId, // 通过unionId登录 更新用户信息
   URL_UpdateCustomer, // 更新用户
+  URL_CompletionBusinessInfo, // 完善商家信息
+  URL_AuthBusiness, // 商家认证
+  URL_GetBusinessAuthInfo, // 获取商家认证信息
   URL_CheckBalance, // 查询余额
   URL_Withdraw_Station, // 站点提现
   URL_Withdraw_Business, // 商家提现

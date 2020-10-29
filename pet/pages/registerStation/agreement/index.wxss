@@ -1,0 +1,36 @@
+/* pages/registerStation/agreement/index.wxss */
+.headTrip{
+  padding-left: 2%;
+  padding-right: 2%;
+  margin-bottom: 2%;
+}
+
+.text-head{
+  font-weight: bold;
+  color: #762121;
+  font-size: 32rpx;
+}
+
+.text-context{
+  padding-left: 2%;
+  color: #4C4040;
+}
+
+.sjgf-head{
+  padding-left: 2%;
+  padding-right: 2%;
+  color: #4C4040;
+}
+
+.boxHead-sty{
+  padding-left: 2%;
+  font-weight: bold;
+  font-size: 28rpx;
+}
+
+.boxcontent-sty{
+  font-size: 27rpx;
+  color: #4C4040;
+  padding-left: 4%;
+  padding-right: 1%;
+}

@@ -22,7 +22,7 @@ Page({
 
     imagePathList: [], // 图片
 
-    inportDisable: true,
+    inportDisable: false,
     inportLoading: false,
   },
 
@@ -72,7 +72,6 @@ Page({
    */
   tapInport: function(){
     if (!this.data.inportLoading) {
-      console.log('wasasasasasas')
       this.buttonLoading(true);
       let that = this;
       workOrderManager.inOrOutHarbour(this.getInportFileList(), this.data.formData.sn, this.data.formData.orderNo, this.data.formData.orderType, function(success, data) {
@@ -135,9 +134,9 @@ Page({
     this.setData({
       imagePathList: imageList
     })
-    this.setData({
-      inportDisable: imageList==null||imageList.length <= 0
-    })
+    // this.setData({
+    //   inportDisable: imageList==null||imageList.length <= 0
+    // })
   },
 
   /**

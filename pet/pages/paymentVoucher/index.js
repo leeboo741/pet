@@ -109,7 +109,6 @@ Page({
       header: { "Content-Type": "multipart/form-data" },
       success(res) {
         wx.hideLoading()
-        console.log(res);
         if (typeof res.data == 'string') {
           res.data = JSON.parse(res.data);
         }
@@ -125,7 +124,6 @@ Page({
         }
       },
       fail(res) {
-        console.log(res);
         wx.hideLoading();
         wx.showToast({
           title: '上传失败',

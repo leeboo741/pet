@@ -116,7 +116,6 @@ Page({
       evaluator: LoginUtil.getCustomerNo()
     }
     let that = this;
-    console.log("提交评价：\n" + JSON.stringify(submitData));
     orderManager.submitOrderEvaluate(submitData, function(success, data) {
       wx.hideLoading({
         success: (res) => {},

@@ -23,7 +23,6 @@ Page({
   onLoad: function (options) {
     let that = this;
     wx.onKeyboardHeightChange((result) => {
-      console.log(result.height);
       that.setData({
         keyboardHeight: result.height
       })

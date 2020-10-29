@@ -332,10 +332,7 @@ function getStorePhoneByCityName(cityName, callback) {
       if (util.checkIsFunction(callback)) {
         callback(false, res);
       }
-    },
-    complete(res) {
-      console.log("获取商家电话 城市（" + cityName + "） complete => \n" + JSON.stringify(res));
-    },
+    }
   })
 }
 

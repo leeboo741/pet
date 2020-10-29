@@ -71,7 +71,6 @@ function getBalance(callback) {
       customerNo: loginUtils.getCustomerNo()
     },
     success(res){
-      console.log("查询余额 success => \n" + JSON.stringify(res));
       if (res.data.code == RES_CODE_SUCCESS){
         if (util.checkIsFunction(callback)) {
           callback(true, res.data.data);

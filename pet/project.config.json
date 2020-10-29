@@ -1,98 +1,102 @@
 {
-	"description": "项目配置文件",
-	"packOptions": {
-		"ignore": []
-	},
-	"setting": {
-		"urlCheck": false,
-		"es6": true,
-		"enhance": false,
-		"postcss": true,
-		"preloadBackgroundData": false,
-		"minified": true,
-		"newFeature": true,
-		"coverView": true,
-		"nodeModules": true,
-		"autoAudits": false,
-		"showShadowRootInWxmlPanel": true,
-		"scopeDataCheck": false,
-		"uglifyFileName": false,
-		"checkInvalidKey": true,
-		"checkSiteMap": true,
-		"uploadWithSourceMap": true,
-		"compileHotReLoad": false,
-		"babelSetting": {
-			"ignore": [],
-			"disablePlugins": [],
-			"outputPath": ""
-		},
-		"useIsolateContext": true,
-		"useCompilerModule": true,
-		"userConfirmedUseCompilerModuleSwitch": false
-	},
-	"compileType": "miniprogram",
-	"libVersion": "2.9.4",
-	"appid": "wxcbdaa290fc45a263",
-	"projectname": "pet",
-	"debugOptions": {
-		"hidedInDevtools": []
-	},
-	"isGameTourist": false,
-	"simulatorType": "wechat",
-	"simulatorPluginLibVersion": {},
-	"condition": {
-		"search": {
-			"current": -1,
-			"list": []
-		},
-		"conversation": {
-			"current": -1,
-			"list": []
-		},
-		"plugin": {
-			"current": -1,
-			"list": []
-		},
-		"game": {
-			"currentL": -1,
-			"list": []
-		},
-		"gamePlugin": {
-			"current": -1,
-			"list": []
-		},
-		"miniprogram": {
-			"current": -1,
-			"list": [
-				{
-					"id": 0,
-					"name": "单人-shareopenid",
-					"pathName": "pages/index/index2",
-					"query": "shareopenid=123123123&type=share",
-					"scene": 1007
-				},
-				{
-					"id": 1,
-					"name": "扫码签收",
-					"pathName": "pages/index/index2",
-					"query": "q=https%3A%2F%2Fwww.taochonghui.com%2Fweapp%2Fjump%2Fconfirm%2Forder%3Ftype%3Dscan%26orderno%3D20200910nc001",
-					"scene": 1011
-				},
-				{
-					"id": -1,
-					"name": "扫商家码",
-					"pathName": "pages/index/index2",
-					"query": "q=https%3A%2F%2Fwww.taochonghui.com%2Fweapp%2Fjump%2Fshare%3Ftype%3Drqimg%26businessno%3Dd32ceabd6a9744e98d39006a60c40485&scancode_time=1576231976",
-					"scene": null
-				},
-				{
-					"id": -1,
-					"name": "商家扫码2",
-					"pathName": "pages/index/index2",
-					"query": "q=https%3A%2F%2Fwww.taochonghui.com%2Fweapp%2Fjump%2Fshare%3Ftype%3Drqimg%26businessno%3D2c69e29b0ef647f189ad7c3aca2cdcdb&scancode_time=1576922969",
-					"scene": null
-				}
-			]
-		}
-	}
+  "description": "项目配置文件",
+  "packOptions": {
+    "ignore": []
+  },
+  "setting": {
+    "urlCheck": false,
+    "es6": true,
+    "enhance": false,
+    "postcss": true,
+    "preloadBackgroundData": false,
+    "minified": true,
+    "newFeature": true,
+    "coverView": true,
+    "nodeModules": true,
+    "autoAudits": false,
+    "showShadowRootInWxmlPanel": true,
+    "scopeDataCheck": false,
+    "uglifyFileName": false,
+    "checkInvalidKey": true,
+    "checkSiteMap": true,
+    "uploadWithSourceMap": true,
+    "compileHotReLoad": false,
+    "useMultiFrameRuntime": false,
+    "useApiHook": true,
+    "babelSetting": {
+      "ignore": [],
+      "disablePlugins": [],
+      "outputPath": ""
+    },
+    "useIsolateContext": true,
+    "useCompilerModule": true,
+    "userConfirmedUseCompilerModuleSwitch": false,
+    "packNpmManually": false,
+    "packNpmRelationList": []
+  },
+  "compileType": "miniprogram",
+  "libVersion": "2.9.4",
+  "appid": "wxcbdaa290fc45a263",
+  "projectname": "pet",
+  "debugOptions": {
+    "hidedInDevtools": []
+  },
+  "isGameTourist": false,
+  "simulatorType": "wechat",
+  "simulatorPluginLibVersion": {},
+  "condition": {
+    "search": {
+      "current": -1,
+      "list": []
+    },
+    "conversation": {
+      "current": -1,
+      "list": []
+    },
+    "plugin": {
+      "current": -1,
+      "list": []
+    },
+    "game": {
+      "currentL": -1,
+      "list": []
+    },
+    "gamePlugin": {
+      "current": -1,
+      "list": []
+    },
+    "miniprogram": {
+      "current": -1,
+      "list": [
+        {
+          "id": 0,
+          "name": "单人-shareopenid",
+          "pathName": "pages/index/index2",
+          "query": "shareopenid=123123123&type=share",
+          "scene": 1007
+        },
+        {
+          "id": 1,
+          "name": "扫码签收",
+          "pathName": "pages/index/index2",
+          "query": "q=https%3A%2F%2Fwww.taochonghui.com%2Fweapp%2Fjump%2Fconfirm%2Forder%3Ftype%3Dscan%26orderno%3D20191210xa003",
+          "scene": 1011
+        },
+        {
+          "id": -1,
+          "name": "扫商家码",
+          "pathName": "pages/index/index2",
+          "query": "q=https%3A%2F%2Fwww.taochonghui.com%2Fweapp%2Fjump%2Fshare%3Ftype%3Drqimg%26businessno%3Dd32ceabd6a9744e98d39006a60c40485&scancode_time=1576231976",
+          "scene": null
+        },
+        {
+          "id": -1,
+          "name": "商家扫码2",
+          "pathName": "pages/index/index2",
+          "query": "q=https%3A%2F%2Fwww.taochonghui.com%2Fweapp%2Fjump%2Fshare%3Ftype%3Drqimg%26businessno%3D2c69e29b0ef647f189ad7c3aca2cdcdb&scancode_time=1576922969",
+          "scene": null
+        }
+      ]
+    }
+  }
 }

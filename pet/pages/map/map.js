@@ -154,7 +154,6 @@ Page({
    * 点击地图
    */
   tapMap: function(e) {
-    console.log("tapMap: \n" + JSON.stringify(e));
     this.setMapCenter(e.detail)
   },
 
@@ -295,7 +294,6 @@ Page({
       //获取表单传入地址
       address: address, //地址参数
       success: function (res) {//成功后的回调
-        console.log("geocoder: \n" + JSON.stringify(res));
         var result = {
           latitude: res.result.location.lat,
           longitude: res.result.location.lng
@@ -319,7 +317,6 @@ Page({
     qqmapsdk.reverseGeocoder({
       location: location,
       success(res) {
-        console.log("regeocoder: \n" + JSON.stringify(res));
         if (Util.checkIsFunction(getReGeocoderCallback)) {
           getReGeocoderCallback(res.result);
         }
@@ -334,14 +331,12 @@ Page({
    * 地图区域改变
    */
   changeRegion: function (e)  {
-    console.log("changeRegion: \n" + JSON.stringify(e));
     if (e.type == 'end' && (e.causedBy == 'scale' || e.causedBy == 'drag')) {
       var that = this;
       // 获取地图中心点
       this.data.mapCtx.getCenterLocation({
         type: 'gcj02',
         success: function (res) {
-          console.log("getCenterLocation: \n" + JSON.stringify(res));
         },
         fail: function (e) {
           console.log(e)

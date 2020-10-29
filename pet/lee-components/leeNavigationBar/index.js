@@ -109,7 +109,6 @@ Component({
    */
   methods: {
     tapBackButton: function () {
-      console.log("tapNaviTitle")
       wx.navigateBack({
         delta: 1
       })

@@ -1,0 +1,148 @@
+<!--pages/registerStation/completionInfo/index.wxml-->
+<!--mallsubcontracting/pages/businessimprovement/index.wxml-->
+
+<i-panel i-class='panel'
+         title='详细信息'>
+
+  <i-cell-group>
+    <i-cell title='商家名称'>
+      <input class="normal-text"
+             slot='footer'
+             placeholder-class="placeholder-text"
+             placeholder="{{parse.showName(businessName)}}"
+             value="{{businessName}}"
+             bindinput="inputName"
+            >
+             <!-- 请输入您的真实姓名 -->
+      </input>
+    </i-cell>
+
+    <i-cell>
+      <view class="item-1"
+            slot='header'>
+        <view class="item-title">
+        开始营业时间
+        </view>
+        <picker class="item-input normal-text"
+                mode="time"
+                value="{{startTime}}"
+                bindchange="selectStartTime">
+          <view class="input-content {{parse.getRegionClass(startTime)}}">
+          {{startTime==''?'开始营业时间':startTime}}
+          </view>
+        </picker>
+        <i-icon i-class='item-icon'
+                type="right-arrow"
+                size="36"
+                color="#778899">
+        </i-icon>
+      </view>
+    </i-cell>
+    
+    <i-cell>
+      <view class="item-1"
+            slot='header'>
+        <view class="item-title">
+        结束营业时间
+        </view>
+        <picker class="item-input normal-text"
+                mode="time"
+                value="{{endTime}}"
+                bindchange="selectEndTime">
+          <view class="input-content {{parse.getRegionClass(endTime)}}">
+          {{endTime==""?'结束营业时间':endTime}}
+          </view>
+        </picker>
+        <i-icon i-class='item-icon'
+                type="right-arrow"
+                size="36"
+                color="#778899">
+        </i-icon>
+      </view>
+    </i-cell>
+
+    <i-cell>
+      <view class="item-1"
+            slot='header'>
+        <view class="item-title">
+        所在地区
+        </view>
+        <picker class="item-input normal-text"
+                mode="region"
+                value="{{region}}"
+                bindchange="selectRegion">
+          <view class="input-content {{parse.getRegionClass(region)}}">
+          {{region==''?'所在地区':region}}
+          </view>
+        </picker>
+        <i-icon i-class='item-icon'
+                type="right-arrow"
+                size="36"
+                color="#778899">
+        </i-icon>
+      </view>
+    </i-cell>
+
+    <i-cell>
+      <view class="item-1"
+            slot='header'>
+        <view class="item-title">
+        详细地址
+        </view>
+        <input class="item-input"
+              placeholder="请输入详细地址"
+              placeholder-class="placeholder-text"
+              value="{{detailAddress}}"
+              bindinput="inputDetailAddress">
+        </input>
+        <i-icon i-class='item-icon'
+                type="location"
+                size="36"
+                color="#778899">
+        </i-icon>
+      </view>
+    </i-cell>
+  </i-cell-group>
+</i-panel>
+
+<i-panel i-class='panel'
+          title='上传头像'>
+    <i-cell>
+      <i-imageUpload slot='header' uploadUrl='{{uploadUrl}}' name='multipartFile' autoUpload='{{true}}' bind:upload-complete='uploadComplete' bind:delete-image='deleteImage' bind:addnew='addNewImage' ableDelete='{{true}}' selectMode='cover' maxImageCount='{{1}}' imageSourceType="{{['album', 'camera']}}" showAddNewButton='{{true}}' ableVideo="{{false}}">
+      </i-imageUpload>
+    </i-cell>
+  </i-panel>
+
+<view class="submit-button"
+      bindtap="tapSubmit">
+      提交信息     
+</view>
+
+<wxs module='parse'>
+  module.exports={
+    getRegionClass: function(region) {
+      if(region == null || region.length <= 0) {
+        return "placeholder-text";
+      }
+      return "normal-text";
+    },
+    showImage: function(image) {
+      if (image == null || image.length <= 0) {
+        return false;
+      }
+      return true;
+    },
+    showProgress: function(progressValue) {
+      if (progressValue < 0 || progressValue >= 100) {
+        return false;
+      }
+      return true;
+    },
+
+     showName: function(businessName) {
+      if(businessName == null || businessName.length <= 0) {
+        return "请输入商家名称！";
+      }
+    },
+  }
+</wxs>

@@ -70,13 +70,11 @@ function deleteUserInfo(deleteCallback){
   wx.removeStorage({
     key: Key_UserInfo,
     success(res) {
-      console.log("删除用户 success: \n" + JSON.stringify(res));
       if (deleteCallback && typeof deleteCallback == "function") {
         deleteCallback(true)
       }
     },
     fail(res) {
-      console.log("删除用户 fail: \n" + JSON.stringify(res));
       if (deleteCallback && typeof deleteCallback == "function") {
         deleteCallback(false)
       }
@@ -195,6 +193,28 @@ function getBusinessNo() {
     return null;
   }
   return userInfo.business.businessNo;
+}
+
+/**
+ * 获取商户认证级别
+ */
+function getBusinessAuthType() {
+  let userInfo = getUserInfo();
+  if (userInfo == null || userInfo.business == null || userInfo.business.authType == null || userInfo.business.authType.length <= 0) {
+    return 0;
+  } 
+  return userInfo.business.authType;
+}
+
+/**
+ * 检查用户商家信息是否补充完全
+ */
+function checkBusinessInfoComplete(){
+  let userInfo = getUserInfo();
+  if (userInfo == null || userInfo.business == null || userInfo.business.complete == null || userInfo.business.complete.length <= 0) {
+    return false;
+  } 
+  return userInfo.business.complete==0?false:true;
 }
 
 /**
@@ -474,6 +494,8 @@ module.exports = {
   getStaffNo: getStaffNo,
   getStationNo: getStationNo,
   getBusinessNo: getBusinessNo,
+  getBusinessAuthType: getBusinessAuthType,
+  checkBusinessInfoComplete: checkBusinessInfoComplete,
   isStaff: isStaff,
   isBusiness: isBusiness,
   getCustomerNo: getCustomerNo,

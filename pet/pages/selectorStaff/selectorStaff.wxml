@@ -8,7 +8,7 @@
         bindtap="tapStaff"
         data-index="{{staffIndex}}">
     <view class="staff-item-name">
-    {{staffItem.staffName}}  
+    {{staffItem.staffName}}  ({{parse.getRoleName(staffItem.role)}})
     </view> 
     <i-icon type="success_fill"
             size="32"
@@ -27,3 +27,18 @@
       bindtap="confirmAlloction">
 分配
 </view>
+
+<wxs module='parse'>
+  module.exports={
+    getRoleName: function (role) {
+      if (role == 1) {
+        return "管理员";
+      } else if (role == 2) {
+        return "客服";
+      } else if (role == 3) {
+        return "司机"
+      }
+      return "未知";
+    }
+  }
+</wxs>

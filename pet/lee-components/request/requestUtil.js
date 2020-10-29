@@ -308,11 +308,20 @@ function RequestUploadFile(uploadFileParam) {
         if (typeof data == 'string') {
           data = JSON.parse(data);
         }
-        if (data.code == 200) {
+        if (data.code == 200 ) {
           if (typeof uploadFileParam.success == "function" && uploadFileParam.success) {
             let requestSuccessObj = new RequestSuccessObj(
               {
                 "root": data.data,
+              }
+            )
+            uploadFileParam.success(requestSuccessObj);
+          }
+        } else if (data.code == 10000) {
+          if (typeof uploadFileParam.success == "function" && uploadFileParam.success) {
+            let requestSuccessObj = new RequestSuccessObj(
+              {
+                "root": data.root,
               }
             )
             uploadFileParam.success(requestSuccessObj);

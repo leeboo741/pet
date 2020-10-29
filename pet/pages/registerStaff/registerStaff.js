@@ -153,7 +153,6 @@ Page({
           intervalCount: tempCount,
           ableGetCode: false
         })
-        console.log("倒计时===> " + tempCount);
         that.interval();
       } else {
         that.setData({
@@ -202,7 +201,6 @@ Page({
    * 提交申请
    */
   tapApply: function () {
-    console.log("提交申请：\n" + JSON.stringify(this.data));
     let that = this;
     loginUtil.checkLogin(function alreadyLoginCallback(state) {
       if (state) {
@@ -268,14 +266,12 @@ Page({
         phoneNumber: phone
       },
       success(res) {
-        console.log("获取验证码 success: \n" + JSON.stringify(res))
         let tempCookie = res.header["Set-Cookie"];
         that.setData({
           cookie: tempCookie
         })
       },
       fail(res) {
-        console.log("获取验证码 fail: \n" + JSON.stringify(res))
         wx.showToast({
           title: '系统异常',
           icon: "none"
@@ -302,14 +298,12 @@ Page({
       },
       success(res) {
         wx.hideLoading();
-        console.log("获取站点列表 success: \n" + JSON.stringify(res));
         that.setData({
           stationList: res.data.data
         })
       },
       fail(res) {
         wx.hideLoading();
-        console.log("获取站点列表 fail: \n" + JSON.stringify(res));
         wx.showToast({
           title: '系统异常',
           icon: "none"
@@ -347,7 +341,6 @@ Page({
       },
       method: "POST", // 请求方式
       success(res) {
-        console.log("注册员工 success:\n" + JSON.stringify(res));
         if (res.data.code == config.RES_CODE_SUCCESS) {
           wx.showToast({
             title: '申请提交成功',
@@ -366,14 +359,10 @@ Page({
         }
       },
       fail(res) {
-        console.log("注册员工 fail:\n" + JSON.stringify(res));
         wx.showToast({
           title: '系统异常',
           icon: "none"
         })
-      },
-      complete(res) {
-        console.log("注册员工 complete:\n" + JSON.stringify(res));
       }
     })
   },

@@ -25,11 +25,9 @@ Page({
         let role = staff.role;
         if (res.tapIndex == 0) {
           // 客服 2
-          console.log(staff.staffName, '调职成客服', Config.Role_Staff_Service)
           role = Config.Role_Staff_Service;
         } else if (res.tapIndex == 1) {
           // 司机 3
-          console.log(staff.staffName, '调职成司机', Config.Role_Staff_Diver)
           role = Config.Role_Staff_Diver;
         }
         wx.request({
@@ -46,7 +44,6 @@ Page({
             'content-type': 'application/x-www-form-urlencoded'
           },
           success(res) {
-            console.log(res);
             if (res.data.code == Config.RES_CODE_SUCCESS) {
               wx.startPullDownRefresh({
                 success: (res) => {},
@@ -59,7 +56,6 @@ Page({
             }
           },
           fail(res) {
-            console.log(res);
             wx.showToast({
               title: '网络错误',
               icon: 'none'
@@ -96,7 +92,6 @@ Page({
               'content-type': 'application/x-www-form-urlencoded'
             },
             success(res) {
-              console.log(res);
               if (res.data.code == Config.RES_CODE_SUCCESS) {
                 wx.startPullDownRefresh({
                   success: (res) => {},
@@ -109,7 +104,6 @@ Page({
               }
             },
             fail(res){
-              console.log(res);
               wx.showToast({
                 title: '网络错误',
                 icon: 'none'
@@ -133,14 +127,12 @@ Page({
       url: Config.URL_Service + Config.URL_GetSubStaff + LoginUtil.getCustomerNo(),
       success(res) {
         wx.hideLoading();
-        console.log("请求下属员工 success: \n" + JSON.stringify(res));
         that.setData({
           staffList: res.data.data
         })
       },
       fail(res) {
         wx.hideLoading();
-        console.log("请求下属员工 fail: \n" + JSON.stringify(res));
         wx.showToast({
           title: '系统异常',
           icon: "none"

@@ -53,7 +53,8 @@ const Path_Me_StationSetting = "/pages/stationSetting/index"; // 站点设置
 const Path_Me_PaymentVoucher = "/pages/paymentVoucher/index"; // 上传付款凭证
 
 const Path_Apply_Index = "/pages/applyJoin/applyJoin"; // 申请
-const Path_Apply_Register_Station = "/pages/registerStation/registerStation"; // 站点入驻申请
+const Path_Apply_Business_CompletionInfo = "/pages/registerStation/completionInfo/index"; // 完善商家信息
+const Path_Apply_Register_Station = "/pages/registerStation/index"; // 商家认证申请
 const Path_Apply_Register_Staff = "/pages/registerStaff/registerStaff"; // 员工入驻申请
 
 const Path_Print_Search = "/pages/bluetooth/search"; // 搜索打印设备
@@ -114,6 +115,7 @@ module.exports = {
   Path_Me_PaymentVoucher: Path_Me_PaymentVoucher, // 上传付款凭证
 
   Path_Apply_Index: Path_Apply_Index, // 申请
+  Path_Apply_Business_CompletionInfo: Path_Apply_Business_CompletionInfo, // 完善商家信息
   Path_Apply_Register_Station: Path_Apply_Register_Station, // 站点入驻申请
   Path_Apply_Register_Staff: Path_Apply_Register_Staff, // 员工入驻申请
 

@@ -167,7 +167,6 @@ Page({
    * 生命周期函数--监听页面卸载
    */
   onUnload: function () {
-    console.log("/pay/pay 销毁")
   },
 
   /* ============================= 页面生命周期 End ============================== */
@@ -500,7 +499,6 @@ Page({
           confirmText: '立即付款',
           success(res) {
             if (res.confirm) {
-              console.log('用户点击立即付款')
               loginUtil.checkLogin(function alreadyLoginCallback(state) {
                 if (state) {
                   that.requestPay(tempOrderNo);
@@ -517,7 +515,6 @@ Page({
                 }
               })
             } else if (res.cancel) {
-              console.log('用户点击稍后支付')
               wx.switchTab({
                 url: pagePath.Path_Home,
               })

@@ -160,7 +160,6 @@ Page({
       },
       success(res) {
         wx.hideLoading();
-        console.log("获取周边商家列表 success: \n" + JSON.stringify(res));
         if (res.data.code != config.RES_CODE_SUCCESS) {
           wx.showToast({
             title: '获取周边商家列表错误',
@@ -192,14 +191,12 @@ Page({
       },
       fail(res) {
         wx.hideLoading();
-        console.log("获取周边商家列表 fail: \n" + JSON.stringify(res));
         wx.showToast({
           title: '获取周边商家列表失败',
           icon: 'none'
         })
       },
       complete(res) {
-        console.log("获取周边商家列表 complete: \n" + JSON.stringify(res));
         wx.stopPullDownRefresh();
       },
     })

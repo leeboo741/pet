@@ -23,7 +23,6 @@ function payOtherOrder(orderNo, customerNo,paySuccessCallback, payFailCallback )
     },
     success(res) {
       wx.hideLoading();
-      console.log("支付 success：\n" + JSON.stringify(res));
       wx.requestPayment({
         timeStamp: res.data.data.timeStamp,
         nonceStr: res.data.data.nonceStr,
@@ -69,7 +68,6 @@ function payOrder(orderNo,customerNo, paySuccessCallback, payFailCallback) {
     },
     success(res) {
       wx.hideLoading();
-      console.log("支付 success：\n" + JSON.stringify(res));
       wx.requestPayment({
         timeStamp: res.data.data.timeStamp,
         nonceStr: res.data.data.nonceStr,
@@ -116,7 +114,6 @@ function payRecharge(rechargeAmount, paySuccessCallback, payFailCallback) {
     },
     success(res) {
       wx.hideLoading();
-      console.log("充值 success => \n" + JSON.stringify(res))
       wx.requestPayment({
         timeStamp: res.data.data.timeStamp,
         nonceStr: res.data.data.nonceStr,
@@ -164,7 +161,6 @@ function payPremium(billNo, paySuccessCallback, payFailCallback){
     },
     success(res) {
       wx.hideLoading();
-      console.log("支付补价 success: \n" + JSON.stringify(res));
       wx.requestPayment({
         timeStamp: res.data.data.timeStamp,
         nonceStr: res.data.data.nonceStr,
@@ -206,13 +202,11 @@ function completePay(orderNo, paySuccessCallback, payFailCallback) {
       customerNo: loginUtils.getCustomerNo()
     },
     success(res) {
-      console.log(res);
       if (Utils.checkIsFunction(paySuccessCallback)) {
         paySuccessCallback(res.data);
       }
     },
     fail(res) {
-      console.log(res)
       if (Utils.checkIsFunction(payFailCallback)) {
         payFailCallback(res);
       }
@@ -237,13 +231,11 @@ function verifyPaymentVoucher(orderNo, result, feedback, successCallback, failCa
       feedback: feedback
     },
     success(res) {
-      console.log(res)
       if (Utils.checkIsFunction(successCallback)) {
         successCallback(res.data)
       }
     },
     fail(res) {
-      console.log(res)
       if (Utils.checkIsFunction(failCallback)) {
         failCallback(res);
       }

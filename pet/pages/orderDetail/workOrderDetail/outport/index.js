@@ -27,7 +27,7 @@ Page({
 
     imagePathList: [], // 图片
 
-    outportDisable: true, // 按钮是否可用
+    outportDisable: false, // 按钮是否可用
     outportLoading: false, // 按钮是否loadin中
 
     // 物流
@@ -63,6 +63,7 @@ Page({
       uploadUrl: URL_Service + URL_UploadFile,
       order: app.globalData.workOrder,
       formData: formData,
+      expressNum: app.globalData.workOrder.orderNo
     })
     
     this.getDefaultOrderTaker()
@@ -81,6 +82,9 @@ Page({
    * @param {*} e 
    */
   inputTransportNumLoseFost: function(e) {
+    this.setData({
+      transportNum: e.detail.value.toUpperCase()
+    })
     if (this.data.order.transport.transportType == 3 || this.data.order.transport.transportType == 4) {
       this.getDefaultOrderTaker();
     }
@@ -151,7 +155,6 @@ Page({
    */
   tapOutport: function(){
     if (!this.data.outportLoading) {
-      console.log('wasasasasasas')
       this.buttonLoading(true);
       let that = this;
       this.requestUnpayPremiumCount(this.data.order.orderNo, function(count) {
@@ -232,9 +235,9 @@ Page({
     this.setData({
       imagePathList: imageList
     })
-    this.setData({
-      outportDisable: imageList==null||imageList.length <= 0
-    })
+    // this.setData({
+    //   outportDisable: imageList==null||imageList.length <= 0
+    // })
   },
 
   /**

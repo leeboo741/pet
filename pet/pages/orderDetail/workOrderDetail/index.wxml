@@ -184,11 +184,10 @@
   </i-cell-group>
 </i-panel>
 <i-panel i-class='panel'
-         title='推荐人信息'
-         wx:if='{{orderData.recommendName != null}}'>
+         title='推荐人信息'>
   <i-cell-group>
-    <i-cell title='{{orderData.recommendName}}'
-            label='{{orderData.recommendRemarks}}'
+    <i-cell title='{{orderData.recommendName?orderData.recommendName:"无"}}'
+            label='{{orderData.recommendRemarks?orderData.recommendRemarks:"无"}}'
             is-link>
       <view slot='footer'
             bindtap="callPhone"
@@ -209,6 +208,11 @@
           wx:key='{{remarkIndex}}'
           title='{{remarkItem.remarks}}'>
   </i-cell>
+</i-panel>
+<i-panel i-class='panel'
+         title='付款凭证'>
+  <i-imageUpload imagePathList='{{[orderData.paymentVoucher]}}' showAddNewButton='{{false}}'>
+  </i-imageUpload>
 </i-panel>
 <i-panel i-class="panel"
          title='订单进度'>

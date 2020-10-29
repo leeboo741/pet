@@ -1,11 +1,12 @@
 {
   "usingComponents": {
-    "i-load-more": "/dist/load-more/index",
+    "i-navigation-bar": "/lee-components/leeNavigationBar/index",
     "i-panel": "/dist/panel/index",
     "i-cell": "/dist/cell/index",
     "i-cell-group": "/dist/cell-group/index",
+    "i-icon": "/lee-components/leeIcon/index",
+    "i-progress": "/dist/progress/index",
     "i-imageUpload": "/lee-components/leeImageUpload/index"
   },
-  "navigationBarTitleText": "余额流水",
-  "enablePullDownRefresh": true
+  "navigationBarTitleText": "完善商家信息"
 }

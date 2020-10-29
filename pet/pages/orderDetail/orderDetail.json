@@ -5,7 +5,8 @@
     "i-panel": "/dist/panel/index",
     "i-cell-group": "/dist/cell-group/index",
     "i-cell": "/dist/cell/index",
-    "i-icon": "/dist/icon/index"
+    "i-icon": "/dist/icon/index",
+    "i-imageUpload": "/lee-components/leeImageUpload/index"
   },
   "navigationBarTitleText": "订单详情"
 }

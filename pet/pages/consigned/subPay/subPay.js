@@ -211,7 +211,6 @@ Page({
    * 点击保存商家收款码
    */
   tapSaveQRCode: function(e) {
-    console.log('保存商家收款码')
     this.saveQRCode(e.currentTarget.dataset.path, function(res){
       app.ShareData.payOrderNo = null;
       app.ShareData.payAmount = null;
@@ -277,7 +276,6 @@ Page({
    * 用户点击右上角分享
    */
   onShareAppMessage: function () {
-    console.log('shareAppMessage');
     return ShareManager.shareToOtherPay(this.data.orderInfo.orderNo, this.data.orderInfo.paymentAmount, this.data.orderInfo.station.collectionQRCode, this.data.currentOtherPayType.typeId);
   },
 })

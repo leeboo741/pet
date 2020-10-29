@@ -1,0 +1,215 @@
+<!--pages/registerStation/index.wxml-->
+
+<i-panel i-class='panel'
+          title='基础资料完善'>
+    <i-cell>
+      <checkbox-group slot='header' bindchange="checkboxChange" style="line-height: 60rpx">
+        <label style="font-size: 26rpx;" wx:for="{{serviceInfor}}">
+          <checkbox value="{{item.name}}" checked="{{item.checked}}"/>{{item.value}}
+        </label>
+      </checkbox-group>
+    </i-cell>
+</i-panel>
+
+<i-panel i-class='panel'
+        title='服务内容'>
+    <i-cell>
+      <checkbox-group slot='header' bindchange="checkboxChangeContent" style="line-height: 60rpx">
+        <label style="font-size: 26rpx;" wx:for="{{serviceContent}}">
+          <checkbox value="{{item.name}}" checked="{{item.checked}}"/>{{item.value}}
+        </label>
+      </checkbox-group>
+    </i-cell>
+</i-panel>
+
+
+<i-panel i-class='panel'
+         title='真实姓名及身份证号'>
+  <i-cell-group>
+    <i-cell title='真实姓名'>
+      <input class="normal-text"
+             slot='footer'
+             value='{{name}}'
+             placeholder-class="placeholder-text"
+             placeholder="真实姓名"
+             bindinput="inputName">
+      </input>
+    </i-cell>
+    
+    <i-cell title='身份证号'>
+      <input class="normal-text"
+             slot='footer'
+             value='{{identifier}}'
+             placeholder-class="placeholder-text"
+             placeholder="身份证号"
+             bindinput="inputIdentifier">
+      </input>
+    </i-cell>
+
+    <i-cell>
+      <view class="item-1"
+            slot='header'>
+        <view class="item-title">
+        所在地区
+        </view>
+        <picker class="item-input normal-text"
+                mode="region"
+                value="{{region}}"
+                bindchange="selectRegion">
+          <view class="input-content {{parse.getRegionClass(region)}}">
+          {{parse.getRegionStr(region)}}
+          </view>
+        </picker>
+        <i-icon i-class='item-icon'
+                type="right-arrow"
+                size="36"
+                color="#778899">
+        </i-icon>
+      </view>
+    </i-cell>
+  </i-cell-group>
+</i-panel>
+<i-panel i-class='panel'
+         title="法定代表人手持身份证照片"
+         wx:if='{{false}}'>
+  <i-cell>
+    <i-imageUpload slot='header' uploadUrl='{{uploadUrl}}' name='multipartFile' autoUpload='{{true}}' bind:upload-complete='uploadComplete' bind:delete-image='deleteImage' bind:addnew='addNewImage' ableDelete='{{true}}' selectMode='cover' maxImageCount='{{1}}' imageSourceType="{{['album', 'camera']}}" showAddNewButton='{{true}}' ableVideo="{{false}}" data-type='idcard' imagePathList='{{idcardImagePath}}'>
+    </i-imageUpload>
+  </i-cell>
+  <i-cell>
+    <view class="alert-box" slot='header'>
+      <view class="alert-item">
+      1. 请确保本人操作上传真实、有效、清晰的手持身份证照片。
+      </view>
+      <view class="alert-item">
+      2. 手持身份证照片仅用于本次认证审核使用，本公司绝不会泄露您的资料。
+      </view>
+    </view>
+  </i-cell>
+</i-panel>
+
+<i-panel i-class='panel'
+         title='微信二维码图片'>
+  <i-cell>
+    <i-imageUpload slot='header' uploadUrl='{{uploadUrl}}' name='multipartFile' autoUpload='{{true}}' bind:upload-complete='uploadComplete' bind:delete-image='deleteImage' bind:addnew='addNewImage' ableDelete='{{true}}' selectMode='cover' maxImageCount='{{1}}' imageSourceType="{{['album', 'camera']}}" showAddNewButton='{{true}}' ableVideo="{{false}}" data-type='qrcode' imagePathList='{{qrcodeImagePath}}'>
+    </i-imageUpload>
+  </i-cell>
+</i-panel>
+
+
+<i-panel i-class='panel'
+        title='营业执照'>
+  <i-cell-group>
+    <i-cell>
+      <view style='color: #ee2c2c' slot='header'>
+      上传营业执照相关信息后才能在商城中发布商品
+      </view>
+    </i-cell>
+    <i-cell title='营业执照编号'>
+      <input class="normal-text"
+            slot='footer'
+            value='{{license}}'
+            placeholder-class="placeholder-text"
+            placeholder="营业执照编号"
+            bindinput="inputLicense"
+            type="number">
+            <!-- 请输入营业执照编号 -->
+      </input>
+    </i-cell>
+  </i-cell-group>
+</i-panel>
+
+<i-panel i-class='panel'
+        title='营业执照'>
+  <i-cell>
+    <i-imageUpload slot='header' uploadUrl='{{uploadUrl}}' name='multipartFile' autoUpload='{{true}}' bind:upload-complete='uploadComplete' bind:delete-image='deleteImage' bind:addnew='addNewImage' ableDelete='{{true}}' selectMode='cover' maxImageCount='{{1}}' imageSourceType="{{['album', 'camera']}}" showAddNewButton='{{true}}' ableVideo="{{false}}" data-type='license' imagePathList='{{licenseImagePath}}'>
+    </i-imageUpload>
+  </i-cell>
+</i-panel>
+
+
+<i-panel i-class='panel'
+        title='店铺信息'>
+  <i-cell-group>
+    <i-cell>
+      <view style='color: #ee2c2c' slot='header'>
+      上传店铺信息和实体照片后才能在商城中发布服务
+      </view>
+    </i-cell>
+    <i-cell title='店铺名称'>
+      <input class="normal-text"
+            slot='footer'
+            value='{{storeName}}'
+            placeholder-class="placeholder-text"
+            placeholder="店铺名称"
+            bindinput="inputStoreName">
+            <!-- 请输入店铺名称 -->
+      </input>
+    </i-cell>
+    
+    <i-cell title='详细地址'>
+        <input class="normal-text"
+              slot='footer'
+              value='{{detailAddress}}'
+              placeholder="详细地址"
+              placeholder-class="placeholder-text"
+              bindinput="inputDetailAddress">
+        </input>
+    </i-cell>
+  </i-cell-group>
+</i-panel>
+
+
+<i-panel i-class='panel'
+        title='实体照片(最多9张)'>
+  <i-cell>
+    <i-imageUpload slot='header' uploadUrl='{{uploadUrl}}' name='multipartFile' autoUpload='{{true}}' bind:upload-complete='uploadComplete' bind:delete-image='deleteImage' bind:addnew='addNewImage' ableDelete='{{true}}' selectMode='append' maxImageCount='{{9}}' videoMaxLength='{{15}}' imageSourceType="{{['album', 'camera']}}" videoSourceType="{{['album', 'camera']}}" showAddNewButton='{{true}}' ableVideo="{{true}}" data-index='{{index}}' data-type="photo" imagePathList='{{photoImagePath}}'>
+    </i-imageUpload>
+  </i-cell>
+</i-panel>
+
+<view class="xieyi-sty">
+  <radio bindtap='radioClick' checked="{{xieyidx}}" color="#04BE02"/>
+  同意并愿意遵守
+  <navigator style="color:#4278B9;font-size:28rpx;" url="/pages/registerStation/agreement/index?titlename=1">《商家规范》</navigator> 
+  <navigator style="color:#4278B9;font-size:28rpx;" url="/pages/registerStation/agreement/index?titlename=0">《宠物服务协议》</navigator>
+</view>
+    
+<view class="submit-button"
+      bindtap="tapSubmit">
+      确定提交
+</view>
+
+<wxs module='parse'>
+  module.exports={
+    getRegionClass: function(region) {
+      if(region == null || region.length <= 0) {
+        return "placeholder-text";
+      }
+      return "normal-text";
+    },
+    getRegionStr: function(region) {
+      if(region!=null && region!=''){
+        return region
+      }else{
+        if(region == null || region.length <= 0) {
+            return '请选择省市区';
+          }
+          return region[0] + "-" + region[1] + "-" + region[2];  
+        }
+    },
+
+    showXieyi:function(type,info){
+      if (info != null) {
+        if (info.businessAuthType - 1 == type) {
+          return true;
+        } else if (info.businessAuthType > type) {
+          return false;
+        } 
+        return true;
+      } else {
+        return false;
+      }
+    },
+  }
+</wxs>

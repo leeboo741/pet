@@ -9,6 +9,7 @@ var encode = require("../../libs/encoding.js");
 
 const pagePath = require("../../utils/pagePath.js");
 const ShareUtil = require("../../utils/shareUtils.js");
+const util = require("../../utils/util.js");
 
 Page({
 
@@ -78,9 +79,29 @@ Page({
     })
   },
 
+  checkData: function() {
+    if (app.globalData.printOrder.transport == null || app.globalData.printOrder.transport.endCity == null) {
+      wx.showToast({
+        title: '目的地不能为空',
+        icon: 'none'
+      })
+      return false;
+    }
+    if (util.checkEmpty(app.globalData.printOrder.receiverName) || util.checkEmpty(app.globalData.printOrder.receiverPhone)) {
+      wx.showToast({
+        title: '收件人不能为空',
+        icon: 'none'
+      })
+      return false;
+    }
+    return true;
+  },
+
   labelTest: function () { //标签测试
     var that = this;
-
+    if (!this.checkData()) {
+      return;
+    }
     that.setData({
       isLabelSend: true
     })
@@ -92,9 +113,11 @@ Page({
     command.setGap(0)
     command.setCls()
 
-    command.setText(50, 256, "TSS48.BF2", 1, 1, app.globalData.printOrder.transport.startCity);
+    let startCity = app.globalData.printOrder.transport.startCity;
+    command.setText(50, 256, "TSS48.BF2", 1, 1, startCity?startCity:'---');
     let transportTypeStr = "";
-    let type = app.globalData.printOrder.transport.transportType;
+    let transportType = app.globalData.printOrder.transport.transportType
+    let type = transportType?transportType:-1;
     if (type == 1) {
       transportTypeStr = "专车";
     } else if (type == 2) {
@@ -103,16 +126,24 @@ Page({
       transportTypeStr = "单飞";
     } else if (type == 4) {
       transportTypeStr = "随机";
-    } else {
+    } else if (type == 5){
       transportTypeStr = "大巴";
+    } else {
+      transportTypeStr = '---';
     }
     command.setText(250, 248, "TSS24.BF2", 1, 1, transportTypeStr);
     command.setText(350, 256, "TSS48.BF2", 1, 1, app.globalData.printOrder.transport.endCity);
 
     command.setText(186, 360, "TSS32.BF2", 1, 1, app.globalData.printOrder.orderNo);
-    command.setText(186, 432, "TSS32.BF2", 1, 1, app.globalData.printOrder.leaveDate);
-    command.setText(122, 504, "TSS32.BF2", 1, 1, app.globalData.printOrder.petSort.petSortName + " -- " + app.globalData.printOrder.petGenre.petGenreName);
-    command.setText(122, 570, "TSS32.BF2", 1, 1, app.globalData.printOrder.num);
+    let leaveDate = app.globalData.printOrder.leaveDate;
+    command.setText(186, 432, "TSS32.BF2", 1, 1, leaveDate?leaveDate:"---");
+    let petSort = "---";
+    if (app.globalData.printOrder.petSort && app.globalData.printOrder.petSort.petSortName && app.globalData.printOrder.petGenre && app.globalData.printOrder.petGenre.petGenreName) {
+      petSort = app.globalData.printOrder.petSort.petSortName + '--' + app.globalData.printOrder.petGenre.petGenreName
+    }
+    command.setText(122, 504, "TSS32.BF2", 1, 1,  + petSort);
+    let num = app.globalData.printOrder.num;
+    command.setText(122, 570, "TSS32.BF2", 1, 1, num?num:'---');
     command.setText(386, 570, "TSS32.BF2", 1, 1, app.globalData.printOrder.weight + "Kg");
     command.setText(186, 1384, "TSS32.BF2", 1, 1,app.globalData.printOrder.orderNo);
     command.setQR(350, 637, "L", 5, "A", "https://www.taochonghui.com/weapp/jump/confirm/order?type=scan&orderno=" + app.globalData.printOrder.orderNo);
@@ -316,7 +347,7 @@ Page({
    * 生命周期函数--监听页面卸载
    */
   onUnload: function () {
-
+    
   },
 
   /**

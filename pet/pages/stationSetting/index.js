@@ -99,7 +99,6 @@ Page({
         "stationNo": loginUtils.getStationNo(),
       },
       success(res) {
-        console.log(res);
         if (typeof res.data == 'string') {
           res.data = JSON.parse(res.data);
         }
@@ -119,7 +118,6 @@ Page({
         }
       },
       fail(res) {
-        console.log(res);
         wx.hideLoading();
         wx.showToast({
           title: '上传失败',

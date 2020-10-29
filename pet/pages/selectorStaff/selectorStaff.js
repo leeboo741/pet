@@ -98,7 +98,6 @@ Page({
       url: config.URL_Service + config.URL_GetSubStaff + loginUtil.getCustomerNo(),
       success(res) {
         wx.hideLoading();
-        console.log("请求下属员工 success: \n" + JSON.stringify(res));
         that.setData({
           staffList: res.data.data
         })
@@ -106,7 +105,6 @@ Page({
       },
       fail(res) {
         wx.hideLoading();
-        console.log("请求下属员工 fail: \n" + JSON.stringify(res));
         wx.showToast({
           title: '系统异常',
           icon: "none"
@@ -185,7 +183,6 @@ Page({
       method: "POST", // 请求方式
       success(res) {
         wx.hideLoading();
-        console.log("分配订单 success:\n" + JSON.stringify(res));
         if (res.data.code == config.RES_CODE_SUCCESS && res.data.data > 0) {
           wx.showModal({
             title: '分配成功',
@@ -216,7 +213,6 @@ Page({
       },
       fail(res) {
         wx.hideLoading();
-        console.log("分配订单 fail:\n" + JSON.stringify(res));
         wx.showToast({
           title: '请求失败，请稍后再试',
           icon:'none'

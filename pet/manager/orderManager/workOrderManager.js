@@ -55,7 +55,6 @@ function getOrderList_1(stateList, offset, limit, keyword, orderDate, callback){
     url: config.URL_Service + config.URL_Order_Station_All,
     data: data,
     success(res) {
-      console.log("请求未付单据 success：\n" + JSON.stringify(res));
       if (res.data.code == config.RES_CODE_SUCCESS) {
         if (util.checkIsFunction(callback)) {
           callback(true, res.data.data);
@@ -111,7 +110,6 @@ function getOrderList_2(getOrderParam, callback) {
       queryParamStr: JSON.stringify(getOrderParam)
     },
     success(res) {
-      console.log("请求工作单 success：\n" + JSON.stringify(res));
       if (res.data.code == RES_CODE_SUCCESS) {
         if (util.checkIsFunction(callback)) {
           callback(true, res.data.data);
@@ -178,7 +176,6 @@ function changeOrderPrice(orderNo, paymentAmount, callback) {
     },
     method: "PUT",
     success(res) {
-      console.log("确认改价 success: \n" + JSON.stringify(res));
       if (res.data.code == RES_CODE_SUCCESS && res.data.data > 0) {
         if (util.checkIsFunction(callback)) {
           callback(true, res.data.data);
@@ -257,7 +254,6 @@ function getDefaultOrderTakerInfo(orderNo, code , callback) {
   wx.request({
     url: config.URL_Service + config.URL_GetDefaultOrderTakerInfo(orderNo, code),
     success(res) {
-      console.log ("获取默认提货信息配置success: " + JSON.stringify(res));
       if (res.data.code == config.RES_CODE_SUCCESS) {
         if (util.checkIsFunction(callback)){
           callback(true, res.data.data);
@@ -325,7 +321,6 @@ function inOrOutHarbour(fileList, sn, orderNo, orderType, callback) {
     },
     success(res) {
       wx.hideLoading();
-      console.log("确定入港 success: \n" + JSON.stringify(res));
       if (res.data.code == config.RES_CODE_SUCCESS) {
         if (util.checkIsFunction(callback)) {
           callback(true, res.data.data);

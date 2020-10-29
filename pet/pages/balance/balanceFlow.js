@@ -73,7 +73,6 @@ Page({
           loadMoreTip: "上拉加载数据"
         })
         if (success) {
-          console.log("获取余额流水： \n" + JSON.stringify(data));
           that.setData({
             dataSource: data,
           })
@@ -117,7 +116,6 @@ Page({
           loadMoreTip: "上拉加载数据"
         })
         if (success) {
-          console.log("获取已发货订单： \n" + JSON.stringify(data));
           let tempList = that.data.dataSource.concat(data);
           that.setData({
             dataSource: tempList

@@ -116,7 +116,6 @@ Page({
    * @param {*} e 
    */
   bindEndCityChange: function (e) {
-    console.log(JSON.stringify(e));
     this.setData({
       ["orderFilter.endCity"]: e.detail.value[1]
     })

@@ -102,7 +102,6 @@ Page({
         if (isLogin) {
           that.requestCheckConfirm(app.ShareData.scanOrderNo, loginUtil.getCustomerNo(),
             function getResultCallback(data) {
-              console.log("是否可以确认签收 :\n" + JSON.stringify(data));
               if (data == 0) {
                 wx.showModal({
                   title: '不能签收该订单',
@@ -157,7 +156,6 @@ Page({
    * 生命周期函数--监听页面卸载
    */
   onUnload: function () {
-    console.log("/me/me 销毁")
   },
 
   /** ================================= 生命周期 End ==================================== */
@@ -168,7 +166,6 @@ Page({
    * 点击登陆|注册
    */
   tapLoginOrRegister: function(button){
-    console.log("button:"+JSON.stringify(button));
     loginUtil.login();
   },
   
@@ -196,7 +193,6 @@ Page({
    */
   tapPopMask: function (e) {
     this.hiddenPopMask();
-    console.log("checkBillNo:\n" + this.data.checkBillNo);
   },
 
   /**
@@ -204,7 +200,6 @@ Page({
    */
   searchInputAction: function(e) {
     this.data.checkBillNo = e.detail.value;
-    console.log("checkBillNo:\n" + this.data.checkBillNo);
   },
 
   /**
@@ -443,7 +438,6 @@ Page({
    * @param ableEdit 是否允许编辑
    */
   tapEditOrder: function (e, ableEdit) {
-    console.log("编辑：\n" + e.currentTarget.dataset.orderno)
     wx.navigateTo({
       url: pagePath.Path_Order_Edit + '?orderno=' + e.currentTarget.dataset.orderno + '&able=' + ableEdit,
     })
@@ -453,7 +447,6 @@ Page({
    * 订单详情
    */
   tapOrderDetail: function (e, order) {
-    console.log("详情：\n" + e.currentTarget.dataset.orderno)
     let showPrice = 0;
     if (this.data.userInfo.phone == order.senderPhone) {
       showPrice = 1;
@@ -467,7 +460,6 @@ Page({
    * 取消订单
    */
   tapCancelOrder: function (e) {
-    console.log("取消：\n" + e.currentTarget.dataset.orderno)
     let that = this;
     wx.showModal({
       title: '取消订单',
@@ -498,7 +490,6 @@ Page({
    * 支付订单
    */
   tapToPay: function (e) {
-    console.log("支付：\n" + e.currentTarget.dataset.orderno);
     let that = this;
     loginUtil.checkLogin(function alreadyLoginCallback(state) {
       if (state) {
@@ -521,7 +512,6 @@ Page({
    * 点击呼叫
    */
   tapCall: function (e) {
-    console.log("点击呼叫")
     wx.makePhoneCall({
       phoneNumber: config.Service_Phone,
     })
@@ -531,7 +521,6 @@ Page({
    * 点击设置
    */
   tapSetting: function () {
-    console.log("点击设置")
     // wx.navigateTo({
     //   url: pagePath.Path_Me_Setting,
     // })
@@ -572,7 +561,6 @@ Page({
    * 点击站内信
    */
   tapMessage: function () {
-    console.log("点击站内信")
     this.setData({
       haveNewMessage: false
     })
@@ -621,7 +609,6 @@ Page({
     this.setData({
       showCheckBillPopView : true
     })
-    console.log("checkBillNo:\n" + this.data.checkBillNo);
   },
 
   /**

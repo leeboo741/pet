@@ -284,20 +284,24 @@ Page({
         },
         // 链接失败
         fail: function (e) {
-          wx.showModal({
-            title: '提示',
-            content: '连接失败',
-            confirmText: "重选打印机",
-            success(res) {
-              if (res.confirm) {
-                wx.navigateTo({
-                  url: pagePath.Path_Print_Search,
-                })
-              }
-            }
-          })
-          util.printLog(e)
           wx.hideLoading()
+          if (e.errCode == -1) {
+            that.openControl();
+          } else {
+            wx.showModal({
+              title: '提示',
+              content: '连接失败',
+              confirmText: "重选打印机",
+              success(res) {
+                if (res.confirm) {
+                  wx.navigateTo({
+                    url: pagePath.Path_Print_Search,
+                  })
+                }
+              }
+            })
+            util.printLog(e)
+          }
         },
         // 链接完成
         complete: function (e) {
@@ -741,6 +745,7 @@ Page({
           operateList.push(alloction);
         }
         operateList.push(premium);
+        operateList.push(uploadNodeResource);
         operateList.push(inPort);
       }
         break;
@@ -751,6 +756,7 @@ Page({
           operateList.push(alloction);
         }
         operateList.push(premium);
+        operateList.push(uploadNodeResource);
         operateList.push(inPort);
       }
         break;
@@ -770,6 +776,7 @@ Page({
           operateList.push(alloction);
         }
         operateList.push(premium);
+        operateList.push(uploadNodeResource);
         operateList.push(inPort);
       }
         break;
@@ -778,6 +785,7 @@ Page({
           operateList.push(alloction);
         }
         operateList.push(premium);
+        operateList.push(uploadNodeResource);
         operateList.push(signIn);
       }
         break;

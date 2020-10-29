@@ -15,7 +15,6 @@ function checkUnpayPremiumCount(orderNo, callback) {
       orderNo: orderNo
     },
     success(res) {
-      console.log("未支付补价单数量 sucess: \n" + JSON.stringify(res));
       if (res.data.code == config.RES_CODE_SUCCESS) {
         if (util.checkIsFunction(callback)) {
           callback(true, res.data.data);

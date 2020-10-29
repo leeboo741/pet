@@ -100,12 +100,6 @@ Component({
    * 属性监听
    */
   observers: {
-    "formData": function(formData) {
-      console.log("formData", formData);
-    },
-    "imagePathList": function (imagePathList) {
-      
-    },
     // 监听 startUpload 变化， 开始或停止上传
     "startUpload": function (startUpload) {
       if (startUpload) {
@@ -402,7 +396,6 @@ Component({
       tempParam.url = this.data.uploadUrl;
       // 图片地址
       let imagePathObj = this.data.imagePathList[this.data.currentUploadIndex];
-      console.log(JSON.stringify(this.data.imagePathList));
       if (Utils.checkIsObject(imagePathObj)) {
         this.uploadSuccess(imagePathObj.fileAddress ? imagePathObj.fileAddress : imagePathObj.coverAddress, imagePathObj);
         return;
@@ -428,7 +421,6 @@ Component({
 
       // 上传成功回调
       tempParam.successCallback = function successCallback(res) {
-        console.log("uploadimage success callback: \n" + JSON.stringify(res));
         /*
          * 这里需要根据自己需要去修改，返回自己需要的数据
          */
@@ -436,7 +428,6 @@ Component({
       };
       // 上传失败回调
       tempParam.failCallback = function failCallback(res) {
-        console.log("uploadimage fail callback: \n" + JSON.stringify(res));
         wx.showToast({
           title: '第' + that.data.currentUploadIndex + "张图片上传失败",
           icon: 'none'
@@ -459,7 +450,6 @@ Component({
       };
       // 监听上传进度回调
       tempParam.onProgressCallback = function onProgressCallback(res) {
-        // console.log("uploadimage on progress callback: \n" + JSON.stringify(res));
         that.setData({
           uploadImageProgress: res.progress
         })

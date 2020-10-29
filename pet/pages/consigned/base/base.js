@@ -20,6 +20,9 @@ var qqmapsdk;
 const CheckAbleStation_Type_Receipt = 0;
 const CheckAbleStation_Type_Send = 1;
 
+const Min_InsuredPrice = 1000;
+const Max_InsuredPrice = 20000;
+
 Page({
   data: {
     userInfo: null,
@@ -125,7 +128,7 @@ Page({
       name: "声明价值",
       selected: true,
       rate: 0, // 费率
-      price: 1000, // 保价金额
+      price: Min_InsuredPrice, // 保价金额
       // alert: "最低估价1000元，最高估价10000元", // 
       contract: "《须知》"
     },
@@ -823,20 +826,20 @@ Page({
    */
   insuredPriceOutFocus: function () {
     let tempInput = this.data.addServerInsuredPrice.price;
-    if (!(tempInput < 10000 && tempInput > 1000)) {
-      if (tempInput < 1000) {
+    if (!(tempInput < Max_InsuredPrice && tempInput > Min_InsuredPrice)) {
+      if (tempInput < Min_InsuredPrice) {
         wx.showToast({
-          title: '最低1000元',
+          title: '最低'+Min_InsuredPrice+'元',
           icon: 'none'
         })
-        tempInput = 1000;
+        tempInput = Min_InsuredPrice;
       }
-      if (tempInput > 10000) {
+      if (tempInput > Max_InsuredPrice) {
         wx.showToast({
-          title: '最高10000元',
+          title: '最高'+Max_InsuredPrice+'元',
           icon: 'none'
         })
-        tempInput = 10000;
+        tempInput = Max_InsuredPrice;
       }
       this.data.addServerInsuredPrice.price = tempInput
       this.setData({

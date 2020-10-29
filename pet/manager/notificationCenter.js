@@ -197,8 +197,12 @@ function postNotification(name, info) {
     item.selector(info);
   });
 }
-
-// 用于对比两个对象是否相等
+ 
+/**
+ * 用于对比两个对象是否相等
+ * @param {object} x 要比对的对象1
+ * @param {object} y 要比对的对象2
+ */
 function cmp(x, y) {
   // If both x and y are null or undefined and exactly the same  
   if (x === y) {

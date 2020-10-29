@@ -227,6 +227,11 @@
     </view>
   </i-cell>
 </i-panel>
+<i-panel i-class='panel'
+         title='付款凭证'>
+  <i-imageUpload imagePathList='{{[orderData.paymentVoucher]}}' showAddNewButton='{{false}}'>
+  </i-imageUpload>
+</i-panel>
 <i-panel i-class="panel"
          title='订单进度'>
   <i-steps i-class='steps'

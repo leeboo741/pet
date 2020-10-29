@@ -2,6 +2,7 @@
 
 const pagePath = require("../../utils/pagePath.js");
 const ShareUtil = require("../../utils/shareUtils.js");
+const loginUtils = require("../../utils/loginUtils.js");
 
 Page({
 
@@ -72,9 +73,15 @@ Page({
    * 点击宠物店
    */
   tapRegisterStation: function () {
-    wx.navigateTo({
-      url: pagePath.Path_Apply_Register_Station,
-    })
+    if (loginUtils.checkBusinessInfoComplete()) {
+      wx.navigateTo({
+        url: pagePath.Path_Apply_Register_Station,
+      })
+    } else {
+      wx.navigateTo({
+        url: pagePath.Path_Apply_Business_CompletionInfo,
+      })
+    }
   },
 
   /**
